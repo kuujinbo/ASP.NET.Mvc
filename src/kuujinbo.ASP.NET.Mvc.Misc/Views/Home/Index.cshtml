@@ -1,0 +1,46 @@
+﻿<h2>Angular Plupoad Directive</h2>
+<plupload-wrapper 
+    upload-url='@Url.Action("Index", "Home")'
+    delete-url='@Url.Action("Delete", "Home")'
+    chunk-size='1mb'>
+</plupload-wrapper>
+
+<h2>HtmlHelper POST</h2>
+@using (Html.BeginForm("Post", "Home"))
+{
+    @Html.AntiForgeryToken()
+    <div class="p8-tb">
+        <input class='btn btn-primary' type="submit" value="Submit" />
+        @if (TempData["result"] != null) { @Html.Raw(@TempData["result"]); }
+    </div>
+}
+
+<h2>HtmlHelper POST - IgnoreXsrfFilterAttribute</h2>
+@using (Html.BeginForm("PostIgnoreXsrfFilter", "Home"))
+{
+    <div class="p8-tb">
+        <input class='btn btn-primary' type="submit" value="Submit" />
+        @if (TempData["resultPostIgnoreXsrfFilter"] != null)
+        { @Html.Raw(@TempData["resultPostIgnoreXsrfFilter"]); }
+    </div>
+}
+
+
+<h2>Angular $http Interceptor</h2>
+<div ng-controller="HttpRequestInterceptorTestController">
+    <form class="form-inline">
+        <div class='form-group'>
+            <select ng-model="method" aria-label="Request method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>DELETE</option>
+                <option>PUT</option>
+            </select>
+        </div>
+        <button id="fetch-btn" type='submit' class='btn btn-primary' ng-click="fetch()">Submit</button>
+    </form>
+    <p>
+        <pre>Status code: {{status}}</pre>
+        <pre>Response data: {{data}}</pre>
+    </p>
+</div>

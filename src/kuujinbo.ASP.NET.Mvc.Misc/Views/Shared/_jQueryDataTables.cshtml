@@ -1,0 +1,25 @@
+﻿@model  kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTable
+<h1>DataTables Test</h1>
+
+@Html.AntiForgeryToken()
+ @*element id selector used in /scripts/DataTables/jQDataTablesIndex.js*@
+<div id='data-table-actions' style='margin:10px 0;'>
+    @Html.Raw(@Model.GetActionButtons())
+</div>
+
+<table id='jquery-data-table' class='table display compact'>
+    <thead>
+        <tr>@Html.Raw(@Model.GetTHead())</tr>
+    </thead>
+    <tfoot>
+        <tr>@Html.Raw(@Model.GetTFoot())</tr>
+    </tfoot>
+</table>
+
+@section scripts
+{
+    <script type='text/javascript'>
+        var serverVars = @Html.Raw(@Model.GetJavaScriptConfig());
+    </script>
+    @Scripts.Render("~/bundles/dataTables")
+}

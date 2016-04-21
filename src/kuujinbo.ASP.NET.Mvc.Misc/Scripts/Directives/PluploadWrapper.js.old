@@ -1,0 +1,216 @@
+﻿/* ########################################################################
+
+
+SIDE NOTES:
+---------------------------------------------------------------------------
+1. IIS/ASP.NET has inconsistent behaviour depending on config settings:
+    i. <httpRuntime maxRequestLength            => 500 HTTP response 
+    ii. <requestLimits maxAllowedContentLength   => 404.13 HTTP response
+
+the default <requestLimits maxAllowedContentLength is ~30MB, and may
+require a server administrator to set correctly, even if explicitly set
+in web.config.  best bet is to keep the directive 'chunk-size' to well-under
+30MB, or leave at default of 4mb. (purpose of chunking is not to use large
+file size anyway)
+######################################################################## */
+'use strict';
+
+var m = angular.module('app.PluploadWrapper', []);
+m.directive('pluploadWrapper',
+    function($compile) {
+        // start sanity checks
+        var disableOnError = function(msg) {
+            alert(msg + '. plupload-wrapper DISABLED.');
+            throw new Error(msg);
+        };
+
+        var initPlupload = function() {
+            if (typeof plupload === 'undefined') {
+                disableOnError('Plupload API not loaded');
+            }
+        };
+
+        var validateScopeParams = function(params) {
+            var missing = [];
+
+            for (var param in params) {
+                if (!params[param]) missing.push(param);
+            }
+
+            if (missing.length > 0) {
+                var msg = 'missing required parameter(s): ('
+                    + missing.join()
+                    + ')'
+                ;
+                disableOnError(msg);
+            }
+        };
+        // end sanity checks
+
+        // unique DOM Ids - directive can be used multiple times in a view
+        var setUniqueIds = function(scope) {
+            scope.uploadQueueId = plupload.guid('upload-queue-');
+            scope.pluploadContainerId = plupload.guid('plupload-container-');
+            scope.browseFilesId = plupload.guid('browse-files-'); 
+            scope.uploadFilesId = plupload.guid('upload-files-');
+        }
+
+        // directive HTML
+        var getTemplate = function(scope) {
+            return "<div id='"
+                    + scope.uploadQueueId
+                    + "'>Your browser doesn't have HTML5 support.</div>"
+                + "<div id='" + scope.pluploadContainerId + "' class='btn-toolbar'>"
+                + "<button id='" + scope.browseFilesId
+                    + "' class='btn btn-info'>Browse <icon class='glyphicon glyphicon-search' /></button>"
+                + "<button id='" + scope.uploadFilesId
+                    + "' class='collapse btn btn-primary'>Upload <icon class='glyphicon glyphicon-upload' /></button>"
+                + "</div>"
+            ;
+        };
+
+        // remove files from plupload queue
+        var removeFromQueueHandler = function(uploader, file) {
+            return function(event) {
+                event.preventDefault();
+                $(this).closest('div').remove();
+                uploader.removeFile(file);
+            };
+        };
+
+        // start directive code
+        return {
+            restrict: 'E',
+            scope: {
+                uploadUrl: '@',
+                chunkSize: '@'
+            },
+            link: function(scope, element, attr)
+            {
+                initPlupload();
+                validateScopeParams({
+                    'upload-url': scope.uploadUrl
+                });
+                setUniqueIds(scope);
+
+                var html = $compile(getTemplate(scope))(scope);
+                element.append(html);
+
+                var uploadFilesLink = $('#' + scope.uploadFilesId);
+                var fileQueueContainer = $('#' + scope.uploadQueueId);
+
+                var uploader = new plupload.Uploader({
+                    runtimes: 'html5,html4',
+                    container: scope.pluploadContainerId,
+                    browse_button: scope.browseFilesId,
+                    url: scope.uploadUrl,
+                    chunk_size: scope.chunkSize || '4mb',
+                    // max_file_size : '1mb',
+                    unique_names: false,
+                    // must explicitly set - SPETT allows **any** file type
+                    filters: {
+                        prevent_duplicates: true,
+                        mime_types: [
+                            { title: "All files", extensions: "*" }
+                        ]
+                    },
+
+                    init: {
+                        PostInit: function(up) {
+                            fileQueueContainer.html('');
+                            document.getElementById(scope.uploadFilesId).onclick = function () {
+                                uploader.start();
+                                return false;
+                            };
+                        },
+
+                        // after file(s) added to queue
+                        FilesAdded: function(up, files) {
+                            uploadFilesLink.show();
+
+                            plupload.each(files, function(file) {
+                                var removeId = 'removeId-' + file.id;
+                                fileQueueContainer.append($(
+                                    '<div id="' + file.id + '">'
+                                    + file.name
+                                    + ' ('
+                                    + plupload.formatSize(file.size)
+                                    + ') <b></b> '
+                                    + "<a href='#' id='" + removeId + "'>"
+                                    + "<icon class='glyphicon glyphicon-remove-circle' style='color:red;' />"
+                                    + '</a>'
+                                    + '</div>'
+                                ));
+
+                                $('#' + removeId).click(removeFromQueueHandler(up, file));
+                            });
+                        },
+
+                        //  when file removed from queue, hide upload button if queue empty
+                        FilesRemoved: function (up, files) {
+                            if (!fileQueueContainer.text())  uploadFilesLink.hide();
+                        },
+
+                        // while a file is being uploaded
+                        UploadProgress: function(up, file) {
+                            var queuedFile = document.getElementById(file.id);
+                            if (queuedFile) {
+                                queuedFile.getElementsByTagName('b')[0].innerHTML = file.percent + '%';
+                            }
+                        },
+
+                        // file successfully uploaded
+                        FileUploaded: function(up, file, response) {
+                            var serverResponse = JSON.parse(response.response);
+                            var queuedFile = $('#' + file.id).find('a').first();
+                            if (queuedFile) {
+                                queuedFile.find('icon').first()
+                                    .css('color', 'green')
+                                    .attr('class', 'glyphicon glyphicon-ok');
+                            }
+                        },
+
+                        // after **ALL** files uploaded or failed
+                        UploadComplete: function (up, files) {
+                            uploadFilesLink.hide();
+                        },
+
+                        Error: function (up, error) {
+                            switch (error.code) {
+                                case plupload.FILE_DUPLICATE_ERROR:
+                                    console.log(error.file.name);
+                                    alert(error.file.name + ' is already in upload queue.');
+                                    break;
+                                case plupload.HTTP_ERROR:
+                                    var errorFile = $('#' + error.file.id);
+                                    if (errorFile) {
+                                        errorFile.find('b').first()
+                                            .text('Upload failed');
+                                        errorFile.find('icon').first()
+                                            .css('color', 'red')
+                                            .attr('class', 'glyphicon glyphicon-alert');
+                                        $(element).append(errorFile.detach());
+                                    }
+                                    break;
+                                case plupload.FILE_SIZE_ERROR:
+                                    console.log(error.file.name);
+                                    var fileSize = plupload.formatSize(error.file.size);
+                                    alert(
+                                        error.file.name + ' is [' + fileSize
+                                        + ']. Max allowable is [' + up.settings.max_file_size + ']'
+                                    );
+                                    break;
+
+                                    
+                                default:
+                                    alert('Error uploading one or more files.');
+                                    break;
+                            }
+                        }
+                    }
+                });
+                uploader.init();
+            }
+        };
+    }
+);

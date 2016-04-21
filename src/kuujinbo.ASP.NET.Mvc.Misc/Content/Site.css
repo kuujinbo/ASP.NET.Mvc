@@ -1,0 +1,92 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.pointer {cursor: pointer; }
+.green {color: green; }
+.red {color: red; }
+
+/*
+    START DataTables
+*/
+/* bootstrap override */ 
+/*.dataTable > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    padding: 4px !important;
+}*/
+.dataTable tfoot { display: table-header-group;}
+.dataTable tfoot th { margin:0 !important; padding:2px 4px !important;}
+.dataTables_processing {
+    position: absolute !important;
+    top: 40% !important;
+    z-index: 9999 !important;
+}
+h1.dataTablesLoading {
+    background-color:#fff !important;
+    padding: 8px 76px !important;
+    border: 2px solid #eaeaea;
+}
+.dataTables_wrapper { width:100%; }
+.dataTable { width:100% !important; }
+.link-icons { 
+    margin-right: 4px !important;
+    cursor: pointer;
+}
+table.dataTable tbody tr.datatable-select-row  {
+  background-color: #ffffcc !important;
+  color:green;
+}
+.search-icons {
+    font-size:1.2em !important;
+    text-align:center !important; 
+    vertical-align:middle !important;
+    padding: 4px !important;
+    margin-right: 4px !important;
+    background:#ffa500;
+    /*background:#ffe51e;*/
+    border:1px solid #eaeaea;
+    cursor: pointer;
+}
+/*
+    END DataTables
+*/
+.spin-infinite {
+    -webkit-animation: spin-infinite .8s infinite linear;
+    -moz-animation: spin-infinite 1s infinite linear;
+    -o-animation: spin-infinite 1s infinite linear;
+    animation: spin-infinite 1s infinite linear;
+}
+@-moz-keyframes spin-infinite {
+  from {-moz-transform: rotate(0deg);}  
+  to {-moz-transform: rotate(360deg);}
+}
+
+@-webkit-keyframes spin-infinite {
+  from {-webkit-transform: rotate(0deg);}
+  to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin-infinite {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
