@@ -58,7 +58,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         }
 
         [HttpAjaxPost]
-        public ActionResult JsonData()
+        // public ActionResult JsonData()
+        public ActionResult JsonData(JqueryDataTable table)
         {
             return new JsonNetResult(_getTestData());
         }

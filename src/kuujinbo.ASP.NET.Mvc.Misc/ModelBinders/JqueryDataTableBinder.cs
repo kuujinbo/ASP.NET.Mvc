@@ -45,12 +45,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
             // 
             var i = 0;
             var order = new List<JqueryDataTable.Order>();
-            var orderCol = string.Format(ORDER_COLUMN, i);
-            while (request[orderCol] != null)
+            while (request[string.Format(ORDER_COLUMN, i)] != null)
             {
                 order.Add(new JqueryDataTable.Order
                 {
-                    Column = Convert.ToInt32(request[orderCol]),
+                    Column = Convert.ToInt32(request[string.Format(ORDER_COLUMN, i)]),
                     Dir = request["order[" + i + "][dir]"]
                 });
                 i++;
@@ -59,13 +58,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
             // 
             i = 0;
             var columns = new List<JqueryDataTable.Column>();
-            var colName = string.Format(COLUMNS_NAME, i);
-            while (request[colName] != null)
+            while (request[string.Format(COLUMNS_NAME, i)] != null)
             {
                 columns.Add(new JqueryDataTable.Column
                 {
                     Data = request["columns[" + i + "][data]"],
-                    Name = request[colName],
+                    Name = request[string.Format(COLUMNS_NAME, i)],
                     Orderable = Convert.ToBoolean(request["columns[" + i + "][orderable]"]),
                     Searchable = Convert.ToBoolean(request["columns[" + i + "][searchable]"]),
                     Search = new JqueryDataTable.Search
@@ -81,7 +79,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
                 Draw = draw,
                 Start = start,
                 Length = length,
-                HasSearchValue = columns.Where(x => !string.IsNullOrWhiteSpace(x.Search.Value)).Count() > 0,
+                // HasSearchValue = columns.Where(x => !string.IsNullOrWhiteSpace(x.Search.Value)).Count() > 0,
                 // Search = search,
                 Orders = order,
                 Columns = columns
