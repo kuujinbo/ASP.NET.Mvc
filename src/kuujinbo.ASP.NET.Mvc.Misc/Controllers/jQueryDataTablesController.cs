@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
+using Newtonsoft.Json.Converters;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 {
@@ -15,30 +16,30 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         {
             return new JqueryDataTable()
             {
-                ActionButtons = new List<JqueryDataTableActionButton>()
+                ActionButtons = new List<JqueryDataTable.ActionButton>()
                 {
-                    new JqueryDataTableActionButton 
+                    new JqueryDataTable.ActionButton 
                     { 
-                        ElementClass = JqueryDataTableActionButton.Success,
+                        ElementClass = JqueryDataTable.ActionButton.Success,
                         Url = url.Action("Create"),
                         Text = "Create",
                         IsButton = false
                     },
-                    new JqueryDataTableActionButton 
+                    new JqueryDataTable.ActionButton 
                     { 
-                        ElementClass = JqueryDataTableActionButton.Primary,
+                        ElementClass = JqueryDataTable.ActionButton.Primary,
                         Url = url.Action("Rollover"),
                         Text = "Rollover"
                     },
-                    new JqueryDataTableActionButton 
+                    new JqueryDataTable.ActionButton 
                     { 
-                        ElementClass = JqueryDataTableActionButton.Success,
+                        ElementClass = JqueryDataTable.ActionButton.Success,
                         Url = url.Action("Approve"),
                         Text = "Approve"
                     },
-                    new JqueryDataTableActionButton 
+                    new JqueryDataTable.ActionButton 
                     { 
-                        ElementClass = JqueryDataTableActionButton.Danger,
+                        ElementClass = JqueryDataTable.ActionButton.Danger,
                         Url = url.Action("Disapprove"),
                         Text = "Disapprove"
                     }
@@ -116,14 +117,52 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             return View(id);
         }
 
+        private void ConvertToTestModel(string[][] raw)
+        {
+            var rows = new List<TestModel>();
+            foreach (var row in raw)
+            {
+                rows.Add(
+                    new TestModel()
+                    {
+                        Id = int.Parse(row[0]), 
+                        Name =row[1], 
+                        Position = row[2] , 
+                        Office = row[3], 
+                        Extension = int.Parse(row[4]),
+                        StartDate = DateTime.Parse(row[5])
+                    }
+                );
+            }
+            System.IO.File.WriteAllText(
+                Server.MapPath("~/app_data/dataTablesObjectData.json"),
+                JsonConvert.SerializeObject(
+                    rows,
+                    Formatting.Indented,
+                    new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" }
+                )
+            );
+        }
+
 
         private object _getTestData()
         {
             helper.GetClientParams(Request);
+
+            //string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
+            //string json = System.IO.File.ReadAllText(dataFile);
+            //var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);
             string dataFile = Server.MapPath("~/app_data/dataTablesArrayData.json");
             string json = System.IO.File.ReadAllText(dataFile);
             var dataFromFile = JsonConvert.DeserializeObject<string[][]>(json);
+            //ConvertToTestModel(dataFromFile);
             object result;
+
+            //var data = dataFromFile
+            //    .Skip(table.Start)
+            //    .Take(table.Length);
+            //return GetJsonData(data, table);
+
 
             if (helper.HasSearchValue)
             {
@@ -158,7 +197,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             return result;
         }
     }
-
 
     public class JqDataTablesHelper
     {
@@ -235,6 +273,4 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             };
         }
     }
-
-
 }

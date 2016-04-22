@@ -123,9 +123,11 @@
     </Compile>
     <Compile Include="Helpers\AjaxHelper.cs" />
     <Compile Include="Helpers\JsonNetResult.cs" />
+    <Compile Include="ModelBinders\JqueryDataTableBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="ViewModels\JqueryDataTable.cs" />
+    <Compile Include="ViewModels\TestModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

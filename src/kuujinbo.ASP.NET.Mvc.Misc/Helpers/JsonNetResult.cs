@@ -28,7 +28,7 @@ namespace System.Web.Mvc
                     Data,
                     Formatting.None,
                     // MVC cannot handle microsoft's JSON date serialization
-                    new IsoDateTimeConverter() { DateTimeFormat = "yyyy=MM-dd"}
+                    new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd"}
                 ));
 			}
         }
