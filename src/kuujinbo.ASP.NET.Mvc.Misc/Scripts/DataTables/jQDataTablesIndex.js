@@ -168,7 +168,7 @@
                     // TODO: ajax call to delete record from datatbase...
                     alert('CLICKED DELETE with record id: ' + _table.row(row).data()[0]);
                     configTable.sendXhr(
-                        target, serverVars.deleteRowUrl, { id: _table.row(row).data()[0] }
+                        target, setupValues.deleteRowUrl, { id: _table.row(row).data()[0] }
                     );
 
                     // send XHR to request updated view
@@ -176,7 +176,7 @@
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
-                    document.location.href = serverVars.editRowUrl + '/' + _table.row(row).data()[0];
+                    document.location.href = setupValues.editRowUrl + '/' + _table.row(row).data()[0];
                 }
             }
         },
@@ -239,6 +239,8 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         deferRender: true,
+        // true by default, allow  shift-click multiple column sorting
+        orderMulti: setupValues.allowMultiColumnSorting,
         dom: 'lrtip',
         pagingType: 'full_numbers',
         // autoWidth: true,
@@ -257,7 +259,7 @@ $(document).ready(function() {
             deprecated API to handle things
         */ 
         ajax: {
-            url: serverVars.dataUrl,
+            url: setupValues.dataUrl,
             type: 'POST',
             headers: configTable.getXsrfToken(),
             error: function(jqXHR, responseText, errorThrown) {
@@ -272,6 +274,11 @@ $(document).ready(function() {
                 configTable.clearCheckAll();
             }
         },
+        /* ----------------------------------------------------------------
+            first and last columns hard-coded for consistent display:
+            -- first: checkboxes => bulk action button(s)
+            -- last: single row/record edit/delete
+        */
         columnDefs: [{
             targets: 0,
             searchable: false,
@@ -279,7 +286,7 @@ $(document).ready(function() {
             render: function(data, type, full, meta) { return "<input type='checkbox'>"; }
         },
         {
-            targets: serverVars.lastColumnIndex,
+            targets: setupValues.lastColumnIndex,
             searchable: false,
             orderable: false,
             render: function(data, type, full, meta) {

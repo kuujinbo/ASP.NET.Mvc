@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
 using Newtonsoft.Json;
 
@@ -10,15 +12,31 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
     public class JqueryDataTable
     {
         public bool HasSearchValue { get; set; }
-        public string DataUrl { get; set;}
-        public string DeleteRowUrl { get; set;}
-        public string EditRowUrl { get; set;}
-        public int LastColumnIndex { get; set;}
+
+
+        public int Draw { get; set; }
+        public int Start { get; set; }
+        public int Length { get; set; }
+        public int RecordsTotal { get; set; }
+        public string DataUrl { get; set; }
+        public string DeleteRowUrl { get; set; }
+        public string EditRowUrl { get; set; }
+        public bool AllowMultiColumnSorting { get; set; }
+
+        // TODO: implement
+        // public Search Search { get; set; }
+
+        public IEnumerable<SortOrder> SortOrders { get; set; }
+        public IEnumerable<Column> Columns { get; set; }
         public IList<ActionButton> ActionButtons { get; set; }
+
+        public int LastColumnIndex { get; set;}
 
         public JqueryDataTable()
         {
             ActionButtons = new List<ActionButton>();
+            // allow client-side shift-click multiple column sorting
+            AllowMultiColumnSorting = true;
         }
 
         public string GetActionButtons()
@@ -31,7 +49,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         }
 
         // TODO: write generic model / helper
-        public string GetTHead()
+        public string GetThead()
         {
             return @"
             <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
@@ -48,7 +66,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         }
 
         // TODO: write generic model / helper
-        public string GetTFoot()
+        public string GetTfoot()
         {
             return @"
             <th></th>
@@ -62,7 +80,49 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
 ";
         }
 
-        
+
+        public IEnumerable<JqueryDataTable.Column> GetColumns<TEntity>() where TEntity : class
+        {
+            var columns = new List<JqueryDataTable.Column>();
+
+            var properties = typeof(TEntity)
+                .GetProperties()
+                .Select(p =>
+                    new
+                    {
+                        property = p,
+                        column = p.GetCustomAttributes(typeof(JqueryDataTableColumnAttribute), true).SingleOrDefault() as JqueryDataTableColumnAttribute
+                    })
+                .Where(p => p.column != null)
+                .OrderBy(p => p.column.DisplayOrder);
+
+            foreach (var property in properties)
+            {
+                var column = new JqueryDataTable.Column
+                {
+                    Name = property.column.DisplayName ?? property.property.Name,
+                    IsSearchable = property.column.IsSearchable,
+                    IsSortable = property.column.IsSortable,
+                    // Property = 
+                };
+                if (property.property.PropertyType == typeof(bool))
+                {
+                    column.IsSearchable = false;
+                }
+                //else if (property.property.PropertyType.IsEnum)
+                //{
+                //    var values = System.Enum.GetValues(property.property.PropertyType);
+                //    foreach (var value in values)
+                //        column.PossibleValues.Add(RegexUtil.PascalCaseStem(value.ToString()));
+                //}
+                columns.Add(column);
+            }
+
+            return columns;
+        }
+
+
+
         // TODO: app-level code to consistently write JSON. e.g. handle dates
         public string GetJavaScriptConfig()
         {
@@ -72,25 +132,15 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                     dataUrl = DataUrl,
                     deleteRowUrl = DeleteRowUrl,
                     editRowUrl = EditRowUrl,
+                    allowMultiColumnSorting = AllowMultiColumnSorting,
                     lastColumnIndex = LastColumnIndex
                 },
-                Formatting.None
+                Formatting.Indented
             );
         }
 
-
-        public int Draw { get; set; }
-        public int Start { get; set; }
-        public int Length { get; set; }
-        public int RecordsTotal { get; set; }
-        // public Search Search { get; set; }
-        public IEnumerable<Order> Orders { get; set; }
-        public IEnumerable<Column> Columns { get; set; }
-
-
-
         /* -----------------------------------------------------------------
-         * nested class - makes **NO** sense to implement DT regex
+         * nested class - DT regex not implemented - so many ways it could go wrong
          */
         public sealed class Search
         {
@@ -100,10 +150,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         /* -----------------------------------------------------------------
          * nested class
          */
-        public sealed class Order
+        public sealed class SortOrder
         {
             public int Column { get; set; }
-            public string Dir { get; set; }
+            public string Direction { get; set; }
         }
 
         /* -----------------------------------------------------------------
@@ -113,9 +163,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         {
             public string Data { get; set; }
             public string Name { get; set; }
-            public bool Orderable { get; set; }
-            public bool Searchable { get; set; }
+            public bool IsSortable { get; set; }
+            public bool IsSearchable { get; set; }
             public Search Search { get; set; }
+            public PropertyInfo Property { get; set; }
         }
 
 

@@ -61,13 +61,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         // public ActionResult JsonData()
         public ActionResult JsonData(JqueryDataTable table)
         {
+            var debugging = true;
             return new JsonNetResult(_getTestData());
         }
 
         private object GetBatchUpdateResponseObject(IEnumerable<int> ids)
         {
             return string.Format(
-                "Batch XHR update sent to [{0}]{2} with POST data [{1}]{2}succeeded!",
+                "XHR sent to:{2}[{0}]{2}with POST data [{1}]{2}succeeded!",
                 Request.Url, string.Join(", ",  ids), Environment.NewLine
             );
         }

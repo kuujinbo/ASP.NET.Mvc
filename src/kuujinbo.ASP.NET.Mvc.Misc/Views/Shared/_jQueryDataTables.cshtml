@@ -9,17 +9,17 @@
 
 <table id='jquery-data-table' class='table display compact'>
     <thead>
-        <tr>@Html.Raw(@Model.GetTHead())</tr>
+        <tr>@Html.Raw(@Model.GetThead())</tr>
     </thead>
     <tfoot>
-        <tr>@Html.Raw(@Model.GetTFoot())</tr>
+        <tr>@Html.Raw(@Model.GetTfoot())</tr>
     </tfoot>
 </table>
 
 @section scripts
 {
-    <script type='text/javascript'>
-        var serverVars = @Html.Raw(@Model.GetJavaScriptConfig());
-    </script>
-    @Scripts.Render("~/bundles/dataTables")
+<script type='text/javascript'>
+var setupValues = @Html.Raw(@Model.GetJavaScriptConfig());
+</script>
+@Scripts.Render("~/bundles/dataTables")
 }

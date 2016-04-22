@@ -18,13 +18,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
         const string ORDER_DESC = "desc";
 
         const string SEARCH_VALUE = "search[value]";
-        const string SEARCH_REGEX = "search[regex]";
         const string COLUMNS_DATA = "columns[{0}][data]";
         const string COLUMNS_NAME = "columns[{0}][name]";
         const string COLUMNS_SEARCHABLE = "columns[{0}][searchable]";
         const string COLUMNS_ORDERABLE = "columns[{0}][orderable]";
         const string COLUMNS_SEARCH_VALUE = "columns[{0}][search][value]";
-        const string COLUMNS_SEARCH_REGEX = "columns[{0}][search][regex]";
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
@@ -35,43 +33,47 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
             var draw = Convert.ToInt32(request[DRAW]);
             var start = Convert.ToInt32(request[START]);
             var length = Convert.ToInt32(request[LENGTH]);
-            
-            // 
+
+            // DT regex not implemented - so many ways it could go wrong
             var search = new JqueryDataTable.Search
             {
                 Value = request[SEARCH_VALUE],
             };
             
             // 
-            var i = 0;
-            var order = new List<JqueryDataTable.Order>();
-            while (request[string.Format(ORDER_COLUMN, i)] != null)
+            var order = new List<JqueryDataTable.SortOrder>();
+            for (int i = 0; ; ++i)
             {
-                order.Add(new JqueryDataTable.Order
+                var colOrder = request[string.Format(ORDER_COLUMN, i)];
+                if (colOrder == null) break;
+
+                order.Add(new JqueryDataTable.SortOrder
                 {
-                    Column = Convert.ToInt32(request[string.Format(ORDER_COLUMN, i)]),
-                    Dir = request["order[" + i + "][dir]"]
+                    Column = Convert.ToInt32(colOrder),
+                    Direction = request["order[" + i + "][dir]"]
                 });
-                i++;
             }
 
             // 
-            i = 0;
             var columns = new List<JqueryDataTable.Column>();
-            while (request[string.Format(COLUMNS_NAME, i)] != null)
+            for (int i = 0; ; ++i)
             {
+                var colName = request[string.Format(COLUMNS_NAME, i)];
+                if (colName == null) break;
+
+                var searchable = Convert.ToBoolean(request["columns[" + i + "][searchable]"]);
+                var orderable = Convert.ToBoolean(request["columns[" + i + "][orderable]"]);
                 columns.Add(new JqueryDataTable.Column
                 {
                     Data = request["columns[" + i + "][data]"],
                     Name = request[string.Format(COLUMNS_NAME, i)],
-                    Orderable = Convert.ToBoolean(request["columns[" + i + "][orderable]"]),
-                    Searchable = Convert.ToBoolean(request["columns[" + i + "][searchable]"]),
-                    Search = new JqueryDataTable.Search
+                    IsSortable = orderable,
+                    IsSearchable = Convert.ToBoolean(request["columns[" + i + "][searchable]"]),
+                    Search = searchable ? new JqueryDataTable.Search
                     {
                         Value = request["columns[" + i + "][search][value]"]
-                    }
+                    } : null
                 });
-                i++;
             }
 
             return new JqueryDataTable
@@ -81,7 +83,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
                 Length = length,
                 // HasSearchValue = columns.Where(x => !string.IsNullOrWhiteSpace(x.Search.Value)).Count() > 0,
                 // Search = search,
-                Orders = order,
+                SortOrders = order,
                 Columns = columns
             };
         }

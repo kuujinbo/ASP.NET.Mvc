@@ -113,6 +113,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
+    <Compile Include="Attributes\JqueryDataTableColumnAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
