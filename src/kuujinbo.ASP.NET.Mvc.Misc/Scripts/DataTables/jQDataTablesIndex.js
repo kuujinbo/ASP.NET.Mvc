@@ -168,7 +168,7 @@
                     // TODO: ajax call to delete record from datatbase...
                     alert('CLICKED DELETE with record id: ' + _table.row(row).data()[0]);
                     configTable.sendXhr(
-                        target, setupValues.deleteRowUrl, { id: _table.row(row).data()[0] }
+                        target, configValues.deleteRowUrl, { id: _table.row(row).data()[0] }
                     );
 
                     // send XHR to request updated view
@@ -176,7 +176,7 @@
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
-                    document.location.href = setupValues.editRowUrl + '/' + _table.row(row).data()[0];
+                    document.location.href = configValues.editRowUrl + '/' + _table.row(row).data()[0];
                 }
             }
         },
@@ -240,7 +240,7 @@ $(document).ready(function() {
         serverSide: true,
         deferRender: true,
         // true by default, allow  shift-click multiple column sorting
-        orderMulti: setupValues.allowMultiColumnSorting,
+        orderMulti: configValues.allowMultiColumnSorting,
         dom: 'lrtip',
         pagingType: 'full_numbers',
         // autoWidth: true,
@@ -259,7 +259,7 @@ $(document).ready(function() {
             deprecated API to handle things
         */ 
         ajax: {
-            url: setupValues.dataUrl,
+            url: configValues.dataUrl,
             type: 'POST',
             headers: configTable.getXsrfToken(),
             error: function(jqXHR, responseText, errorThrown) {
@@ -286,7 +286,7 @@ $(document).ready(function() {
             render: function(data, type, full, meta) { return "<input type='checkbox'>"; }
         },
         {
-            targets: setupValues.lastColumnIndex,
+            targets: -1,
             searchable: false,
             orderable: false,
             render: function(data, type, full, meta) {

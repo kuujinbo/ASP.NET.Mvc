@@ -46,14 +46,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
                 DataUrl = url.Action("JsonData"),
                 DeleteRowUrl = url.Action("DeleteOne"),
                 EditRowUrl = url.Action("Update"),
-                LastColumnIndex = 7,
             };
             table.SetColumns<TestModel>();
 
             return table;
         }
 
-        // GET: jQueryDataTables
         public ActionResult Index()
         {
             var table = InitDataTable(Url);
@@ -61,15 +59,15 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         }
 
         [HttpAjaxPost]
-        // public ActionResult JsonData()
         public ActionResult JsonData(JqueryDataTable table)
         {
             string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
             string json = System.IO.File.ReadAllText(dataFile);
             var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);
-            //System.Diagnostics.Debug.WriteLine(
-            //    JsonNet.Serialize(table.GetData<TestModel>(dataFromFile))
-            //);
+            System.Diagnostics.Debug.WriteLine(
+                JsonNet.Serialize(table.GetData<TestModel>(dataFromFile))
+            );
+            // System.Threading.Thread.Sleep(2000);
 
             return new JsonNetResult(table.GetData<TestModel>(dataFromFile));
         }

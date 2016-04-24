@@ -20,8 +20,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         public string Office { get; set; }
         [JqueryDataTableColumn(DisplayOrder = 4)]
         public int Extension { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 5)]
-        public DateTime StartDate { get; set; }
+        [JqueryDataTableColumn(DisplayOrder = 5, DisplayName="Start Date")]
+        public DateTime? StartDate { get; set; }
         [JqueryDataTableColumn(DisplayOrder = 6)]
         public string Salary { get; set; }
     }

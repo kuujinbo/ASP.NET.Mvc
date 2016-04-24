@@ -13,17 +13,15 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
     [ModelBinder(typeof(JqueryDataTableBinder))]
     public class JqueryDataTable
     {
-        public bool HasSearchValue { get; set; }
-
-
         public int Draw { get; set; }
         public int Start { get; set; }
         public int Length { get; set; }
-        public int RecordsTotal { get; set; }
-        public IEnumerable<IEnumerable<string>> Data { get; set; }
         public string DataUrl { get; set; }
         public string DeleteRowUrl { get; set; }
         public string EditRowUrl { get; set; }
+        /// <summary>
+        /// allow client-side shift-click multiple column sorting
+        /// </summary>
         public bool AllowMultiColumnSorting { get; set; }
 
         // TODO: implement
@@ -33,13 +31,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         public IEnumerable<Column> Columns { get; set; }
         public IList<ActionButton> ActionButtons { get; set; }
 
-        public int LastColumnIndex { get; set;}
-
         public JqueryDataTable()
         {
             ActionButtons = new List<ActionButton>();
-            // allow client-side shift-click multiple column sorting
-            AllowMultiColumnSorting = true;
+            // AllowMultiColumnSorting = true;
         }
 
         public string GetActionButtons()
@@ -138,7 +133,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                 propertyValueCache.Add(info.Item1.Name, new Dictionary<int, string>());
             }
 
-            for (int i = 0; i < typeInfo.Count(); ++i)
+            // per column search
+            for (int i = 0; i < Columns.Count(); ++i)
             {
                 var column = Columns.ElementAt(i);
                 if (column.IsSearchable && !string.IsNullOrWhiteSpace(column.Search.Value))
@@ -159,25 +155,30 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
             var sortedData = entities.OrderBy(r => "");
             foreach (var sortOrder in SortOrders)
             {
-                if (sortOrder.Direction == JqueryDataTableBinder.ORDER_ASC)
+                var column = Columns.ElementAt(sortOrder.Column);
+                if (column.IsSortable)
                 {
-                    sortedData = sortedData.ThenBy(e =>
+                    var tuple = typeInfo.ElementAt(sortOrder.Column);
+                    if (sortOrder.Direction == JqueryDataTableBinder.ORDER_ASC)
                     {
-                        var tuple = typeInfo.ElementAt(sortOrder.Column); 
-                        return GetPropertyValue(
-                            e, tuple.Item1, tuple.Item2, propertyValueCache
-                        );
-                    });
-                }
-                else
-                {
-                    sortedData = sortedData.ThenBy(e =>
+                        sortedData = sortedData.ThenBy(e =>
+                        {
+                            var val = GetPropertyValue(
+                                e, tuple.Item1, tuple.Item2, propertyValueCache
+                            );
+                    
+                            return val;
+                        });
+                    }
+                    else
                     {
-                        var tuple = typeInfo.ElementAt(sortOrder.Column);
-                        return GetPropertyValue(
-                            e, tuple.Item1, tuple.Item2, propertyValueCache
-                        );
-                    });
+                        sortedData = sortedData.ThenByDescending(e =>
+                        {
+                            return GetPropertyValue(
+                                e, tuple.Item1, tuple.Item2, propertyValueCache
+                            );
+                        });
+                    }                
                 }
             }
 
@@ -263,7 +264,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
             }
             else
             {
-                data = (propertyInfo.GetValue(entity) ?? "").ToString();
+                var value = propertyInfo.GetValue(entity);
+                if (value != null)
+                {
+                    var type = propertyInfo.PropertyType;
+                    data = type == typeof(DateTime) || type == typeof(DateTime?)
+                        ? ((DateTime)value).ToString("yyyy-MM-dd") : value.ToString();
+                }
             }
 
             cache[propertyInfo.Name][entity.Id] = data;
@@ -279,7 +286,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                     deleteRowUrl = DeleteRowUrl,
                     editRowUrl = EditRowUrl,
                     allowMultiColumnSorting = AllowMultiColumnSorting,
-                    lastColumnIndex = LastColumnIndex
                 }
             );
         }
@@ -312,7 +318,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
             public bool IsSortable { get; set; }
             public bool IsSearchable { get; set; }
             public Search Search { get; set; }
-            // public PropertyInfo Property { get; set; }
         }
 
         /* -----------------------------------------------------------------

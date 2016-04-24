@@ -7,7 +7,7 @@
     @Html.Raw(@Model.GetActionButtons())
 </div>
 
-<table id='jquery-data-table' class='table display compact'>
+<table id='jquery-data-table' class='table table-striped compact'>
     <thead>
         <tr>
             @Html.Raw(@Model.GetThead())
@@ -23,7 +23,7 @@
 @section scripts
 {
 <script type='text/javascript'>
-var setupValues = @Html.Raw(@Model.GetJavaScriptConfig());
+var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
 </script>
 @Scripts.Render("~/bundles/dataTables")
 }

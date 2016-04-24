@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
 
@@ -13,16 +12,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
         public const string LENGTH = "length";
 
         public const string ORDER_COLUMN = "order[{0}][column]";
-        public const string ORDER_DIR = "order[{0}][dir]";
+        // public const string ORDER_DIR = "order[{0}][dir]";
         public const string ORDER_ASC = "asc";
         public const string ORDER_DESC = "desc";
 
         public const string SEARCH_VALUE = "search[value]";
         public const string COLUMNS_DATA = "columns[{0}][data]";
         public const string COLUMNS_NAME = "columns[{0}][name]";
-        public const string COLUMNS_SEARCHABLE = "columns[{0}][searchable]";
-        public const string COLUMNS_ORDERABLE = "columns[{0}][orderable]";
-        public const string COLUMNS_SEARCH_VALUE = "columns[{0}][search][value]";
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
@@ -67,8 +63,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
                 {
                     Data = request["columns[" + i + "][data]"],
                     Name = request[string.Format(COLUMNS_NAME, i)],
+                    IsSearchable = searchable,
                     IsSortable = orderable,
-                    IsSearchable = Convert.ToBoolean(request["columns[" + i + "][searchable]"]),
                     Search = searchable ? new JqueryDataTable.Search
                     {
                         Value = request["columns[" + i + "][search][value]"]
@@ -81,7 +77,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
                 Draw = draw,
                 Start = start,
                 Length = length,
-                // HasSearchValue = columns.Where(x => !string.IsNullOrWhiteSpace(x.Search.Value)).Count() > 0,
                 // Search = search,
                 SortOrders = order,
                 Columns = columns

@@ -10,7 +10,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
             bundles.Add(new StyleBundle("~/Content/css")
                 .Include("~/Content/bootstrap.css",
                 "~/Scripts/lib/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css",
-                "~/Content/jquery.dataTables.css",
+                // "~/Content/jquery.dataTables.css",
+                "~/Content/dataTables.bootstrap.css",
                 "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery")
