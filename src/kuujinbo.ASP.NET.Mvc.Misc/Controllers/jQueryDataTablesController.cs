@@ -64,6 +64,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
             string json = System.IO.File.ReadAllText(dataFile);
             var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);
+
             System.Diagnostics.Debug.WriteLine(
                 JsonNet.Serialize(table.GetData<TestModel>(dataFromFile))
             );
