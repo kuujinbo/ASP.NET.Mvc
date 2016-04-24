@@ -9,10 +9,14 @@
 
 <table id='jquery-data-table' class='table display compact'>
     <thead>
-        <tr>@Html.Raw(@Model.GetThead())</tr>
+        <tr>
+            @Html.Raw(@Model.GetThead())
+        </tr>
     </thead>
     <tfoot>
-        <tr>@Html.Raw(@Model.GetTfoot())</tr>
+        <tr>
+            @Html.Raw(@Model.GetTfoot())
+        </tr>
     </tfoot>
 </table>
 

@@ -8,21 +8,21 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
 {
     public class JqueryDataTableBinder : DefaultModelBinder
     {
-        const string DRAW = "draw";
-        const string START = "start";
-        const string LENGTH = "length";
+        public const string DRAW = "draw";
+        public const string START = "start";
+        public const string LENGTH = "length";
 
-        const string ORDER_COLUMN = "order[{0}][column]";
-        const string ORDER_DIR = "order[{0}][dir]";
-        const string ORDER_ASC = "asc";
-        const string ORDER_DESC = "desc";
+        public const string ORDER_COLUMN = "order[{0}][column]";
+        public const string ORDER_DIR = "order[{0}][dir]";
+        public const string ORDER_ASC = "asc";
+        public const string ORDER_DESC = "desc";
 
-        const string SEARCH_VALUE = "search[value]";
-        const string COLUMNS_DATA = "columns[{0}][data]";
-        const string COLUMNS_NAME = "columns[{0}][name]";
-        const string COLUMNS_SEARCHABLE = "columns[{0}][searchable]";
-        const string COLUMNS_ORDERABLE = "columns[{0}][orderable]";
-        const string COLUMNS_SEARCH_VALUE = "columns[{0}][search][value]";
+        public const string SEARCH_VALUE = "search[value]";
+        public const string COLUMNS_DATA = "columns[{0}][data]";
+        public const string COLUMNS_NAME = "columns[{0}][name]";
+        public const string COLUMNS_SEARCHABLE = "columns[{0}][searchable]";
+        public const string COLUMNS_ORDERABLE = "columns[{0}][orderable]";
+        public const string COLUMNS_SEARCH_VALUE = "columns[{0}][search][value]";
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {

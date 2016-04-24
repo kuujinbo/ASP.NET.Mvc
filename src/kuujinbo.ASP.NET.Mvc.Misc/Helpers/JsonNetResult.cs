@@ -22,15 +22,7 @@ namespace System.Web.Mvc
 				response.ContentEncoding = this.ContentEncoding;
 			}
 
-			if (Data != null)
-			{
-                response.Write(JsonConvert.SerializeObject(
-                    Data,
-                    Formatting.None,
-                    // MVC cannot handle microsoft's JSON date serialization
-                    new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd"}
-                ));
-			}
+			if (Data != null) response.Write(JsonNet.Serialize(Data));
         }
     }
 }

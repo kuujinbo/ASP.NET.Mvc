@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
@@ -18,6 +20,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         public int Start { get; set; }
         public int Length { get; set; }
         public int RecordsTotal { get; set; }
+        public IEnumerable<IEnumerable<string>> Data { get; set; }
         public string DataUrl { get; set; }
         public string DeleteRowUrl { get; set; }
         public string EditRowUrl { get; set; }
@@ -48,94 +51,236 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
             return string.Empty;
         }
 
-        // TODO: write generic model / helper
         public string GetThead()
         {
-            return @"
-            <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
-                <input id='datatable-check-all' type='checkbox' />
-            </th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Extension</th>
-            <th>Start date</th>
-            <th>Salary</th>
-            <th></th>
-";
+            if (Columns == null || Columns.Count() < 1)
+            {
+                throw new ArgumentNullException("Columns");
+            }
+
+            StringBuilder s = new StringBuilder(@"
+                <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
+                    <input id='datatable-check-all' type='checkbox' />
+                </th>"
+            );
+            foreach (var c in Columns)
+            {
+                if (c.Display) s.AppendFormat("<th>{0}</th>\n", c.Name);
+            }
+            s.AppendLine("<th></th>");
+
+            return s.ToString();
         }
 
-        // TODO: write generic model / helper
         public string GetTfoot()
         {
-            return @"
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th style='white-space: nowrap;'></th>
-";
+            if (Columns == null || Columns.Count() < 1)
+            {
+                throw new ArgumentNullException("Columns");
+            }
+
+            StringBuilder s = new StringBuilder(); 
+            foreach (var c in Columns) s.AppendLine("<th></th>");
+            s.AppendLine("<th style='white-space: nowrap;'></th>");
+
+            return s.ToString();
         }
 
+        IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> GetTypeInfo(Type type)
+        {
+            return type.GetProperties().Select(
+                p => new
+                {
+                    prop = p,
+                    col = p.GetCustomAttributes(
+                        typeof(JqueryDataTableColumnAttribute), true)
+                        .SingleOrDefault() as JqueryDataTableColumnAttribute
+                })
+                .Where(p => p.col != null)
+                .OrderBy(p => p.col.DisplayOrder)
+                .Select(p => new Tuple<PropertyInfo, JqueryDataTableColumnAttribute>(p.prop, p.col));
+        }
 
-        public IEnumerable<JqueryDataTable.Column> GetColumns<TEntity>() where TEntity : class
+        public void SetColumns<TEntity>() where TEntity : class
         {
             var columns = new List<JqueryDataTable.Column>();
+            IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(TEntity));
 
-            var properties = typeof(TEntity)
-                .GetProperties()
-                .Select(p =>
-                    new
-                    {
-                        property = p,
-                        column = p.GetCustomAttributes(typeof(JqueryDataTableColumnAttribute), true).SingleOrDefault() as JqueryDataTableColumnAttribute
-                    })
-                .Where(p => p.column != null)
-                .OrderBy(p => p.column.DisplayOrder);
-
-            foreach (var property in properties)
+            foreach (var info in typeInfo)
             {
                 var column = new JqueryDataTable.Column
                 {
-                    Name = property.column.DisplayName ?? property.property.Name,
-                    IsSearchable = property.column.IsSearchable,
-                    IsSortable = property.column.IsSortable,
-                    // Property = 
+                    Name = info.Item2.DisplayName ?? info.Item1.Name,
+                    Display = info.Item2.Display,
+                    IsSearchable = info.Item2.IsSearchable,
+                    IsSortable = info.Item2.IsSortable,
                 };
-                if (property.property.PropertyType == typeof(bool))
+                if (info.Item1.PropertyType == typeof(bool))
                 {
                     column.IsSearchable = false;
                 }
-                //else if (property.property.PropertyType.IsEnum)
-                //{
-                //    var values = System.Enum.GetValues(property.property.PropertyType);
-                //    foreach (var value in values)
-                //        column.PossibleValues.Add(RegexUtil.PascalCaseStem(value.ToString()));
-                //}
                 columns.Add(column);
             }
 
-            return columns;
+            this.Columns = columns;
+        }
+
+        public object GetData<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class, IIdentifiable
+        {
+            // dictionary of <property name, <objectId, property value>>
+            var propertyValueCache = new Dictionary<string, IDictionary<int, string>>();
+
+            IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(TEntity));
+
+            foreach (var info in typeInfo)
+            {
+                propertyValueCache.Add(info.Item1.Name, new Dictionary<int, string>());
+            }
+
+            for (int i = 0; i < typeInfo.Count(); ++i)
+            {
+                var column = Columns.ElementAt(i);
+                if (column.IsSearchable && !string.IsNullOrWhiteSpace(column.Search.Value))
+                {
+                    var tuple = typeInfo.ElementAt(i);
+                    entities = entities.Where(e =>
+                    {
+                        var value = GetPropertyValue(
+                            e, tuple.Item1, tuple.Item2, propertyValueCache
+                        );
+                        return value != null 
+                            && value.ToString()
+                            .IndexOf(column.Search.Value, StringComparison.OrdinalIgnoreCase) != -1;
+                    });
+                }
+            }
+
+            var sortedData = entities.OrderBy(r => "");
+            foreach (var sortOrder in SortOrders)
+            {
+                if (sortOrder.Direction == JqueryDataTableBinder.ORDER_ASC)
+                {
+                    sortedData = sortedData.ThenBy(e =>
+                    {
+                        var tuple = typeInfo.ElementAt(sortOrder.Column); 
+                        return GetPropertyValue(
+                            e, tuple.Item1, tuple.Item2, propertyValueCache
+                        );
+                    });
+                }
+                else
+                {
+                    sortedData = sortedData.ThenBy(e =>
+                    {
+                        var tuple = typeInfo.ElementAt(sortOrder.Column);
+                        return GetPropertyValue(
+                            e, tuple.Item1, tuple.Item2, propertyValueCache
+                        );
+                    });
+                }
+            }
+
+            var pagedData = sortedData.Skip(Start).Take(Length);
+
+            // 
+            var tableData = new List<List<string>>();
+            foreach (var entity in pagedData)
+            {
+                var row = new List<string>();
+                foreach (var info in typeInfo)
+                {
+                    row.Add(GetPropertyValue(
+                        entity, info.Item1, info.Item2, propertyValueCache
+                    ));
+                }
+                tableData.Add(row);
+            }
+
+            return new
+            {
+                draw = this.Draw,
+                recordsTotal = entities.Count(),
+                recordsFiltered = entities.Count(),
+                data = tableData
+            };        
         }
 
 
 
-        // TODO: app-level code to consistently write JSON. e.g. handle dates
+        protected string GetPropertyValue<TEntity>(
+            TEntity entity,
+            PropertyInfo propertyInfo,
+            JqueryDataTableColumnAttribute fieldInfo,
+            IDictionary<string, IDictionary<int, string>> cache
+        ) where TEntity : class, IIdentifiable
+        {
+            string data = null;
+            if (cache[propertyInfo.Name].TryGetValue(entity.Id, out data)) return data;
+
+            data = string.Empty;
+            var propertyIsCollection =
+                propertyInfo.PropertyType != typeof(string) &&
+                propertyInfo.PropertyType
+                    .GetInterfaces().Any(x =>
+                        x.IsGenericType &&
+                        x.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+            if (propertyIsCollection)
+            {
+                var fields = fieldInfo.FieldAccessor.Split('.');
+                var value = propertyInfo.GetValue(entity) as IEnumerable<object>;
+                var items = new List<string>();
+                foreach (var item in value)
+                {
+                    var target = item;
+                    foreach (var field in fields)
+                    {
+                        target = item.GetType().GetProperty(field).GetValue(item);
+                    }
+                    items.Add(target.ToString());
+                }
+                data = string.Join(", ", items.OrderBy(val => val));
+            }
+            //else if (propertyInfo.PropertyType.IsEnum)
+            //{
+            //    data = RegexUtil.PascalCaseStem((propertyInfo.GetValue(entity) ?? "").ToString());
+            //}
+            else if (fieldInfo.FieldAccessor != null)
+            {
+                var value = propertyInfo.GetValue(entity);
+                if (value != null)
+                {
+                    var fields = fieldInfo.FieldAccessor.Split('.');
+                    foreach (var field in fields)
+                    {
+                        value = value.GetType().GetProperty(field).GetValue(value);
+
+                        if (value == null) break;
+                    }
+                }
+                data = (value ?? "").ToString();
+            }
+            else
+            {
+                data = (propertyInfo.GetValue(entity) ?? "").ToString();
+            }
+
+            cache[propertyInfo.Name][entity.Id] = data;
+            return data;
+        }
+
+
         public string GetJavaScriptConfig()
         {
-            return JsonConvert.SerializeObject(
-                new
+            return JsonNet.Serialize(new
                 {
                     dataUrl = DataUrl,
                     deleteRowUrl = DeleteRowUrl,
                     editRowUrl = EditRowUrl,
                     allowMultiColumnSorting = AllowMultiColumnSorting,
                     lastColumnIndex = LastColumnIndex
-                },
-                Formatting.Indented
+                }
             );
         }
 
@@ -163,12 +308,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         {
             public string Data { get; set; }
             public string Name { get; set; }
+            public bool Display { get; set; }
             public bool IsSortable { get; set; }
             public bool IsSearchable { get; set; }
             public Search Search { get; set; }
-            public PropertyInfo Property { get; set; }
+            // public PropertyInfo Property { get; set; }
         }
-
 
         /* -----------------------------------------------------------------
          * nested class
@@ -208,8 +353,5 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                     );
             }
         }
-
-
-
     }
 }
