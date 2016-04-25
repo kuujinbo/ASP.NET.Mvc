@@ -10,7 +10,7 @@ namespace System.Web.Mvc
             return JsonConvert.SerializeObject(
                 o, 
                 Formatting.Indented, 
-                new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" }
+                new IsoDateTimeConverter() { DateTimeFormat = "M/d/yyyy" }
             );
         }
     }

@@ -32,6 +32,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
 
             bundles.Add(new ScriptBundle("~/bundles/jQueryDataTables").Include(
                 "~/Scripts/lib/DataTables/jquery.dataTables.min.js",
+                "~/Scripts/lib/DataTables/dataTables.bootstrap.min.js",
                 "~/Scripts/DataTables/jQDataTablesIndex.js"
             ));
 

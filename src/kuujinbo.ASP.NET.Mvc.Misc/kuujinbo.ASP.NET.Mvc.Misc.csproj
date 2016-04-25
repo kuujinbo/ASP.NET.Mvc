@@ -167,7 +167,7 @@
     <Content Include="Scripts\lib\angular.min.js" />
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
-    <Content Include="Scripts\lib\DataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\lib\DataTables\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\lib\DataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\lib\jquery-2.2.2.min.map" />
     <None Include="Scripts\lib\jquery.validate-vsdoc.js" />

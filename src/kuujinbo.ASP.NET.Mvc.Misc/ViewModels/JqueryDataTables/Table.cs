@@ -6,7 +6,6 @@ using System.Text;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
-using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
 {
@@ -131,13 +130,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
             where TEntity : class, IIdentifiable
         {
             // dictionary of <property name, <objectId, property value>>
-            var propertyValueCache = new Dictionary<string, IDictionary<int, string>>();
+            var propertyValueCache = new Dictionary<string, IDictionary<int, object>>();
 
             IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(TEntity));
 
             foreach (var info in typeInfo)
             {
-                propertyValueCache.Add(info.Item1.Name, new Dictionary<int, string>());
+                propertyValueCache.Add(info.Item1.Name, new Dictionary<int, object>());
             }
 
             // per column search
@@ -190,12 +189,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
             }
 
             var pagedData = sortedData.Skip(Start).Take(Length);
-
-            // 
-            var tableData = new List<List<string>>();
+            var tableData = new List<List<object>>();
             foreach (var entity in pagedData)
             {
-                var row = new List<string>();
+                var row = new List<object>();
                 foreach (var info in typeInfo)
                 {
                     row.Add(GetPropertyValue(
@@ -216,17 +213,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
 
 
 
-        protected string GetPropertyValue<TEntity>(
+        protected object GetPropertyValue<TEntity>(
             TEntity entity,
             PropertyInfo propertyInfo,
             JqueryDataTableColumnAttribute fieldInfo,
-            IDictionary<string, IDictionary<int, string>> cache
+            IDictionary<string, IDictionary<int, object>> cache
         ) where TEntity : class, IIdentifiable
         {
-            string data = null;
+            object data = null;
             if (cache[propertyInfo.Name].TryGetValue(entity.Id, out data)) return data;
 
-            data = string.Empty;
             var propertyIsCollection =
                 propertyInfo.PropertyType != typeof(string) &&
                 propertyInfo.PropertyType
@@ -267,7 +263,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
                         if (value == null) break;
                     }
                 }
-                data = (value ?? "").ToString();
+                data = value;
             }
             else
             {
@@ -275,8 +271,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
                 if (value != null)
                 {
                     var type = propertyInfo.PropertyType;
-                    data = type == typeof(DateTime) || type == typeof(DateTime?)
-                        ? ((DateTime)value).ToString("yyyy-MM-dd") : value.ToString();
+                    data = value;
                 }
             }
 

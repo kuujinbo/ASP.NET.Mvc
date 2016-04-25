@@ -66,9 +66,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             string json = System.IO.File.ReadAllText(dataFile);
             var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);
 
-            System.Diagnostics.Debug.WriteLine(
-                JsonNet.Serialize(table.GetData<TestModel>(dataFromFile))
-            );
+            //System.Diagnostics.Debug.WriteLine(
+            //    JsonNet.Serialize(table.GetData<TestModel>(dataFromFile))
+            //);
             // System.Threading.Thread.Sleep(2000);
 
             return new JsonNetResult(table.GetData<TestModel>(dataFromFile));

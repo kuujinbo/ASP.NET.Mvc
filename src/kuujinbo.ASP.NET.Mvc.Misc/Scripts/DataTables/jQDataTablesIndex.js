@@ -223,9 +223,6 @@
             for (var i = 0; i < footerSearchBoxes.length; i++) {
                 if (!footerSearchBoxes[i].dataset.isSearchable) continue;
 
-
-                console.log(footerSearchBoxes[i].dataset.isSearchable);
-
                 footerSearchBoxes[i].innerHTML =
                     "<input style='width:100% !important;display: block !important;'"
                     + " data-column-number='" + i + "'"
