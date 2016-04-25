@@ -1,8 +1,8 @@
-﻿@model  kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTable
+﻿@model  kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables.Table
 <h1>DataTables Test</h1>
 
 @Html.AntiForgeryToken()
- @*element id selector used in /scripts/DataTables/jQDataTablesIndex.js*@
+@* element id selector used in /scripts/DataTables/jQDataTablesIndex.js *@
 <div id='data-table-actions' style='margin:10px 0;'>
     @Html.Raw(@Model.GetActionButtons())
 </div>
@@ -25,5 +25,5 @@
 <script type='text/javascript'>
 var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
 </script>
-@Scripts.Render("~/bundles/dataTables")
+@Scripts.Render("~/bundles/jQueryDataTables")
 }

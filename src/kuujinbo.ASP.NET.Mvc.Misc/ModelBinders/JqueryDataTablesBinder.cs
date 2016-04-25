@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
+using kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
 {
-    public class JqueryDataTableBinder : DefaultModelBinder
+    public class JqueryDataTablesBinder : DefaultModelBinder
     {
         public const string DRAW = "draw";
         public const string START = "start";
@@ -31,19 +31,19 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
             var length = Convert.ToInt32(request[LENGTH]);
 
             // DT regex not implemented - so many ways it could go wrong
-            var search = new JqueryDataTable.Search
+            var search = new Search
             {
                 Value = request[SEARCH_VALUE],
             };
             
             // 
-            var order = new List<JqueryDataTable.SortOrder>();
+            var order = new List<SortOrder>();
             for (int i = 0; ; ++i)
             {
                 var colOrder = request[string.Format(ORDER_COLUMN, i)];
                 if (colOrder == null) break;
 
-                order.Add(new JqueryDataTable.SortOrder
+                order.Add(new SortOrder
                 {
                     Column = Convert.ToInt32(colOrder),
                     Direction = request["order[" + i + "][dir]"]
@@ -51,7 +51,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
             }
 
             // 
-            var columns = new List<JqueryDataTable.Column>();
+            var columns = new List<Column>();
             for (int i = 0; ; ++i)
             {
                 var colName = request[string.Format(COLUMNS_NAME, i)];
@@ -59,20 +59,20 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
 
                 var searchable = Convert.ToBoolean(request["columns[" + i + "][searchable]"]);
                 var orderable = Convert.ToBoolean(request["columns[" + i + "][orderable]"]);
-                columns.Add(new JqueryDataTable.Column
+                columns.Add(new Column
                 {
                     Data = request["columns[" + i + "][data]"],
                     Name = request[string.Format(COLUMNS_NAME, i)],
                     IsSearchable = searchable,
                     IsSortable = orderable,
-                    Search = searchable ? new JqueryDataTable.Search
+                    Search = searchable ? new Search
                     {
                         Value = request["columns[" + i + "][search][value]"]
                     } : null
                 });
             }
 
-            return new JqueryDataTable
+            return new Table
             {
                 Draw = draw,
                 Start = start,

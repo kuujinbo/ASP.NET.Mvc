@@ -8,10 +8,10 @@ using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
 using Newtonsoft.Json;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
+namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
 {
-    [ModelBinder(typeof(JqueryDataTableBinder))]
-    public class JqueryDataTable
+    [ModelBinder(typeof(JqueryDataTablesBinder))]
+    public class Table
     {
         public int Draw { get; set; }
         public int Start { get; set; }
@@ -31,15 +31,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         public IEnumerable<Column> Columns { get; set; }
         public IList<ActionButton> ActionButtons { get; set; }
 
-        public JqueryDataTable()
+        public Table()
         {
             ActionButtons = new List<ActionButton>();
             // AllowMultiColumnSorting = true;
         }
 
+
         public string GetActionButtons()
         {
-            if (ActionButtons.Count > 0) 
+            if (ActionButtons.Count > 0)
             {
                 return string.Join("", ActionButtons.Select(x => x.GetMarkUp()));
             }
@@ -74,8 +75,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                 throw new ArgumentNullException("Columns");
             }
 
-            StringBuilder s = new StringBuilder(); 
-            foreach (var c in Columns) s.AppendLine("<th></th>");
+            StringBuilder s = new StringBuilder();
+            foreach (var c in Columns)
+            {
+                s.AppendFormat(
+                    "<th data-is-searchable='{0}'></th>",
+                    c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty
+                );
+            }
             s.AppendLine("<th style='white-space: nowrap;'></th>");
 
             return s.ToString();
@@ -98,12 +105,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
 
         public void SetColumns<TEntity>() where TEntity : class
         {
-            var columns = new List<JqueryDataTable.Column>();
+            var columns = new List<Column>();
             IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(TEntity));
 
             foreach (var info in typeInfo)
             {
-                var column = new JqueryDataTable.Column
+                var column = new Column
                 {
                     Name = info.Item2.DisplayName ?? info.Item1.Name,
                     Display = info.Item2.Display,
@@ -145,7 +152,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                         var value = GetPropertyValue(
                             e, tuple.Item1, tuple.Item2, propertyValueCache
                         );
-                        return value != null 
+                        return value != null
                             && value.ToString()
                             .IndexOf(column.Search.Value, StringComparison.OrdinalIgnoreCase) != -1;
                     });
@@ -159,14 +166,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                 if (column.IsSortable)
                 {
                     var tuple = typeInfo.ElementAt(sortOrder.Column);
-                    if (sortOrder.Direction == JqueryDataTableBinder.ORDER_ASC)
+                    if (sortOrder.Direction == JqueryDataTablesBinder.ORDER_ASC)
                     {
                         sortedData = sortedData.ThenBy(e =>
                         {
                             var val = GetPropertyValue(
                                 e, tuple.Item1, tuple.Item2, propertyValueCache
                             );
-                    
+
                             return val;
                         });
                     }
@@ -178,7 +185,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                                 e, tuple.Item1, tuple.Item2, propertyValueCache
                             );
                         });
-                    }                
+                    }
                 }
             }
 
@@ -204,7 +211,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
                 recordsTotal = entities.Count(),
                 recordsFiltered = entities.Count(),
                 data = tableData
-            };        
+            };
         }
 
 
@@ -281,82 +288,15 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
         public string GetJavaScriptConfig()
         {
             return JsonNet.Serialize(new
-                {
-                    dataUrl = DataUrl,
-                    deleteRowUrl = DeleteRowUrl,
-                    editRowUrl = EditRowUrl,
-                    allowMultiColumnSorting = AllowMultiColumnSorting,
-                }
+            {
+                dataUrl = DataUrl,
+                deleteRowUrl = DeleteRowUrl,
+                editRowUrl = EditRowUrl,
+                allowMultiColumnSorting = AllowMultiColumnSorting,
+            }
             );
         }
 
-        /* -----------------------------------------------------------------
-         * nested class - DT regex not implemented - so many ways it could go wrong
-         */
-        public sealed class Search
-        {
-            public string Value { get; set; }
-        }
 
-        /* -----------------------------------------------------------------
-         * nested class
-         */
-        public sealed class SortOrder
-        {
-            public int Column { get; set; }
-            public string Direction { get; set; }
-        }
-
-        /* -----------------------------------------------------------------
-         * nested class
-         */
-        public sealed class Column
-        {
-            public string Data { get; set; }
-            public string Name { get; set; }
-            public bool Display { get; set; }
-            public bool IsSortable { get; set; }
-            public bool IsSearchable { get; set; }
-            public Search Search { get; set; }
-        }
-
-        /* -----------------------------------------------------------------
-         * nested class
-         */
-        public sealed class ActionButton
-        {
-            public const string Primary = "btn btn-primary";
-            public const string Secondary = "btn btn-secondary";
-            public const string Success = "btn btn-success";
-            public const string Info = "btn btn-info";
-            public const string Warning = "btn btn-warning";
-            public const string Danger = "btn btn-danger";
-            public const string Link = "btn btn-link";
-
-            public bool IsButton { get; set; }
-            public string ElementClass { get; set; }
-            public string Text { get; set; }
-            public string Url { get; set; }
-
-            public ActionButton()
-            {
-                IsButton = true;
-                ElementClass = Success;
-                Url = "#";
-            }
-
-            public string GetMarkUp()
-            {
-                return IsButton ?
-                    string.Format(
-                        "<button class='{0}' data-url='{1}'>{2} <span></span></button>\n",
-                        ElementClass, Url, Text
-                    )
-                    : string.Format(
-                        "<a class='{0}' href='{1}'>{2}</a>\n",
-                        ElementClass, Url, Text
-                    );
-            }
-        }
     }
 }

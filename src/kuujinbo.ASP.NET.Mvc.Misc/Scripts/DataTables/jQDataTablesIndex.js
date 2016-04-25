@@ -220,7 +220,12 @@
                 -- add event listeners to perform search on ENTER key press
             */
             var footerSearchBoxes = document.querySelectorAll(_tableId + ' tfoot th');
-            for (var i = 1; i < footerSearchBoxes.length - 1; i++) {
+            for (var i = 0; i < footerSearchBoxes.length; i++) {
+                if (!footerSearchBoxes[i].dataset.isSearchable) continue;
+
+
+                console.log(footerSearchBoxes[i].dataset.isSearchable);
+
                 footerSearchBoxes[i].innerHTML =
                     "<input style='width:100% !important;display: block !important;'"
                     + " data-column-number='" + i + "'"
@@ -281,6 +286,8 @@ $(document).ready(function() {
         */
         columnDefs: [{
             targets: 0,
+            // TODO: fix search when hidden
+            // visible: false,
             searchable: false,
             orderable: false,
             render: function(data, type, full, meta) { return "<input type='checkbox'>"; }

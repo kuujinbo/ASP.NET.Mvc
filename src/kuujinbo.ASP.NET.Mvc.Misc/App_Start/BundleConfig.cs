@@ -30,7 +30,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
                 "~/Scripts/lib/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"
             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jQueryDataTables").Include(
                 "~/Scripts/lib/DataTables/jquery.dataTables.min.js",
                 "~/Scripts/DataTables/jQDataTablesIndex.js"
             ));

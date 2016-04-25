@@ -5,40 +5,41 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
+using kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables;
 using Newtonsoft.Json.Converters;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 {
     public class jQueryDataTablesController : Controller
     {
-        private JqueryDataTable InitDataTable(UrlHelper url)
+        private Table InitDataTable(UrlHelper url)
         {
-            var table = new JqueryDataTable()
+            var table = new Table()
             {
-                ActionButtons = new List<JqueryDataTable.ActionButton>()
+                ActionButtons = new List<ActionButton>()
                 {
-                    new JqueryDataTable.ActionButton 
+                    new ActionButton 
                     { 
-                        ElementClass = JqueryDataTable.ActionButton.Success,
+                        ElementClass = ActionButton.Success,
                         Url = url.Action("Create"),
                         Text = "Create",
                         IsButton = false
                     },
-                    new JqueryDataTable.ActionButton 
+                    new ActionButton 
                     { 
-                        ElementClass = JqueryDataTable.ActionButton.Primary,
+                        ElementClass = ActionButton.Primary,
                         Url = url.Action("Rollover"),
                         Text = "Rollover"
                     },
-                    new JqueryDataTable.ActionButton 
+                    new ActionButton 
                     { 
-                        ElementClass = JqueryDataTable.ActionButton.Success,
+                        ElementClass = ActionButton.Success,
                         Url = url.Action("Approve"),
                         Text = "Approve"
                     },
-                    new JqueryDataTable.ActionButton 
+                    new ActionButton 
                     { 
-                        ElementClass = JqueryDataTable.ActionButton.Danger,
+                        ElementClass = ActionButton.Danger,
                         Url = url.Action("Disapprove"),
                         Text = "Disapprove"
                     }
@@ -59,7 +60,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         }
 
         [HttpAjaxPost]
-        public ActionResult JsonData(JqueryDataTable table)
+        public ActionResult JsonData(Table table)
         {
             string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
             string json = System.IO.File.ReadAllText(dataFile);

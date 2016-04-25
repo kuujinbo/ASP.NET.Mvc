@@ -10,7 +10,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
 
     public class TestModel : IIdentifiable
     {
-        [JqueryDataTableColumn(Display = false, DisplayOrder = 0)]
+        [JqueryDataTableColumn(
+            Display = false, DisplayOrder = 0, 
+            IsSearchable=false, IsSortable=false)
+        ]
         public int Id { get; set; }
         [JqueryDataTableColumn(DisplayOrder = 1)]
         public string Name { get; set; }
