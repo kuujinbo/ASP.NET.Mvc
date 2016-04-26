@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -23,10 +24,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             new Dictionary<string, string>() { { "one", "1" } };
 
         private FakeController _fakeController;
+
         public JsonNetResultTests()
         {
-            _fakeController = new FakeController();;
-
+            _fakeController = new FakeController();
         }
 
         [Fact]
@@ -34,21 +35,23 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         {
             _fakeController.SetFakeControllerContext();
 
-            var result = _fakeController.JsonData(null);
             var exception = Assert.Throws<ArgumentNullException>(
-                () => result.ExecuteResult(_fakeController.ControllerContext)
+                () => _fakeController
+                    .JsonData(null)
+                    .ExecuteResult(_fakeController.ControllerContext)
             );
-
             Assert.Equal<string>("Data", exception.ParamName);
         }
 
         [Fact]
         public void ExecuteResult_WithNullContext_ThrowsArgumentNullException()
         {
-            var result = _fakeController.JsonData(DATA);
             var exception = Assert.Throws<ArgumentNullException>(
-                () => result.ExecuteResult(_fakeController.ControllerContext)
+                () => _fakeController
+                    .JsonData(DATA)
+                    .ExecuteResult(_fakeController.ControllerContext)
             );
+
             Assert.Equal<string>("context", exception.ParamName);
         }
 
@@ -76,17 +79,23 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
                     .Callback<string>(y => { sb.Append(y); }
             );
             fakeContext.Setup(ctx => ctx.Response).Returns(response.Object);
-            ControllerContext context = new ControllerContext(
+            _fakeController.ControllerContext = new ControllerContext(
                 new RequestContext(fakeContext.Object, new RouteData()),
                 _fakeController
             );
-            _fakeController.ControllerContext = context;
 
             // act
-            _fakeController.JsonData(DATA).ExecuteResult(_fakeController.ControllerContext);
+            _fakeController
+                .JsonData(DATA)
+                .ExecuteResult(_fakeController.ControllerContext);
+            var json = sb.ToString();
 
-            Assert.True(sb.Length > 0);
-            Assert.Contains("\"one\": \"1\"", sb.ToString());
+            Assert.StartsWith("{", json); //Equal<int>(json.Count(x => x == '{'), 1);
+            Assert.Equal<int>(json.Count(x => x == '"'), 4);
+            Assert.Contains("one", json);
+            Assert.Equal<int>(json.Count(x => x == ':'), 1);
+            Assert.Contains("1", json);
+            Assert.EndsWith("}", json);
         }
 
     }
