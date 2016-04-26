@@ -18,7 +18,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         public XsrfFilterTests(ITestOutputHelper output)
         {
             _output = output;
-            _fakeContext = MvcMockHelpers.FakeHttpContext();
         }
 
         [Fact]
@@ -37,6 +36,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         {
             foreach (var method in _nonXsrfMethods)
             {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
@@ -51,6 +51,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         {
             foreach (var method in XsrfFilter.XsrfMethods)
             {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
@@ -63,10 +64,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         [Fact]
         public void GetFilter_NonXsrfMethodsIsAjax_ReturnsNull()
         {
-            _fakeContext.Request.SetAjaxHeaders();
             foreach (var method in _nonXsrfMethods)
             {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
+                _fakeContext.Request.SetAjaxHeaders();
                 _output.WriteLine("HttpMethod => {0}", method);
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
                 Assert.True(_fakeContext.Request.IsAjaxRequest());
@@ -78,10 +80,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         [Fact]
         public void GetFilter_XsrfMethodsIsAjax_ReturnsValidateAntiForgeryTokenAttribute()
         {
-            _fakeContext.Request.SetAjaxHeaders();
             foreach (var method in XsrfFilter.XsrfMethods)
             {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
+                _fakeContext.Request.SetAjaxHeaders();
                 _output.WriteLine("HttpMethod => {0}", method);
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
                 Assert.True(_fakeContext.Request.IsAjaxRequest());
@@ -95,6 +98,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         {
             foreach (var method in XsrfFilter.XsrfMethods)
             {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
                 var postResult = XsrfFilter.GetFilter(
@@ -110,10 +114,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         [Fact]
         public void GetFilter_XsrfMethodsIsAjaxWithIgnoreAttribute_ReturnsNull()
         {
-            _fakeContext.Request.SetAjaxHeaders();
             foreach (var method in XsrfFilter.XsrfMethods)
             {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
+                _fakeContext.Request.SetAjaxHeaders();
                 _output.WriteLine("HttpMethod => {0}", method);
                 var postResult = XsrfFilter.GetFilter(
                     _fakeContext.Request,

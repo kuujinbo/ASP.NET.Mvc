@@ -13,7 +13,8 @@ namespace System.Web.Mvc
 
         public override void ExecuteResult(ControllerContext context)
         {
-			if (context == null) { throw new ArgumentNullException("context"); }
+            if (context == null) { throw new ArgumentNullException("context"); }
+            if (Data == null) { throw new ArgumentNullException("Data"); }
 
 			HttpResponseBase response = context.HttpContext.Response;
             response.ContentType = "application/json";
@@ -22,7 +23,7 @@ namespace System.Web.Mvc
 				response.ContentEncoding = this.ContentEncoding;
 			}
 
-			if (Data != null) response.Write(JsonNet.Serialize(Data));
+			response.Write(JsonNet.Serialize(Data));
         }
     }
 }
