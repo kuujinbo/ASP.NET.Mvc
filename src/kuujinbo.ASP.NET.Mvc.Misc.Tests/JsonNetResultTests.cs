@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Xunit;
@@ -71,12 +70,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         public void ExecuteResult_WithData_WritesJsonString()
         {
             // arrange
-            var sb = new StringBuilder();
+            var json = string.Empty;
             var fakeContext = new Mock<HttpContextBase>();
             Mock<HttpResponseBase> response = new Mock<HttpResponseBase>();
             response.Setup(
                 x => x.Write(It.IsAny<string>()))
-                    .Callback<string>(y => { sb.Append(y); }
+                    .Callback<string>(y => { json = y; }
             );
             fakeContext.Setup(ctx => ctx.Response).Returns(response.Object);
             _fakeController.ControllerContext = new ControllerContext(
@@ -88,7 +87,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             _fakeController
                 .JsonData(DATA)
                 .ExecuteResult(_fakeController.ControllerContext);
-            var json = sb.ToString();
 
             Assert.StartsWith("{", json); 
             Assert.Equal<int>(json.Count(x => x == '"'), 4);
