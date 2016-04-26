@@ -8,13 +8,13 @@ namespace System.Web.Mvc
 		public object Data { get; private set; } 
         public JsonNetResult(object data)
         {
+            if (data == null) { throw new ArgumentNullException("data"); }
             Data = data;
         }
 
         public override void ExecuteResult(ControllerContext context)
         {
             if (context == null) { throw new ArgumentNullException("context"); }
-            if (Data == null) { throw new ArgumentNullException("Data"); }
 
 			HttpResponseBase response = context.HttpContext.Response;
             response.ContentType = "application/json";

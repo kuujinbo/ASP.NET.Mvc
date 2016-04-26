@@ -37,9 +37,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             var exception = Assert.Throws<ArgumentNullException>(
                 () => _fakeController
                     .JsonData(null)
-                    .ExecuteResult(_fakeController.ControllerContext)
             );
-            Assert.Equal<string>("Data", exception.ParamName);
+            Assert.Equal<string>("data", exception.ParamName);
         }
 
         [Fact]
