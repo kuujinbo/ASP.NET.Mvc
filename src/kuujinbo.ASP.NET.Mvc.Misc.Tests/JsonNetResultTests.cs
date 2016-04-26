@@ -90,7 +90,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
                 .ExecuteResult(_fakeController.ControllerContext);
             var json = sb.ToString();
 
-            Assert.StartsWith("{", json); //Equal<int>(json.Count(x => x == '{'), 1);
+            Assert.StartsWith("{", json); 
             Assert.Equal<int>(json.Count(x => x == '"'), 4);
             Assert.Contains("one", json);
             Assert.Equal<int>(json.Count(x => x == ':'), 1);
