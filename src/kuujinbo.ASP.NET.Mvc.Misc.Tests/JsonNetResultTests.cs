@@ -22,15 +22,21 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         public static readonly Dictionary<string, string> DATA = 
             new Dictionary<string, string>() { { "one", "1" } };
 
+        private FakeController _fakeController;
+        public JsonNetResultTests()
+        {
+            _fakeController = new FakeController();;
+
+        }
+
         [Fact]
         public void ExecuteResult_WithNullData_ThrowsArgumentNullException()
         {
-            var controller = new FakeController();
-            controller.SetFakeControllerContext();
+            _fakeController.SetFakeControllerContext();
 
-            var result = controller.JsonData(null);
+            var result = _fakeController.JsonData(null);
             var exception = Assert.Throws<ArgumentNullException>(
-                () => result.ExecuteResult(controller.ControllerContext)
+                () => result.ExecuteResult(_fakeController.ControllerContext)
             );
 
             Assert.Equal<string>("Data", exception.ParamName);
@@ -39,11 +45,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         [Fact]
         public void ExecuteResult_WithNullContext_ThrowsArgumentNullException()
         {
-            var controller = new FakeController();
-
-            var result = controller.JsonData(DATA);
+            var result = _fakeController.JsonData(DATA);
             var exception = Assert.Throws<ArgumentNullException>(
-                () => result.ExecuteResult(controller.ControllerContext)
+                () => result.ExecuteResult(_fakeController.ControllerContext)
             );
             Assert.Equal<string>("context", exception.ParamName);
         }
@@ -51,13 +55,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         [Fact]
         public void ExecuteResult_WithData_ReturnsCorrectTypeAndHeaders()
         {
-            var controller = new FakeController();
-            controller.SetFakeControllerContext();
+            _fakeController.SetFakeControllerContext();
 
-            var result = controller.JsonData(DATA);
-            result.ExecuteResult(controller.ControllerContext);
+            var result = _fakeController.JsonData(DATA);
+            result.ExecuteResult(_fakeController.ControllerContext);
 
-            Assert.Equal("application/json",  controller.Response.ContentType);
+            Assert.Equal("application/json",  _fakeController.Response.ContentType);
             Assert.IsType<JsonNetResult>(result);
         }
 
@@ -65,7 +68,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         public void ExecuteResult_WithData_WritesJsonString()
         {
             // arrange
-            var controller = new FakeController();
             var sb = new StringBuilder();
             var fakeContext = new Mock<HttpContextBase>();
             Mock<HttpResponseBase> response = new Mock<HttpResponseBase>();
@@ -76,12 +78,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             fakeContext.Setup(ctx => ctx.Response).Returns(response.Object);
             ControllerContext context = new ControllerContext(
                 new RequestContext(fakeContext.Object, new RouteData()),
-                controller
+                _fakeController
             );
-            controller.ControllerContext = context;
+            _fakeController.ControllerContext = context;
 
             // act
-            controller.JsonData(DATA).ExecuteResult(controller.ControllerContext);
+            _fakeController.JsonData(DATA).ExecuteResult(_fakeController.ControllerContext);
 
             Assert.True(sb.Length > 0);
             Assert.Contains("\"one\": \"1\"", sb.ToString());
