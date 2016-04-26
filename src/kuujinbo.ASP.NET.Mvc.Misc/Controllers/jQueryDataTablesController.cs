@@ -55,6 +55,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.Title = "jQuery DataTables Test";
             var table = InitDataTable(Url);
             return View("_jQueryDataTables", table);
         }
