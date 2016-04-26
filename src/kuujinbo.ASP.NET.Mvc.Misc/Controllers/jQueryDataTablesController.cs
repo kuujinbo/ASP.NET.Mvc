@@ -63,6 +63,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         [HttpAjaxPost]
         public ActionResult JsonData(Table table)
         {
+            System.Diagnostics.Debug.WriteLine(
+                JsonNet.Serialize(Request.Form)
+            );
+
             string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
             string json = System.IO.File.ReadAllText(dataFile);
             var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);

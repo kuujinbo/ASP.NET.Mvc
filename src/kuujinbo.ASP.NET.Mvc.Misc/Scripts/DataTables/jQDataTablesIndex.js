@@ -32,16 +32,23 @@
         clearSearchBoxes: function() {
             var nodes = document.querySelectorAll('tfoot input[type=text]');
             for (i = 0; i < nodes.length; ++i) nodes[i].value = '';
+            _table.search('').columns().search('');
         },
         doSearch: function() {
-            // now we can search
             var searchCount = 0;
             var nodes = document.querySelectorAll('input[type=text]');
             for (i = 0; i < nodes.length; ++i) {
-                if (nodes[i].value !== '') {
+                // search only if non-whitespace
+                if (!/^\s+$/.test(nodes[i].value) ) {
                     ++searchCount;
-                    _table.column(nodes[i].dataset.columnNumber)
-                        .search(nodes[i].value);
+                    _table.column(nodes[i].dataset.columnNumber).search(nodes[i].value);
+                }
+                /* explicitly clear individual input, or will save last value 
+                   if user backspaces.
+                */
+                else {
+                    nodes[i].value = '';
+                    _table.column(nodes[i].dataset.columnNumber).search('');
                 }
             }
             if (searchCount > 0) {
@@ -242,7 +249,8 @@ $(document).ready(function() {
         serverSide: true,
         deferRender: true,
         // true by default, allow  shift-click multiple column sorting
-        orderMulti: configValues.allowMultiColumnSorting,
+        // orderMulti: configValues.allowMultiColumnSorting,
+        orderMulti: true,
         dom: 'lrtip',
         pagingType: 'full_numbers',
         // autoWidth: true,

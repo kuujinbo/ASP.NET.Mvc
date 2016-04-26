@@ -23,8 +23,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
         /// </summary>
         public bool AllowMultiColumnSorting { get; set; }
 
-        // TODO: implement
-        // public Search Search { get; set; }
+        // global search
+        public Search Search { get; set; }
 
         public IEnumerable<SortOrder> SortOrders { get; set; }
         public IEnumerable<Column> Columns { get; set; }
