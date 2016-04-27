@@ -6,6 +6,8 @@ using System.Web;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
+    public interface IIdentifiable { int Id { get; } }
+
     public interface ITable
     {
         void SetColumns<T>() where T : class, IIdentifiable;

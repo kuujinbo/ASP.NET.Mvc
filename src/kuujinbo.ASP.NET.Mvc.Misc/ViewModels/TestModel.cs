@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using kuujinbo.ASP.NET.Mvc.Misc.Services;
+using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
 {
-    public interface IIdentifiable { int Id { get; } }
-
     public class TestModel : IIdentifiable
     {
         [DataTableColumn(
