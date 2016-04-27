@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
+using kuujinbo.ASP.NET.Mvc.Misc.Services;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
 {
@@ -10,22 +10,22 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
 
     public class TestModel : IIdentifiable
     {
-        [JqueryDataTableColumn(
+        [DataTableColumn(
             Display = false, DisplayOrder = 0, 
             IsSearchable=false, IsSortable=false)
         ]
         public int Id { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 1)]
+        [DataTableColumn(DisplayOrder = 1)]
         public string Name { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 2)]
+        [DataTableColumn(DisplayOrder = 2)]
         public string Position { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 3)]
+        [DataTableColumn(DisplayOrder = 3)]
         public string Office { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 4)]
+        [DataTableColumn(DisplayOrder = 4)]
         public int Extension { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 5, DisplayName="Start Date")]
+        [DataTableColumn(DisplayOrder = 5, DisplayName="Start Date")]
         public DateTime? StartDate { get; set; }
-        [JqueryDataTableColumn(DisplayOrder = 6)]
+        [DataTableColumn(DisplayOrder = 6)]
         public string Salary { get; set; }
     }
 }

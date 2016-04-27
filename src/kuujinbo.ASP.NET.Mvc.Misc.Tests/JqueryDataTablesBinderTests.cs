@@ -5,7 +5,7 @@ using System.Web.Routing;
 using System.Web;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
-using kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables;
+using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Xunit;
 using Moq;
 

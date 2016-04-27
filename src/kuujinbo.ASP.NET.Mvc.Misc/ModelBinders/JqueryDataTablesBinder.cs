@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables;
+using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
 {

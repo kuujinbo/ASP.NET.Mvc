@@ -23,7 +23,7 @@ namespace System.Web.Mvc
 				response.ContentEncoding = this.ContentEncoding;
 			}
 
-			response.Write(JsonNet.Serialize(Data));
+            response.Write(JsonNetSerializer.Get(Data));
         }
     }
 }

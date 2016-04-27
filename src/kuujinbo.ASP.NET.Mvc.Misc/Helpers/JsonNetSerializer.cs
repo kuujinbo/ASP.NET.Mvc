@@ -3,9 +3,9 @@ using Newtonsoft.Json.Converters;
 
 namespace System.Web.Mvc
 {
-    public class JsonNet
+    public class JsonNetSerializer
     {
-        public static string Serialize(object o)
+        public static string Get(object o)
         {
             return JsonConvert.SerializeObject(
                 o, 

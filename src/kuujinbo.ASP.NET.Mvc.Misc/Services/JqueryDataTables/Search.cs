@@ -1,4 +1,4 @@
-﻿namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
+﻿namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
     public sealed class Search
     {

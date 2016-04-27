@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
-using kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables;
+using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Newtonsoft.Json.Converters;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
@@ -18,30 +18,18 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             {
                 ActionButtons = new List<ActionButton>()
                 {
-                    new ActionButton 
+                    new ActionButton(url.Action("Create"), "Create")
                     { 
-                        ElementClass = ActionButton.Success,
-                        Url = url.Action("Create"),
-                        Text = "Create",
                         IsButton = false
                     },
-                    new ActionButton 
+                    new ActionButton(url.Action("Rollover"), "Rollover")
                     { 
-                        ElementClass = ActionButton.Primary,
-                        Url = url.Action("Rollover"),
-                        Text = "Rollover"
+                        CssClass = ActionButton.Primary,
                     },
-                    new ActionButton 
+                    new ActionButton(url.Action("Approve"), "Approve"),
+                    new ActionButton(url.Action("Disapprove"), "Disapprove")
                     { 
-                        ElementClass = ActionButton.Success,
-                        Url = url.Action("Approve"),
-                        Text = "Approve"
-                    },
-                    new ActionButton 
-                    { 
-                        ElementClass = ActionButton.Danger,
-                        Url = url.Action("Disapprove"),
-                        Text = "Disapprove"
+                        CssClass = ActionButton.Danger,
                     }
                 },
                 DataUrl = url.Action("JsonData"),
@@ -64,7 +52,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         public ActionResult JsonData(Table table)
         {
             System.Diagnostics.Debug.WriteLine(
-                JsonNet.Serialize(Request.Form)
+                JsonNetSerializer.Get(Request.Form)
             );
 
             string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");

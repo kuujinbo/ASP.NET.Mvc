@@ -113,7 +113,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
-    <Compile Include="Attributes\JqueryDataTableColumnAttribute.cs" />
+    <Compile Include="Services\JqueryDataTables\DataTableColumnAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -124,16 +124,17 @@
     </Compile>
     <Compile Include="Helpers\AjaxHelper.cs" />
     <Compile Include="Helpers\JsonNetResult.cs" />
-    <Compile Include="Helpers\JsonNetSerialize.cs" />
+    <Compile Include="Helpers\JsonNetSerializer.cs" />
     <Compile Include="ModelBinders\JqueryDataTablesBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <None Include="ViewModels\JqueryDataTable.cs.orig" />
-    <Compile Include="ViewModels\JqueryDataTables\ActionButton.cs" />
-    <Compile Include="ViewModels\JqueryDataTables\Column.cs" />
-    <Compile Include="ViewModels\JqueryDataTables\Search.cs" />
-    <Compile Include="ViewModels\JqueryDataTables\Table.cs" />
-    <Compile Include="ViewModels\JqueryDataTables\SortOrder.cs" />
+    <Compile Include="Services\JqueryDataTables\ActionButton.cs" />
+    <Compile Include="Services\JqueryDataTables\Column.cs" />
+    <Compile Include="Services\JqueryDataTables\ITable.cs" />
+    <Compile Include="Services\JqueryDataTables\Search.cs" />
+    <Compile Include="Services\JqueryDataTables\Table.cs" />
+    <Compile Include="Services\JqueryDataTables\SortOrder.cs" />
     <Compile Include="ViewModels\TestModel.cs" />
   </ItemGroup>
   <ItemGroup>

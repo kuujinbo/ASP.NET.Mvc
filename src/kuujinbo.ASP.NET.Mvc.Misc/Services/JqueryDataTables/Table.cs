@@ -4,13 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
+using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
+namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
     [ModelBinder(typeof(JqueryDataTablesBinder))]
-    public class Table
+    public class Table : ITable
     {
         public int Draw { get; set; }
         public int Start { get; set; }
@@ -18,6 +18,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
         public string DataUrl { get; set; }
         public string DeleteRowUrl { get; set; }
         public string EditRowUrl { get; set; }
+
         /// <summary>
         /// allow client-side shift-click multiple column sorting
         /// </summary>
@@ -36,76 +37,21 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
             // AllowMultiColumnSorting = true;
         }
 
-
-        public string GetActionButtons()
-        {
-            if (ActionButtons.Count > 0)
-            {
-                return string.Join("", ActionButtons.Select(x => x.GetMarkUp()));
-            }
-            return string.Empty;
-        }
-
-        public string GetThead()
-        {
-            if (Columns == null || Columns.Count() < 1)
-            {
-                throw new ArgumentNullException("Columns");
-            }
-
-            StringBuilder s = new StringBuilder(@"
-                <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
-                    <input id='datatable-check-all' type='checkbox' />
-                </th>"
-            );
-            foreach (var c in Columns)
-            {
-                if (c.Display) s.AppendFormat("<th>{0}</th>\n", c.Name);
-            }
-            s.AppendLine("<th></th>");
-
-            return s.ToString();
-        }
-
-        public string GetTfoot()
-        {
-            if (Columns == null || Columns.Count() < 1)
-            {
-                throw new ArgumentNullException("Columns");
-            }
-
-            StringBuilder s = new StringBuilder();
-            foreach (var c in Columns)
-            {
-                s.AppendFormat(
-                    "<th data-is-searchable='{0}'></th>",
-                    c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty
-                );
-            }
-            s.AppendLine("<th style='white-space: nowrap;'></th>");
-
-            return s.ToString();
-        }
-
-        IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> GetTypeInfo(Type type)
-        {
-            return type.GetProperties().Select(
-                p => new
-                {
-                    prop = p,
-                    col = p.GetCustomAttributes(
-                        typeof(JqueryDataTableColumnAttribute), true)
-                        .SingleOrDefault() as JqueryDataTableColumnAttribute
-                })
-                .Where(p => p.col != null)
-                .OrderBy(p => p.col.DisplayOrder)
-                .Select(p => new Tuple<PropertyInfo, JqueryDataTableColumnAttribute>(p.prop, p.col));
-        }
-
-        public void SetColumns<TEntity>() where TEntity : class
+        /// <summary>
+        /// set table columns used to generate HTML markup in partial view
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <remarks>
+        /// also see:
+        ///     -- Columns property
+        ///     -- GetThead()
+        ///     --  GetTfoot()
+        /// </remarks>
+        public void SetColumns<T>() where T : class, IIdentifiable
         {
             var columns = new List<Column>();
-            IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(TEntity));
+            // tuple used instead of creating a custom class
+            IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(T));
 
             foreach (var info in typeInfo)
             {
@@ -126,17 +72,23 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
             this.Columns = columns;
         }
 
-        public object GetData<TEntity>(IEnumerable<TEntity> entities)
-            where TEntity : class, IIdentifiable
+        /// <summary>
+        /// get data that will be sent as Ajax response
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public object GetData<T>(IEnumerable<T> entities)
+            where T : class, IIdentifiable
         {
-            // dictionary of <property name, <objectId, property value>>
-            var propertyValueCache = new Dictionary<string, IDictionary<int, object>>();
+            // <property name, <objectId, property value>>
+            var cache = new Dictionary<string, IDictionary<int, object>>();
 
-            IEnumerable<Tuple<PropertyInfo, JqueryDataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(TEntity));
+            IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(T));
 
             foreach (var info in typeInfo)
             {
-                propertyValueCache.Add(info.Item1.Name, new Dictionary<int, object>());
+                cache.Add(info.Item1.Name, new Dictionary<int, object>());
             }
 
             // per column search
@@ -149,7 +101,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
                     entities = entities.Where(e =>
                     {
                         var value = GetPropertyValue(
-                            e, tuple.Item1, tuple.Item2, propertyValueCache
+                            e, tuple.Item1, tuple.Item2, cache
                         );
                         return value != null
                             && value.ToString()
@@ -170,7 +122,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
                         sortedData = sortedData.ThenBy(e =>
                         {
                             var val = GetPropertyValue(
-                                e, tuple.Item1, tuple.Item2, propertyValueCache
+                                e, tuple.Item1, tuple.Item2, cache
                             );
 
                             return val;
@@ -181,7 +133,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
                         sortedData = sortedData.ThenByDescending(e =>
                         {
                             return GetPropertyValue(
-                                e, tuple.Item1, tuple.Item2, propertyValueCache
+                                e, tuple.Item1, tuple.Item2, cache
                             );
                         });
                     }
@@ -196,9 +148,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
                 foreach (var info in typeInfo)
                 {
                     row.Add(GetPropertyValue(
-                        entity, info.Item1, info.Item2, propertyValueCache
+                        entity, info.Item1, info.Item2, cache
                     ));
                 }
+                // row.Add("{ prop0: 'prop0'}");
                 tableData.Add(row);
             }
 
@@ -211,14 +164,36 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
             };
         }
 
+        /// <summary>
+        /// Type information for entity used to build the DataTable
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Tuple</returns>
+        /// <remarks>
+        /// method only used internally by only two methods, so instead of 
+        /// creating a custom DTO object/class, return a Tuple
+        /// </remarks>
+        IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> GetTypeInfo(Type type)
+        {
+            return type.GetProperties().Select(
+                p => new
+                {
+                    prop = p,
+                    col = p.GetCustomAttributes(
+                        typeof(DataTableColumnAttribute), true)
+                        .SingleOrDefault() as DataTableColumnAttribute
+                })
+                .Where(p => p.col != null)
+                .OrderBy(p => p.col.DisplayOrder)
+                .Select(p => new Tuple<PropertyInfo, DataTableColumnAttribute>(p.prop, p.col));
+        }
 
-
-        protected object GetPropertyValue<TEntity>(
-            TEntity entity,
+        object GetPropertyValue<T>(
+            T entity,
             PropertyInfo propertyInfo,
-            JqueryDataTableColumnAttribute fieldInfo,
+            DataTableColumnAttribute fieldInfo,
             IDictionary<string, IDictionary<int, object>> cache
-        ) where TEntity : class, IIdentifiable
+        ) where T : class, IIdentifiable
         {
             object data = null;
             if (cache[propertyInfo.Name].TryGetValue(entity.Id, out data)) return data;
@@ -280,16 +255,65 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels.JqueryDataTables
         }
 
 
+        public string GetActionButtons()
+        {
+            if (ActionButtons.Count > 0)
+            {
+                return string.Join("", ActionButtons.Select(x => x.GetMarkUp()));
+            }
+            return string.Empty;
+        }
+
+        public string GetThead()
+        {
+            if (Columns == null || Columns.Count() < 1)
+            {
+                throw new ArgumentNullException("Columns");
+            }
+
+            StringBuilder s = new StringBuilder(@"
+                <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
+                    <input id='datatable-check-all' type='checkbox' />
+                </th>"
+            );
+            foreach (var c in Columns)
+            {
+                if (c.Display) s.AppendFormat("<th>{0}</th>\n", c.Name);
+            }
+            s.AppendLine("<th></th>");
+
+            return s.ToString();
+        }
+
+        public string GetTfoot()
+        {
+            if (Columns == null || Columns.Count() < 1)
+            {
+                throw new ArgumentNullException("Columns");
+            }
+
+            StringBuilder s = new StringBuilder();
+            foreach (var c in Columns)
+            {
+                s.AppendFormat(
+                    "<th data-is-searchable='{0}'></th>",
+                    c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty
+                );
+            }
+            s.AppendLine("<th style='white-space: nowrap;'></th>");
+
+            return s.ToString();
+        }
+
         public string GetJavaScriptConfig()
         {
-            return JsonNet.Serialize(new
+            return JsonNetSerializer.Get(new
             {
                 dataUrl = DataUrl,
                 deleteRowUrl = DeleteRowUrl,
                 editRowUrl = EditRowUrl,
                 allowMultiColumnSorting = AllowMultiColumnSorting,
-            }
-            );
+            });
         }
 
 
