@@ -4,18 +4,18 @@
 @Html.AntiForgeryToken()
 @* element id selector used in /scripts/DataTables/jQDataTablesIndex.js *@
 <div id='data-table-actions' style='margin:10px 0;'>
-    @Html.Raw(@Model.GetActionButtons())
+    @Html.Raw(@Model.ActionButtonsHtml())
 </div>
 
 <table id='jquery-data-table' class='table table-striped compact'>
     <thead>
         <tr>
-            @Html.Raw(@Model.GetThead())
+            @Html.Raw(@Model.GetTheadHtml())
         </tr>
     </thead>
     <tfoot>
         <tr>
-            @Html.Raw(@Model.GetTfoot())
+            @Html.Raw(@Model.GetTfootHtml())
         </tr>
     </tfoot>
 </table>

@@ -43,7 +43,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         /// generate button markup
         /// </summary>
         /// <returns>HTML markup</returns>
-        public string GetMarkUp()
+        public string GetHtml()
         {
             return IsButton
                 ?  string.Format(

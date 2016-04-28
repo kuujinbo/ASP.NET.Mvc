@@ -254,17 +254,19 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             return data;
         }
 
-
-        public string GetActionButtons()
+        /* --------------------------------------------------------------------
+         * HTML/JavaScript written to Partial View:
+         * ~/views/shared/_jQueryDataTables.cshtml
+         * --------------------------------------------------------------------
+         */
+        public string ActionButtonsHtml()
         {
-            if (ActionButtons.Count > 0)
-            {
-                return string.Join("", ActionButtons.Select(x => x.GetMarkUp()));
-            }
-            return string.Empty;
+            return ActionButtons.Count > 0
+                ? string.Join("", ActionButtons.Select(x => x.GetHtml()))
+                : string.Empty;
         }
 
-        public string GetThead()
+        public string GetTheadHtml()
         {
             if (Columns == null || Columns.Count() < 1)
             {
@@ -285,7 +287,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             return s.ToString();
         }
 
-        public string GetTfoot()
+        public string GetTfootHtml()
         {
             if (Columns == null || Columns.Count() < 1)
             {
