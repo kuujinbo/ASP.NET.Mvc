@@ -3,7 +3,7 @@
     "References": [
         { "Path": "./../../packages/Chutzpah.4.2.0/tools/TestFiles/Jasmine/v2/jasmine.js" },
         { "Path": "./../../packages/Chutzpah.4.2.0/tools/TestFiles/Jasmine/v2/boot.js" },
-        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/jquery-2.2.2.js" },
+        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/jquery-2.2.3.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/angular.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/angular-mocks.js" }
     ]
