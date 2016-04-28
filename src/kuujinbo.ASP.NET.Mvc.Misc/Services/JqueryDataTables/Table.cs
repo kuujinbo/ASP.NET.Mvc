@@ -37,6 +37,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             // AllowMultiColumnSorting = true;
         }
 
+        /* --------------------------------------------------------------------
+         * model data and DataTableColumnAttribute
+         * --------------------------------------------------------------------
+         */
+
         /// <summary>
         /// set table columns used to generate HTML markup in partial view
         /// </summary>
@@ -259,6 +264,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
          * ~/views/shared/_jQueryDataTables.cshtml
          * --------------------------------------------------------------------
          */
+
         public string ActionButtonsHtml()
         {
             return ActionButtons.Count > 0

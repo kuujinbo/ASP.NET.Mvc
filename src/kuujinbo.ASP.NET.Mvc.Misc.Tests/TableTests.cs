@@ -13,6 +13,10 @@ using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
 {
+    /* --------------------------------------------------------------------
+     * model data and DataTableColumnAttribute
+     * --------------------------------------------------------------------
+     */
     public class TableTests
     {
 
@@ -23,6 +27,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
 
     }
 
+    /* --------------------------------------------------------------------
+     * HTML/JavaScript written to Partial View
+     * --------------------------------------------------------------------
+     */
     public class TableToPartialViewTests
     {
         const int TH_AUTO_COLUMS = 2;
