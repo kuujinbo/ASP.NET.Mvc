@@ -4,12 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
 using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
-    [ModelBinder(typeof(JqueryDataTablesBinder))]
+    [ModelBinder(typeof(DataTableModelBinder))]
     public class Table : ITable
     {
         public int Draw { get; set; }
@@ -122,7 +121,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 if (column.IsSortable)
                 {
                     var tuple = typeInfo.ElementAt(sortOrder.Column);
-                    if (sortOrder.Direction == JqueryDataTablesBinder.ORDER_ASC)
+                    if (sortOrder.Direction == DataTableModelBinder.ORDER_ASC)
                     {
                         sortedData = sortedData.ThenBy(e =>
                         {

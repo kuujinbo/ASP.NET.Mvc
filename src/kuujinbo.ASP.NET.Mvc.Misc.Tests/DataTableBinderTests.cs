@@ -4,16 +4,15 @@ using System.Linq;
 using System.Web.Routing;
 using System.Web;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Xunit;
 using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
 {
-    public class JqueryDataTablesBinderTests
+    public class DataTableBinderTests
     {
-        JqueryDataTablesBinder _binder;
+        DataTableModelBinder _binder;
         NameValueCollection _form;
         Mock<HttpContextBase> _mockContext;
         ControllerContext _controllerContext;
@@ -39,7 +38,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             _controllerContext = new ControllerContext(
                 requestContext, _mockController.Object
             );
-            _binder = new JqueryDataTablesBinder();
+            _binder = new DataTableModelBinder();
 
 
             _modelBindingContext = new ModelBindingContext
@@ -74,7 +73,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             _form["search[value]"] = "global search value";
         }
 
-        public JqueryDataTablesBinderTests()
+        public DataTableBinderTests()
         {
             Setup();
         }

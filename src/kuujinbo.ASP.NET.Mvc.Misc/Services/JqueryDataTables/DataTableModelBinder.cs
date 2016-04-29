@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.ModelBinders
+namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
-    public class JqueryDataTablesBinder : DefaultModelBinder
+    public class DataTableModelBinder : DefaultModelBinder
     {
         public const string DRAW = "draw";
         public const string START = "start";

@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="JqueryDataTablesBinderTests.cs" />
+    <Compile Include="DataTableBinderTests.cs" />
     <Compile Include="JsonNetResultTests.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="XsrfFilterTests.cs" />

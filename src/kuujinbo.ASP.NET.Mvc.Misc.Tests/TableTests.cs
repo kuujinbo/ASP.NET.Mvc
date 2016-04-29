@@ -183,6 +183,24 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             );
         }
 
+        [Fact]
+        public void GetJavaScriptConfig_WhenDataUrlNotWhiteSpace_ReturnsJsonWithDataUrl()
+        {
+            var table = new Table() { DataUrl = "/" };
+
+            var json = table.GetJavaScriptConfig();
+            var lines = json.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
+                .Where(x => x != "{" && x != "}");
+            var dataUrl = lines.ElementAt(0).Trim();
+
+            Assert.Equal<int>(4, lines.Count());
+            Assert.StartsWith("{", json);
+            Assert.Equal<int>(dataUrl.Count(x => x == '"'), 4);
+            Assert.Matches("^\"dataUrl\"", dataUrl);
+            Assert.Equal<int>(dataUrl.Count(x => x == ':'), 1);
+            Assert.Equal<int>(dataUrl.Count(x => x == '/'), 1);
+            Assert.EndsWith("}", json);
+        }
 
     }
 }
