@@ -46,7 +46,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public string GetHtml()
         {
             return IsButton
-                ?  string.Format(
+                ? string.Format(
                     "<button class='{0}' data-url='{1}'>{2} <span></span></button>\n",
                     CssClass, Url, Text
                 )

@@ -1,8 +1,4 @@
-﻿using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {

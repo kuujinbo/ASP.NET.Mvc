@@ -49,7 +49,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         /// also see:
         ///     -- Columns property
         ///     -- GetThead()
-        ///     --  GetTfoot()
+        ///     -- GetTfoot()
         /// </remarks>
         public void SetColumns<T>() where T : class, IIdentifiable
         {
@@ -66,10 +66,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                     IsSearchable = info.Item2.IsSearchable,
                     IsSortable = info.Item2.IsSortable,
                 };
-                if (info.Item1.PropertyType == typeof(bool))
-                {
-                    column.IsSearchable = false;
-                }
                 columns.Add(column);
             }
 
@@ -99,7 +95,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             for (int i = 0; i < Columns.Count(); ++i)
             {
                 var column = Columns.ElementAt(i);
-                if (column.IsSearchable && !string.IsNullOrWhiteSpace(column.Search.Value))
+                if (column.Search != null
+                    && !string.IsNullOrWhiteSpace(column.Search.Value))
                 {
                     var tuple = typeInfo.ElementAt(i);
                     entities = entities.Where(e =>
@@ -155,7 +152,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                         entity, info.Item1, info.Item2, cache
                     ));
                 }
-                // row.Add("{ prop0: 'prop0'}");
                 tableData.Add(row);
             }
 
@@ -174,10 +170,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         /// <param name="type">Type</param>
         /// <returns>Tuple</returns>
         /// <remarks>
-        /// method only used internally by only two methods, so instead of 
-        /// creating a custom DTO object/class, return a Tuple
+        /// method used internally by only two methods, so return a Tuple 
+        /// instead of creating a custom DTO object/class 
         /// </remarks>
-        IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> GetTypeInfo(Type type)
+        private IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> GetTypeInfo(Type type)
         {
             return type.GetProperties().Select(
                 p => new
@@ -192,10 +188,23 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 .Select(p => new Tuple<PropertyInfo, DataTableColumnAttribute>(p.prop, p.col));
         }
 
-        object GetPropertyValue<T>(
+        /// <summary>
+        /// get model property value, including when the value is a reference
+        /// property or collection
+        /// </summary>
+        /// <typeparam name="T">type parameter</typeparam>
+        /// <param name="entity">model/entity instance</param>
+        /// <param name="propertyInfo">PropertyInfo</param>
+        /// <param name="columnAttribute">DataTableColumnAttribute</param>
+        /// <param name="cache"><property name, <objectId, property value>></param>
+        /// <returns>
+        /// entity property value object - LINQ to Entities can properly sort
+        /// and search by object value. 
+        /// </returns>
+        private object GetPropertyValue<T>(
             T entity,
             PropertyInfo propertyInfo,
-            DataTableColumnAttribute fieldInfo,
+            DataTableColumnAttribute columnAttribute,
             IDictionary<string, IDictionary<int, object>> cache
         ) where T : class, IIdentifiable
         {
@@ -211,7 +220,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 
             if (propertyIsCollection)
             {
-                var fields = fieldInfo.FieldAccessor.Split('.');
+                var fields = columnAttribute.FieldAccessor.Split('.');
                 var value = propertyInfo.GetValue(entity) as IEnumerable<object>;
                 var items = new List<string>();
                 foreach (var item in value)
@@ -229,12 +238,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             //{
             //    data = RegexUtil.PascalCaseStem((propertyInfo.GetValue(entity) ?? "").ToString());
             //}
-            else if (fieldInfo.FieldAccessor != null)
+            else if (columnAttribute.FieldAccessor != null)
             {
                 var value = propertyInfo.GetValue(entity);
                 if (value != null)
                 {
-                    var fields = fieldInfo.FieldAccessor.Split('.');
+                    var fields = columnAttribute.FieldAccessor.Split('.');
                     foreach (var field in fields)
                     {
                         value = value.GetType().GetProperty(field).GetValue(value);
@@ -258,12 +267,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             return data;
         }
 
+
         /* --------------------------------------------------------------------
          * HTML/JavaScript written to Partial View:
          * ~/views/shared/_jQueryDataTables.cshtml
          * --------------------------------------------------------------------
          */
-
         public string ActionButtonsHtml()
         {
             return ActionButtons.Count > 0
@@ -314,6 +323,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 
         public string GetJavaScriptConfig()
         {
+            if (string.IsNullOrEmpty(DataUrl))
+                throw new ArgumentNullException("DataUrl");
+
             return JsonNetSerializer.Get(new
             {
                 dataUrl = DataUrl,

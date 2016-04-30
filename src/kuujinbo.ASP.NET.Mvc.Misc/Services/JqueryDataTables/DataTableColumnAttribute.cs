@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.Services
+namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
     [AttributeUsage(
         AttributeTargets.Property | AttributeTargets.Field, 

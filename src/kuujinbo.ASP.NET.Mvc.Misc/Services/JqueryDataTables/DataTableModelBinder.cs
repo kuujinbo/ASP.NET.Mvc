@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
@@ -27,7 +26,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         {
             // base.BindModel(controllerContext, bindingContext);
             var request = controllerContext.HttpContext.Request.Form;
-            
+
             // get base table request properties
             var draw = Convert.ToInt32(request[DRAW]);
             var start = Convert.ToInt32(request[START]);
