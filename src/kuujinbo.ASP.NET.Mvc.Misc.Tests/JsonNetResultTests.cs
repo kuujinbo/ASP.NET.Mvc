@@ -68,7 +68,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         [Fact]
         public void ExecuteResult_WithData_WritesJsonString()
         {
-            // arrange
             var json = string.Empty;
             var fakeContext = new Mock<HttpContextBase>();
             Mock<HttpResponseBase> response = new Mock<HttpResponseBase>();
@@ -82,7 +81,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
                 _fakeController
             );
 
-            // act
             _fakeController
                 .JsonData(DATA)
                 .ExecuteResult(_fakeController.ControllerContext);

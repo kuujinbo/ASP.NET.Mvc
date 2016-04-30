@@ -5,10 +5,12 @@ namespace System.Web.Mvc
 {
     public class JsonNetResult : ContentResult
     {
-		public object Data { get; private set; } 
+        public object Data { get; private set; }
+
         public JsonNetResult(object data)
         {
             if (data == null) { throw new ArgumentNullException("data"); }
+            
             Data = data;
         }
 
@@ -16,12 +18,12 @@ namespace System.Web.Mvc
         {
             if (context == null) { throw new ArgumentNullException("context"); }
 
-			HttpResponseBase response = context.HttpContext.Response;
+            HttpResponseBase response = context.HttpContext.Response;
             response.ContentType = "application/json";
-			if (this.ContentEncoding != null)
-			{
-				response.ContentEncoding = this.ContentEncoding;
-			}
+            if (this.ContentEncoding != null)
+            {
+                response.ContentEncoding = this.ContentEncoding;
+            }
 
             response.Write(JsonNetSerializer.Get(Data));
         }
