@@ -11,7 +11,9 @@
     var _xsrf = '__RequestVerificationToken';
 
     return {
-        jqModal: $('<div></div>').dialog({ autoOpen:false, height:400, width:400 }),
+        jqModal: $('<div></div>').dialog({
+            autoOpen: false, modal: true, height: 400, width: 476
+        }),
         jqModalOK: function(msg) {
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<p>' + msg + '</p>';
