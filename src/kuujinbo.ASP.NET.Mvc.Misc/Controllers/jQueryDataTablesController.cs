@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
+using kuujinbo.ASP.NET.Mvc.Misc.Models;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Newtonsoft.Json.Converters;
 
@@ -59,11 +59,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             string json = System.IO.File.ReadAllText(dataFile);
             var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);
 
-            //System.Diagnostics.Debug.WriteLine(
-            //    JsonNet.Serialize(table.GetData<TestModel>(dataFromFile))
-            //);
-            // System.Threading.Thread.Sleep(2000);
-
+            //System.Threading.Thread.Sleep(1000);
+            //throw new Exception("error");
             return new JsonNetResult(table.GetData<TestModel>(dataFromFile));
         }
 

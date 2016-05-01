@@ -11,6 +11,21 @@
     var _xsrf = '__RequestVerificationToken';
 
     return {
+        jqModal: $('<div></div>').dialog({ autoOpen:false, height:400, width:400 }),
+        jqModalOK: function(msg) {
+            var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
+                + '<p>' + msg + '</p>';
+            configTable.jqModal.html(html)
+                .dialog({title: 'Success' })
+                .dialog('open');
+        },
+        jqModalError: function(msg) {
+            var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
+                + '<p>' + msg + '</p>';
+            configTable.jqModal.html(html)
+                .dialog({title: 'Error Processing Your Request' })
+                .dialog('open');
+        },
         /* -----------------------------------------------------------------
             selectors and DOM elements
         */
@@ -96,10 +111,12 @@
             })
             // TODO: add modal or bootstrap message
             .done(function(data, textStatus, jqXHR) {
-                alert(data);
+                configTable.jqModalOK(data);
+                // alert(data);
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                alert('XHR request (' + url + ') failed:' + errorThrown);
+                configTable.jqModalError(jqXHR.data);
+                // alert('XHR request (' + url + ') failed:' + errorThrown);
             })
             // http://api.jquery.com/deferred.always/
             .always(function() { 
@@ -113,13 +130,20 @@
             e.preventDefault();
             var ids = configTable.getSelectedRowIds();
             var url = this.dataset.url;
+            // var textContent = this.textContent;
 
             // TODO: add create logic (no checkbox selected)
             if (url) {
                 if (ids.length > 0) {
                     configTable.sendXhr(this, url, { ids: ids });
                 } else {
-                    alert('\nNO ROWS SELECTED\n')
+            // alert(this.textContent);
+                    configTable.jqModalError(
+                        '<h2>No Records Selected</h2>'
+                        + '<p>You must select one or more records to perform the '
+                        + (this.textContent || 'selected')
+                        + ' action.</p>'
+                    );
                 }
             }
             else {
@@ -173,13 +197,14 @@
                 var row = target.parentNode.parentNode;
                 if (target.classList.contains('glyphicon-remove-circle')) {
                     // TODO: ajax call to delete record from datatbase...
-                    alert('CLICKED DELETE with record id: ' + _table.row(row).data()[0]);
                     configTable.sendXhr(
                         target, configValues.deleteRowUrl, { id: _table.row(row).data()[0] }
                     );
 
                     // send XHR to request updated view
-                    // _table.row(row).remove().draw();
+                    _table.row(row).remove()
+                        .page(_table.page.info().page)
+                        .draw(false);
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
@@ -248,6 +273,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         deferRender: true,
+        stateSave: true,
         // true by default, allow  shift-click multiple column sorting
         // orderMulti: configValues.allowMultiColumnSorting,
         orderMulti: true,
@@ -277,7 +303,7 @@ $(document).ready(function() {
                 var n = document.querySelector('div.dataTables_processing')
                 if (n !== null) n.style.display = 'none';
 
-                // TODO: modal message
+                configTable.jqModalError(errorThrown);
                 console.log(errorThrown);
             },
             complete: function(data, textStatus, jqXHR) {

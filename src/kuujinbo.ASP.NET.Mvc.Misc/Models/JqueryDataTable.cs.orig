@@ -8,7 +8,7 @@ using kuujinbo.ASP.NET.Mvc.Misc.Attributes;
 using kuujinbo.ASP.NET.Mvc.Misc.ModelBinders;
 using Newtonsoft.Json;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
+namespace kuujinbo.ASP.NET.Mvc.Misc.Models
 {
     [ModelBinder(typeof(JqueryDataTableBinder))]
     public class JqueryDataTable

@@ -12,7 +12,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
                 "~/Scripts/lib/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css",
                 // "~/Content/jquery.dataTables.css",
                 "~/Content/dataTables.bootstrap.css",
-                "~/Content/site.css"));
+                "~/Content/themes/base/all.css",
+                "~/Content/site.css"
+            ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery")
                 .Include("~/Scripts/lib/jquery-{version}.js"));
@@ -31,6 +33,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/jQueryDataTables").Include(
+                "~/Scripts/lib/jquery-ui-1.11.4.min.js",
                 "~/Scripts/lib/DataTables/jquery.dataTables.min.js",
                 "~/Scripts/lib/DataTables/dataTables.bootstrap.min.js",
                 "~/Scripts/DataTables/jQDataTablesIndex.js"

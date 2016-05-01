@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.ViewModels;
+using kuujinbo.ASP.NET.Mvc.Misc.Models;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {

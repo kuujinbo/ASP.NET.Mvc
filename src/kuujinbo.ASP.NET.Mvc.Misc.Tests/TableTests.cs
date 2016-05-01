@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Web.Routing;
-using System.Web;
-using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Xunit;
 using Xunit.Abstractions;
-using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
 {

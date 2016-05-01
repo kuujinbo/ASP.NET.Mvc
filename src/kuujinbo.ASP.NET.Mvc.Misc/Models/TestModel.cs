@@ -5,7 +5,7 @@ using System.Web;
 using kuujinbo.ASP.NET.Mvc.Misc.Services;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.ViewModels
+namespace kuujinbo.ASP.NET.Mvc.Misc.Models
 {
     public class TestModel : IIdentifiable
     {
