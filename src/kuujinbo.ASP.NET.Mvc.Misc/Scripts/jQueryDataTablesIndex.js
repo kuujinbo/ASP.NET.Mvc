@@ -9,25 +9,33 @@
     var _actionButtonSelector = '#data-table-actions button.btn';
     var _buttonSpin = 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
     var _xsrf = '__RequestVerificationToken';
+    var _modalDialogDiv = $('<div></div>');
+    var _modalDialog = _modalDialogDiv.dialog({
+        autoOpen: false, height: 276, width: 476
+    });
 
     return {
-        jqModal: $('<div></div>').dialog({
-            autoOpen: false, height: 276, width: 476
-        }),
+        jqModal: function () {
+            return _modalDialog;
+            //return _modalDialog.dialog({
+            //    autoOpen: false, height: 276, width: 476
+            //});
+        },
         jqModalOK: function(msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<div>' + (msg || success) + '</div>';
-            configTable.jqModal.html(html)
-                .dialog({title: success })
+            configTable.jqModal().html(html)
+                .dialog({title: success})
                 .dialog('open');
+
         },
         jqModalError: function(msg) {
             var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
                 + '<div>' + (msg || err) + '</div>';
-            configTable.jqModal.html(html)
-                .dialog({title: err })
+            configTable.jqModal().html(html)
+                .dialog({title: err})
                 .dialog('open');
         },
         /* -----------------------------------------------------------------
@@ -265,7 +273,8 @@
     }
 }();
 
-$(document).ready(function() {
+
+$(document).ready(function () {
     // DataTables API instance => $().DataTable() - note CASE
     var table = $(configTable.getTableId()).DataTable({
         processing: true,
@@ -291,12 +300,12 @@ $(document).ready(function() {
         /* ----------------------------------------------------------------
             V1.10.11 does **NOT** support .done/.fail /.always, so must use 
             deprecated .ajax() API
-        */ 
+        */
         ajax: {
             url: configValues.dataUrl,
             type: 'POST',
             headers: configTable.getXsrfToken(),
-            error: function(jqXHR, responseText, errorThrown) {
+            error: function (jqXHR, responseText, errorThrown) {
                 // explicitly hide on error, or loading element never goes away
                 var n = document.querySelector('div.dataTables_processing')
                 if (n !== null) n.style.display = 'none';
@@ -304,7 +313,7 @@ $(document).ready(function() {
                 configTable.jqModalError(errorThrown);
                 console.log(errorThrown);
             },
-            complete: function(data, textStatus, jqXHR) {
+            complete: function (data, textStatus, jqXHR) {
                 configTable.clearCheckAll();
             }
         },
@@ -319,13 +328,13 @@ $(document).ready(function() {
             // visible: false,
             searchable: false,
             orderable: false,
-            render: function(data, type, full, meta) { return "<input type='checkbox'>"; }
+            render: function (data, type, full, meta) { return "<input type='checkbox'>"; }
         },
         {
             targets: -1,
             searchable: false,
             orderable: false,
-            render: function(data, type, full, meta) {
+            render: function (data, type, full, meta) {
                 return "<span class='glyphicon glyphicon-edit green link-icons'></span>"
                 + " <span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>";
             }

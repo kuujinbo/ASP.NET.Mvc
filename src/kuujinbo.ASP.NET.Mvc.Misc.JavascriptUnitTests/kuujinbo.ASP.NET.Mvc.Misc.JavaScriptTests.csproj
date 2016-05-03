@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appConfig.UnitTests.js" />
+    <Content Include="jQueryDataTablesIndexTests.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Chutzpah.json" />
