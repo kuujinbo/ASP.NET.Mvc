@@ -9,23 +9,16 @@
     var _actionButtonSelector = '#data-table-actions button.btn';
     var _buttonSpin = 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
     var _xsrf = '__RequestVerificationToken';
-    var _modalDialogDiv = $('<div></div>');
-    var _modalDialog = _modalDialogDiv.dialog({
-        autoOpen: false, height: 276, width: 476
-    });
 
     return {
-        jqModal: function () {
-            return _modalDialog;
-            //return _modalDialog.dialog({
-            //    autoOpen: false, height: 276, width: 476
-            //});
-        },
+        jqModal: $('#datatable-success-error-modal').dialog({
+            autoOpen: false, height: 276, width: 476
+        }),
         jqModalOK: function(msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<div>' + (msg || success) + '</div>';
-            configTable.jqModal().html(html)
+            configTable.jqModal.html(html)
                 .dialog({title: success})
                 .dialog('open');
 
@@ -34,7 +27,7 @@
             var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
                 + '<div>' + (msg || err) + '</div>';
-            configTable.jqModal().html(html)
+            configTable.jqModal.html(html)
                 .dialog({title: err})
                 .dialog('open');
         },
