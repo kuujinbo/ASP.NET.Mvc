@@ -12,27 +12,28 @@
 
     return {
         jqModal: $('<div></div>').dialog({
-            autoOpen: false, modal: true, height: 400, width: 476
+            autoOpen: false, height: 276, width: 476
         }),
         jqModalOK: function(msg) {
+            var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
-                + '<p>' + msg + '</p>';
+                + '<div>' + (msg || success) + '</div>';
             configTable.jqModal.html(html)
-                .dialog({title: 'Success' })
+                .dialog({title: success })
                 .dialog('open');
         },
         jqModalError: function(msg) {
+            var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
-                + '<p>' + msg + '</p>';
+                + '<div>' + (msg || err) + '</div>';
             configTable.jqModal.html(html)
-                .dialog({title: 'Error Processing Your Request' })
+                .dialog({title: err })
                 .dialog('open');
         },
         /* -----------------------------------------------------------------
             selectors and DOM elements
         */
         getTableId: function() { return _tableId; },
-        // DataTables API instance => $().DataTable() - note CASE
         setTable: function(table) {
             _table = table;
             return this;
@@ -111,14 +112,11 @@
                 data: data ? data : null,
                 type: 'POST'
             })
-            // TODO: add modal or bootstrap message
             .done(function(data, textStatus, jqXHR) {
                 configTable.jqModalOK(data);
-                // alert(data);
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(jqXHR.data);
-                // alert('XHR request (' + url + ') failed:' + errorThrown);
             })
             // http://api.jquery.com/deferred.always/
             .always(function() { 
@@ -132,14 +130,11 @@
             e.preventDefault();
             var ids = configTable.getSelectedRowIds();
             var url = this.dataset.url;
-            // var textContent = this.textContent;
 
-            // TODO: add create logic (no checkbox selected)
             if (url) {
                 if (ids.length > 0) {
                     configTable.sendXhr(this, url, { ids: ids });
                 } else {
-            // alert(this.textContent);
                     configTable.jqModalError(
                         '<h2>No Records Selected</h2>'
                         + '<p>You must select one or more records to perform the '
@@ -271,6 +266,7 @@
 }();
 
 $(document).ready(function() {
+    // DataTables API instance => $().DataTable() - note CASE
     var table = $(configTable.getTableId()).DataTable({
         processing: true,
         serverSide: true,
@@ -294,7 +290,7 @@ $(document).ready(function() {
         },
         /* ----------------------------------------------------------------
             V1.10.11 does **NOT** support .done/.fail /.always, so must use 
-            deprecated API to handle things
+            deprecated .ajax() API
         */ 
         ajax: {
             url: configValues.dataUrl,
