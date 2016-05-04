@@ -7,7 +7,7 @@ using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
+namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 {
     /* --------------------------------------------------------------------
      * test model
@@ -15,6 +15,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
      */
     public class TestModel : IIdentifiable
     {
+        public TestModel()
+        {
+            Hobbies = new List<TestHobby>();
+        }
+
         [DataTableColumn(
             Display = false, DisplayOrder = 0,
             IsSearchable = false, IsSortable = false)
@@ -26,8 +31,21 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         public string Office { get; set; }
         [DataTableColumn(DisplayOrder = 3, DisplayName = "Start Date")]
         public DateTime? StartDate { get; set; }
-    }
 
+        [DataTableColumn(DisplayOrder = 4, FieldAccessor = "Amount")]
+        public TestSalary Salary { get; set; }
+
+        [DataTableColumn(DisplayOrder = 5, FieldAccessor = "Name")]
+        public ICollection<TestHobby> Hobbies { get; set; }
+    }
+    public class TestSalary
+    {
+        public int Amount { get; set; }
+    }
+    public class TestHobby
+    {
+        public string Name { get; set; }
+    }
 
     /* --------------------------------------------------------------------
      * model data and DataTableColumnAttribute
@@ -42,25 +60,74 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             Id = 1,
             Name = "Satou, Airi",
             Office = "Tokyo",
-            StartDate = new DateTime(2008, 11, 28)
+            StartDate = new DateTime(2008, 11, 28),
+            Salary = new TestSalary() { Amount = 80000 },
+            Hobbies = new List<TestHobby>() 
+            { 
+                new TestHobby() { Name = "1"}, new TestHobby() { Name = "2"}
+            }
         };
         public static readonly TestModel RAMOS = new TestModel
         {
             Id = 25,
             Name = "Ramos, Angelica",
             Office = "London",
-            StartDate = new DateTime(2010, 1, 1)
+            StartDate = new DateTime(2010, 1, 1),
+            Salary = new TestSalary() { Amount = 70000 },
+            Hobbies = new List<TestHobby>() 
+            { 
+                new TestHobby() { Name = "3"}, new TestHobby() { Name = "4"}
+            }
         };
         public static readonly TestModel GREER = new TestModel
         {
             Id = 20,
             Name = "Greer, Bradley",
-            Office = "London"
+            Office = "London",
+            Salary = new TestSalary() { Amount = 50000 },
+            Hobbies = new List<TestHobby>() 
+            { 
+                new TestHobby() { Name = "5"}
+            }
         };
 
         public static IEnumerable<TestModel> GetModelData()
         {
             return new List<TestModel>() { SATO, RAMOS, GREER };
+        }
+
+        /// <summary>
+        /// act and assert for current [Fact]
+        /// </summary>
+        /// <param name="entities">
+        /// entity collection in **EXPECTED** order 
+        /// </param>
+        /// <remarks>perform arrange in **CURRENT** [Fact]</remarks>
+        private void ActAndAssert(params TestModel[] entities)
+        {
+            // act
+            dynamic result = _table.GetData<TestModel>(GetModelData());
+
+            // assert
+            int entityCount = entities.Length;
+            for (int i = 0; i < entityCount; ++i)
+            {
+                Assert.Equal(entityCount, result.recordsTotal);
+                Assert.Equal(entityCount, result.recordsFiltered);
+                Assert.IsType<List<List<object>>>(result.data);
+                
+                Assert.Equal(entityCount, result.data.Count);
+
+                Assert.Equal(entities[i].Id, result.data[i][0]);
+                Assert.Equal(entities[i].Name, result.data[i][1]);
+                Assert.Equal(entities[i].Office, result.data[i][2]);
+                Assert.Equal(entities[i].StartDate, result.data[i][3]);
+                Assert.Equal(entities[i].Salary.Amount, result.data[i][4]);
+                Assert.Equal(
+                    string.Join(", ", entities[i].Hobbies.Select(x => x.Name)),
+                    result.data[i][5]
+                );
+            }
         }
 
         [Fact]
@@ -70,7 +137,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
 
             _table.SetColumns<TestModel>();
 
-            Assert.Equal(4, _table.Columns.Count());
+            Assert.Equal(6, _table.Columns.Count());
             Assert.Equal("Id", _table.Columns.ElementAt(0).Name);
             Assert.False(_table.Columns.ElementAt(0).Display);
             Assert.False(_table.Columns.ElementAt(0).IsSearchable);
@@ -78,55 +145,29 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             Assert.Equal("Name", _table.Columns.ElementAt(1).Name);
             Assert.Equal("Office", _table.Columns.ElementAt(2).Name);
             Assert.Equal("Start Date", _table.Columns.ElementAt(3).Name);
+            Assert.Equal("Salary", _table.Columns.ElementAt(4).Name);
+            Assert.Equal("Hobbies", _table.Columns.ElementAt(5).Name);
         }
 
-        [Fact]    // no sort or search criteria
+        // no sort or search criteria
+        [Fact]
         public void GetData_DefaultCall_ReturnsModelWithSpecifiedProperties()
         {
             _table = new Table()
-            {
-                Draw = 1,
-                Start = 0,
-                Length = 10,
-                SortOrders = new List<SortOrder>()
+            { 
+                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>() 
             };
             _table.SetColumns<TestModel>();
 
-            dynamic result = _table.GetData<TestModel>(GetModelData());
-
-            Assert.Equal(3, result.recordsTotal);
-            Assert.Equal(3, result.recordsFiltered);
-            Assert.IsType<List<List<object>>>(result.data);
-            Assert.Equal(3, result.data.Count);
-            Assert.Equal(SATO.Id, result.data[0][0]);
-            Assert.Equal(SATO.Name, result.data[0][1]);
-            Assert.Equal(SATO.Office, result.data[0][2]);
-            Assert.Equal(SATO.StartDate, result.data[0][3]);
-            Assert.Equal(RAMOS.Id, result.data[1][0]);
-            Assert.Equal(RAMOS.Name, result.data[1][1]);
-            Assert.Equal(RAMOS.Office, result.data[1][2]);
-            Assert.Equal(RAMOS.StartDate, result.data[1][3]);
-            Assert.Equal(GREER.Id, result.data[2][0]);
-            Assert.Equal(GREER.Name, result.data[2][1]);
-            Assert.Equal(GREER.Office, result.data[2][2]);
-            Assert.Equal(GREER.StartDate, result.data[2][3]);
-            Assert.Null(result.data[2][3]);
+            ActAndAssert(SATO, RAMOS, GREER);
         }
 
-        /* -------------------------------------------------------------------
-         * only sort, no search criteria. we only care about correct order,
-         * not all the model properties - verified in preceding test.
-         * -------------------------------------------------------------------
-         */
         [Fact]
-        public void GetData_WhenCalledWithSortCriteria_ReturnsSortedModelCollection()
+        public void GetData_SortCriteriaNoSearchCriteria_ReturnsAscendingSort()
         {
             _table = new Table()
             {
-                Draw = 1,
-                Start = 0,
-                Length = 10,
-                SortOrders = new List<SortOrder>() 
+                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'Name' property
                     new SortOrder { Column = 1, Direction = DataTableModelBinder.ORDER_ASC } 
@@ -134,22 +175,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             };
             _table.SetColumns<TestModel>();
 
-            dynamic result = _table.GetData<TestModel>(GetModelData());
-
-            Assert.Equal(3, result.recordsTotal);
-            Assert.Equal(3, result.recordsFiltered);
-            Assert.Equal(GREER.Name, result.data[0][1]);
-            Assert.Equal(RAMOS.Name, result.data[1][1]);
-            Assert.Equal(SATO.Name, result.data[2][1]);
+            ActAndAssert(GREER, RAMOS, SATO);
         }
 
-        /* -------------------------------------------------------------------
-         * only sort, no search criteria. we only care about correct order,
-         * not all the model properties.
-         * -------------------------------------------------------------------
-         */
         [Fact]
-        public void GetData_WhenCalledWithSortNonAscCriteria_ReturnsDescendingSortModelCollection()
+        public void GetData_SortNonAscCriteriaNoSearchCriteria_ReturnsDescendingSort()
         {
             _table = new Table()
             {
@@ -165,22 +195,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             };
             _table.SetColumns<TestModel>();
 
-            dynamic result = _table.GetData<TestModel>(GetModelData());
-
-            Assert.Equal(3, result.recordsTotal);
-            Assert.Equal(3, result.recordsFiltered);
-            Assert.Equal(SATO.Name, result.data[0][1]);
-            Assert.Equal(RAMOS.Name, result.data[1][1]);
-            Assert.Equal(GREER.Name, result.data[2][1]);
+            ActAndAssert(SATO, RAMOS, GREER);
         }
 
-        /* -------------------------------------------------------------------
-         * only search, no sort criteria. we only care that the correct number
-         * of records and model instances are returned.
-         * -------------------------------------------------------------------
-         */
         [Fact]
-        public void GetData_WhenCalledWithSearchCriteria_ReturnsCorrectModelCollection()
+        public void GetData_SearchNullOrEmptyCriteria_IgnoresSearchAndReturnsAllData()
         {
             _table = new Table()
             {
@@ -190,31 +209,33 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
                 SortOrders = new List<SortOrder>()
             };
             _table.SetColumns<TestModel>();
-            // search 'Name' property => case-insensitive
-            _table.Columns.ElementAt(1).Search = new Search() { Value = "g" };
 
-            dynamic result = _table.GetData<TestModel>(GetModelData());
+            _table.Columns.ElementAt(1).Search = new Search() { Value = "  " };
+            _table.Columns.ElementAt(2).Search = new Search();
 
-            Assert.Equal(2, result.recordsTotal);
-            Assert.Equal(2, result.recordsFiltered);
-            Assert.Equal(RAMOS.Name, result.data[0][1]);
-            Assert.Equal(GREER.Name, result.data[1][1]);
+            ActAndAssert(SATO, RAMOS, GREER);
         }
 
-        /* -------------------------------------------------------------------
-         * sort **AND** search criteria. we only care that the correct number
-         * of records and model instances are returned.
-         * -------------------------------------------------------------------
-         */
         [Fact]
-        public void GetData_WhenCalledWithSortAndSearchCriteria_ReturnsCorrectModelCollection()
+        public void GetData_SearchCriteriaNoSortCriteria_ReturnsSearchMatchInOriginalOrder()
         {
             _table = new Table()
             {
-                Draw = 1,
-                Start = 0,
-                Length = 10,
-                SortOrders = new List<SortOrder>() 
+                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>()
+            };
+            _table.SetColumns<TestModel>();
+            // search 'Name' property => case-insensitive
+            _table.Columns.ElementAt(1).Search = new Search() { Value = "g" };
+
+            ActAndAssert(RAMOS, GREER);
+        }
+
+        [Fact]
+        public void GetData_SortAndSearchCriteria_ReturnsSearchMatchInRequestedOrder()
+        {
+            _table = new Table()
+            {
+                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'StartDate' property
                     new SortOrder { Column = 3, Direction = DataTableModelBinder.ORDER_ASC },
@@ -229,12 +250,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             // search 'Office' property => case-insensitive
             _table.Columns.ElementAt(2).Search = new Search() { Value = "lon" };
 
-            dynamic result = _table.GetData<TestModel>(GetModelData());
-
-            Assert.Equal(2, result.recordsTotal);
-            Assert.Equal(2, result.recordsFiltered);
-            Assert.Equal(GREER.Name, result.data[0][1]);
-            Assert.Equal(RAMOS.Name, result.data[1][1]);
+            ActAndAssert(GREER, RAMOS);
         }
     }
 

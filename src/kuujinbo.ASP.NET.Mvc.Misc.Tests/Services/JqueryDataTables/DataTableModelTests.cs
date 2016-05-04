@@ -8,9 +8,9 @@ using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 using Xunit;
 using Moq;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
+namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 {
-    public class DataTableBinderTests
+    public class DataTableModelTests
     {
         DataTableModelBinder _binder;
         NameValueCollection _form;
@@ -73,7 +73,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
             _form["search[value]"] = "global search value";
         }
 
-        public DataTableBinderTests()
+        public DataTableModelTests()
         {
             Setup();
         }

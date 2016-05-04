@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using Xunit;
 using Moq;
 
-namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
+namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
 {
     public class FakeController : Controller
     {
@@ -38,6 +38,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
                 () => _fakeController
                     .JsonData(null)
             );
+
             Assert.Equal<string>("data", exception.ParamName);
         }
 

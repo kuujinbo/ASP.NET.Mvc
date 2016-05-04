@@ -35,9 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataTableBinderTests.cs" />
-    <Compile Include="JsonNetResultTests.cs" />
-    <Compile Include="TableTests.cs" />
+    <Compile Include="Helpers\JsonNetResultTests.cs" />
+    <Compile Include="Helpers\JsonNetSerializerTests.cs" />
+    <Compile Include="Services\JqueryDataTables\ActionButtonTests.cs" />
+    <Compile Include="Services\JqueryDataTables\DataTableModelTests.cs" />
+    <Compile Include="Services\JqueryDataTables\TableTests.cs" />
     <Compile Include="XsrfFilterTests.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

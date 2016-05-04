@@ -7,11 +7,13 @@ namespace System.Web.Mvc
     {
         public static string Get(object o)
         {
-            return JsonConvert.SerializeObject(
-                o, 
-                Formatting.Indented, 
-                new IsoDateTimeConverter() { DateTimeFormat = "M/d/yyyy" }
-            );
+            if (o == null) throw new System.ArgumentNullException("o");
+
+            var settings = new JsonSerializerSettings();
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.Converters.Add(new IsoDateTimeConverter { DateTimeFormat = "M/d/yyyy" });
+
+            return JsonConvert.SerializeObject(o, Formatting.Indented, settings);
         }
     }
 }
