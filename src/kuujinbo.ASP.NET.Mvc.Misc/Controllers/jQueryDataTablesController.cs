@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
@@ -12,6 +13,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 {
     public class jQueryDataTablesController : Controller
     {
+        private static ICollection<TestModel> _data;
+
         private Table InitDataTable(UrlHelper url)
         {
             var table = new Table()
@@ -41,10 +44,20 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             return table;
         }
 
+
         public ActionResult Index()
         {
             ViewBag.Title = "jQuery DataTables Test";
             var table = InitDataTable(Url);
+
+            if (_data == null)
+            {
+                string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
+                _data = JsonConvert
+                    .DeserializeObject<ICollection<TestModel>>(
+                        System.IO.File.ReadAllText(dataFile)
+                    );            
+            }
             return View("_jQueryDataTables", table);
         }
 
@@ -54,14 +67,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             System.Diagnostics.Debug.WriteLine(
                 JsonNetSerializer.Get(Request.Form)
             );
-
-            string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
-            string json = System.IO.File.ReadAllText(dataFile);
-            var dataFromFile = JsonConvert.DeserializeObject<IEnumerable<TestModel>>(json);
-
             //System.Threading.Thread.Sleep(1000);
-            //throw new Exception("error");
-            return new JsonNetResult(table.GetData<TestModel>(dataFromFile));
+            return new JsonNetResult(table.GetData<TestModel>(_data));
         }
 
         private object GetBatchUpdateResponseObject(IEnumerable<int> ids)
@@ -93,7 +100,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         [HttpAjaxPost]
         public ActionResult DeleteOne(int id)
         {
-            return new JsonNetResult(GetBatchUpdateResponseObject(new int[] {id}));
+            var toDelete = _data.SingleOrDefault(x => x.Id == id);
+            if (toDelete != null)
+            {
+                _data.Remove(toDelete);
+                return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         public ActionResult Create()

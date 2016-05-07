@@ -115,6 +115,13 @@
             })
             .done(function(data, textStatus, jqXHR) {
                 configTable.jqModalOK(data);
+
+                // TODO - refactor
+                if (url === configValues.deleteRowUrl) {
+                    var row = element.parentNode.parentNode;
+                    _table.row(row).remove().draw(false);
+                }
+
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(jqXHR.data);
@@ -194,15 +201,11 @@
             else if (target.tagName.toLowerCase() === 'span' && target.classList.contains('glyphicon')) {
                 var row = target.parentNode.parentNode;
                 if (target.classList.contains('glyphicon-remove-circle')) {
-                    // TODO: ajax call to delete record from datatbase...
+                    // delete record from dataset...
                     configTable.sendXhr(
                         target, configValues.deleteRowUrl, { id: _table.row(row).data()[0] }
                     );
 
-                    // send XHR to request updated view
-                    _table.row(row).remove()
-                        .page(_table.page.info().page)
-                        .draw(false);
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
