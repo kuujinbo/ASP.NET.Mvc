@@ -116,12 +116,10 @@
             .done(function(data, textStatus, jqXHR) {
                 configTable.jqModalOK(data);
 
-                // TODO - refactor
+                // redisplay UI on row delete
                 if (url === configValues.deleteRowUrl) {
-                    var row = element.parentNode.parentNode;
-                    _table.row(row).remove().draw(false);
+                    _table.draw(false);
                 }
-
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(jqXHR.data);
