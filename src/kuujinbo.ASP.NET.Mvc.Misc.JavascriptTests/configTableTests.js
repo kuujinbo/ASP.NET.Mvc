@@ -103,7 +103,7 @@ describe('configTable', function() {
     });
 
     // add / remove the processing spinner from buttons
-    describe('buttonProcessing', function() {
+    describe('showSpin', function() {
         var template, classes, classString;
         beforeEach(function() {
             template = document.createElement('div');
@@ -113,7 +113,7 @@ describe('configTable', function() {
 
         it('should add the expected classes', function() {
             template.innerHTML = '<span></span>';
-            configTable.buttonProcessing(template, true);
+            configTable.showSpin(template, true);
             var span = template.firstChild;
 
             expect(classes.length).toEqual(3);
@@ -124,7 +124,7 @@ describe('configTable', function() {
 
         it('should remove the expected classes', function() {
             template.innerHTML = '<span class="' + classString + '"></span>';
-            configTable.buttonProcessing(template);
+            configTable.showSpin(template);
             var span = template.firstChild;
 
             for (var i = 0; i < classes.length; ++i) {
@@ -139,7 +139,7 @@ describe('configTable', function() {
             deferred = new jQuery.Deferred();
             element = document.createElement('div');
             spyOn(jQuery, 'ajax').and.returnValue(deferred);
-            spyOn(configTable, 'buttonProcessing');
+            spyOn(configTable, 'showSpin');
             configTable.sendXhr(element, '/', '');
         });
 
@@ -152,14 +152,14 @@ describe('configTable', function() {
             expect(jQuery.ajax).toHaveBeenCalledWith(expectedArgs);
         });
 
-        it('should call buttonProcessing before sending the XHR', function() {
+        it('should call showSpin before sending the XHR', function() {
             // mock XHR has **NOT** returned
             expect(deferred.state()).toEqual("pending");
-            expect(configTable.buttonProcessing.calls.count()).toEqual(1);
-            expect(configTable.buttonProcessing).toHaveBeenCalledWith(element, true);
+            expect(configTable.showSpin.calls.count()).toEqual(1);
+            expect(configTable.showSpin).toHaveBeenCalledWith(element, true);
         });
 
-        it('should call jqModalOK and buttonProcessing when promise is fulfilled', function () {
+        it('should call jqModalOK and showSpin when promise is fulfilled', function () {
             var httpResponseMsg = 'HTTP response success';
             spyOn(configTable, 'jqModalOK');
 
@@ -167,12 +167,12 @@ describe('configTable', function() {
 
             expect(configTable.jqModalOK.calls.count()).toEqual(1);
             expect(configTable.jqModalOK).toHaveBeenCalledWith(httpResponseMsg);
-            expect(configTable.buttonProcessing.calls.count()).toEqual(2);
+            expect(configTable.showSpin.calls.count()).toEqual(2);
             // ajax.always()
-            expect(configTable.buttonProcessing).toHaveBeenCalledWith(element);
+            expect(configTable.showSpin).toHaveBeenCalledWith(element);
         });
 
-        it('should call jqModalError and buttonProcessing when promise is rejected', function () {
+        it('should call jqModalError and showSpin when promise is rejected', function () {
             var httpResponseMsg = 'HTTP response error';
             spyOn(configTable, 'jqModalError');
             var jqXHR = { data: httpResponseMsg }
@@ -181,13 +181,13 @@ describe('configTable', function() {
 
             expect(configTable.jqModalError.calls.count()).toEqual(1);
             expect(configTable.jqModalError).toHaveBeenCalledWith(httpResponseMsg);
-            expect(configTable.buttonProcessing.calls.count()).toEqual(2);
+            expect(configTable.showSpin.calls.count()).toEqual(2);
             // ajax.always()
-            expect(configTable.buttonProcessing).toHaveBeenCalledWith(element);
+            expect(configTable.showSpin).toHaveBeenCalledWith(element);
         });
     });
 
-    describe('actionButtonClick', function () {
+    describe('clickActionButton', function () {
         var template, event;
         beforeEach(function () {
             template = document.createElement('div');
@@ -203,7 +203,7 @@ describe('configTable', function() {
             template.innerHTML = '<button class="btn btn-primary">Batch Update<span></span></button>';
             event.target = template.firstChild;
 
-            var result = configTable.actionButtonClick(event);
+            var result = configTable.clickActionButton(event);
 
             expect(result).toEqual(false);
             expect(event.preventDefault).toHaveBeenCalled();
@@ -220,7 +220,7 @@ describe('configTable', function() {
             template.innerHTML = '<button class="btn btn-primary" data-url="/action">Batch Update<span></span></button>';
             event.target = template.firstChild;
 
-            var result = configTable.actionButtonClick(event);
+            var result = configTable.clickActionButton(event);
 
             expect(result).toEqual(false);
             expect(event.preventDefault).toHaveBeenCalled();
@@ -235,7 +235,7 @@ describe('configTable', function() {
             template.innerHTML = '<button class="btn btn-primary" data-url="/action">Batch Update<span></span></button>';
             event.target = template.firstChild;
 
-            var result = configTable.actionButtonClick(event);
+            var result = configTable.clickActionButton(event);
 
             expect(result).toEqual(false);
             expect(event.preventDefault).toHaveBeenCalled();
@@ -246,7 +246,51 @@ describe('configTable', function() {
         });
     });
 
-    describe('searchIconsClick', function () {
+    // click 'datatable-check-all' checkbox - [un]check all checkboxes
+    describe('clickCheckAll', function () {
+        var template, event;
+        var checked = configTable.getCheckedSelector();
+        var unchecked = configTable.getUncheckedSelector();
+
+        beforeEach(function () {
+            setFixtures(
+                '<div>'
+                + "<input type='checkbox' />"
+                + "<input type='checkbox' checked='checked' />"
+                + '</div>'
+            );
+            template = document.createElement('div');
+            event = {};
+            spyOnEvent(checked, 'click');
+            spyOnEvent(unchecked, 'click');
+        });
+
+        afterEach(function () {
+            if (template) removeTemplateChildren(template);
+        });
+
+        it('should only fire click event on checked checkboxes when clickAll is unchecked', function () {
+            template.innerHTML = "<input id='datatable-check-all' type='checkbox' />";
+            event.target = template.firstChild;
+
+            configTable.clickCheckAll(event);
+
+            expect('click').toHaveBeenTriggeredOn(checked);
+            expect('click').not.toHaveBeenTriggeredOn(unchecked);
+        });
+
+        it('should only fire click event on unchecked checkboxes when clickAll is checked', function () {
+            template.innerHTML = "<input id='datatable-check-all' type='checkbox' checked='checked' />";
+            event.target = template.firstChild;
+
+            configTable.clickCheckAll(event);
+
+            expect('click').not.toHaveBeenTriggeredOn(checked);
+            expect('click').toHaveBeenTriggeredOn(unchecked);
+        });
+    });
+
+    describe('clickSearch', function () {
         var template, event;
         beforeEach(function () {
             template = document.createElement('div');
@@ -254,12 +298,12 @@ describe('configTable', function() {
         });
 
         it('should search when icon is clicked', function () {
-            spyOn(configTable, 'doSearch');
+            spyOn(configTable, 'search');
             template.innerHTML = "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>";
             event.target = template.firstChild;
 
-            configTable.searchIconsClick(event);
-            expect(configTable.doSearch).toHaveBeenCalled();
+            configTable.clickSearch(event);
+            expect(configTable.search).toHaveBeenCalled();
         });
 
         it('should clear the search and reload data when icon is clicked', function () {
@@ -268,31 +312,31 @@ describe('configTable', function() {
             template.innerHTML = "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
             event.target = template.firstChild;
 
-            configTable.searchIconsClick(event);
+            configTable.clickSearch(event);
             expect(configTable.clearSearchBoxes).toHaveBeenCalled();
             expect(configTable.reload).toHaveBeenCalled();
         });
     });
 
-    describe('searchBoxKeyup', function () {
+    describe('keyupSearch', function () {
         var event;
         beforeEach(function () {
-            spyOn(configTable, 'doSearch');
+            spyOn(configTable, 'search');
             event = {};
         });
 
         it('should search when KeyboardEvent.which is carriage return', function () {
             event.which = 13;
 
-            configTable.searchBoxKeyup(event);
-            expect(configTable.doSearch).toHaveBeenCalled();
+            configTable.keyupSearch(event);
+            expect(configTable.search).toHaveBeenCalled();
         });
 
         it('should not search when KeyboardEvent.which is not carriage return', function () {
             event.which = 0;
 
-            configTable.searchBoxKeyup(event);
-            expect(configTable.doSearch).not.toHaveBeenCalled();
+            configTable.keyupSearch(event);
+            expect(configTable.search).not.toHaveBeenCalled();
         });
     });
 });

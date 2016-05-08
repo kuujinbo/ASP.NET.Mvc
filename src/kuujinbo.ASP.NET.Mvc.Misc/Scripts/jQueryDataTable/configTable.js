@@ -3,15 +3,11 @@
     var _configValues = {};
     var _tableId = '#jquery-data-table';
     var _checkAllId = '#datatable-check-all';
-    var _loadingElement = "<h1 class='dataTablesLoading'>Loading data <span class='glyphicon glyphicon-refresh spin-infinite' /></h1>";
-    var _checkboxChecked = 'input[type="checkbox"]:checked';
-    var _checkboxUnchecked = 'input[type="checkbox"]:not(:checked)';
     var _searchBoxSelector = 'tfoot input[type=text]';
     var _selectRowClass = 'datatable-select-row';
     var _actionButtonSelector = '#data-table-actions button.btn';
     var _buttonSpin = 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
     var _xsrf = '__RequestVerificationToken';
-    var _invalidUrl = '<h2>Invalid URL</h2>Please contact the application administrators.';
 
     return {
         jqModal: $('#datatable-success-error-modal').dialog({
@@ -47,9 +43,15 @@
             _configValues = config;
             return this;
         },
-        getLoadingElement: function() { return _loadingElement; },
-        getInvalidUrlMessage: function() { return _invalidUrl; },
-        getSearchBoxSelector: function() { return _searchBoxSelector  ; },
+        getLoadingElement: function() {
+            return "<h1 class='dataTablesLoading'>Loading data <span class='glyphicon glyphicon-refresh spin-infinite' /></h1>";
+        },
+        getInvalidUrlMessage: function() {
+            return '<h2>Invalid URL</h2>Please contact the application administrators.';
+        },
+        getSearchBoxSelector: function() { return _searchBoxSelector; },
+        getCheckedSelector: function() { return 'input[type="checkbox"]:checked'; },
+        getUncheckedSelector: function() { return 'input[type="checkbox"]:not(:checked)'; },
         /* -----------------------------------------------------------------
             helper functions
         */
@@ -66,7 +68,7 @@
 
             configTable.clearSearchColumns();
         },
-        doSearch: function() {
+        search: function() {
             var searchCount = 0;
             var nodes = document.querySelectorAll('input[type=text]');
             for (i = 0; i < nodes.length; ++i) {
@@ -107,7 +109,7 @@
             }
             return null;
         },
-        buttonProcessing: function(element, doAdd) {
+        showSpin: function(element, doAdd) {
             var span = element.querySelector('span');
             if (span) {
                 if (doAdd) {
@@ -119,7 +121,7 @@
             }
         },
         sendXhr: function(element, url, data) {
-            configTable.buttonProcessing(element, true);
+            configTable.showSpin(element, true);
             $.ajax({
                 url: url,
                 headers: configTable.getXsrfToken(),
@@ -139,13 +141,13 @@
             })
             // http://api.jquery.com/deferred.always/
             .always(function() { 
-                configTable.buttonProcessing(element)
+                configTable.showSpin(element)
             });
         },
         /* -----------------------------------------------------------------
             event listeners
         */
-        actionButtonClick: function(e) {
+        clickActionButton: function(e) {
             e.preventDefault();
             var target = e.target;
             var url = target.dataset.url;
@@ -163,24 +165,30 @@
                     );
                 }
             }
-            else { configTable.jqModalError(_invalidUrl); }
+            else { 
+                configTable.jqModalError(configTable.getInvalidUrlMessage()); 
+            }
 
             return false;
         },
-        checkAll: function(e) {
-            if (this.checked) {
-                var nodes = document.querySelectorAll(_checkboxUnchecked);
+        clickCheckAll: function(e) {
+            if (e.target.checked) {
+                var nodes = document.querySelectorAll(
+                    configTable.getUncheckedSelector()
+                );
                 for (i = 0; i < nodes.length; ++i) nodes[i].click();
             } else {
-                var nodes = document.querySelectorAll(_checkboxChecked);
+                var nodes = document.querySelectorAll(
+                    configTable.getCheckedSelector()
+                );
                 for (i = 0; i < nodes.length; ++i) nodes[i].click();
             }
         },
         // search icons in <span>
-        searchIconsClick: function(e) {
+        clickSearch: function(e) {
             var target = e.target;
             if (target.classList.contains('glyphicon-search')) {
-                configTable.doSearch();
+                configTable.search();
             }
             else if (target.classList.contains('glyphicon-repeat')) {
                 configTable.clearSearchBoxes();
@@ -188,15 +196,10 @@
             }
         },
         // search when ENTER key pressed in <input> textbox
-        searchBoxKeyup: function(e) {
-            if (e.which === 13) {
-                configTable.doSearch();
-            }
+        keyupSearch: function(e) {
+            if (e.which === 13) configTable.search();
         },
-        footerSearchFocusin: function(e) {
-            // configTable.clearSearchBoxes();
-        },
-        tableClick: function(e) {
+        clickTable: function(e) {
             var target = e.target;
             // single checkbox click
             if (target.type === 'checkbox') {
@@ -210,7 +213,8 @@
                 }
             }
             // edit & delete links
-            else if (target.tagName.toLowerCase() === 'span' && target.classList.contains('glyphicon')) {
+            else if (target.tagName.toLowerCase() === 'span'
+            && target.classList.contains('glyphicon')) {
                 var row = target.parentNode.parentNode;
                 if (target.classList.contains('glyphicon-remove-circle')) {
                     // delete record from dataset...
@@ -221,7 +225,9 @@
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
-                    document.location.href = _configValues.editRowUrl + '/' + _table.row(row).data()[0];
+                    document.location.href = _configValues.editRowUrl
+                        + '/'
+                        + _table.row(row).data()[0];
                 }
             }
         },
@@ -238,16 +244,16 @@
             // action buttons
             var buttons = document.querySelectorAll(_actionButtonSelector);
             for (i = 0 ; i < buttons.length ; i++) {
-                buttons[i].addEventListener('click', configTable.actionButtonClick, false);
+                buttons[i].addEventListener('click', configTable.clickActionButton, false);
             }
 
             // 'check all' checkbox
             var checkAll = document.querySelector(_checkAllId);
-            if (checkAll != null) checkAll.addEventListener('click', configTable.checkAll, false);
+            if (checkAll != null) checkAll.addEventListener('click', configTable.clickCheckAll, false);
 
             // datatable clicks
-            var tableClick = document.querySelector(_tableId);
-            if (tableClick != null) tableClick.addEventListener('click', configTable.tableClick, false);
+            var clickTable = document.querySelector(_tableId);
+            if (clickTable != null) clickTable.addEventListener('click', configTable.clickTable, false);
 
             // inject search icons & add event listeners
             var footers = document.querySelectorAll(_tableId + ' tfoot th');
@@ -256,7 +262,7 @@
                 + "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
             var searchIcons = document.querySelectorAll('tfoot span.search-icons');
             for (var i = 0; i < searchIcons.length; i++) {
-                searchIcons[i].addEventListener('click', configTable.searchIconsClick, false);
+                searchIcons[i].addEventListener('click', configTable.clickSearch, false);
             }
 
             /* ---------------------------------------------------------------
@@ -272,10 +278,9 @@
                     "<input style='width:100% !important;display: block !important;'"
                     + " data-column-number='" + i + "'"
                     + " class='form-control' type='text' placeholder='Search' />";
-                //footerSearchBoxes[i]
-                //    .addEventListener('focusin', configTable.footerSearchFocusin, false);
+
                 footerSearchBoxes[i]
-                    .addEventListener('keyup', configTable.searchBoxKeyup, false);
+                    .addEventListener('keyup', configTable.keyupSearch, false);
             }
         }
     }

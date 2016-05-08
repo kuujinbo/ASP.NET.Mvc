@@ -44,6 +44,7 @@
   <ItemGroup>
     <Content Include="appConfig.UnitTests.js" />
     <Content Include="configTableTests.js" />
+    <Content Include="testHelpers\jasmine-jquery.js" />
     <Content Include="testHelpers\mock-ajax.js" />
   </ItemGroup>
   <ItemGroup>
