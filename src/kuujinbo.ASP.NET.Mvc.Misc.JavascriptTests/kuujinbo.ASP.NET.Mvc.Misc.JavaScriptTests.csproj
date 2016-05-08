@@ -43,7 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appConfig.UnitTests.js" />
-    <Content Include="jQueryDataTablesIndexTests.js" />
+    <Content Include="configTableTests.js" />
+    <Content Include="testHelpers\mock-ajax.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Chutzpah.json" />

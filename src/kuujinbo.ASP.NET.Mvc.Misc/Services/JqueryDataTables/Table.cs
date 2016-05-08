@@ -331,10 +331,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 dataUrl = DataUrl,
                 deleteRowUrl = DeleteRowUrl,
                 editRowUrl = EditRowUrl,
-                allowMultiColumnSorting = AllowMultiColumnSorting,
+                allowMultiColumnSorting = AllowMultiColumnSorting
             });
         }
-
-
     }
 }

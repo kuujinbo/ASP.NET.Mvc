@@ -9,9 +9,11 @@
     "Tests": [{
             "Path": "./",
             "Includes": [ "*.js" ],
+            "Excludes": ["*mock-ajax.js"],
             "ExpandReferenceComments": "true"
     }],
     "References": [
+        { "Path": "./testHelpers/mock-ajax.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/jquery-2.2.3.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/angular.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/lib/angular-mocks.js" }

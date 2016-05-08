@@ -1,14 +1,17 @@
 ﻿var configTable = function() {
     var _table;
+    var _configValues = {};
     var _tableId = '#jquery-data-table';
+    var _checkAllId = '#datatable-check-all';
     var _loadingElement = "<h1 class='dataTablesLoading'>Loading data <span class='glyphicon glyphicon-refresh spin-infinite' /></h1>";
-    var _checkAllSelector = '#datatable-check-all';
     var _checkboxChecked = 'input[type="checkbox"]:checked';
     var _checkboxUnchecked = 'input[type="checkbox"]:not(:checked)';
+    var _searchBoxSelector = 'tfoot input[type=text]';
     var _selectRowClass = 'datatable-select-row';
     var _actionButtonSelector = '#data-table-actions button.btn';
     var _buttonSpin = 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
     var _xsrf = '__RequestVerificationToken';
+    var _invalidUrl = '<h2>Invalid URL</h2>Please contact the application administrators.';
 
     return {
         jqModal: $('#datatable-success-error-modal').dialog({
@@ -35,32 +38,43 @@
             selectors and DOM elements
         */
         getTableId: function() { return _tableId; },
+        getCheckAllId: function() { return _checkAllId; },
         setTable: function(table) {
             _table = table;
             return this;
         },
+        setConfigValues: function(config) {
+            _configValues = config;
+            return this;
+        },
         getLoadingElement: function() { return _loadingElement; },
+        getInvalidUrlMessage: function() { return _invalidUrl; },
+        getSearchBoxSelector: function() { return _searchBoxSelector  ; },
         /* -----------------------------------------------------------------
             helper functions
         */
+        reload: function() { _table.ajax.reload(); },
         clearCheckAll: function() {
             // ajax call only updates tbody
-            var n = document.querySelector(_checkAllSelector);
+            var n = document.querySelector(_checkAllId);
             if (n !== null) n.checked = false;
         },
-        clearSearchBoxes: function() {
-            var nodes = document.querySelectorAll('tfoot input[type=text]');
+        clearSearchColumns: function() { _table.search('').columns().search(''); },
+        clearSearchBoxes: function () {
+            var nodes = document.querySelectorAll(_searchBoxSelector);
             for (i = 0; i < nodes.length; ++i) nodes[i].value = '';
-            _table.search('').columns().search('');
+
+            configTable.clearSearchColumns();
         },
         doSearch: function() {
             var searchCount = 0;
             var nodes = document.querySelectorAll('input[type=text]');
             for (i = 0; i < nodes.length; ++i) {
+                var searchText = nodes[i].value;
                 // search only if non-whitespace
-                if (!/^\s+$/.test(nodes[i].value) ) {
+                if (searchText !== '' && !/^\s+$/.test(searchText)) {
                     ++searchCount;
-                    _table.column(nodes[i].dataset.columnNumber).search(nodes[i].value);
+                    _table.column(nodes[i].dataset.columnNumber).search(searchText);
                 }
                 /* explicitly clear individual input, or will save last value 
                    if user backspaces.
@@ -79,9 +93,8 @@
             var selectedIds = [];
             _table.rows().every(function(rowIdx, tableLoop, rowLoop) {
                 var cb = this.node().querySelector(_checkboxChecked);
-                if (cb !== null && cb.checked) {
-                    selectedIds.push(this.data()[0]);
-                }
+
+                if (cb !== null && cb.checked) selectedIds.push(this.data()[0]);
             });
             return selectedIds;
         },
@@ -96,7 +109,7 @@
         },
         buttonProcessing: function(element, doAdd) {
             var span = element.querySelector('span');
-            if (span != null) {
+            if (span) {
                 if (doAdd) {
                     _buttonSpin.forEach(function(i) { span.classList.add(i) });
                 }
@@ -117,7 +130,7 @@
                 configTable.jqModalOK(data);
 
                 // redisplay UI on row delete
-                if (url === configValues.deleteRowUrl) {
+                if (url === _configValues.deleteRowUrl) {
                     _table.draw(false);
                 }
             })
@@ -134,24 +147,23 @@
         */
         actionButtonClick: function(e) {
             e.preventDefault();
-            var ids = configTable.getSelectedRowIds();
-            var url = this.dataset.url;
+            var target = e.target;
+            var url = target.dataset.url;
 
             if (url) {
+                var ids = configTable.getSelectedRowIds();
                 if (ids.length > 0) {
-                    configTable.sendXhr(this, url, { ids: ids });
+                    configTable.sendXhr(target, url, { ids: ids });
                 } else {
                     configTable.jqModalError(
                         '<h2>No Records Selected</h2>'
-                        + '<p>You must select one or more records to perform the '
-                        + (this.textContent || 'selected')
-                        + ' action.</p>'
+                        + 'Select one or more records to process the '
+                        + (target.textContent || 'selected')
+                        + ' action.'
                     );
                 }
             }
-            else {
-                configTable.sendXhr(this, url);
-            }
+            else { configTable.jqModalError(_invalidUrl); }
 
             return false;
         },
@@ -166,11 +178,13 @@
         },
         // search icons in <span>
         searchIconsClick: function(e) {
-            if (this.classList.contains('glyphicon-search')) {
+            var target = e.target;
+            if (target.classList.contains('glyphicon-search')) {
                 configTable.doSearch();
             }
-            else if (this.classList.contains('glyphicon-remove')) {
+            else if (target.classList.contains('glyphicon-repeat')) {
                 configTable.clearSearchBoxes();
+                configTable.reload();
             }
         },
         // search when ENTER key pressed in <input> textbox
@@ -201,13 +215,13 @@
                 if (target.classList.contains('glyphicon-remove-circle')) {
                     // delete record from dataset...
                     configTable.sendXhr(
-                        target, configValues.deleteRowUrl, { id: _table.row(row).data()[0] }
+                        target, _configValues.deleteRowUrl, { id: _table.row(row).data()[0] }
                     );
 
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
-                    document.location.href = configValues.editRowUrl + '/' + _table.row(row).data()[0];
+                    document.location.href = _configValues.editRowUrl + '/' + _table.row(row).data()[0];
                 }
             }
         },
@@ -228,7 +242,7 @@
             }
 
             // 'check all' checkbox
-            var checkAll = document.querySelector(_checkAllSelector);
+            var checkAll = document.querySelector(_checkAllId);
             if (checkAll != null) checkAll.addEventListener('click', configTable.checkAll, false);
 
             // datatable clicks
@@ -239,7 +253,7 @@
             var footers = document.querySelectorAll(_tableId + ' tfoot th');
             footers[footers.length - 1].innerHTML =
                 "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
-                + "<span class='search-icons glyphicon glyphicon-remove' title='Clear Search'></span>";
+                + "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
             var searchIcons = document.querySelectorAll('tfoot span.search-icons');
             for (var i = 0; i < searchIcons.length; i++) {
                 searchIcons[i].addEventListener('click', configTable.searchIconsClick, false);
@@ -266,73 +280,3 @@
         }
     }
 }();
-
-
-$(document).ready(function () {
-    // DataTables API instance => $().DataTable() - note CASE
-    var table = $(configTable.getTableId()).DataTable({
-        processing: true,
-        serverSide: true,
-        deferRender: true,
-        stateSave: true,
-        // true by default, allow  shift-click multiple column sorting
-        // orderMulti: configValues.allowMultiColumnSorting,
-        orderMulti: true,
-        dom: 'lrtip',
-        pagingType: 'full_numbers',
-        // autoWidth: true,
-        order: [[1, 'asc']],
-        language: {
-            processing: configTable.getLoadingElement(),
-            paginate: {
-                previous: "<span class='glyphicon glyphicon-chevron-left' title='PREVIOUS' />",
-                next: "<span class='glyphicon glyphicon-chevron-right'  title='NEXT' />",
-                first: "<span class='glyphicon glyphicon-fast-backward' title='FIRST' />",
-                last: "<span class='glyphicon glyphicon-fast-forward' title='LAST' />"
-            }
-        },
-        /* ----------------------------------------------------------------
-            V1.10.11 does **NOT** support .done/.fail /.always, so must use 
-            deprecated .ajax() API
-        */
-        ajax: {
-            url: configValues.dataUrl,
-            type: 'POST',
-            headers: configTable.getXsrfToken(),
-            error: function (jqXHR, responseText, errorThrown) {
-                // explicitly hide on error, or loading element never goes away
-                var n = document.querySelector('div.dataTables_processing')
-                if (n !== null) n.style.display = 'none';
-
-                configTable.jqModalError(errorThrown);
-                console.log(errorThrown);
-            },
-            complete: function (data, textStatus, jqXHR) {
-                configTable.clearCheckAll();
-            }
-        },
-        /* ----------------------------------------------------------------
-            first and last columns hard-coded for consistent display:
-            -- first: checkboxes => bulk action button(s)
-            -- last: single row/record edit/delete
-        */
-        columnDefs: [{
-            targets: 0,
-            // TODO: fix search when hidden
-            // visible: false,
-            searchable: false,
-            orderable: false,
-            render: function (data, type, full, meta) { return "<input type='checkbox'>"; }
-        },
-        {
-            targets: -1,
-            searchable: false,
-            orderable: false,
-            render: function (data, type, full, meta) {
-                return "<span class='glyphicon glyphicon-edit green link-icons'></span>"
-                + " <span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>";
-            }
-        }]
-    });
-    configTable.setTable(table).init();
-});

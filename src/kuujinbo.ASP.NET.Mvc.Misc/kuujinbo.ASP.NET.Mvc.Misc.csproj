@@ -161,7 +161,8 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="Scripts\jQueryDataTablesIndex.js" />
+    <Content Include="Scripts\jQueryDataTable\configTable.js" />
+    <Content Include="Scripts\jQueryDataTable\Table.js" />
     <Content Include="Scripts\lib\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\lib\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\lib\jquery-2.2.3.min.map" />
