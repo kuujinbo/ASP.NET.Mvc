@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using System.Threading;
 using Newtonsoft.Json;
 using kuujinbo.ASP.NET.Mvc.Misc.Models;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
-using Newtonsoft.Json.Converters;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 {
@@ -67,7 +66,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             System.Diagnostics.Debug.WriteLine(
                 JsonNetSerializer.Get(Request.Form)
             );
-            //System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(250);
             return new JsonNetResult(table.GetData<TestModel>(_data));
         }
 
@@ -82,24 +81,28 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         [HttpAjaxPost]
         public ActionResult Approve(IEnumerable<int> ids)
         {
+            Thread.Sleep(760);
             return new JsonNetResult(GetBatchUpdateResponseObject(ids));
         }
 
         [HttpAjaxPost]
         public ActionResult Disapprove(IEnumerable<int> ids)
         {
+            Thread.Sleep(760);
             return new JsonNetResult(GetBatchUpdateResponseObject(ids));
         }
 
         [HttpAjaxPost]
         public ActionResult Rollover(IEnumerable<int> ids)
         {
+            Thread.Sleep(760);
             return new JsonNetResult(GetBatchUpdateResponseObject(ids));
         }
 
         [HttpAjaxPost]
         public ActionResult DeleteOne(int id)
         {
+            Thread.Sleep(760);
             var toDelete = _data.SingleOrDefault(x => x.Id == id);
             if (toDelete != null)
             {
@@ -118,7 +121,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         [HttpPost]
         public ActionResult Create(int id)
         {
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(760);
             return new JsonNetResult(
                 string.Format(
                     "XHR POST sent to [{0}] succeeded!", Request.Url

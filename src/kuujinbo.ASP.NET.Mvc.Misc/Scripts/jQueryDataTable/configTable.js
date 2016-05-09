@@ -1,12 +1,6 @@
 ﻿var configTable = function() {
     var _table;
     var _configValues = {};
-    var _tableId = '#jquery-data-table';
-    var _checkAllId = '#datatable-check-all';
-    var _searchBoxSelector = 'tfoot input[type=text]';
-    var _selectRowClass = 'datatable-select-row';
-    var _actionButtonSelector = '#data-table-actions button.btn';
-    var _buttonSpin = 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
     var _xsrf = '__RequestVerificationToken';
 
     return {
@@ -33,8 +27,8 @@
         /* -----------------------------------------------------------------
             selectors and DOM elements
         */
-        getTableId: function() { return _tableId; },
-        getCheckAllId: function() { return _checkAllId; },
+        getTableId: function() { return '#jquery-data-table'; },
+        getCheckAllId: function() { return '#datatable-check-all'; },
         setTable: function(table) {
             _table = table;
             return this;
@@ -46,27 +40,61 @@
         getLoadingElement: function() {
             return "<h1 class='dataTablesLoading'>Loading data <span class='glyphicon glyphicon-refresh spin-infinite' /></h1>";
         },
+        getSpinClasses: function() {
+            return 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
+        },
+        getSelectedRowClass: function() {
+            return 'datatable-select-row';
+        },
         getInvalidUrlMessage: function() {
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
         },
-        getSearchBoxSelector: function() { return _searchBoxSelector; },
+        getActionButtonSelector: function() { return '#data-table-actions button.btn'; },
+        getSearchBoxSelector: function() { return 'tfoot input[type=text]'; },
         getCheckedSelector: function() { return 'input[type="checkbox"]:checked'; },
         getUncheckedSelector: function() { return 'input[type="checkbox"]:not(:checked)'; },
         /* -----------------------------------------------------------------
+            DataTables functions
+        ----------------------------------------------------------------- */
+        clearSearchColumns: function() { _table.search('').columns().search(''); },
+        getRowData: function(row) {
+            return _table.row(row).data()[0];
+        },
+        reload: function () { _table.ajax.reload(); },
+        /* -----------------------------------------------------------------
             helper functions
-        */
-        reload: function() { _table.ajax.reload(); },
+        ----------------------------------------------------------------- */
         clearCheckAll: function() {
             // ajax call only updates tbody
-            var n = document.querySelector(_checkAllId);
+            var n = document.querySelector(configTable.getCheckAllId());
             if (n !== null) n.checked = false;
         },
-        clearSearchColumns: function() { _table.search('').columns().search(''); },
-        clearSearchBoxes: function () {
-            var nodes = document.querySelectorAll(_searchBoxSelector);
+        clearSearchBoxes: function() {
+            var nodes = document.querySelectorAll(
+                configTable.getSearchBoxSelector()
+            );
             for (i = 0; i < nodes.length; ++i) nodes[i].value = '';
 
             configTable.clearSearchColumns();
+        },
+        getSelectedRowIds: function () {
+            var selectedIds = [];
+            _table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var cb = this.node()
+                    .querySelector(configTable.getCheckedSelector());
+
+                if (cb !== null && cb.checked) selectedIds.push(this.data()[0]);
+            });
+            return selectedIds;
+        },
+        getXsrfToken: function () {
+            var token = document.querySelector('input[name=' + _xsrf + ']');
+            if (token !== null) {
+                var xsrf = {};
+                xsrf[_xsrf] = token.value;
+                return xsrf;
+            }
+            return null;
         },
         search: function() {
             var searchCount = 0;
@@ -91,32 +119,16 @@
                 _table.draw();
             }
         },
-        getSelectedRowIds: function() {
-            var selectedIds = [];
-            _table.rows().every(function(rowIdx, tableLoop, rowLoop) {
-                var cb = this.node().querySelector(_checkboxChecked);
-
-                if (cb !== null && cb.checked) selectedIds.push(this.data()[0]);
-            });
-            return selectedIds;
-        },
-        getXsrfToken: function() {
-            var token = document.querySelector('input[name=' + _xsrf + ']');
-            if (token !== null) {
-                var xsrf = {};
-                xsrf[_xsrf] = token.value;
-                return xsrf;
-            }
-            return null;
-        },
         showSpin: function(element, doAdd) {
             var span = element.querySelector('span');
             if (span) {
                 if (doAdd) {
-                    _buttonSpin.forEach(function(i) { span.classList.add(i) });
+                    configTable.getSpinClasses()
+                        .forEach(function(i) { span.classList.add(i) });
                 }
                 else {
-                    _buttonSpin.forEach(function(i) { span.classList.remove(i) });
+                    configTable.getSpinClasses()
+                        .forEach(function(i) { span.classList.remove(i) });
                 }
             }
         },
@@ -146,7 +158,7 @@
         },
         /* -----------------------------------------------------------------
             event listeners
-        */
+        ----------------------------------------------------------------- */
         clickActionButton: function(e) {
             e.preventDefault();
             var target = e.target;
@@ -195,20 +207,17 @@
                 configTable.reload();
             }
         },
-        // search when ENTER key pressed in <input> textbox
-        keyupSearch: function(e) {
-            if (e.which === 13) configTable.search();
-        },
         clickTable: function(e) {
             var target = e.target;
             // single checkbox click
             if (target.type === 'checkbox') {
                 var row = target.parentNode.parentNode;
                 if (row && row.tagName.toLowerCase() === 'tr') {
+                    var cl = configTable.getSelectedRowClass();
                     if (target.checked) {
-                        row.classList.add(_selectRowClass);
+                        row.classList.add(cl);
                     } else {
-                        row.classList.remove(_selectRowClass);
+                        row.classList.remove(cl);
                     }
                 }
             }
@@ -219,7 +228,9 @@
                 if (target.classList.contains('glyphicon-remove-circle')) {
                     // delete record from dataset...
                     configTable.sendXhr(
-                        target, _configValues.deleteRowUrl, { id: _table.row(row).data()[0] }
+                        target,
+                        _configValues.deleteRowUrl,
+                        { id: configTable.getRowData(row) }
                     );
 
                     configTable.clearCheckAll();
@@ -227,36 +238,43 @@
                 else if (target.classList.contains('glyphicon-edit')) {
                     document.location.href = _configValues.editRowUrl
                         + '/'
-                        + _table.row(row).data()[0];
+                        + configTable.getRowData(row);
                 }
             }
         },
-
+        // search when ENTER key pressed in <input> text
+        keyupSearch: function (e) {
+            if (e.which === 13) configTable.search();
+        },
         /* -----------------------------------------------------------------
             initialize DataTable and event listeners
-        */
+        ----------------------------------------------------------------- */
         init: function() {
+            var tableId = configTable.getTableId();
+
             // allow ENTER in search boxes, otherwise possible form submit
             document.onkeypress = function(e) {
                 if ((e.which === 13) && (e.target.type === 'text')) { return false; }
             };
 
             // action buttons
-            var buttons = document.querySelectorAll(_actionButtonSelector);
+            var buttons = document.querySelectorAll(
+                configTable.getActionButtonSelector()
+            );
             for (i = 0 ; i < buttons.length ; i++) {
                 buttons[i].addEventListener('click', configTable.clickActionButton, false);
             }
 
             // 'check all' checkbox
-            var checkAll = document.querySelector(_checkAllId);
+            var checkAll = document.querySelector(configTable.getCheckAllId());
             if (checkAll != null) checkAll.addEventListener('click', configTable.clickCheckAll, false);
 
             // datatable clicks
-            var clickTable = document.querySelector(_tableId);
+            var clickTable = document.querySelector(tableId);
             if (clickTable != null) clickTable.addEventListener('click', configTable.clickTable, false);
 
             // inject search icons & add event listeners
-            var footers = document.querySelectorAll(_tableId + ' tfoot th');
+            var footers = document.querySelectorAll(tableId + ' tfoot th');
             footers[footers.length - 1].innerHTML =
                 "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
                 + "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
@@ -270,7 +288,7 @@
                 -- inject search textboxes
                 -- add event listeners to perform search on ENTER key press
             */
-            var footerSearchBoxes = document.querySelectorAll(_tableId + ' tfoot th');
+            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th');
             for (var i = 0; i < footerSearchBoxes.length; i++) {
                 if (!footerSearchBoxes[i].dataset.isSearchable) continue;
 
