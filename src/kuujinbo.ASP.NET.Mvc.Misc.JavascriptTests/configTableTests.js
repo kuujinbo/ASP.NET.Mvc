@@ -294,6 +294,7 @@ describe('configTable', function() {
             expect('click').not.toHaveBeenTriggeredOn(unchecked);
         });
 
+        // jQuery object => native DOM element - index [0]
         it('should only fire click event on unchecked checkboxes when clickAll is checked', function() {
             event.target = $("<input id='datatable-check-all' type='checkbox' checked='checked' />")[0];
 
@@ -333,7 +334,58 @@ describe('configTable', function() {
     });
 
     // (jasmine-jquery)
-    describe('clickTable', function () {
+    describe('clickTable link', function () {
+        var event, config, html, row, span, recordId;
+        beforeEach(function () {
+            event = {};
+            config = configTable.getConfigValues();
+            html = setFixtures('<tr><td>'
+                + "<span class='glyphicon glyphicon-edit green link-icons'></span>"
+                + "<span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>"
+                + '</td></tr>'
+            );
+            row = html.find('tr').first();
+            recordId = 1;
+            spyOn(configTable, 'getRowData').and.returnValue(recordId);
+            spyOn(configTable, 'getConfigValues').and.returnValue(config);
+        });
+
+        it('should delete the selected record', function () {
+            spyOn(configTable, 'sendXhr');
+            spyOn(configTable, 'clearCheckAll');
+
+            span = html.find('span.red');
+            // jQuery object => native DOM element - index [0]
+            event.target = span[0];
+            configTable.clickTable(event);
+
+            expect(event.target.tagName.toLowerCase()).toEqual('span');
+            expect(configTable.sendXhr).toHaveBeenCalledWith(
+                span[0], config.deleteRowUrl, { id: recordId }
+            );
+            expect(configTable.getConfigValues).toHaveBeenCalled();
+            expect(configTable.getRowData).toHaveBeenCalledWith(row[0]);
+            expect(configTable.clearCheckAll).toHaveBeenCalled();
+        });
+
+        it('should redirect to the edit page', function () {
+            spyOn(configTable, 'redirect');
+
+            span = html.find('span.green');
+            event.target = span[0];
+            configTable.clickTable(event);
+
+            expect(event.target.tagName.toLowerCase()).toEqual('span');
+            expect(configTable.getConfigValues).toHaveBeenCalled();
+            expect(configTable.getRowData).toHaveBeenCalledWith(row[0]);
+            expect(configTable.redirect).toHaveBeenCalledWith(
+                config.editRowUrl + '/' + recordId
+            );
+        });
+    });
+
+    // (jasmine-jquery)
+    describe('clickTable checkbox', function () {
         var event, selectedClass;
         beforeEach(function () {
             event = {};
@@ -348,8 +400,9 @@ describe('configTable', function() {
                 + "<td></td>"
                 + '</tr>'
             );
-            var row= html.find('tr').first();
+            var row = html.find('tr').first();
             var checkbox = html.find('input[type="checkbox"]:checked');
+            // jQuery object => native DOM element - index [0]
             event.target = checkbox[0];
 
             configTable.clickTable(event);

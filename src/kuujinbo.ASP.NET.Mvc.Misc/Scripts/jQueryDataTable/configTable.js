@@ -33,6 +33,7 @@
             _table = table;
             return this;
         },
+        getConfigValues: function() { return _configValues; },
         setConfigValues: function(config) {
             _configValues = config;
             return this;
@@ -95,6 +96,9 @@
                 return xsrf;
             }
             return null;
+        },
+        redirect: function(url) {
+            document.location.href = url;
         },
         search: function() {
             var searchCount = 0;
@@ -229,16 +233,18 @@
                     // delete record from dataset...
                     configTable.sendXhr(
                         target,
-                        _configValues.deleteRowUrl,
+                        configTable.getConfigValues().deleteRowUrl,
                         { id: configTable.getRowData(row) }
                     );
 
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
-                    document.location.href = _configValues.editRowUrl
+                    configTable.redirect(
+                        configTable.getConfigValues().editRowUrl
                         + '/'
-                        + configTable.getRowData(row);
+                        + configTable.getRowData(row)
+                    );
                 }
             }
         },
