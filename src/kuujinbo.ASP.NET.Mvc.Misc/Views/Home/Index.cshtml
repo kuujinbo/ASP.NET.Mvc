@@ -1,32 +1,56 @@
-﻿<h2>Angular Plupoad Directive</h2>
-<plupload-wrapper 
-    upload-url='@Url.Action("Index", "Home")'
-    delete-url='@Url.Action("Delete", "Home")'
-    chunk-size='1mb'>
-</plupload-wrapper>
+﻿
 
-<h2>HtmlHelper POST</h2>
-@using (Html.BeginForm("Post", "Home"))
-{
-    @Html.AntiForgeryToken()
-    <div class="p8-tb">
-        <input class='btn btn-primary' type="submit" value="Submit" />
-        @if (TempData["result"] != null) { @Html.Raw(@TempData["result"]); }
+
+<div class='row'>
+    <div class='col-xs-6'>
+        <fieldset>
+            <legend>Angular Plupoad Directive</legend>
+            <plupload-wrapper
+                upload-url='@Url.Action("Index", "Home")'
+                delete-url='@Url.Action("Delete", "Home")'
+                chunk-size='1mb'
+            ></plupload-wrapper>
+        </fieldset>
     </div>
-}
-
-<h2>HtmlHelper POST - IgnoreXsrfFilterAttribute</h2>
-@using (Html.BeginForm("PostIgnoreXsrfFilter", "Home"))
-{
-    <div class="p8-tb">
-        <input class='btn btn-primary' type="submit" value="Submit" />
-        @if (TempData["resultPostIgnoreXsrfFilter"] != null)
-        { @Html.Raw(@TempData["resultPostIgnoreXsrfFilter"]); }
+    <div class='col-xs-6'>
+        <fieldset>
+            <legend>WebAPI Ajax Binary File Download</legend>
+            <button id='web-api-ajax-file' class='btn btn-primary'>Send GET</button>
+        </fieldset>
     </div>
-}
+</div>
+
+<div class='row'>
+    <div class='col-xs-6'>
+    @using (Html.BeginForm("Post", "Home"))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>Html.BeginForm("Post", "Home")</legend>
+            <input class='btn btn-primary' type="submit" value="Submit" />
+            @if (TempData["result"] != null)
+            { <p>@Html.Raw(@TempData["result"])</p>;
+            }
+        </fieldset>
+    }
+    </div>
+    <div class='col-xs-6'>
+    @using (Html.BeginForm("PostIgnoreXsrfFilter", "Home"))
+    {
+        <fieldset>
+            <legend>Html.BeginForm("PostIgnoreXsrfFilter", "Home")</legend>
+            <input class='btn btn-primary' type='submit' value='Submit' />
+            @if (TempData["resultPostIgnoreXsrfFilter"] != null)
+            { <p>@Html.Raw(@TempData["resultPostIgnoreXsrfFilter"])</p>;
+            }
+        </fieldset>
+    }
+    </div>
+</div>
 
 
-<h2>Angular $http Interceptor</h2>
+<fieldset>
+    <legend>Angular $http Interceptor</legend>
 <div ng-controller="HttpRequestInterceptorTestController">
     <form class="form-inline">
         <div class='form-group'>
@@ -44,3 +68,21 @@
         <pre>Response data: {{data}}</pre>
     </p>
 </div>
+</fieldset>
+
+@section scripts
+{
+@* [1] https://github.com/eligrey/FileSaver.js *@
+<script src='~/Scripts/ajax/FileSaver.js'></script>
+@* [2] https://github.com/henrya/js-jquery/tree/master/BinaryTransport *@
+<script src='~/Scripts/ajax/jquery.binarytransport.js'></script>
+@** [3] a simple jQuery plugin helper *@
+<script src="~/Scripts/ajax/jquery-binary.js"></script>
+<script type='text/javascript'>
+$('#web-api-ajax-file').click(function () {
+    $(this).downloadFile('/api/WebAPIAjaxFile', null, 'GET');
+
+    return false;
+});
+</script>
+}

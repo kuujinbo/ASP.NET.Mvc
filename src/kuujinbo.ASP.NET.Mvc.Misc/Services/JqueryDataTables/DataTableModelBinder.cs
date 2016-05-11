@@ -6,6 +6,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
     public class DataTableModelBinder : DefaultModelBinder
     {
+        /* ===================================================================
+         * custom data added in .js file - NOT part of jQuery DataTables API.
+         * ===================================================================
+         */
+        public const string CHECK_COLUMN = "checkColumn";
+
+        /* ===================================================================
+         * everything from here part of jQuery DataTables API.
+         * ===================================================================
+         */
         public const string DRAW = "draw";
         public const string START = "start";
         public const string LENGTH = "length";
@@ -24,15 +34,20 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            // base.BindModel(controllerContext, bindingContext);
+            base.BindModel(controllerContext, bindingContext);
             var request = controllerContext.HttpContext.Request.Form;
 
             // get base table request properties
             var draw = Convert.ToInt32(request[DRAW]);
             var start = Convert.ToInt32(request[START]);
             var length = Convert.ToInt32(request[LENGTH]);
+            var checkColumn = Convert.ToBoolean(request[CHECK_COLUMN]);
 
-            // jQuery DataTables regex not implemented - too many ways it could go wrong
+            /* ===============================================================
+             * jQuery DataTables regex **NOT** implemented - there's a reason 
+             * the .NET Regex constructor has an overload with a timeout....
+             * ===============================================================
+             */
             var search = new Search
             {
                 Value = request[SEARCH_VALUE],
@@ -53,8 +68,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             }
 
             /* ----------------------------------------------------------------
-             * get search and sort requests:
-             * jQuery DataTables regex not implemented - too many ways it could go wrong
+             * search and sort requests:
              * ----------------------------------------------------------------
              */
             var columns = new List<Column>();
@@ -84,6 +98,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 Draw = draw,
                 Start = start,
                 Length = length,
+                CheckboxColumn = checkColumn,
                 Search = search,
                 SortOrders = order,
                 Columns = columns

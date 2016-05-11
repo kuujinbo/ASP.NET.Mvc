@@ -2,7 +2,7 @@
 
 <div id='datatable-success-error-modal'></div>
 
-<h1>@ViewBag.Title</h1>
+<h2>@ViewBag.Title</h2>
 
 @Html.AntiForgeryToken()
 @* element id selector used in /scripts/DataTables/jQDataTablesIndex.js *@
@@ -11,22 +11,13 @@
 </div>
 
 <table id='jquery-data-table' class='table table-striped compact'>
-    <thead>
-        <tr>
-            @Html.Raw(@Model.GetTheadHtml())
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            @Html.Raw(@Model.GetTfootHtml())
-        </tr>
-    </tfoot>
+    @Html.Raw(@Model.GetTableHtml())
 </table>
 
 @section scripts
 {
-<script type='text/javascript'>
-var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
-</script>
-@Scripts.Render("~/bundles/jQueryDataTables")
+    <script type='text/javascript'>
+        var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
+    </script>
+    @Scripts.Render("~/bundles/jQueryDataTables")
 }

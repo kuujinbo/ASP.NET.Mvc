@@ -20,10 +20,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Hobbies = new List<TestHobby>();
         }
 
-        [DataTableColumn(
-            Display = false, DisplayOrder = 0,
-            IsSearchable = false, IsSortable = false)
-        ]
         public int Id { get; set; }
         [DataTableColumn(DisplayOrder = 1)]
         public string Name { get; set; }
@@ -115,18 +111,18 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 Assert.Equal(entityCount, result.recordsTotal);
                 Assert.Equal(entityCount, result.recordsFiltered);
                 Assert.IsType<List<List<object>>>(result.data);
-                
+
                 Assert.Equal(entityCount, result.data.Count);
 
-                Assert.Equal(entities[i].Id, result.data[i][0]);
-                Assert.Equal(entities[i].Name, result.data[i][1]);
-                Assert.Equal(entities[i].Office, result.data[i][2]);
-                Assert.Equal(entities[i].StartDate, result.data[i][3]);
-                Assert.Equal(entities[i].Salary.Amount, result.data[i][4]);
+                Assert.Equal(entities[i].Name, result.data[i][0]);
+                Assert.Equal(entities[i].Office, result.data[i][1]);
+                Assert.Equal(entities[i].StartDate, result.data[i][2]);
+                Assert.Equal(entities[i].Salary.Amount, result.data[i][3]);
                 Assert.Equal(
                     string.Join(", ", entities[i].Hobbies.Select(x => x.Name)),
-                    result.data[i][5]
+                    result.data[i][4]
                 );
+                Assert.Equal(entities[i].Id, result.data[i][5]);
             }
         }
 
@@ -137,16 +133,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 
             _table.SetColumns<TestModel>();
 
-            Assert.Equal(6, _table.Columns.Count());
-            Assert.Equal("Id", _table.Columns.ElementAt(0).Name);
-            Assert.False(_table.Columns.ElementAt(0).Display);
-            Assert.False(_table.Columns.ElementAt(0).IsSearchable);
-            Assert.False(_table.Columns.ElementAt(0).IsSortable);
-            Assert.Equal("Name", _table.Columns.ElementAt(1).Name);
-            Assert.Equal("Office", _table.Columns.ElementAt(2).Name);
-            Assert.Equal("Start Date", _table.Columns.ElementAt(3).Name);
-            Assert.Equal("Salary", _table.Columns.ElementAt(4).Name);
-            Assert.Equal("Hobbies", _table.Columns.ElementAt(5).Name);
+            Assert.Equal(5, _table.Columns.Count());
+            Assert.Equal("Name", _table.Columns.ElementAt(0).Name);
+            Assert.Equal("Office", _table.Columns.ElementAt(1).Name);
+            Assert.Equal("Start Date", _table.Columns.ElementAt(2).Name);
+            Assert.Equal("Salary", _table.Columns.ElementAt(3).Name);
+            Assert.Equal("Hobbies", _table.Columns.ElementAt(4).Name);
         }
 
         // no sort or search criteria
@@ -154,8 +146,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         public void GetData_DefaultCall_ReturnsModelWithSpecifiedProperties()
         {
             _table = new Table()
-            { 
-                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>() 
+            {
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>()
             };
             _table.SetColumns<TestModel>();
 
@@ -167,10 +162,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         {
             _table = new Table()
             {
-                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>() 
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'Name' property
-                    new SortOrder { Column = 1, Direction = DataTableModelBinder.ORDER_ASC } 
+                    new SortOrder { Column = 0, Direction = DataTableModelBinder.ORDER_ASC } 
                 }
             };
             _table.SetColumns<TestModel>();
@@ -221,11 +219,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         {
             _table = new Table()
             {
-                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>()
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>()
             };
             _table.SetColumns<TestModel>();
             // search 'Name' property => case-insensitive
-            _table.Columns.ElementAt(1).Search = new Search() { Value = "g" };
+            _table.Columns.ElementAt(0).Search = new Search() { Value = "g" };
 
             ActAndAssert(RAMOS, GREER);
         }
@@ -235,7 +236,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         {
             _table = new Table()
             {
-                Draw = 1, Start = 0, Length = 10, SortOrders = new List<SortOrder>() 
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'StartDate' property
                     new SortOrder { Column = 3, Direction = DataTableModelBinder.ORDER_ASC },
@@ -248,7 +252,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             };
             _table.SetColumns<TestModel>();
             // search 'Office' property => case-insensitive
-            _table.Columns.ElementAt(2).Search = new Search() { Value = "lon" };
+            _table.Columns.ElementAt(1).Search = new Search() { Value = "lon" };
 
             ActAndAssert(GREER, RAMOS);
         }
@@ -301,88 +305,46 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.Equal(2, xElement.Nodes().Count());
         }
 
+        /* ===================================================================
+         * writing the table thead and tfoot
+         * ===================================================================
+         */
         [Fact]
-        public void GetTheadHtml_WithNullColumns_ThrowsArgumentNullException()
+        public void GetGetTableHtml_WithNullColumns_ThrowsArgumentNullException()
         {
             var table = new Table();
             var exception = Assert.Throws<ArgumentNullException>(
-                () => table.GetTheadHtml()
+                () => table.GetTableHtml()
             );
 
             Assert.Equal<string>("Columns", exception.ParamName);
         }
 
         [Fact]
-        public void GetTheadHtml_WithEmptyColumns_ThrowsArgumentNullException()
-        {
-            var table = new Table() { Columns = new List<Column>()};
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => table.GetTheadHtml()
-            );
-
-            Assert.Equal<string>("Columns", exception.ParamName);
-        }
-
-        [Fact]
-        public void GetTheadHtml_WithColumnDisplayFalse_DoesNotAddTh()
-        {
-            var table = new Table { Columns = new List<Column> { new Column() } };
-
-            var xElement = XElement.Parse(string.Format(
-                "<div>{0}</div>", table.GetTheadHtml()
-            ));
-
-            Assert.Equal(table.Columns.ElementAt(0).Display, false);
-            Assert.Equal(TH_AUTO_COLUMS, xElement.Nodes().Count());
-        }
-
-        [Fact]
-        public void GetTheadHtml_WithColumnDisplayTrue_AddsTh()
-        {
-            var columns = new List<Column>() { new Column() {Display = true} };
-            var table = new Table() { Columns = columns };
-
-            var xElement = XElement.Parse(string.Format(
-                "<div>{0}</div>", table.GetTheadHtml()
-            ));
-            var expected = TH_AUTO_COLUMS + columns.Count;
-
-            Assert.Equal(expected, xElement.Nodes().Count());
-        }
-
-        [Fact]
-        public void GetTfootHtml_WithNullColumns_ThrowsArgumentNullException()
-        {
-            var table = new Table();
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => table.GetTfootHtml()
-            );
-
-            Assert.Equal<string>("Columns", exception.ParamName);
-        }
-
-        [Fact]
-        public void GetTfootHtml_WithEmptyColumns_ThrowsArgumentNullException()
+        public void GetGetTableHtml_WithEmptyColumns_ThrowsArgumentNullException()
         {
             var table = new Table() { Columns = new List<Column>() };
             var exception = Assert.Throws<ArgumentNullException>(
-                () => table.GetTfootHtml()
+                () => table.GetTableHtml()
             );
 
             Assert.Equal<string>("Columns", exception.ParamName);
         }
 
+
         [Fact]
-        public void GetTfootHtml_WhenIsSearchableFalse_AddsEmptyDataSetAttribute()
+        public void GetGetTableHtml_WhenIsSearchableFalse_AddsEmptyDataSetAttribute()
         {
             var columns = new List<Column>() { new Column() };
             var table = new Table() { Columns = columns };
 
             var xElement = XElement.Parse(string.Format(
-                "<div>{0}</div>", table.GetTfootHtml()
+                "<div>{0}</div>", table.GetTableHtml()
             ));
+
+            // throw new Exception(xElement.ToString());
             var expectedCount = TF_AUTO_COLUMS + columns.Count;
-            var expectedDataSet = xElement.XPathSelectElement("th[@data-is-searchable]");
+            var expectedDataSet = xElement.XPathSelectElement("//th[@data-is-searchable]");
 
             Assert.Equal(table.Columns.ElementAt(0).IsSearchable, false);
             Assert.Equal(expectedCount, xElement.Nodes().Count());
@@ -392,16 +354,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         }
 
         [Fact]
-        public void GetTfootHtml_WhenIsSearchableTrue_AddsDataSetAttributeValue()
+        public void GetGetTableHtml_WhenIsSearchableTrue_AddsDataSetAttributeValue()
         {
-            var columns = new List<Column>() { new Column() {IsSearchable = true} };
+            var columns = new List<Column>() { new Column() { IsSearchable = true } };
             var table = new Table() { Columns = columns };
 
             var xElement = XElement.Parse(string.Format(
-                "<div>{0}</div>", table.GetTfootHtml()
+                "<div>{0}</div>", table.GetTableHtml()
             ));
             var expectedCount = TF_AUTO_COLUMS + columns.Count;
-            var expectedDataSet = xElement.XPathSelectElement("th[@data-is-searchable]");
+            var expectedDataSet = xElement.XPathSelectElement("//th[@data-is-searchable]");
 
             Assert.Equal(expectedCount, xElement.Nodes().Count());
             _output.WriteLine("{0}", expectedDataSet);
@@ -443,7 +405,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 .Where(x => x != "{" && x != "}");
             var dataUrl = lines.ElementAt(0).Trim();
 
-            Assert.Equal<int>(4, lines.Count());
+            Assert.Equal<int>(5, lines.Count());
             Assert.StartsWith("{", json);
             Assert.Equal<int>(dataUrl.Count(x => x == '"'), 4);
             Assert.Matches("^\"dataUrl\"", dataUrl);
@@ -451,6 +413,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.Equal<int>(dataUrl.Count(x => x == '/'), 1);
             Assert.EndsWith("}", json);
         }
-
     }
+
+
 }

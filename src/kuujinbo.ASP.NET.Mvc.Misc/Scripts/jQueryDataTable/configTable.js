@@ -1,4 +1,4 @@
-﻿var configTable = function() {
+﻿var configTable = function () {
     var _table;
     var _configValues = {};
     var _xsrf = '__RequestVerificationToken';
@@ -7,74 +7,82 @@
         jqModal: $('#datatable-success-error-modal').dialog({
             autoOpen: false, height: 276, width: 476
         }),
-        jqModalOK: function(msg) {
+        //jqModal: $('<div></div>').dialog({
+        //    autoOpen: false, height: 276, width: 476
+        //}),
+        jqModalOK: function (msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<div>' + (msg || success) + '</div>';
             configTable.jqModal.html(html)
-                .dialog({title: success})
+                .dialog({ title: success })
                 .dialog('open');
-
         },
-        jqModalError: function(msg) {
+        jqModalError: function (msg) {
             var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
                 + '<div>' + (msg || err) + '</div>';
             configTable.jqModal.html(html)
-                .dialog({title: err})
+                .dialog({ title: err })
                 .dialog('open');
         },
         /* -----------------------------------------------------------------
             selectors and DOM elements
         */
-        getTableId: function() { return '#jquery-data-table'; },
-        getCheckAllId: function() { return '#datatable-check-all'; },
-        setTable: function(table) {
+        getTableId: function () { return '#jquery-data-table'; },
+        getCheckAllId: function () { return '#datatable-check-all'; },
+        setTable: function (table) {
             _table = table;
             return this;
         },
-        getConfigValues: function() { return _configValues; },
-        setConfigValues: function(config) {
+        getConfigValues: function () { return _configValues; },
+        setConfigValues: function (config) {
             _configValues = config;
             return this;
         },
-        getLoadingElement: function() {
+        getLoadingElement: function () {
             return "<h1 class='dataTablesLoading'>Loading data <span class='glyphicon glyphicon-refresh spin-infinite' /></h1>";
         },
-        getSpinClasses: function() {
+        getSpinClasses: function () {
             return 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
         },
-        getSelectedRowClass: function() {
+        getSelectedRowClass: function () {
             return 'datatable-select-row';
         },
-        getInvalidUrlMessage: function() {
+        getInvalidUrlMessage: function () {
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
         },
-        getActionButtonSelector: function() { return '#data-table-actions button.btn'; },
-        getSearchBoxSelector: function() { return 'tfoot input[type=text]'; },
-        getCheckedSelector: function() { return 'input[type="checkbox"]:checked'; },
-        getUncheckedSelector: function() { return 'input[type="checkbox"]:not(:checked)'; },
+        getActionButtonSelector: function () { return '#data-table-actions button.btn'; },
+        getSearchBoxSelector: function () { return 'tfoot input[type=text]'; },
+        getCheckedSelector: function () { return 'input[type="checkbox"]:checked'; },
+        getUncheckedSelector: function () { return 'input[type="checkbox"]:not(:checked)'; },
         /* -----------------------------------------------------------------
-            DataTables functions
+            DataTables wrappers
         ----------------------------------------------------------------- */
-        clearSearchColumns: function() { _table.search('').columns().search(''); },
-        getRowData: function(row) {
-            return _table.row(row).data()[0];
+        clearSearchColumns: function () { _table.search('').columns().search(''); },
+        draw: function () { _table.draw(false); },
+        drawAndGoToPage1: function () { _table.draw(); },
+        getDataColumn: function () { return _table.columns()[0].length - 1; },
+        getRowData: function (row) {
+            return _table.row(row).data()[configTable.getDataColumn()];
         },
         reload: function () { _table.ajax.reload(); },
+        setSearchColumn: function (element) {
+            _table.column(element.dataset.columnNumber).search(element.value);
+        },
         /* -----------------------------------------------------------------
             helper functions
         ----------------------------------------------------------------- */
-        clearCheckAll: function() {
+        clearCheckAll: function () {
             // ajax call only updates tbody
             var n = document.querySelector(configTable.getCheckAllId());
             if (n !== null) n.checked = false;
         },
-        clearSearchBoxes: function() {
-            var nodes = document.querySelectorAll(
+        clearSearchBoxes: function () {
+            var elements = document.querySelectorAll(
                 configTable.getSearchBoxSelector()
             );
-            for (i = 0; i < nodes.length; ++i) nodes[i].value = '';
+            for (i = 0; i < elements.length; ++i) elements[i].value = '';
 
             configTable.clearSearchColumns();
         },
@@ -84,7 +92,7 @@
                 var cb = this.node()
                     .querySelector(configTable.getCheckedSelector());
 
-                if (cb !== null && cb.checked) selectedIds.push(this.data()[0]);
+                if (cb !== null && cb.checked) selectedIds.push(this.data()[configTable.getDataColumn()]);
             });
             return selectedIds;
         },
@@ -97,46 +105,46 @@
             }
             return null;
         },
-        redirect: function(url) {
+        redirect: function (url) {
             document.location.href = url;
         },
-        search: function() {
+        search: function () {
             var searchCount = 0;
-            var nodes = document.querySelectorAll('input[type=text]');
-            for (i = 0; i < nodes.length; ++i) {
-                var searchText = nodes[i].value;
+            var elements = document.querySelectorAll('input[type=text]');
+            for (i = 0; i < elements.length; ++i) {
+                var searchText = elements[i].value;
                 // search only if non-whitespace
                 if (searchText !== '' && !/^\s+$/.test(searchText)) {
                     ++searchCount;
-                    _table.column(nodes[i].dataset.columnNumber).search(searchText);
+                    configTable.setSearchColumn(elements[i]);
                 }
-                /* explicitly clear individual input, or will save last value 
-                   if user backspaces.
-                */
+                    /* explicitly clear individual input, or will save last value 
+                       if user backspaces.
+                    */
                 else {
-                    nodes[i].value = '';
-                    _table.column(nodes[i].dataset.columnNumber).search('');
+                    elements[i].value = '';
+                    configTable.setSearchColumn(elements[i]);
                 }
             }
             if (searchCount > 0) {
                 configTable.clearCheckAll();
-                _table.draw();
+                configTable.drawAndGoToPage1();
             }
         },
-        showSpin: function(element, doAdd) {
+        showSpin: function (element, doAdd) {
             var span = element.querySelector('span');
             if (span) {
                 if (doAdd) {
                     configTable.getSpinClasses()
-                        .forEach(function(i) { span.classList.add(i) });
+                        .forEach(function (i) { span.classList.add(i) });
                 }
                 else {
                     configTable.getSpinClasses()
-                        .forEach(function(i) { span.classList.remove(i) });
+                        .forEach(function (i) { span.classList.remove(i) });
                 }
             }
         },
-        sendXhr: function(element, url, data) {
+        sendXhr: function (element, url, data) {
             configTable.showSpin(element, true);
             $.ajax({
                 url: url,
@@ -144,26 +152,26 @@
                 data: data ? data : null,
                 type: 'POST'
             })
-            .done(function(data, textStatus, jqXHR) {
+            .done(function (data, textStatus, jqXHR) {
                 configTable.jqModalOK(data);
 
                 // redisplay UI on row delete
                 if (url === _configValues.deleteRowUrl) {
-                    _table.draw(false);
+                    configTable.draw();
                 }
             })
-            .fail(function(jqXHR, textStatus, errorThrown) {
+            .fail(function (jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(jqXHR.data);
             })
             // http://api.jquery.com/deferred.always/
-            .always(function() { 
+            .always(function () {
                 configTable.showSpin(element)
             });
         },
         /* -----------------------------------------------------------------
             event listeners
         ----------------------------------------------------------------- */
-        clickActionButton: function(e) {
+        clickActionButton: function (e) {
             e.preventDefault();
             var target = e.target;
             var url = target.dataset.url;
@@ -181,27 +189,27 @@
                     );
                 }
             }
-            else { 
-                configTable.jqModalError(configTable.getInvalidUrlMessage()); 
+            else {
+                configTable.jqModalError(configTable.getInvalidUrlMessage());
             }
 
             return false;
         },
-        clickCheckAll: function(e) {
+        clickCheckAll: function (e) {
             if (e.target.checked) {
-                var nodes = document.querySelectorAll(
+                var elements = document.querySelectorAll(
                     configTable.getUncheckedSelector()
                 );
-                for (i = 0; i < nodes.length; ++i) nodes[i].click();
+                for (i = 0; i < elements.length; ++i) elements[i].click();
             } else {
-                var nodes = document.querySelectorAll(
+                var elements = document.querySelectorAll(
                     configTable.getCheckedSelector()
                 );
-                for (i = 0; i < nodes.length; ++i) nodes[i].click();
+                for (i = 0; i < elements.length; ++i) elements[i].click();
             }
         },
         // search icons in <span>
-        clickSearch: function(e) {
+        clickSearch: function (e) {
             var target = e.target;
             if (target.classList.contains('glyphicon-search')) {
                 configTable.search();
@@ -211,7 +219,7 @@
                 configTable.reload();
             }
         },
-        clickTable: function(e) {
+        clickTable: function (e) {
             var target = e.target;
             // single checkbox click
             if (target.type === 'checkbox') {
@@ -225,7 +233,7 @@
                     }
                 }
             }
-            // edit & delete links
+                // edit & delete links
             else if (target.tagName.toLowerCase() === 'span'
             && target.classList.contains('glyphicon')) {
                 var row = target.parentNode.parentNode;
@@ -255,11 +263,11 @@
         /* -----------------------------------------------------------------
             initialize DataTable and event listeners
         ----------------------------------------------------------------- */
-        init: function() {
+        init: function () {
             var tableId = configTable.getTableId();
 
             // allow ENTER in search boxes, otherwise possible form submit
-            document.onkeypress = function(e) {
+            document.onkeypress = function (e) {
                 if ((e.which === 13) && (e.target.type === 'text')) { return false; }
             };
 
@@ -294,7 +302,7 @@
                 -- inject search textboxes
                 -- add event listeners to perform search on ENTER key press
             */
-            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th');
+            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th[data-is-searchable]');
             for (var i = 0; i < footerSearchBoxes.length; i++) {
                 if (!footerSearchBoxes[i].dataset.isSearchable) continue;
 

@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using kuujinbo.ASP.NET.Mvc.Misc.Services;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Models
 {
     public class TestModel : IIdentifiable
     {
-        [DataTableColumn(
-            Display = false, DisplayOrder = 0, 
-            IsSearchable=false, IsSortable=false)
-        ]
         public int Id { get; set; }
         [DataTableColumn(DisplayOrder = 1)]
         public string Name { get; set; }
@@ -22,7 +14,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Models
         public string Office { get; set; }
         [DataTableColumn(DisplayOrder = 4)]
         public int Extension { get; set; }
-        [DataTableColumn(DisplayOrder = 5, DisplayName="Start Date")]
+        [DataTableColumn(DisplayOrder = 5, DisplayName = "Start Date")]
         public DateTime? StartDate { get; set; }
         [DataTableColumn(DisplayOrder = 6)]
         public string Salary { get; set; }

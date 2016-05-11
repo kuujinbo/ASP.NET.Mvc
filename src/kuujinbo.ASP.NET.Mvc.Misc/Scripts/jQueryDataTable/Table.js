@@ -1,10 +1,30 @@
 ﻿$(document).ready(function () {
+    var columnDefinitions = [{
+        targets: -1,
+        searchable: false,
+        orderable: false,
+        // https://datatables.net/reference/option/columns.render
+        render: function (data, type, row, meta) {
+            console.log(row);
+            return "<span class='glyphicon glyphicon-edit green link-icons'></span>"
+            + " <span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>";
+        }
+    }];
+
+    if (configValues.showCheckboxColumn) {
+        columnDefinitions.push({
+            targets: 0,
+            orderable: false,
+            render: function (data, type, full, meta) { return "<input type='checkbox' />"; }
+        });
+    };
+
     // DataTables API instance => $().DataTable() - note CASE
     var table = $(configTable.getTableId()).DataTable({
         processing: true,
         serverSide: true,
         deferRender: true,
-        stateSave: true,
+        // stateSave: true,
         // true by default, allow  shift-click multiple column sorting
         // orderMulti: configValues.allowMultiColumnSorting,
         orderMulti: true,
@@ -29,6 +49,7 @@
             url: configValues.dataUrl,
             type: 'POST',
             headers: configTable.getXsrfToken(),
+            data: { checkColumn: configValues.showCheckboxColumn },
             error: function (jqXHR, responseText, errorThrown) {
                 // explicitly hide on error, or loading element never goes away
                 var n = document.querySelector('div.dataTables_processing')
@@ -46,23 +67,8 @@
             -- first: checkboxes => bulk action button(s)
             -- last: single row/record edit/delete
         */
-        columnDefs: [{
-            targets: 0,
-            // TODO: fix search when hidden
-            // visible: false,
-            searchable: false,
-            orderable: false,
-            render: function (data, type, full, meta) { return "<input type='checkbox' />"; }
-        },
-        {
-            targets: -1,
-            searchable: false,
-            orderable: false,
-            render: function (data, type, full, meta) {
-                return "<span class='glyphicon glyphicon-edit green link-icons'></span>"
-                + " <span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>";
-            }
-        }]
+        columnDefs: columnDefinitions
     });
+
     configTable.setTable(table).setConfigValues(configValues).init();
 });

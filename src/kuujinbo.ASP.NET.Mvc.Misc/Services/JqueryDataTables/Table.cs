@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Misc.Models;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
     [ModelBinder(typeof(DataTableModelBinder))]
-    public class Table : ITable
+    public partial class Table : ITable
     {
         public int Draw { get; set; }
         public int Start { get; set; }
@@ -17,6 +15,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public string DataUrl { get; set; }
         public string DeleteRowUrl { get; set; }
         public string EditRowUrl { get; set; }
+        public bool CheckboxColumn { get; set; }
 
         /// <summary>
         /// allow client-side shift-click multiple column sorting
@@ -62,7 +61,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 var column = new Column
                 {
                     Name = info.Item2.DisplayName ?? info.Item1.Name,
-                    Display = info.Item2.Display,
                     IsSearchable = info.Item2.IsSearchable,
                     IsSortable = info.Item2.IsSortable,
                 };
@@ -152,6 +150,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                         entity, info.Item1, info.Item2, cache
                     ));
                 }
+                // last column, **NOT** visible
+                row.Add(entity.Id);
+                if (CheckboxColumn) row.Insert(0, "");
+
                 tableData.Add(row);
             }
 
@@ -267,72 +269,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             return data;
         }
 
-
-        /* --------------------------------------------------------------------
-         * HTML/JavaScript written to Partial View:
-         * ~/views/shared/_jQueryDataTables.cshtml
-         * --------------------------------------------------------------------
-         */
-        public string ActionButtonsHtml()
+        /// <summary>
+        /// first column only shown when one or more 'bulk' action button(s)
+        /// </summary>
+        /// <returns></returns>
+        public bool ShowCheckboxColumn()
         {
-            return ActionButtons.Count > 0
-                ? string.Join("", ActionButtons.Select(x => x.GetHtml()))
-                : string.Empty;
-        }
-
-        public string GetTheadHtml()
-        {
-            if (Columns == null || Columns.Count() < 1)
-            {
-                throw new ArgumentNullException("Columns");
-            }
-
-            StringBuilder s = new StringBuilder(@"
-                <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
-                    <input id='datatable-check-all' type='checkbox' />
-                </th>"
-            );
-            foreach (var c in Columns)
-            {
-                if (c.Display) s.AppendFormat("<th>{0}</th>\n", c.Name);
-            }
-            s.AppendLine("<th></th>");
-
-            return s.ToString();
-        }
-
-        public string GetTfootHtml()
-        {
-            if (Columns == null || Columns.Count() < 1)
-            {
-                throw new ArgumentNullException("Columns");
-            }
-
-            StringBuilder s = new StringBuilder();
-            foreach (var c in Columns)
-            {
-                s.AppendFormat(
-                    "<th data-is-searchable='{0}'></th>",
-                    c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty
-                );
-            }
-            s.AppendLine("<th style='white-space: nowrap;'></th>");
-
-            return s.ToString();
-        }
-
-        public string GetJavaScriptConfig()
-        {
-            if (string.IsNullOrEmpty(DataUrl))
-                throw new ArgumentNullException("DataUrl");
-
-            return JsonNetSerializer.Get(new
-            {
-                dataUrl = DataUrl,
-                deleteRowUrl = DeleteRowUrl,
-                editRowUrl = EditRowUrl,
-                allowMultiColumnSorting = AllowMultiColumnSorting
-            });
+            return ActionButtons.Where(x => x.IsButton).Count() > 0;
         }
     }
 }
