@@ -293,11 +293,10 @@
             var footers = document.querySelectorAll(tableId + ' tfoot th');
             footers[footers.length - 1].innerHTML =
                 "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
-                + "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
+                + "<span class='search-icons glyphicon glyphicon-repeat' title='Clear search and reload data'></span>";
             var searchIcons = document.querySelectorAll('tfoot span.search-icons');
             for (var i = 0; i < searchIcons.length; i++) {
-                searchIcons[i].addEventListener('click', configTable.clickSearch, false);
-            }
+                searchIcons[i].addEventListener('click', configTable.clickSearch, false);}
 
             /* ---------------------------------------------------------------
                 first column checkbox, last column edit & delete icon links

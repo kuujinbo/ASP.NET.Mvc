@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     // $.fn.DataTable.ext.pager.numbers_length = 5;
+    $(document).tooltip();
 
     var columnDefinitions = [{
         targets: -1,
@@ -7,7 +8,7 @@
         orderable: false,
         // https://datatables.net/reference/option/columns.render
         render: function (data, type, row, meta) {
-            console.log(row);
+            // console.log(row);
             return "<span class='glyphicon glyphicon-edit green link-icons'></span>"
             + " <span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>";
         }
@@ -37,7 +38,7 @@
         pagingType: 'full_numbers',
         // autoWidth: true,
         // order: [[1, 'asc']],
-        // order: [[(configValues.showCheckboxColumn ? 1 : 0), 'asc']],
+        order: [[(configValues.showCheckboxColumn ? 1 : 0), 'asc']],
         language: {
             processing: configTable.getLoadingElement(),
             lengthMenu: 'Show _MENU_ per page.',
