@@ -53,16 +53,20 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 Value = request[SEARCH_VALUE],
             };
 
-            // get [de|a]scending per-column sort requests:
+            // shift-click multiple column [de|a]scending sort request:
             var order = new List<SortOrder>();
             for (int i = 0; ; ++i)
             {
                 var colOrder = request[string.Format(ORDER_COLUMN, i)];
                 if (colOrder == null) break;
 
+                var colIndex = checkColumn
+                    ? Convert.ToInt32(colOrder) - 1
+                    : Convert.ToInt32(colOrder);
+
                 order.Add(new SortOrder
                 {
-                    Column = Convert.ToInt32(colOrder),
+                    Column = colIndex,
                     Direction = request[string.Format(ORDER_DIR, i)]
                 });
             }

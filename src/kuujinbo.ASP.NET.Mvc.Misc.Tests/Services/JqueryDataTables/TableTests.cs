@@ -50,6 +50,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
     public class TableTests
     {
         Table _table;
+        IEnumerable<TestModel> _modelData;
+        public TableTests()
+        {
+            _modelData = new List<TestModel>() { SATO, RAMOS, GREER };
+        }
 
         public static readonly TestModel SATO = new TestModel
         {
@@ -87,11 +92,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             }
         };
 
-        public static IEnumerable<TestModel> GetModelData()
-        {
-            return new List<TestModel>() { SATO, RAMOS, GREER };
-        }
-
         /// <summary>
         /// act and assert for current [Fact]
         /// </summary>
@@ -102,17 +102,18 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         private void ActAndAssert(params TestModel[] entities)
         {
             // act
-            dynamic result = _table.GetData<TestModel>(GetModelData());
+            var totalRecords = _modelData.Count();
+            dynamic result = _table.GetData<TestModel>(_modelData);
 
             // assert
             int entityCount = entities.Length;
             for (int i = 0; i < entityCount; ++i)
             {
-                Assert.Equal(entityCount, result.recordsTotal);
+                Assert.Equal(totalRecords, result.recordsTotal);
+                // recordsFiltered != recordsTotal when searching
                 Assert.Equal(entityCount, result.recordsFiltered);
-                Assert.IsType<List<List<object>>>(result.data);
 
-                Assert.Equal(entityCount, result.data.Count);
+                Assert.IsType<List<List<object>>>(result.data);
 
                 Assert.Equal(entities[i].Name, result.data[i][0]);
                 Assert.Equal(entities[i].Office, result.data[i][1]);

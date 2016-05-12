@@ -43,7 +43,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             if (showCheckboxColumn)
             {
                 s.AppendLine(@"
-                <th style='white-space: nowrap;text-align: center !important;padding:4px !important'>
+                <th style='white-space:nowrap;text-align:left !important;padding:2px !important'>
                     <input id='datatable-check-all' type='checkbox' />
                 </th>"
                 );

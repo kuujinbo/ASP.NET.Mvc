@@ -23,7 +23,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
                     new ActionButton(url.Action("Create"), "Create")
                     { 
                         IsButton = false
-                    },
+                    }
+                    ,
                     new ActionButton(url.Action("Rollover"), "Rollover")
                     { 
                         CssClass = ActionButton.Primary,
@@ -66,7 +67,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             System.Diagnostics.Debug.WriteLine(
                 JsonNetSerializer.Get(Request.Form)
             );
-            Thread.Sleep(250);
+            Thread.Sleep(2000);
             return new JsonNetResult(table.GetData<TestModel>(_data));
         }
 

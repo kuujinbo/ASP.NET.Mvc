@@ -32,6 +32,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public Table()
         {
             ActionButtons = new List<ActionButton>();
+            SortOrders = new List<SortOrder>();
             // AllowMultiColumnSorting = true;
         }
 
@@ -79,6 +80,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public object GetData<T>(IEnumerable<T> entities)
             where T : class, IIdentifiable
         {
+            // get count **BEFORE** any search filter(s) applied
+            var recordsTotal = entities.Count();
+
             // <property name, <objectId, property value>>
             var cache = new Dictionary<string, IDictionary<int, object>>();
 
@@ -103,8 +107,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                             e, tuple.Item1, tuple.Item2, cache
                         );
                         return value != null
-                            && value.ToString()
-                            .IndexOf(column.Search.Value, StringComparison.OrdinalIgnoreCase) != -1;
+                            && value.ToString().IndexOf(
+                                column.Search.Value,
+                                StringComparison.OrdinalIgnoreCase
+                            ) != -1;
                     });
                 }
             }
@@ -112,6 +118,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             var sortedData = entities.OrderBy(r => "");
             foreach (var sortOrder in SortOrders)
             {
+                // deal with negative column index in jQuery DataTables API
+                if (sortOrder.Column < 0) continue;
                 var column = Columns.ElementAt(sortOrder.Column);
                 if (column.IsSortable)
                 {
@@ -160,7 +168,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             return new
             {
                 draw = this.Draw,
-                recordsTotal = entities.Count(),
+                recordsTotal = recordsTotal,
                 recordsFiltered = entities.Count(),
                 data = tableData
             };

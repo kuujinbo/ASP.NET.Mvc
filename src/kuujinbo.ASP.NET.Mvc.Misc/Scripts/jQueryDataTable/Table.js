@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    // $.fn.DataTable.ext.pager.numbers_length = 5;
+
     var columnDefinitions = [{
         targets: -1,
         searchable: false,
@@ -14,6 +16,7 @@
     if (configValues.showCheckboxColumn) {
         columnDefinitions.push({
             targets: 0,
+            // or asc/desc icon shown in thead
             orderable: false,
             render: function (data, type, full, meta) { return "<input type='checkbox' />"; }
         });
@@ -28,12 +31,28 @@
         // true by default, allow  shift-click multiple column sorting
         // orderMulti: configValues.allowMultiColumnSorting,
         orderMulti: true,
-        dom: 'lrtip',
+        dom: "<'row'<'col-xs-6'li><'col-xs-6'p>>" +
+            "<'row'<'col-xs-12'tr>>" +
+            "<'row'<'col-xs-6'li><'col-xs-6'p>>",
         pagingType: 'full_numbers',
         // autoWidth: true,
-        order: [[1, 'asc']],
+        // order: [[1, 'asc']],
+        // order: [[(configValues.showCheckboxColumn ? 1 : 0), 'asc']],
         language: {
             processing: configTable.getLoadingElement(),
+            lengthMenu: 'Show _MENU_ per page.',
+
+            //lengthMenu: 'Show <select>' +
+            //      '<option value="5">5</option>'+
+            //      '<option value="10">10</option>'+
+            //      '<option value="20">20</option>'+
+            //      '<option value="40">40</option>'+
+            //      '<option value="50">50</option>'+
+            //      '<option value="-1">All</option>'+
+            //      '</select> per page.',
+
+            info: '_START_ to _END_ of _TOTAL_ results',
+            infoFiltered: '(<em>filtered from _MAX_ total</em>)',
             paginate: {
                 previous: "<span class='glyphicon glyphicon-chevron-left' title='PREVIOUS' />",
                 next: "<span class='glyphicon glyphicon-chevron-right'  title='NEXT' />",
