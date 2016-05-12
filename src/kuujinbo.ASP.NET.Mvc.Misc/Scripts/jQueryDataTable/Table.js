@@ -8,9 +8,14 @@
         orderable: false,
         // https://datatables.net/reference/option/columns.render
         render: function (data, type, row, meta) {
-            // console.log(row);
-            return "<span class='glyphicon glyphicon-edit green link-icons'></span>"
-            + " <span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>";
+            console.log(row[1]);
+            var title = configValues.showCheckboxColumn ? row[1] : row[0];
+            return "<span class='glyphicon glyphicon-edit green link-icons' title='Edit ["
+                + title
+                + "]'></span>"
+                + " <span class='glyphicon glyphicon-remove-circle red link-icons' title='Delete ["
+                + title
+                + "]'><span></span></span>";
         }
     }];
 
