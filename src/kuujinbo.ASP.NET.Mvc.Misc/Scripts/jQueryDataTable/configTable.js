@@ -41,7 +41,10 @@
             return this;
         },
         getLoadingElement: function () {
-            return "<h1 class='dataTablesLoading'>Loading data <span class='glyphicon glyphicon-refresh spin-infinite' /></h1>";
+            return "<h1 class='dataTablesLoading'>"
+                + 'Loading data'
+                + " <span class='glyphicon glyphicon-refresh spin-infinite' />"
+                + '</h1>';
         },
         getSpinClasses: function () {
             return 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
@@ -163,7 +166,6 @@
             .fail(function (jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(jqXHR.data);
             })
-            // http://api.jquery.com/deferred.always/
             .always(function () {
                 configTable.showSpin(element)
             });

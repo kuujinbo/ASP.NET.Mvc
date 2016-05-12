@@ -63,15 +63,16 @@ div.dataTables_wrapper div.dataTables_processing,
 .dataTables_processing {
     position: absolute !important;
     top: 0% !important;
-    margin-top: 25px !important;
-    width: 98%;
+    margin-top: 38px !important;
+    width: 90%;
     left: 50%;
-    margin-left: -49%;
+    margin-left: -45%;
     text-align: center;
-    background-color: #000;
+    background-color:#000;
     color: #fff;
     z-index: 99999 !important;
     border: 2px solid #eaeaea;
+    padding:4em 0;
 }
 h1.dataTablesLoading {
     font-size: 3.8em !important;
@@ -79,7 +80,7 @@ h1.dataTablesLoading {
 .dataTables_wrapper { width:100%; }
 .dataTable { width:100% !important; }
 .pagination > li > a, .pagination > li > span {
-    padding:4px 8px !important;
+    padding:8px !important;
 }
 table.dataTable.compact thead th,
 table.dataTable.compact thead td {
