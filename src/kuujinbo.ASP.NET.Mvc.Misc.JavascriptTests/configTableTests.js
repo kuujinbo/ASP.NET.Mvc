@@ -16,15 +16,6 @@ describe('configTable', function () {
         configTable.setConfigValues(configValues);
     });
 
-    /* ===================================================================
-    some tests manipulate the DOM and must be reset, so other tests 
-    are not affected.
-    =================================================================== */
-    function removeTemplateChildren(template) {
-        while (template.hasChildNodes())
-            template.removeChild(template.lastChild);
-    }
-
     describe('selectors and DOM', function () {
         it('should initialize the table objects', function () {
             expect(configTable).toBeDefined();
@@ -122,7 +113,6 @@ describe('configTable', function () {
             spyOn(configTable, 'setSearchColumn');
             spyOn(configTable, 'drawAndGoToPage1');
         });
-
 
         it('should not search when textboxes are empty or whitespace', function () {
             var textboxes = setFixtures(
@@ -253,8 +243,171 @@ describe('configTable', function () {
         });
     });
 
+    describe('init', function () {
+        var id = 'id';
+        it('should call the setup functions', function () {
+            spyOn(configTable, 'getTableId').and.returnValue(id);
+            spyOn(configTable, 'addToDOM');
+            spyOn(configTable, 'addListeners');
+            configTable.init();
+
+            expect(configTable.getTableId.calls.count()).toEqual(1);
+            expect(configTable.addToDOM.calls.count()).toEqual(1);
+            expect(configTable.addToDOM).toHaveBeenCalledWith(id);
+            expect(configTable.addListeners.calls.count()).toEqual(1);
+            expect(configTable.addListeners).toHaveBeenCalledWith(id);
+        });
+    });
+
+    describe('addToDOM', function () {
+        var tableId, lastColumnId;
+        beforeEach(function () {
+            tableId = 'jquery-data-table';
+            lastColumnId = 'last-column-id';
+            setFixtures(
+            "<table id='" + tableId + "'>"
+                + "<tfoot><tr>"
+                    + "<th></th>"
+                    + "<th data-is-searchable='true'></th>"
+                    + "<th data-is-searchable='true'></th>"
+                    + "<th id='" + lastColumnId + "'></th>"
+                + "</tr></tfoot>"
+            + "</table>"
+            );
+            configTable.addToDOM('#' + tableId);
+        });
+
+        it('should add the search icon links to the last column', function () {
+            var searchIcons = $('#' + lastColumnId)
+                .find('span.search-icons.glyphicon');
+
+            expect(searchIcons.length).toEqual(2);
+            expect(searchIcons[0].classList.contains('glyphicon-search')).toBe(true);
+            expect(searchIcons[1].classList.contains('glyphicon-repeat')).toBe(true);
+        });
+
+        it('should add an input field to the searchable columns', function () {
+            var searchBoxes = document.querySelectorAll('tfoot th input[type=text]');
+
+            expect(searchBoxes.length).toEqual(2);
+        });
+    });
+
     /* ========================================================================
-       event listeners
+       verify event listeners are registered in init()
+       event listener functions themsleves are tested in isolation below
+       ========================================================================
+    */
+    describe('EventTarget registration', function () {
+        var tableId;
+        beforeEach(function () {
+            tableId = configTable.getTableId();
+            setFixtures(
+            "<div id='data-table-actions'>"
+            + "<a id='IGNORE-link' href='#'>link</a>"
+            + "<button id='BUTTON-ACTION' class='btn'>a</button>"
+            + "<button id='IGNORE-button'>b</button>"
+            + '</div>'
+            + "<table id='jquery-data-table'>"
+                + "<thead><tr>"
+                    + "<th><input id='datatable-check-all' type='checkbox'></th>"
+                    + "<th>Col 00</th>"
+                    + "<th>Col 01</th>"
+                    + "<th>Col 02</th>"
+                    + "<th></th>"
+                + "</tr></thead>"
+                + "<tfoot><tr>"
+                    + "<th></th>"
+                    + "<th></th>"
+                    // addToDOM() injects search input fields 
+                    + "<th data-is-searchable='true'></th>"
+                    + "<th data-is-searchable='true'></th>"
+                    // addToDOM() injects search 'icons'
+                    + '<th></th>'
+                + "</tr></tfoot>"
+                + "<tbody><tr>"
+                    + "<td><input type='checkbox' /></td>"
+                    + "<td>Row 1 data cell 00</td>"
+                    + "<td>Row 1 data cell 01</td>"
+                    + "<td>Row 1 data cell 02</td>"
+                    + "<td>"
+                        + "<span class='glyphicon-edit'></span>"
+                        + "<span class='glyphicon-remove-circle'><span></span></span>"
+                    + "</td>"
+                + "</tr></tbody>"
+            + "</table>"
+            );
+        });
+
+        it('should call the click handler for action buttons', function () {
+            spyOn(configTable, 'clickActionButton');
+
+            configTable.init();
+            // not a button => ignore
+            var linkIgnore = document.querySelector('#IGNORE-link');
+            linkIgnore.dispatchEvent(new Event('click'));
+            // button without class 'btn' => ignore
+            var buttonIgnore = document.querySelector('#IGNORE-button');
+            buttonIgnore.dispatchEvent(new Event('click'));
+            // target match => handle event
+            var actionButtonMatch = document.querySelector('#BUTTON-ACTION');
+            actionButtonMatch.dispatchEvent(new Event('click'));
+            
+            expect(configTable.clickActionButton.calls.count()).toEqual(1);
+        });
+
+        it('should call the click handler for checkAll checkbox', function () {
+            spyOn(configTable, 'clickCheckAll');
+
+            configTable.init();
+            var checkAll = document.querySelector(configTable.getCheckAllId());
+            checkAll.dispatchEvent(new Event('click'));
+
+            expect(checkAll.tagName).toMatch(/^input$/i);
+            expect(checkAll.getAttribute('type')).toBe('checkbox');
+            expect(configTable.clickCheckAll.calls.count()).toEqual(1);
+        });
+
+        it('should call the handler for any click on the table', function () {
+            spyOn(configTable, 'clickTable');
+
+            configTable.init();
+            // addEventListener() with last parameter === false
+            // so no need to test child elements
+            var table = document.querySelector(tableId);
+            table.dispatchEvent(new Event('click'));
+
+            expect(table.tagName).toMatch(/^table$/i);
+            expect(configTable.clickTable.calls.count()).toEqual(1);
+        });
+
+        it('should call the click handler for the search icons', function () {
+            spyOn(configTable, 'clickSearch');
+
+            configTable.init();
+            var searchIcons = document.querySelectorAll('tfoot span.search-icons');
+            searchIcons[0].dispatchEvent(new Event('click'));
+            searchIcons[1].dispatchEvent(new Event('click'));
+
+            expect(searchIcons.length).toEqual(2);
+            expect(configTable.clickSearch.calls.count()).toEqual(2);
+        });
+
+        it('should call the keyup handler for the search input fields', function () {
+            spyOn(configTable, 'keyupSearch');
+
+            configTable.init();
+            var searchBoxes = document.querySelectorAll(tableId + ' tfoot input[type=text]');
+            searchBoxes[0].dispatchEvent(new Event('keyup'));
+            searchBoxes[1].dispatchEvent(new Event('keyup'));
+
+            expect(searchBoxes.length).toEqual(2);
+            expect(configTable.keyupSearch.calls.count()).toBe(2);
+        });
+    });
+
+    /* ========================================================================
+       event listener functions - verify specific EventTarget
        ========================================================================
     */
     describe('clickActionButton', function () {
@@ -360,6 +513,19 @@ describe('configTable', function () {
             event = {};
         });
 
+        it('should not search a non macthing event target', function () {
+            spyOn(configTable, 'search');
+            spyOn(configTable, 'clearSearchBoxes');
+            spyOn(configTable, 'reload');
+            template.innerHTML = "<span class='NO-MATCH' title='Search'></span>";
+            event.target = template.firstChild;
+
+            configTable.clickSearch(event);
+            expect(configTable.search).not.toHaveBeenCalled();
+            expect(configTable.clearSearchBoxes).not.toHaveBeenCalled();
+            expect(configTable.reload).not.toHaveBeenCalled();
+        });
+
         it('should search when icon is clicked', function () {
             spyOn(configTable, 'search');
             template.innerHTML = "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>";
@@ -390,6 +556,7 @@ describe('configTable', function () {
             html = setFixtures('<tr><td>'
                 + "<span class='glyphicon glyphicon-edit green link-icons'></span>"
                 + "<span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>"
+                + "<span class='NO-MATCH'><span></span></span>"
                 + '</td></tr>'
             );
             row = html.find('tr').first();
@@ -398,11 +565,29 @@ describe('configTable', function () {
             spyOn(configTable, 'getConfigValues').and.returnValue(config);
         });
 
+        it('should ignore a non-matching event target', function () {
+            spyOn(configTable, 'sendXhr');
+            spyOn(configTable, 'redirect');
+            spyOn(configTable, 'clearCheckAll');
+
+            span = html.find('span.NO-MATCH');
+            // jQuery object => native DOM element - index [0]
+            event.target = span[0];
+            configTable.clickTable(event);
+
+            expect(event.target.tagName.toLowerCase()).toEqual('span');
+            expect(configTable.sendXhr).not.toHaveBeenCalled();
+            expect(configTable.redirect).not.toHaveBeenCalled();
+            expect(configTable.getConfigValues).not.toHaveBeenCalled();
+            expect(configTable.getRowData).not.toHaveBeenCalled();
+            expect(configTable.clearCheckAll).not.toHaveBeenCalled();
+        });
+
         it('should delete the selected record', function () {
             spyOn(configTable, 'sendXhr');
             spyOn(configTable, 'clearCheckAll');
 
-            span = html.find('span.red');
+            span = html.find('span.glyphicon-remove-circle');
             // jQuery object => native DOM element - index [0]
             event.target = span[0];
             configTable.clickTable(event);
@@ -419,7 +604,7 @@ describe('configTable', function () {
         it('should redirect to the edit page', function () {
             spyOn(configTable, 'redirect');
 
-            span = html.find('span.green');
+            span = html.find('span.glyphicon-edit');
             event.target = span[0];
             configTable.clickTable(event);
 
@@ -488,15 +673,15 @@ describe('configTable', function () {
             event = {};
         });
 
-        it('should search when KeyboardEvent.which is carriage return', function () {
-            event.which = 13;
+        it('should search when KeyboardEvent.key is [Enter]', function () {
+            event.key = 'Enter';
 
             configTable.keyupSearch(event);
             expect(configTable.search).toHaveBeenCalled();
         });
 
-        it('should not search when KeyboardEvent.which is not carriage return', function () {
-            event.which = 0;
+        it('should not search when KeyboardEvent.key is not [Enter]', function () {
+            event.key = 'Escape';
 
             configTable.keyupSearch(event);
             expect(configTable.search).not.toHaveBeenCalled();

@@ -260,14 +260,29 @@
         },
         // search when ENTER key pressed in <input> text
         keyupSearch: function (e) {
-            if (e.which === 13) configTable.search();
+            if (e.key === 'Enter') configTable.search();
         },
         /* -----------------------------------------------------------------
-            initialize DataTable and event listeners
-        ----------------------------------------------------------------- */
-        init: function () {
-            var tableId = configTable.getTableId();
+                    initialize DOM, event listeners, & DataTable
+                ----------------------------------------------------------------- */
+        addToDOM: function (tableId) {
+            // inject search icons
+            var footers = document.querySelectorAll(tableId + ' tfoot th');
+            footers[footers.length - 1].innerHTML =
+                "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
+                + "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
 
+            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th');
+            for (var i = 0; i < footerSearchBoxes.length; i++) {
+                if (!footerSearchBoxes[i].dataset.isSearchable) continue;
+
+                footerSearchBoxes[i].innerHTML =
+                    "<input style='width:100% !important;display: block !important;'"
+                    + " data-column-number='" + i + "'"
+                    + " class='form-control' type='text' placeholder='Search' />";
+            }
+        },
+        addListeners: function (tableId) {
             // allow ENTER in search boxes, otherwise possible form submit
             document.onkeypress = function (e) {
                 if ((e.which === 13) && (e.target.type === 'text')) { return false; }
@@ -289,32 +304,25 @@
             var clickTable = document.querySelector(tableId);
             if (clickTable != null) clickTable.addEventListener('click', configTable.clickTable, false);
 
-            // inject search icons & add event listeners
-            var footers = document.querySelectorAll(tableId + ' tfoot th');
-            footers[footers.length - 1].innerHTML =
-                "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
-                + "<span class='search-icons glyphicon glyphicon-repeat' title='Clear search and reload data'></span>";
+            // search icons
             var searchIcons = document.querySelectorAll('tfoot span.search-icons');
             for (var i = 0; i < searchIcons.length; i++) {
-                searchIcons[i].addEventListener('click', configTable.clickSearch, false);}
+                searchIcons[i].addEventListener('click', configTable.clickSearch, false);
+            }
 
-            /* ---------------------------------------------------------------
-                first column checkbox, last column edit & delete icon links
-                -- inject search textboxes
-                -- add event listeners to perform search on ENTER key press
-            */
-            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th[data-is-searchable]');
+            // search input fields
+            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot input[type=text]');
             for (var i = 0; i < footerSearchBoxes.length; i++) {
-                if (!footerSearchBoxes[i].dataset.isSearchable) continue;
-
-                footerSearchBoxes[i].innerHTML =
-                    "<input style='width:100% !important;display: block !important;'"
-                    + " data-column-number='" + i + "'"
-                    + " class='form-control' type='text' placeholder='Search' />";
-
+                //$(footerSearchBoxes[i]).on('keyup', configTable.keyupSearch);
                 footerSearchBoxes[i]
                     .addEventListener('keyup', configTable.keyupSearch, false);
             }
+        },
+        init: function () {
+            var tableId = configTable.getTableId();
+
+            configTable.addToDOM(tableId);
+            configTable.addListeners(tableId);
         }
     }
 }();
