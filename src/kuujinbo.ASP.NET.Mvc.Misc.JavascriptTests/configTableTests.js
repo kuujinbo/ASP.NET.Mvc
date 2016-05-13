@@ -115,7 +115,7 @@ describe('configTable', function () {
         });
 
         it('should not search when textboxes are empty or whitespace', function () {
-            var textboxes = setFixtures(
+            setFixtures(
                 '<div>'
                 + "<input type='text' placeholder='Search' data-column-number='1' />"
                 + "<input type='text' placeholder='Search' data-column-number='2' value='   ' />"
@@ -134,8 +134,7 @@ describe('configTable', function () {
 
         it('should search when any textbox is not empty or whitespace', function () {
             spyOn(configTable, 'clearCheckAll');
-
-            var textboxes = setFixtures(
+            setFixtures(
                 '<div>'
                 + "<input type='text' placeholder='Search' data-column-number='1' />"
                 + "<input type='text' placeholder='Search' data-column-number='2' value='   ' />"
@@ -166,8 +165,8 @@ describe('configTable', function () {
         });
 
         it('should add the expected spin classes', function () {
-            var container = setFixtures('<div><span></span></div>');
-            var domContainer = container[0];
+            setFixtures('<div><span></span></div>');
+            var domContainer = document.querySelector('div');
 
             configTable.showSpin(domContainer, true);
             var span = domContainer.querySelector('span');
@@ -179,10 +178,10 @@ describe('configTable', function () {
         });
 
         it('should remove the spin classes', function () {
-            var container = setFixtures(
+            setFixtures(
                 '<div><span class="' + spinClasses.join(' ') + '"></span></div>'
             );
-            var domContainer = container[0];
+            var domContainer = document.querySelector('div');
 
             configTable.showSpin(domContainer);
             var span = domContainer.querySelector('span');
@@ -655,7 +654,7 @@ describe('configTable', function () {
         });
 
         it('should remove selected row class when checkbox is not', function () {
-            var html = setFixtures('<tr class="' + selectedClass + '">'
+            setFixtures('<tr class="' + selectedClass + '">'
                 + "<td><input type='checkbox' /></td>"
                 + "<td></td>"
                 + '</tr>'
