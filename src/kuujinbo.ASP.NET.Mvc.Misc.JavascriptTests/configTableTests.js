@@ -116,10 +116,12 @@ describe('configTable', function () {
 
         it('should not search when textboxes are empty or whitespace', function () {
             var textboxes = setFixtures(
-                "<input type='text' placeholder='Search' data-column-number='1' />"
+                '<div>'
+                + "<input type='text' placeholder='Search' data-column-number='1' />"
                 + "<input type='text' placeholder='Search' data-column-number='2' value='   ' />"
+                + '</div>'
             );
-            var resultTextboxes = textboxes.find('input');
+            var resultTextboxes = document.querySelectorAll('input[type=text]');
 
             configTable.search();
 
@@ -134,12 +136,14 @@ describe('configTable', function () {
             spyOn(configTable, 'clearCheckAll');
 
             var textboxes = setFixtures(
-                "<input type='text' placeholder='Search' data-column-number='1' />"
+                '<div>'
+                + "<input type='text' placeholder='Search' data-column-number='1' />"
                 + "<input type='text' placeholder='Search' data-column-number='2' value='   ' />"
                 + "<input type='text' placeholder='Search' data-column-number='3' value='03' />"
                 + "<input type='text' placeholder='Search' data-column-number='4' value='04' />"
+                + '</div>'
             );
-            var resultTextboxes = textboxes.find('input');
+            var resultTextboxes = document.querySelectorAll('input[type=text]');
 
             configTable.search();
 
@@ -163,24 +167,28 @@ describe('configTable', function () {
 
         it('should add the expected spin classes', function () {
             var container = setFixtures('<div><span></span></div>');
-            configTable.showSpin(container[0], true);
-            var span = container.find('span').first();
+            var domContainer = container[0];
+
+            configTable.showSpin(domContainer, true);
+            var span = domContainer.querySelector('span');
 
             expect(spinClasses.length).toEqual(3);
             for (var i = 0; i < spinClasses.length; ++i) {
-                expect(span.hasClass(spinClasses[i])).toEqual(true);
+                expect(span.classList.contains(spinClasses[i])).toEqual(true);
             }
         });
 
-        it('should remove the expected spin classes', function () {
+        it('should remove the spin classes', function () {
             var container = setFixtures(
                 '<div><span class="' + spinClasses.join(' ') + '"></span></div>'
             );
-            configTable.showSpin(container[0]);
-            var span = container.find('span').first();
+            var domContainer = container[0];
+
+            configTable.showSpin(domContainer);
+            var span = domContainer.querySelector('span');
 
             for (var i = 0; i < spinClasses.length; ++i) {
-                expect(span.hasClass(spinClasses[i])).toEqual(false);
+                expect(span.classList.contains(spinClasses[i])).toEqual(false);
             }
         });
     });
@@ -278,8 +286,8 @@ describe('configTable', function () {
         });
 
         it('should add the search icon links to the last column', function () {
-            var searchIcons = $('#' + lastColumnId)
-                .find('span.search-icons.glyphicon');
+            var searchIcons = document.querySelectorAll(
+                '#' + lastColumnId + ' span.search-icons.glyphicon');
 
             expect(searchIcons.length).toEqual(2);
             expect(searchIcons[0].classList.contains('glyphicon-search')).toBe(true);
@@ -407,7 +415,7 @@ describe('configTable', function () {
     });
 
     /* ========================================================================
-       event listener functions - verify specific EventTarget
+       event listener functions - verify EventTarget and correct behavior
        ========================================================================
     */
     describe('clickActionButton', function () {
@@ -472,12 +480,15 @@ describe('configTable', function () {
     // click 'datatable-check-all' checkbox - [un]check all checkboxes 
     // (jasmine-jquery)
     describe('clickCheckAll', function () {
-        var event, checked, unchecked;
+        var event, checked, unchecked, checkAllId;
         beforeEach(function () {
             event = {};
             checked = configTable.getCheckedSelector();
             unchecked = configTable.getUncheckedSelector();
-            setFixtures('<div>'
+            checkAllId = configTable.getCheckAllId();
+            setFixtures(
+                "<div><input id='datatable-check-all' type='checkbox' /></div>"
+                + '<div>'
                 + "<input type='checkbox' />"
                 + "<input type='checkbox' checked='checked' />"
                 + '</div>'
@@ -487,7 +498,7 @@ describe('configTable', function () {
         });
 
         it('should only fire click event on checked checkboxes when clickAll is unchecked', function () {
-            event.target = $("<input id='datatable-check-all' type='checkbox' />")[0];
+            event.target = document.querySelector(checkAllId); 
 
             configTable.clickCheckAll(event);
 
@@ -495,9 +506,10 @@ describe('configTable', function () {
             expect('click').not.toHaveBeenTriggeredOn(unchecked);
         });
 
-        // jQuery object => native DOM element - index [0]
         it('should only fire click event on unchecked checkboxes when clickAll is checked', function () {
-            event.target = $("<input id='datatable-check-all' type='checkbox' checked='checked' />")[0];
+            var checkAll = document.querySelector(checkAllId);
+            checkAll.checked = true;
+            event.target = checkAll;
 
             configTable.clickCheckAll(event);
 
@@ -549,17 +561,16 @@ describe('configTable', function () {
 
     // (jasmine-jquery)
     describe('clickTable link', function () {
-        var event, config, html, row, span, recordId;
+        var event, config, recordId;
         beforeEach(function () {
             event = {};
             config = configTable.getConfigValues();
-            html = setFixtures('<tr><td>'
+            setFixtures('<table><tr><td>'
                 + "<span class='glyphicon glyphicon-edit green link-icons'></span>"
                 + "<span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>"
                 + "<span class='NO-MATCH'><span></span></span>"
-                + '</td></tr>'
+                + '</td></tr></table>'
             );
-            row = html.find('tr').first();
             recordId = 1;
             spyOn(configTable, 'getRowData').and.returnValue(recordId);
             spyOn(configTable, 'getConfigValues').and.returnValue(config);
@@ -570,9 +581,7 @@ describe('configTable', function () {
             spyOn(configTable, 'redirect');
             spyOn(configTable, 'clearCheckAll');
 
-            span = html.find('span.NO-MATCH');
-            // jQuery object => native DOM element - index [0]
-            event.target = span[0];
+            event.target = document.querySelector('span.NO-MATCH');
             configTable.clickTable(event);
 
             expect(event.target.tagName.toLowerCase()).toEqual('span');
@@ -587,30 +596,30 @@ describe('configTable', function () {
             spyOn(configTable, 'sendXhr');
             spyOn(configTable, 'clearCheckAll');
 
-            span = html.find('span.glyphicon-remove-circle');
-            // jQuery object => native DOM element - index [0]
-            event.target = span[0];
+            var span = document.querySelector('span.glyphicon-remove-circle');
+            var row = document.querySelector('tr');
+            event.target = span;
             configTable.clickTable(event);
 
             expect(event.target.tagName.toLowerCase()).toEqual('span');
             expect(configTable.sendXhr).toHaveBeenCalledWith(
-                span[0], config.deleteRowUrl, { id: recordId }
+                span, config.deleteRowUrl, { id: recordId }
             );
             expect(configTable.getConfigValues).toHaveBeenCalled();
-            expect(configTable.getRowData).toHaveBeenCalledWith(row[0]);
+            expect(configTable.getRowData).toHaveBeenCalledWith(row);
             expect(configTable.clearCheckAll).toHaveBeenCalled();
         });
 
         it('should redirect to the edit page', function () {
             spyOn(configTable, 'redirect');
 
-            span = html.find('span.glyphicon-edit');
-            event.target = span[0];
+            event.target = document.querySelector('span.glyphicon-edit');
+            var row = document.querySelector('tr');
             configTable.clickTable(event);
 
             expect(event.target.tagName.toLowerCase()).toEqual('span');
             expect(configTable.getConfigValues).toHaveBeenCalled();
-            expect(configTable.getRowData).toHaveBeenCalledWith(row[0]);
+            expect(configTable.getRowData).toHaveBeenCalledWith(row);
             expect(configTable.redirect).toHaveBeenCalledWith(
                 config.editRowUrl + '/' + recordId
             );
@@ -628,22 +637,21 @@ describe('configTable', function () {
         });
 
         it('should add selected row class when checkbox is checked', function () {
-            var html = setFixtures('<tr>'
+            setFixtures('<tr>'
                 + "<td><input type='checkbox' checked='checked' /></td>"
                 + "<td></td>"
                 + '</tr>'
             );
-            var row = html.find('tr').first();
-            var checkbox = html.find('input[type="checkbox"]:checked');
-            // jQuery object => native DOM element - index [0]
-            event.target = checkbox[0];
+            var row = document.querySelector('tr');
+            var checkbox = row.querySelector('input[type="checkbox"]:checked');
+            event.target = checkbox;
 
             configTable.clickTable(event);
 
             expect(event.target.type).toEqual('checkbox');
             expect(event.target.checked).toEqual(true);
             expect(configTable.getSelectedRowClass).toHaveBeenCalled();
-            expect(row.hasClass(selectedClass)).toEqual(true);
+            expect(row.classList.contains(selectedClass)).toEqual(true);
         });
 
         it('should remove selected row class when checkbox is not', function () {
@@ -652,17 +660,16 @@ describe('configTable', function () {
                 + "<td></td>"
                 + '</tr>'
             );
-            var row = html.find('tr').first();
-            var checkbox = html.find('input[type="checkbox"]:not(:checked)');
-            event.target = checkbox[0];
+            var row = document.querySelector('tr');
+            var checkbox = row.querySelector('input[type="checkbox"]:not(:checked)');
+            event.target = checkbox;
 
             configTable.clickTable(event);
 
             expect(event.target.type).toEqual('checkbox');
             expect(event.target.checked).toEqual(false);
             expect(configTable.getSelectedRowClass).toHaveBeenCalled();
-            expect(row.attr('class')).toEqual('');
-            expect(row.hasClass(selectedClass)).toEqual(false);
+            expect(row.classList.length).toEqual(0);
         });
     });
 
