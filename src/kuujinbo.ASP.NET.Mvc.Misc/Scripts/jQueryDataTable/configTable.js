@@ -202,12 +202,12 @@
                 var elements = document.querySelectorAll(
                     configTable.getUncheckedSelector()
                 );
-                for (i = 0; i < elements.length; ++i) elements[i].click();
+                for (i = 0; i < elements.length; ++i) elements[i].checked = true;
             } else {
                 var elements = document.querySelectorAll(
                     configTable.getCheckedSelector()
                 );
-                for (i = 0; i < elements.length; ++i) elements[i].click();
+                for (i = 0; i < elements.length; ++i) elements[i].checked = false;
             }
         },
         // search icons in <span>
