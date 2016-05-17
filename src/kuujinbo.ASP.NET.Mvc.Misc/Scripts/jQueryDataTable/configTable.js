@@ -65,9 +65,8 @@
         clearSearchColumns: function () { _table.search('').columns().search(''); },
         draw: function () { _table.draw(false); },
         drawAndGoToPage1: function () { _table.draw(); },
-        getDataColumn: function () { return _table.columns()[0].length - 1; },
         getRowData: function (row) {
-            return _table.row(row).data()[configTable.getDataColumn()];
+            return _table.row(row).data()[0];
         },
         reload: function () { _table.ajax.reload(); },
         setSearchColumn: function (element) {
@@ -95,7 +94,7 @@
                 var cb = this.node()
                     .querySelector(configTable.getCheckedSelector());
 
-                if (cb !== null && cb.checked) selectedIds.push(this.data()[configTable.getDataColumn()]);
+                if (cb !== null && cb.checked) selectedIds.push(this.data()[0]);
             });
             return selectedIds;
         },
@@ -270,7 +269,7 @@
             var footers = document.querySelectorAll(tableId + ' tfoot th');
             footers[footers.length - 1].innerHTML =
                 "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
-                + "<span class='search-icons glyphicon glyphicon-repeat title='Clear Search'></span>";
+                + "<span class='search-icons glyphicon glyphicon-repeat' title='Clear Search and reload page'></span>";
 
             var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th');
             for (var i = 0; i < footerSearchBoxes.length; i++) {
@@ -313,7 +312,6 @@
             // search input fields
             var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot input[type=text]');
             for (var i = 0; i < footerSearchBoxes.length; i++) {
-                //$(footerSearchBoxes[i]).on('keyup', configTable.keyupSearch);
                 footerSearchBoxes[i]
                     .addEventListener('keyup', configTable.keyupSearch, false);
             }

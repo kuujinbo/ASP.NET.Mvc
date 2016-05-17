@@ -1,4 +1,8 @@
-﻿using System;
+﻿/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * see class tests for examples of how jQuery DataTables sends the HTTP
+ * request form parameters
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -8,14 +12,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
     {
         /* ===================================================================
          * custom data added in .js file - NOT part of jQuery DataTables API.
-         * ===================================================================
-         */
+         * ================================================================ */
         public const string CHECK_COLUMN = "checkColumn";
 
         /* ===================================================================
          * everything from here part of jQuery DataTables API.
-         * ===================================================================
-         */
+         * ================================================================ */
         public const string DRAW = "draw";
         public const string START = "start";
         public const string LENGTH = "length";
@@ -37,7 +39,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             base.BindModel(controllerContext, bindingContext);
             var request = controllerContext.HttpContext.Request.Form;
 
-            // get base table request properties
+            // base table request properties
             var draw = Convert.ToInt32(request[DRAW]);
             var start = Convert.ToInt32(request[START]);
             var length = Convert.ToInt32(request[LENGTH]);
@@ -46,37 +48,34 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             /* ===============================================================
              * jQuery DataTables regex **NOT** implemented - there's a reason 
              * the .NET Regex constructor has an overload with a timeout....
-             * ===============================================================
-             */
+             * ============================================================ */
             var search = new Search
             {
                 Value = request[SEARCH_VALUE],
             };
-
-            // shift-click multiple column [de|a]scending sort request:
+            /* ----------------------------------------------------------------
+             * SHIFT+CLICK multi-column [de|a]scending sort request
+             * ------------------------------------------------------------- */
             var order = new List<SortOrder>();
             for (int i = 0; ; ++i)
             {
                 var colOrder = request[string.Format(ORDER_COLUMN, i)];
                 if (colOrder == null) break;
 
-                var colIndex = checkColumn
-                    ? Convert.ToInt32(colOrder) - 1
-                    : Convert.ToInt32(colOrder);
-
                 order.Add(new SortOrder
                 {
-                    Column = colIndex,
+                    // account for checkbox column offset
+                    ColumnIndex = Convert.ToInt32(colOrder) - 1,
                     Direction = request[string.Format(ORDER_DIR, i)]
                 });
             }
-
             /* ----------------------------------------------------------------
-             * search and sort requests:
-             * ----------------------------------------------------------------
-             */
+             * [1] create Table Column collection
+             * [2] (potential) multi-column search requests
+             * ------------------------------------------------------------- */
             var columns = new List<Column>();
-            for (int i = 0; ; ++i)
+            // start at 1 to **IGNORE** checkbox column
+            for (int i = 1; ; ++i)
             {
                 var colName = request[string.Format(COLUMNS_NAME, i)];
                 if (colName == null) break;
@@ -90,9 +89,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                     Name = request[string.Format(COLUMNS_NAME, i)],
                     IsSearchable = searchable,
                     IsSortable = orderable,
-                    Search = searchable ? new Search
+                    Search = searchable ? new Search()
                     {
-                        Value = request[string.Format(COLUMNS_SEARCH_VALUE, i)]
+                        // account for checkbox column offset
+                        ColumnIndex = i - 1,
+                        // jQuery DataTables POST is 1 behind when checkbox
+                        // column is hidden
+                        Value = request[string.Format(COLUMNS_SEARCH_VALUE, (checkColumn ? i : i - 1))]
                     } : null
                 });
             }

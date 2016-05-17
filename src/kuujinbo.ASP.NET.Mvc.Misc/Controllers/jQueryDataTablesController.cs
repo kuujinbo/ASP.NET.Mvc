@@ -24,16 +24,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
                     { 
                         IsButton = false
                     }
-                    ,
-                    new ActionButton(url.Action("Rollover"), "Rollover")
-                    { 
-                        CssClass = ActionButton.Primary,
-                    },
-                    new ActionButton(url.Action("Approve"), "Approve"),
-                    new ActionButton(url.Action("Disapprove"), "Disapprove")
-                    { 
-                        CssClass = ActionButton.Danger,
-                    }
+                    //,
+                    //new ActionButton(url.Action("Rollover"), "Rollover")
+                    //{ 
+                    //    CssClass = ActionButton.Primary,
+                    //},
+                    //new ActionButton(url.Action("Approve"), "Approve"),
+                    //new ActionButton(url.Action("Disapprove"), "Disapprove")
+                    //{ 
+                    //    CssClass = ActionButton.Danger,
+                    //}
                 },
                 DataUrl = url.Action("JsonData"),
                 DeleteRowUrl = url.Action("DeleteOne"),
@@ -67,7 +67,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             System.Diagnostics.Debug.WriteLine(
                 JsonNetSerializer.Get(Request.Form)
             );
-            Thread.Sleep(2000);
+            Thread.Sleep(760);
             return new JsonNetResult(table.GetData<TestModel>(_data));
         }
 

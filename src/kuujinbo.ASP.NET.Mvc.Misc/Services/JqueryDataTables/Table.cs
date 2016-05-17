@@ -32,7 +32,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public Table()
         {
             ActionButtons = new List<ActionButton>();
-            SortOrders = new List<SortOrder>();
+            // SortOrders = new List<SortOrder>();
             // AllowMultiColumnSorting = true;
         }
 
@@ -53,15 +53,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         /// </remarks>
         public void SetColumns<T>() where T : class, IIdentifiable
         {
-            var columns = new List<Column>();
             // tuple used instead of creating a custom class
             IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(T));
 
+            var columns = new List<Column>();
             foreach (var info in typeInfo)
             {
                 var column = new Column
                 {
                     Name = info.Item2.DisplayName ?? info.Item1.Name,
+                    Display = info.Item2.Display,
                     IsSearchable = info.Item2.IsSearchable,
                     IsSortable = info.Item2.IsSortable,
                 };
@@ -97,10 +98,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             for (int i = 0; i < Columns.Count(); ++i)
             {
                 var column = Columns.ElementAt(i);
-                if (column.Search != null
+                if (column.Search != null // && column.IsSearchable
                     && !string.IsNullOrWhiteSpace(column.Search.Value))
                 {
-                    var tuple = typeInfo.ElementAt(i);
+                    var tuple = typeInfo.ElementAt(column.Search.ColumnIndex);
                     entities = entities.Where(e =>
                     {
                         var value = GetPropertyValue(
@@ -118,12 +119,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             var sortedData = entities.OrderBy(r => "");
             foreach (var sortOrder in SortOrders)
             {
-                // deal with negative column index in jQuery DataTables API
-                if (sortOrder.Column < 0) continue;
-                var column = Columns.ElementAt(sortOrder.Column);
+                var column = Columns.ElementAt(sortOrder.ColumnIndex);
                 if (column.IsSortable)
                 {
-                    var tuple = typeInfo.ElementAt(sortOrder.Column);
+                    var tuple = typeInfo.ElementAt(sortOrder.ColumnIndex);
                     if (sortOrder.Direction == DataTableModelBinder.ORDER_ASC)
                     {
                         sortedData = sortedData.ThenBy(e =>
@@ -158,10 +157,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                         entity, info.Item1, info.Item2, cache
                     ));
                 }
-                // last column, **NOT** visible
-                row.Add(entity.Id);
-                if (CheckboxColumn) row.Insert(0, "");
-
+                row.Insert(0, entity.Id);
                 tableData.Add(row);
             }
 

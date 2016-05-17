@@ -33,30 +33,30 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 
             s.AppendLine("<tfoot><tr>");
             GetTfootHtml(s, showCheckboxColumn);
-            s.AppendLine("</tr></tfoot>");
+            s.Append("</tr></tfoot>");
 
             return s.ToString();
         }
 
         private void GetTheadHtml(StringBuilder s, bool showCheckboxColumn)
         {
-            if (showCheckboxColumn)
-            {
-                s.AppendLine(@"
-                <th style='white-space:nowrap;text-align:left !important;padding:2px !important'>
-                    <input id='datatable-check-all' type='checkbox' />
-                </th>"
-                );
-            }
+            s.AppendLine(@"
+<th style='white-space:nowrap;text-align:left !important;padding:2px !important'>
+<input id='datatable-check-all' type='checkbox' />
+</th>"
+            );
 
-            foreach (var c in Columns) s.AppendFormat("<th>{0}</th>\n", c.Name);
+            foreach (var c in Columns) 
+            {
+                if (c.Display) s.AppendFormat("<th>{0}</th>\n", c.Name);
+            }
 
             s.AppendLine("<th></th>");
         }
 
         private void GetTfootHtml(StringBuilder s, bool showCheckboxColumn)
         {
-            if (showCheckboxColumn) s.AppendLine("<th></th>");
+            s.AppendLine("<th></th>");
             foreach (var c in Columns)
             {
                 s.AppendFormat(

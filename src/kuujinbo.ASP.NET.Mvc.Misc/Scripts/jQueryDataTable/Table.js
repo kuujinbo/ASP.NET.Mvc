@@ -2,32 +2,6 @@
     // $.fn.DataTable.ext.pager.numbers_length = 5;
     $(document).tooltip();
 
-    var columnDefinitions = [{
-        targets: -1,
-        searchable: false,
-        orderable: false,
-        // https://datatables.net/reference/option/columns.render
-        render: function (data, type, row, meta) {
-            console.log(row[1]);
-            var title = configValues.showCheckboxColumn ? row[1] : row[0];
-            return "<span class='glyphicon glyphicon-edit green link-icons' title='Edit ["
-                + title
-                + "]'></span>"
-                + " <span class='glyphicon glyphicon-remove-circle red link-icons' title='Delete ["
-                + title
-                + "]'><span></span></span>";
-        }
-    }];
-
-    if (configValues.showCheckboxColumn) {
-        columnDefinitions.push({
-            targets: 0,
-            // or asc/desc icon shown in thead
-            orderable: false,
-            render: function (data, type, full, meta) { return "<input type='checkbox' />"; }
-        });
-    };
-
     // DataTables API instance => $().DataTable() - note CASE
     var table = $(configTable.getTableId()).DataTable({
         processing: true,
@@ -42,8 +16,8 @@
             "<'row'<'col-xs-6'li><'col-xs-6'p>>",
         pagingType: 'full_numbers',
         // autoWidth: true,
-        // order: [[1, 'asc']],
-        order: [[(configValues.showCheckboxColumn ? 1 : 0), 'asc']],
+        order: [[1, 'asc']],
+        // order: [[(configValues.showCheckboxColumn ? 1 : 0), 'asc']],
         language: {
             processing: configTable.getLoadingElement(),
             lengthMenu: 'Show _MENU_ per page.',
@@ -60,10 +34,10 @@
             info: '_START_ to _END_ of _TOTAL_ results',
             infoFiltered: '(<em>filtered from _MAX_ total</em>)',
             paginate: {
-                previous: "<span class='glyphicon glyphicon-chevron-left' title='PREVIOUS' />",
-                next: "<span class='glyphicon glyphicon-chevron-right'  title='NEXT' />",
-                first: "<span class='glyphicon glyphicon-fast-backward' title='FIRST' />",
-                last: "<span class='glyphicon glyphicon-fast-forward' title='LAST' />"
+                previous: "<span class='glyphicon glyphicon-chevron-left' title='Previous' />",
+                next: "<span class='glyphicon glyphicon-chevron-right'  title='Next' />",
+                first: "<span class='glyphicon glyphicon-fast-backward' title='First' />",
+                last: "<span class='glyphicon glyphicon-fast-forward' title='Last' />"
             }
         },
         /* ----------------------------------------------------------------
@@ -87,12 +61,30 @@
                 configTable.clearCheckAll();
             }
         },
-        /* ----------------------------------------------------------------
-            first and last columns hard-coded for consistent display:
-            -- first: checkboxes => bulk action button(s)
-            -- last: single row/record edit/delete
-        */
-        columnDefs: columnDefinitions
+        columnDefs: [
+        {   // checkboxes => bulk action button(s), also holds recordId
+            targets: 0,
+            visible: configValues.showCheckboxColumn,
+            searchable: !configValues.showCheckboxColumn,
+            orderable: !configValues.showCheckboxColumn,
+            render: function (data, type, full, meta) {
+                return "<input type='checkbox' />";
+            }
+        },
+        {   // single row/record edit/delete
+            targets: -1,
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row, meta) {
+                var title =  row[1];
+                return "<span class='glyphicon glyphicon-edit green link-icons' title='Edit ["
+                    + (title || 'this record')
+                    + "]'></span>"
+                    + " <span class='glyphicon glyphicon-remove-circle red link-icons' title='Delete ["
+                    + (title || 'this record')
+                    + "]'><span></span></span>";
+            }
+        }]
     });
 
     configTable.setTable(table).setConfigValues(configValues).init();

@@ -64,11 +64,11 @@ div.dataTables_wrapper div.dataTables_processing,
     position: absolute !important;
     top: 0% !important;
     margin-top: 38px !important;
-    width: 90%;
+    width: 98%;
     left: 50%;
-    margin-left: -45%;
+    margin-left: -49%;
     text-align: center;
-    background-color:#000;
+    background-color:rgba(0, 0, 0, 0.76);
     color: #fff;
     z-index: 99999 !important;
     border: 2px solid #eaeaea;

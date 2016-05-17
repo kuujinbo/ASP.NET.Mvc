@@ -21,10 +21,13 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         }
 
         public int Id { get; set; }
+        
         [DataTableColumn(DisplayOrder = 1)]
         public string Name { get; set; }
+        
         [DataTableColumn(DisplayOrder = 2)]
         public string Office { get; set; }
+        
         [DataTableColumn(DisplayOrder = 3, DisplayName = "Start Date")]
         public DateTime? StartDate { get; set; }
 
@@ -101,12 +104,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         /// <remarks>perform arrange in **CURRENT** [Fact]</remarks>
         private void ActAndAssert(params TestModel[] entities)
         {
-            // act
+            // arrange
+            int entityCount = entities.Length;
             var totalRecords = _modelData.Count();
+
+            // act
             dynamic result = _table.GetData<TestModel>(_modelData);
 
             // assert
-            int entityCount = entities.Length;
             for (int i = 0; i < entityCount; ++i)
             {
                 Assert.Equal(totalRecords, result.recordsTotal);
@@ -115,15 +120,15 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 
                 Assert.IsType<List<List<object>>>(result.data);
 
-                Assert.Equal(entities[i].Name, result.data[i][0]);
-                Assert.Equal(entities[i].Office, result.data[i][1]);
-                Assert.Equal(entities[i].StartDate, result.data[i][2]);
-                Assert.Equal(entities[i].Salary.Amount, result.data[i][3]);
+                Assert.Equal(entities[i].Id, result.data[i][0]);
+                Assert.Equal(entities[i].Name, result.data[i][1]);
+                Assert.Equal(entities[i].Office, result.data[i][2]);
+                Assert.Equal(entities[i].StartDate, result.data[i][3]);
+                Assert.Equal(entities[i].Salary.Amount, result.data[i][4]);
                 Assert.Equal(
                     string.Join(", ", entities[i].Hobbies.Select(x => x.Name)),
-                    result.data[i][4]
+                    result.data[i][5]
                 );
-                Assert.Equal(entities[i].Id, result.data[i][5]);
             }
         }
 
@@ -169,7 +174,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'Name' property
-                    new SortOrder { Column = 0, Direction = DataTableModelBinder.ORDER_ASC } 
+                    new SortOrder { ColumnIndex = 0, Direction = DataTableModelBinder.ORDER_ASC } 
                 }
             };
             _table.SetColumns<TestModel>();
@@ -189,7 +194,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 { 
                     // sort ascending => 'Name' property
                     // anything other than DataTableModelBinder.ORDER_ASC is descnding 
-                    new SortOrder { Column = 1, Direction = "anything other than 'asc'" } 
+                    new SortOrder { ColumnIndex = 0, Direction = "anything other than 'asc'" } 
                 }
             };
             _table.SetColumns<TestModel>();
@@ -208,9 +213,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 SortOrders = new List<SortOrder>()
             };
             _table.SetColumns<TestModel>();
-
-            _table.Columns.ElementAt(1).Search = new Search() { Value = "  " };
-            _table.Columns.ElementAt(2).Search = new Search();
+            _table.Columns.ElementAt(1).Search = new Search() { Value = "  ", ColumnIndex = 1 };
+            _table.Columns.ElementAt(2).Search = new Search() {ColumnIndex = 2};
 
             ActAndAssert(SATO, RAMOS, GREER);
         }
@@ -227,7 +231,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             };
             _table.SetColumns<TestModel>();
             // search 'Name' property => case-insensitive
-            _table.Columns.ElementAt(0).Search = new Search() { Value = "g" };
+            _table.Columns.ElementAt(0).Search = new Search() { Value = "g", ColumnIndex = 0 };
 
             ActAndAssert(RAMOS, GREER);
         }
@@ -243,17 +247,17 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'StartDate' property
-                    new SortOrder { Column = 3, Direction = DataTableModelBinder.ORDER_ASC },
+                    new SortOrder { ColumnIndex = 2, Direction = DataTableModelBinder.ORDER_ASC },
                     /*
                      * sort descending => 'Name' property, which should be
                      * ignored, since 'StartDate' is evaluated first
                      */
-                    new SortOrder { Column = 1, Direction = "other" },
+                    new SortOrder { ColumnIndex = 0, Direction = "other" },
                 }
             };
             _table.SetColumns<TestModel>();
             // search 'Office' property => case-insensitive
-            _table.Columns.ElementAt(1).Search = new Search() { Value = "lon" };
+            _table.Columns.ElementAt(1).Search = new Search() { Value = "lon", ColumnIndex = 1 };
 
             ActAndAssert(GREER, RAMOS);
         }
@@ -331,7 +335,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 
             Assert.Equal<string>("Columns", exception.ParamName);
         }
-
 
         [Fact]
         public void GetGetTableHtml_WhenIsSearchableFalse_AddsEmptyDataSetAttribute()
@@ -415,6 +418,4 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.EndsWith("}", json);
         }
     }
-
-
 }
