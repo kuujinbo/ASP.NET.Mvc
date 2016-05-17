@@ -171,17 +171,17 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             FakeHttpPostVisibleCheckColumn();
 
             _table = _binder.BindModel(_controllerContext, _modelBindingContext) as Table;
-            Column data0 = _table.Columns.ElementAt(0);
-            Column data1 = _table.Columns.ElementAt(1);
-            Column nonData = _table.Columns.ElementAt(2);
-
             Assert.NotNull(_table);
-            Assert.Equal<bool>(true, _table.CheckboxColumn);
+            Assert.Equal(3, _table.Columns.Count());
             Assert.Equal<int>(0, _table.Draw);
             Assert.Equal<int>(0, _table.Start);
             Assert.Equal<int>(10, _table.Length);
+            Assert.Equal<bool>(true, _table.CheckboxColumn);
+            Assert.Equal<string>("global search value", _table.Search.Value);
 
-            Assert.Equal(3, _table.Columns.Count());
+            Column data0 = _table.Columns.ElementAt(0);
+            Column data1 = _table.Columns.ElementAt(1);
+            Column nonData = _table.Columns.ElementAt(2);
             Assert.Equal<string>("1", data0.Data);
             Assert.Equal<string>("2", data1.Data);
             Assert.Equal<string>("3", nonData.Data);
@@ -202,7 +202,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 
             Assert.Equal<string>("SEARCH_00", data0.Search.Value);
             Assert.Equal<string>("SEARCH_01", data1.Search.Value);
-            Assert.Equal<string>("global search value", _table.Search.Value);
         }
 
         [Fact]
@@ -211,17 +210,18 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             FakeHttpPostHiddenCheckColumn();
 
             _table = _binder.BindModel(_controllerContext, _modelBindingContext) as Table;
+            Assert.NotNull(_table);
+            Assert.Equal(3, _table.Columns.Count());
+            Assert.Equal<int>(0, _table.Draw);
+            Assert.Equal<int>(0, _table.Start);
+            Assert.Equal<int>(10, _table.Length);
+            Assert.Equal<bool>(false, _table.CheckboxColumn);
+            Assert.Equal<string>("global search value", _table.Search.Value);
+
             Column data0 = _table.Columns.ElementAt(0);
             Column data1 = _table.Columns.ElementAt(1);
             Column nonData = _table.Columns.ElementAt(2);
 
-            Assert.NotNull(_table);
-            Assert.Equal<bool>(false, _table.CheckboxColumn);
-            Assert.Equal<int>(0, _table.Draw);
-            Assert.Equal<int>(0, _table.Start);
-            Assert.Equal<int>(10, _table.Length);
-
-            Assert.Equal(3, _table.Columns.Count());
             Assert.Equal<string>("1", data0.Data);
             Assert.Equal<string>("2", data1.Data);
             Assert.Equal<string>("3", nonData.Data);
@@ -242,7 +242,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 
             Assert.Equal<string>("SEARCH_00", data0.Search.Value);
             Assert.Equal<string>("SEARCH_01", data1.Search.Value);
-            Assert.Equal<string>("global search value", _table.Search.Value);
         }
     }
 }

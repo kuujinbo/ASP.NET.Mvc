@@ -20,10 +20,6 @@ namespace System.Web.Mvc
 
             HttpResponseBase response = context.HttpContext.Response;
             response.ContentType = "application/json";
-            if (this.ContentEncoding != null)
-            {
-                response.ContentEncoding = this.ContentEncoding;
-            }
 
             response.Write(JsonNetSerializer.Get(Data));
         }

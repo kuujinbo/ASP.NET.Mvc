@@ -1,8 +1,10 @@
-﻿using System.Web;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Web;
 using System.Web.Optimization;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc
 {
+    [ExcludeFromCodeCoverage]
     public class BundleConfig
     {
         public static void RegisterBundles(BundleCollection bundles)

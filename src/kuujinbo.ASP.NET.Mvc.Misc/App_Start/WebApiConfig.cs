@@ -1,7 +1,9 @@
-﻿using System.Web.Http;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Web.Http;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc
 {
+    [ExcludeFromCodeCoverage]
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

@@ -1,6 +1,10 @@
-﻿using System;
+﻿/* ============================================================================
+ * http://www.hanselman.com/blog/ASPNETMVCSessionAtMix08TDDAndMvcMockHelpers.aspx
+ * ========================================================================= */
+using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +13,7 @@ using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
 {
+    [ExcludeFromCodeCoverage]
     public static class MvcMockHelpers
     {
         public static HttpContextBase FakeHttpContext()
