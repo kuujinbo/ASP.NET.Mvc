@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using System.Threading;
 using Newtonsoft.Json;
+using kuujinbo.ASP.NET.Mvc.Misc.Helpers;
 using kuujinbo.ASP.NET.Mvc.Misc.Models;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
@@ -24,16 +25,16 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
                     { 
                         IsButton = false
                     }
-                    //,
-                    //new ActionButton(url.Action("Rollover"), "Rollover")
-                    //{ 
-                    //    CssClass = ActionButton.Primary,
-                    //},
-                    //new ActionButton(url.Action("Approve"), "Approve"),
-                    //new ActionButton(url.Action("Disapprove"), "Disapprove")
-                    //{ 
-                    //    CssClass = ActionButton.Danger,
-                    //}
+                    ,
+                    new ActionButton(url.Action("Rollover"), "Rollover")
+                    { 
+                        CssClass = ActionButton.Primary,
+                    },
+                    new ActionButton(url.Action("Approve"), "Approve"),
+                    new ActionButton(url.Action("Disapprove"), "Disapprove")
+                    { 
+                        CssClass = ActionButton.Danger,
+                    }
                 },
                 DataUrl = url.Action("JsonData"),
                 DeleteRowUrl = url.Action("DeleteOne"),
@@ -43,7 +44,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 
             return table;
         }
-
 
         public ActionResult Index()
         {
@@ -64,9 +64,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         [HttpAjaxPost]
         public ActionResult JsonData(Table table)
         {
-            System.Diagnostics.Debug.WriteLine(
-                JsonNetSerializer.Get(Request.Form)
-            );
+            if (MyData.IsMyUrl(Request.UrlReferrer))
+            {
+                System.Diagnostics.Debug.WriteLine(MyData.SEGMENT);            
+            }
+
             Thread.Sleep(760);
             return new JsonNetResult(table.GetData<TestModel>(_data));
         }

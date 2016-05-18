@@ -54,8 +54,8 @@
                 var n = document.querySelector('div.dataTables_processing')
                 if (n !== null) n.style.display = 'none';
 
-                configTable.jqModalError(errorThrown);
-                console.log(errorThrown);
+                configTable.jqModalError(jqXHR.responseJSON || errorThrown);
+                console.log(jqXHR.responseJSON || errorThrown);
             },
             complete: function (data, textStatus, jqXHR) {
                 configTable.clearCheckAll();

@@ -17,12 +17,11 @@
                 </h3>
             </div>
             <h3 class='col-xs-6' style='text-align:right'>
-                <a href='@Url.Action("Index", "jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>
+                @*<a href='@Url.Action("Index", "jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>*@
+                <a href='@kuujinbo.ASP.NET.Mvc.Misc.Helpers.MyData.MakeMyUrl("jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>
             </h3>
         </div>
-
         @RenderBody()
-
     </div>
     @RenderSection("scripts", required: false)
 </body>

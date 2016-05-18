@@ -98,7 +98,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             for (int i = 0; i < Columns.Count(); ++i)
             {
                 var column = Columns.ElementAt(i);
-                if (column.Search != null // && column.IsSearchable
+                if (column.Search != null
+                    && column.IsSearchable
                     && !string.IsNullOrWhiteSpace(column.Search.Value))
                 {
                     var tuple = typeInfo.ElementAt(column.Search.ColumnIndex);

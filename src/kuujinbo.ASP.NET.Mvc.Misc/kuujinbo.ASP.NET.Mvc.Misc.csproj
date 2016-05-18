@@ -127,6 +127,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
+    <Compile Include="Helpers\MyRequest.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableColumnAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
