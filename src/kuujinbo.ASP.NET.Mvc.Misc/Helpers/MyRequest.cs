@@ -17,12 +17,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Helpers
 
         public static string MakeMyUrl(string controllerName)
         {
-            var basePath = HttpRuntime.AppDomainAppVirtualPath;
-
             return string.Format(
-                "{0}{1}{2}/{3}",
-                basePath,
-                basePath.EndsWith("/") ? string.Empty : "/",
+                "{0}/{1}/{2}",
+                HttpRuntime.AppDomainAppVirtualPath.TrimEnd(new char[] {'/'}),
                 controllerName,
                 SEGMENT
             );
