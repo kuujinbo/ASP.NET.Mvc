@@ -15,18 +15,28 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
         {
             return new JsonNetResult(obj);
         }
+        public ActionResult JsonData(object obj, string dateFormat)
+        {
+            return new JsonNetResult(obj, dateFormat);
+        }
     }
 
     public class JsonNetResultTests
     {
-        public static readonly Dictionary<string, string> DATA = 
-            new Dictionary<string, string>() { { "one", "1" } };
-
         private FakeController _fakeController;
 
         public JsonNetResultTests()
         {
             _fakeController = new FakeController();
+        }
+
+        private string GetDataFromJsonIndented(string json)
+        {
+            return json.Split(
+                    new string[] { Environment.NewLine }, 
+                    StringSplitOptions.None)
+                .Where(x => x != "{" && x != "}")
+                .ElementAt(0);
         }
 
         [Fact]
@@ -47,7 +57,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
         {
             var exception = Assert.Throws<ArgumentNullException>(
                 () => _fakeController
-                    .JsonData(DATA)
+                    .JsonData("")
                     .ExecuteResult(_fakeController.ControllerContext)
             );
 
@@ -59,7 +69,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
         {
             _fakeController.SetFakeControllerContext();
 
-            var result = _fakeController.JsonData(DATA);
+            var result = _fakeController.JsonData("");
             result.ExecuteResult(_fakeController.ControllerContext);
 
             Assert.Equal("application/json",  _fakeController.Response.ContentType);
@@ -83,16 +93,45 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
             );
 
             _fakeController
-                .JsonData(DATA)
+                .JsonData(new Dictionary<string, string> {{ "one", "1"}})
                 .ExecuteResult(_fakeController.ControllerContext);
+            var data = GetDataFromJsonIndented(json);
 
-            Assert.StartsWith("{", json); 
             Assert.Equal<int>(json.Count(x => x == '"'), 4);
             Assert.Contains("one", json);
             Assert.Equal<int>(json.Count(x => x == ':'), 1);
             Assert.Contains("1", json);
-            Assert.EndsWith("}", json);
         }
 
+        [Fact]
+        public void ExecuteResult_WithDataAndDateFormat_WritesJsonString()
+        {
+            var json = string.Empty;
+            var date = DateTime.Today;
+            var fakeContext = new Mock<HttpContextBase>();
+            Mock<HttpResponseBase> response = new Mock<HttpResponseBase>();
+            response.Setup(
+                x => x.Write(It.IsAny<string>()))
+                    .Callback<string>(y => { json = y; }
+            );
+            fakeContext.Setup(ctx => ctx.Response).Returns(response.Object);
+            _fakeController.ControllerContext = new ControllerContext(
+                new RequestContext(fakeContext.Object, new RouteData()),
+                _fakeController
+            );
+
+            _fakeController
+                .JsonData(date, "yyyy-MM-dd")
+                .ExecuteResult(_fakeController.ControllerContext);
+            var dateParts = GetDataFromJsonIndented(json)
+                .Trim(new char[] { '"' })
+                .Split(new char[] { '-' }, StringSplitOptions.None)
+                .Select(x => Int32.Parse(x))
+                .ToArray();
+
+            Assert.Equal<int>(date.Year, dateParts[0]);
+            Assert.Equal<int>(date.Month, dateParts[1]);
+            Assert.Equal<int>(date.Day, dateParts[2]);
+        }
     }
 }

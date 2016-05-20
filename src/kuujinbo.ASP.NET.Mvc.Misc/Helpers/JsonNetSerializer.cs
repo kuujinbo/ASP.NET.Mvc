@@ -5,15 +5,43 @@ namespace System.Web.Mvc
 {
     public class JsonNetSerializer
     {
-        public static string Get(object o)
+        public const string AppDateFormat = "M/d/yyyy";
+        public const string BAD_DATE_FORMAT = "unrecognized date format";
+
+        public static string Get(object value)
         {
-            if (o == null) throw new System.ArgumentNullException("o");
+            return Get(value, AppDateFormat);
+        }
+        public static string Get(object value, string dateFormat)
+        {
+            if (value == null) throw new System.ArgumentNullException("value");
 
-            var settings = new JsonSerializerSettings();
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            settings.Converters.Add(new IsoDateTimeConverter { DateTimeFormat = "M/d/yyyy" });
+            if (string.IsNullOrWhiteSpace(dateFormat)) dateFormat = AppDateFormat;
 
-            return JsonConvert.SerializeObject(o, Formatting.Indented, settings);
+            if (dateFormat == AppDateFormat || IsValidDateFormat(dateFormat))
+            {
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+                settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                settings.Converters.Add(
+                    new IsoDateTimeConverter() { DateTimeFormat = dateFormat }
+                );
+
+                    // MVC cannot handle microsoft's JSON date serialization
+                return JsonConvert.SerializeObject(
+                    value, Formatting.Indented, settings
+                );
+            }
+
+            throw new FormatException(BAD_DATE_FORMAT);
+
+        }
+
+        private static bool IsValidDateFormat(string dateFormat)
+        {
+            DateTime outDate;
+            return DateTime.TryParse(
+                DateTime.Now.ToString(dateFormat), out outDate
+            );
         }
     }
 }
