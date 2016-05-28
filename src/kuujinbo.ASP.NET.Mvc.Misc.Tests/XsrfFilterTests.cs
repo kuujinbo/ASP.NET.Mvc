@@ -78,7 +78,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
         }
 
         [Fact]
-        public void GetFilter_XsrfMethodsIsAjax_ReturnsValidateAntiForgeryTokenAttribute()
+        public void GetFilter_XsrfMethodsIsAjax_ReturnsValidateJsonAntiForgeryTokenAttribute()
         {
             foreach (var method in XsrfFilter.XsrfMethods)
             {
@@ -129,5 +129,22 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests
                 Assert.Null(postResult);
             }
         }
+
+
+        [Fact]
+        public void Get_XsrfMethods_ReturnsConditionalFilterProvider()
+        {
+            foreach (var method in XsrfFilter.XsrfMethods)
+            {
+                _fakeContext = MvcMockHelpers.FakeHttpContext();
+                _fakeContext.Request.SetHttpMethodResult(method);
+                _output.WriteLine("HttpMethod => {0}", method);
+                var filter = XsrfFilter.Get();
+
+                Assert.IsType(typeof(ConditionalFilterProvider), filter);
+            }
+        }
+
+
     }
 }

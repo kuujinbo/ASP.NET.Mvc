@@ -2,4 +2,5 @@
 !.gitignore
 !dataTablesArrayData.json
 !dataTablesObjectData.json
+!dataTablesObjectData0.json
 !hello-world.pdf

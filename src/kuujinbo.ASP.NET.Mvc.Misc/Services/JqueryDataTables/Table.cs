@@ -65,6 +65,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                     Display = info.Item2.Display,
                     IsSearchable = info.Item2.IsSearchable,
                     IsSortable = info.Item2.IsSortable,
+                    DisplayWidth = info.Item2.DisplayWidth,
+                    Type = info.Item1.PropertyType
                 };
                 columns.Add(column);
             }
@@ -165,6 +167,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             return new
             {
                 draw = this.Draw,
+                //draw = this.Draw,
                 recordsTotal = recordsTotal,
                 recordsFiltered = entities.Count(),
                 data = tableData

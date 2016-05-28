@@ -1,7 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace System.Web.Mvc
 {
+    [ExcludeFromCodeCoverage]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class HttpAjaxPostAttribute : ActionMethodSelectorAttribute
 	{

@@ -52,11 +52,19 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 
             if (_data == null)
             {
-                string dataFile = Server.MapPath("~/app_data/dataTablesObjectData.json");
-                _data = JsonConvert
-                    .DeserializeObject<ICollection<TestModel>>(
-                        System.IO.File.ReadAllText(dataFile)
-                    );            
+                string dataFile = Server.MapPath("~/app_data/dataTablesObjectData0.json");
+                _data = JsonConvert.DeserializeObject<ICollection<TestModel>>(
+                    System.IO.File.ReadAllText(dataFile)
+                ); 
+                //int i = 0;
+                //foreach (var d in _data)
+                //{
+                //    d.Salaried = ++i % 2 == 0;
+                //}
+                //System.IO.File.WriteAllText(
+                //    Server.MapPath("~/app_data/dataTablesObjectData0.json"),
+                //    JsonConvert.SerializeObject(_data, Formatting.Indented)
+                //);
             }
             return View("_jQueryDataTables", table);
         }

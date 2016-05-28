@@ -104,14 +104,15 @@ table.dataTable tbody tr.datatable-select-row  {
   color:green;
 }
 .search-icons {
-    font-size:1.2em !important;
+    /*font-size:1em !important;*/
+    color:#fff;
     text-align:center !important; 
-    vertical-align:middle !important;
-    padding: 4px !important;
-    margin-right: 4px !important;
-    background:#ffa500;
+    vertical-align:top !important;
+    padding: 8px !important;
+    margin: 0px !important;
+    background:#4285f4;
     /*background:#ffe51e;*/
-    border:1px solid #eaeaea;
+    border:1px solid #d8d8d8;
     cursor: pointer;
 }
 /*

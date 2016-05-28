@@ -7,9 +7,6 @@
         jqModal: $('#datatable-success-error-modal').dialog({
             autoOpen: false, height: 276, width: 476
         }),
-        //jqModal: $('<div></div>').dialog({
-        //    autoOpen: false, height: 276, width: 476
-        //}),
         jqModalOK: function (msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
@@ -56,7 +53,7 @@
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
         },
         getActionButtonSelector: function () { return '#data-table-actions button.btn'; },
-        getSearchBoxSelector: function () { return 'tfoot input[type=text]'; },
+        getSearchFilterSelector: function () { return 'th input[type=text], th select'; },
         getCheckedSelector: function () { return 'input[type="checkbox"]:checked'; },
         getUncheckedSelector: function () { return 'input[type="checkbox"]:not(:checked)'; },
         /* -----------------------------------------------------------------
@@ -80,10 +77,9 @@
             var n = document.querySelector(configTable.getCheckAllId());
             if (n !== null) n.checked = false;
         },
-        clearSearchBoxes: function () {
-            var elements = document.querySelectorAll(
-                configTable.getSearchBoxSelector()
-            );
+        clearSearchFilters: function () {
+            var selector = configTable.getSearchFilterSelector()
+            var elements = document.querySelectorAll(selector);
             for (i = 0; i < elements.length; ++i) elements[i].value = '';
 
             configTable.clearSearchColumns();
@@ -112,7 +108,7 @@
         },
         search: function () {
             var searchCount = 0;
-            var elements = document.querySelectorAll('input[type=text]');
+            var elements = document.querySelectorAll(configTable.getSearchFilterSelector());
             for (i = 0; i < elements.length; ++i) {
                 var searchText = elements[i].value;
                 // search only if non-whitespace
@@ -120,9 +116,9 @@
                     ++searchCount;
                     configTable.setSearchColumn(elements[i]);
                 }
-                    /* explicitly clear individual input, or will save last value 
-                       if user backspaces.
-                    */
+                /* explicitly clear individual input, or will save last value 
+                   if user backspaces.
+                */
                 else {
                     elements[i].value = '';
                     configTable.setSearchColumn(elements[i]);
@@ -163,7 +159,10 @@
                 }
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
-                configTable.jqModalError(jqXHR.data);
+                console.log(jqXHR);
+                configTable.jqModalError(
+                    jqXHR.statusText || jqXHR.responseJSON
+                );
             })
             .always(function () {
                 configTable.showSpin(element)
@@ -216,7 +215,7 @@
                 configTable.search();
             }
             else if (target.classList.contains('glyphicon-repeat')) {
-                configTable.clearSearchBoxes();
+                configTable.clearSearchFilters();
                 configTable.reload();
             }
         },
@@ -234,7 +233,7 @@
                     }
                 }
             }
-                // edit & delete links
+            // edit & delete links
             else if (target.tagName.toLowerCase() === 'span'
             && target.classList.contains('glyphicon')) {
                 var row = target.parentNode.parentNode;
@@ -245,7 +244,6 @@
                         configTable.getConfigValues().deleteRowUrl,
                         { id: configTable.getRowData(row) }
                     );
-
                     configTable.clearCheckAll();
                 }
                 else if (target.classList.contains('glyphicon-edit')) {
@@ -260,26 +258,6 @@
         // search when ENTER key pressed in <input> text
         keyupSearch: function (e) {
             if (e.key === 'Enter') configTable.search();
-        },
-        /* -----------------------------------------------------------------
-                    initialize DOM, event listeners, & DataTable
-                ----------------------------------------------------------------- */
-        addToDOM: function (tableId) {
-            // inject search icons
-            var footers = document.querySelectorAll(tableId + ' tfoot th');
-            footers[footers.length - 1].innerHTML =
-                "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
-                + "<span class='search-icons glyphicon glyphicon-repeat' title='Clear Search and reload page'></span>";
-
-            var footerSearchBoxes = document.querySelectorAll(tableId + ' tfoot th');
-            for (var i = 0; i < footerSearchBoxes.length; i++) {
-                if (!footerSearchBoxes[i].dataset.isSearchable) continue;
-
-                footerSearchBoxes[i].innerHTML =
-                    "<input style='width:100% !important;display: block !important;'"
-                    + " data-column-number='" + i + "'"
-                    + " class='form-control' type='text' placeholder='Search' />";
-            }
         },
         addListeners: function (tableId) {
             // allow ENTER in search boxes, otherwise possible form submit
@@ -319,7 +297,6 @@
         init: function () {
             var tableId = configTable.getTableId();
 
-            configTable.addToDOM(tableId);
             configTable.addListeners(tableId);
         }
     }

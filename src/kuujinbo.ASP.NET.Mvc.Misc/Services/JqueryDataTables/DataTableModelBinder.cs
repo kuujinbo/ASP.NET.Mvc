@@ -95,7 +95,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                         ColumnIndex = i - 1,
                         // jQuery DataTables POST is 1 behind when checkbox
                         // column is hidden
-                        Value = request[string.Format(COLUMNS_SEARCH_VALUE, (checkColumn ? i : i - 1))]
+                        Value = request[string.Format(COLUMNS_SEARCH_VALUE, i)]
+                        // Value = request[string.Format(COLUMNS_SEARCH_VALUE, (checkColumn ? i : i - 1))]
                     } : null
                 });
             }

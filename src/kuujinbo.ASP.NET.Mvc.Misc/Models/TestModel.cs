@@ -18,5 +18,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Models
         public DateTime? StartDate { get; set; }
         [DataTableColumn(DisplayOrder = 6)]
         public string Salary { get; set; }
+        [DataTableColumn(DisplayOrder = 7)]
+        public bool? Salaried { get; set; }
     }
 }

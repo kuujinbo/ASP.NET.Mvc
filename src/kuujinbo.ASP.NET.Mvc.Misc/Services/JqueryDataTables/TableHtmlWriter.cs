@@ -46,9 +46,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 </th>"
             );
 
-            foreach (var c in Columns) 
+            foreach (var c in Columns)
             {
-                if (c.Display) s.AppendFormat("<th>{0}</th>\n", c.Name);
+                var widthCss = c.DisplayWidth == 0
+                    ? ""
+                    : string.Format(" style='width:{0}%'", c.DisplayWidth);
+                if (c.Display) s.AppendFormat("<th{0}>{1}</th>\n", widthCss, c.Name);
             }
 
             s.AppendLine("<th></th>");
@@ -57,14 +60,44 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         private void GetTfootHtml(StringBuilder s, bool showCheckboxColumn)
         {
             s.AppendLine("<th></th>");
+                var i = 1;
             foreach (var c in Columns)
             {
-                s.AppendFormat(
-                    "<th data-is-searchable='{0}'></th>\n",
-                    c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty
-                );
+                if (c.Type == typeof(bool) || c.Type == typeof(bool?))
+                {
+                    s.AppendFormat(
+                        "<th data-is-searchable='{0}' data-type='{1}'>\n",
+                        c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
+                        c.Type
+                    );
+                    // NOTE: MS hard-codes bool ToString(): 'True' and 'False'
+                    s.AppendFormat(@"
+<select name='select' class='form-control input-sm' data-column-number='{0}'>
+    <option value='' selected='selected'></option> 
+    <option value='true'>Yes</option>
+    <option value='false'>No</option>
+</select></th>
+                    ", i);
+                }
+                else
+                {
+                    s.AppendFormat(
+                        "<th data-is-searchable='{0}' data-type='{1}'>\n",
+                        c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
+                        c.Type
+                    );
+                    s.AppendFormat(@"
+<input style='width:100% !important;display: block !important;'
+data-column-number='{0}'
+class='form-control' type='text' placeholder='Search' /></th>
+                    ", i);
+                }
+                ++i;
             }
-            s.AppendLine("<th style='white-space: nowrap;'></th>");
+            s.AppendLine("<th style='white-space: nowrap;'>");
+            s.AppendLine("<span class='search-icons glyphicon glyphicon-search' title='Search'></span>");
+            s.Append("<span class='search-icons glyphicon glyphicon-repeat' title='Clear Search and reload page'></span>\n");
+            s.Append("</th>");
         }
 
         public string GetJavaScriptConfig()

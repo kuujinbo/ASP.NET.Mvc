@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace System.Web.Mvc
 {
+    [ExcludeFromCodeCoverage]
     public sealed class XhrValidatorAttribute : FilterAttribute, IActionFilter
     {
         public void OnActionExecuted(ActionExecutedContext filterContext)

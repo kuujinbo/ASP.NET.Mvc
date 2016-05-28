@@ -1,5 +1,8 @@
-﻿namespace System.Web.Mvc
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace System.Web.Mvc
 {
+    [ExcludeFromCodeCoverage]
     public static class AjaxHelper
     {
         public const string CSRF_TOKEN = "__RequestVerificationToken";

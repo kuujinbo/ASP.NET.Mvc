@@ -144,6 +144,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Services\JqueryDataTables\TableHtmlWriter.cs" />
+    <Compile Include="Services\JqueryDataTables\ViewAllPath.cs" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />

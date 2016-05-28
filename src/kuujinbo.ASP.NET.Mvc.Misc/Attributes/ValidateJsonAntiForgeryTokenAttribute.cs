@@ -1,7 +1,9 @@
-﻿using System.Web.Helpers;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Web.Helpers;
 
 namespace System.Web.Mvc
 {
+    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Workaround to allow Antiforgery Token Validation via HTTP Header for AJAX requests
     /// Reference: http://haacked.com/archive/2011/10/10/preventing-csrf-with-ajax.aspx/

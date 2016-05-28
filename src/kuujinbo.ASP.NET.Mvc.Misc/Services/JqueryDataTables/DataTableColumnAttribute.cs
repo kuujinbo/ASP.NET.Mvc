@@ -12,6 +12,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public bool Display { get; set; }
         public string DisplayName { get; set; }
         public int DisplayOrder { get; set; }
+        public int DisplayWidth { get; set; }
         public bool IsSearchable { get; set; }
         public bool IsSortable { get; set; }
         public string FieldAccessor { get; set; }
