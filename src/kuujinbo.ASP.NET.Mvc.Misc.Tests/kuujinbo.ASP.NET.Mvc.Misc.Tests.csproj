@@ -37,10 +37,17 @@
   <ItemGroup>
     <Compile Include="Helpers\JsonNetResultTests.cs" />
     <Compile Include="Helpers\JsonNetSerializerTests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\CacInfoTests.cs" />
     <Compile Include="Services\JqueryDataTables\ActionButtonTests.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableModelBinderTests.cs" />
     <Compile Include="Services\JqueryDataTables\TableHtmlWriterTests.cs" />
     <Compile Include="Services\JqueryDataTables\TableTests.cs" />
+    <Compile Include="Services\JqueryDataTables\ViewAllPathTests.cs" />
     <Compile Include="XsrfFilterTests.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,6 +55,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Services\CacInfo-cert.cer" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kuujinbo.ASP.NET.Mvc.Misc\kuujinbo.ASP.NET.Mvc.Misc.csproj">
@@ -116,6 +124,12 @@
       <HintPath>..\..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

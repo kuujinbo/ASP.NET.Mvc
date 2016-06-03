@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
+<!DOCTYPE html>
 <html ng-app='angular1'>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -18,7 +19,7 @@
             </div>
             <h3 class='col-xs-6' style='text-align:right'>
                 @*<a href='@Url.Action("Index", "jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>*@
-                <a href='@kuujinbo.ASP.NET.Mvc.Misc.Helpers.MyData.MakeMyUrl("jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>
+                <a href='@ViewAllPath.MakeUrl("jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>
             </h3>
         </div>
         @RenderBody()

@@ -5,7 +5,6 @@ using System.Net;
 using System.Web.Mvc;
 using System.Threading;
 using Newtonsoft.Json;
-using kuujinbo.ASP.NET.Mvc.Misc.Helpers;
 using kuujinbo.ASP.NET.Mvc.Misc.Models;
 using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
@@ -72,10 +71,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
         [HttpAjaxPost]
         public ActionResult JsonData(Table table)
         {
-            if (MyData.IsMyUrl(Request.UrlReferrer))
-            {
-                System.Diagnostics.Debug.WriteLine(MyData.SEGMENT);            
-            }
+            //if (MyData.IsMyUrl(Request.UrlReferrer))
+            //{
+            //    System.Diagnostics.Debug.WriteLine(MyData.SEGMENT);            
+            //}
 
             Thread.Sleep(760);
             return new JsonNetResult(table.GetData<TestModel>(_data));

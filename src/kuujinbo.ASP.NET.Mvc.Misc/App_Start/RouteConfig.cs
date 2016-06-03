@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Web;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Web.Mvc;
 using System.Web.Routing;
-using kuujinbo.ASP.NET.Mvc.Misc.Helpers;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc
 {
@@ -25,11 +20,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
                 constraints: new { controller = ALPHA_NUMERIC, action = ALPHA_NUMERIC }
             );
 
-            routes.MapRoute(
-                name: "MyData",
-                url: "{controller}/" + MyData.SEGMENT,
-                defaults: new { controller = "jQueryDataTables", action = "Index" }
-            );
+            //routes.MapRoute(
+            //    name: "MyData",
+            //    url: "{controller}/" + MyData.SEGMENT,
+            //    defaults: new { controller = "jQueryDataTables", action = "Index" }
+            //);
             // MVC default
             //routes.MapRoute(
             //    name: "Default",

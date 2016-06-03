@@ -16,7 +16,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44343</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -126,8 +126,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
+    <Compile Include="Controllers\CacInfoController.cs" />
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
-    <Compile Include="Helpers\MyRequest.cs" />
+    <Compile Include="Services\CacInfo.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableColumnAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Services\JqueryDataTables\Table.cs" />
     <Compile Include="Services\JqueryDataTables\SortOrder.cs" />
     <Compile Include="Models\TestModel.cs" />
+    <Content Include="Views\CacInfo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -260,6 +262,7 @@
     <Content Include="Scripts\lib\plupload\plupload.min.js" />
     <None Include="Scripts\lib\_references.js" />
     <Content Include="Scripts\httpRequestInterceptorTest.js" />
+    <Content Include="Views\CacInfo\properties.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
