@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using kuujinbo.ASP.NET.Mvc.Misc.Services;
 using kuujinbo.ASP.NET.Mvc.Misc.Tests.Properties;
 using Xunit;

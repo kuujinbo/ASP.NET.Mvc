@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Security.Cryptography.X509Certificates;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services
@@ -26,9 +23,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services
             return cacInfo;
         }
 
-        private static CacInfo ParseSimpleName(string userName)
+        private static CacInfo ParseSimpleName(string simpleName)
         {
-            string[] splitValue = userName.Split(new char[] { '.' });
+            string[] splitValue = simpleName.Split(new char[] { '.' });
             int lastIndex = splitValue.Length - 1;
             return new CacInfo()
             { 
