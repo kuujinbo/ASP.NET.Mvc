@@ -1,29 +1,18 @@
-﻿@using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app='angular1'>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/angular")
-    @Scripts.Render("~/bundles/plupload")
+<meta name="viewport" content="width=device-width" />
+<title>@ViewBag.Title</title>
+@Styles.Render("~/Content/css")
 </head>
 <body>
-    <div class="container-fluid">
-        <div class='row'>
-            <div class='col-xs-6'>
-                <h3 class='col-xs-6'>
-                    <a href='@Url.Action("Index", "Home")'>Home</a>
-                </h3>
-            </div>
-            <h3 class='col-xs-6' style='text-align:right'>
-                @*<a href='@Url.Action("Index", "jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>*@
-                <a href='@ViewAllPath.MakeUrl("jQueryDataTables")'>LINQ to Entities jQuery DataTables</a>
-            </h3>
-        </div>
-        @RenderBody()
-    </div>
-    @RenderSection("scripts", required: false)
+@Html.Partial("_navMenu")
+<div class="container-fluid">
+    @RenderBody()
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/angular")
+@RenderSection("scripts", required: false)
 </body>
 </html>

@@ -146,6 +146,11 @@
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Services\JqueryDataTables\TableHtmlWriter.cs" />
     <Compile Include="Services\JqueryDataTables\ViewAllPath.cs" />
+    <Content Include="Content\Images\alt-gravatar.png" />
+    <Content Include="Content\Images\kuujinbo_320-30.gif" />
+    <Content Include="Content\NAV_MENU.html" />
+    <Content Include="Content\octicons\octicons.css" />
+    <Content Include="Content\octicons\octicons.svg" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -187,6 +192,9 @@
     <Content Include="Scripts\lib\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\lib\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\lib\jquery-2.2.3.min.map" />
+    <Content Include="Content\octicons\octicons.eot" />
+    <Content Include="Content\octicons\octicons.ttf" />
+    <Content Include="Content\octicons\octicons.woff" />
     <None Include="Models\JqueryDataTable.cs.orig" />
     <Compile Include="Services\JqueryDataTables\ActionButton.cs" />
     <Compile Include="Services\JqueryDataTables\Column.cs" />
@@ -196,6 +204,7 @@
     <Compile Include="Services\JqueryDataTables\SortOrder.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Content Include="Views\CacInfo\Index.cshtml" />
+    <Content Include="Views\Shared\_navMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

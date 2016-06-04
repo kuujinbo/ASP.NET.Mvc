@@ -15,11 +15,17 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
                 // "~/Content/jquery.dataTables.css",
                 "~/Content/dataTables.bootstrap.css",
                 "~/Content/themes/base/all.css",
+                "~/Content/octicons/octicons.css",
                 "~/Content/site.css"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery")
-                .Include("~/Scripts/lib/jquery-{version}.js"));
+                .Include("~/Scripts/lib/jquery-{version}.js")
+            );
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap")
+                .Include("~/Scripts/lib/bootstrap.js")
+            );
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                  "~/Scripts/lib/angular.js",
@@ -41,7 +47,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
                 "~/Scripts/jQueryDataTable/configTable.js",
                 "~/Scripts/jQueryDataTable/Table.js"
             ));
-
         }
     }
 }
