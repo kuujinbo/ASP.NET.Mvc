@@ -100,13 +100,11 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             return complete;
         }
 
-        public string GenerateHash(Stream stream, HashAlgorithm algorithm)
-        {
-            return BitConverter.ToString(algorithm.ComputeHash(stream))
-                .Replace("-", "")
-                .ToLower();
-        }
-
- 
+        //public string GenerateHash(Stream stream, HashAlgorithm algorithm)
+        //{
+        //    return BitConverter.ToString(algorithm.ComputeHash(stream))
+        //        .Replace("-", "")
+        //        .ToLower();
+        //}
     }
 }

@@ -3,14 +3,20 @@ using kuujinbo.ASP.NET.Mvc.Misc.Services;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
 {
-    [RequireHttps]
     public class CacInfoController : Controller
     {
+        private ICacInfo _cacInfo;
+
+        public CacInfoController(ICacInfo cacInfo)
+        {
+            _cacInfo = cacInfo;
+        }
+
         // GET: CacInfo
         public ActionResult Index()
         {
-            var cacInfo = new CacInfo()
-                .Get(Request.ClientCertificate.Certificate);
+            var cacInfo = _cacInfo.Get(Request.ClientCertificate.Certificate);
+
             return View(cacInfo);
         }
     }
