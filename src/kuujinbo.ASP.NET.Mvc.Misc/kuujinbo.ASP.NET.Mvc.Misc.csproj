@@ -213,6 +213,7 @@
     <Compile Include="Services\JqueryDataTables\SortOrder.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Content Include="Views\CacInfo\Index.cshtml" />
+    <Content Include="Views\CacInfo\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
