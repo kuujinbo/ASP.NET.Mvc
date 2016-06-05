@@ -32,7 +32,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services
         /// X509Certificate2.GetNameInfo() returns empty string if not found,
         /// **not** null
         /// </remarks>
-        public CacInfo Get(byte[] rawData)
+        public virtual CacInfo Get(byte[] rawData)
         {
             if (rawData == null) throw new ArgumentNullException(NULL_GET_PARAM);
 
@@ -73,13 +73,17 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services
         /// </summary>
         /// <param name="edipi"></param>
         /// <returns>bool</returns>
+        /// <remarks>
+        /// all of the CLR IntXX and UIntXX methods are **INVALID** for
+        /// validation because **NONE** guarantee a 10-digit number.
+        /// </remarks>
         public static bool ValidEdipi(string edipi)
         {
             return Regex.IsMatch(edipi, @"^\d{10}$");
         }
 
         /// <summary>
-        /// title case ignoring culture/globalization
+        /// title case when culture/globalization not needed
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>

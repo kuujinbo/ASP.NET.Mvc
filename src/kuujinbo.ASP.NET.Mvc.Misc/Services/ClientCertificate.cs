@@ -3,6 +3,9 @@ using System.Web;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services
 {
+    /// <summary>
+    /// wrapper for testing
+    /// </summary>
     public interface IClientCertificate
     {
         byte[] Get(HttpRequestBase request);
@@ -10,9 +13,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services
 
     public class ClientCertificate : IClientCertificate
     {
+        // BIG-IP does **NOT** allow direct access to HttpRequestBase.ClientCertificate
         public const string CERT_HEADER = "ssl.client_cert";
 
-        public byte[] Get(HttpRequestBase request)
+        public virtual byte[] Get(HttpRequestBase request)
         {
             return request.IsLocal 
                 ? request.ClientCertificate.Certificate
