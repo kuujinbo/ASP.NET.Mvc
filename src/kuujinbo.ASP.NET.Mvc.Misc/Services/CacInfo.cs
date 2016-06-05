@@ -1,9 +1,17 @@
-﻿using System;
+﻿/* ===========================================================================
+ * IIS CRL check
+ * https://blogs.msdn.microsoft.com/kaushal/2012/10/15/disable-client-certificate-revocation-crl-check-on-iis/
+ * ===========================================================================
+ */
+using System;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services
 {
+    /// <summary>
+    /// wrapper for tests
+    /// </summary>
     public interface ICacInfo
     {
         CacInfo Get(byte[] rawData);

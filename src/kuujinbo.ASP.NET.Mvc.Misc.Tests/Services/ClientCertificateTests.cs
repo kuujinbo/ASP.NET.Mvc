@@ -19,30 +19,39 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services
         }
 
         [Fact]
-        public void Get_IsLocal_ReturnsByteArrayFromRequestCertificate()
+        public void Get_IsLocalRequest_ReturnsByteArrayFromRequestCertificate()
         {
             //using (HttpRequestMessage request = new HttpRequestMessage())
             //{
-                var httpWorkerRequest = new Mock<HttpWorkerRequest>();
-                httpWorkerRequest.Setup(x => x.GetRawUrl()).Returns("/");
-                httpWorkerRequest.Setup(x => x.GetClientCertificate()).Returns(new byte[0]);
-                HttpContext context = new HttpContext(httpWorkerRequest.Object);
-                _httpRequestBase.Setup(x => x.ClientCertificate).Returns(context.Request.ClientCertificate);
                 _httpRequestBase.Setup(x => x.IsLocal).Returns(true);
 
-                Assert.IsType<byte[]>(_clientCertificate.Get(_httpRequestBase.Object));            
+                var httpWorkerRequest = new Mock<HttpWorkerRequest>();
+                httpWorkerRequest.Setup(x => x.GetRawUrl()).Returns("/");
+                httpWorkerRequest.Setup(x => x.GetClientCertificate())
+                    .Returns(new byte[0]);
+                HttpContext context = new HttpContext(httpWorkerRequest.Object);
+                _httpRequestBase.Setup(x => x.ClientCertificate)
+                    .Returns(context.Request.ClientCertificate);
+
+                Assert.IsType<byte[]>(
+                    _clientCertificate.Get(_httpRequestBase.Object)
+                );            
             // }
         }
 
         [Fact]
-        public void Get_NotLocal_ReturnsByteArrayFromRequestHeaders()
+        public void Get_IsNotLocalRequest_ReturnsByteArrayFromRequestHeaders()
         {
-            var headers = new NameValueCollection();
-            headers[ClientCertificate.CERT_HEADER] = Convert.ToBase64String(new byte[0]);
             _httpRequestBase.Setup(x => x.IsLocal).Returns(false);
+
+            var headers = new NameValueCollection();
+            headers[ClientCertificate.CERT_HEADER] = Convert
+                .ToBase64String(new byte[0]);
             _httpRequestBase.Setup(x => x.Headers).Returns(headers);
 
-            Assert.IsType<byte[]>(_clientCertificate.Get(_httpRequestBase.Object));
+            Assert.IsType<byte[]>(
+                _clientCertificate.Get(_httpRequestBase.Object)
+            );
         }
     }
 }
