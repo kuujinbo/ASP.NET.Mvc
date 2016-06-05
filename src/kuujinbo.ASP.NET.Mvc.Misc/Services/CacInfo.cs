@@ -69,13 +69,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services
         }
 
         /// <summary>
-        /// verify Edipi is ten digit number
+        /// verify Edipi is string with ten digits
         /// </summary>
         /// <param name="edipi"></param>
         /// <returns>bool</returns>
         /// <remarks>
-        /// all of the CLR IntXX and UIntXX methods are **INVALID** for
-        /// validation because **NONE** guarantee a 10-digit number.
+        /// all of the CLR IntXX and UIntXX [Try]Parse methods are **INVALID**
+        /// for validation because **NONE** guarantee a 10-digit **string**.
+        /// UIntXX and string length == 10 works, but not IntXX.
         /// </remarks>
         public static bool ValidEdipi(string edipi)
         {
