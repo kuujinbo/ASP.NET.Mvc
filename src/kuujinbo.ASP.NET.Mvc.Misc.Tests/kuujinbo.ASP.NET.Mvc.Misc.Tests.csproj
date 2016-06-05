@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Controllers\CacInfoControllerTests.txt" />
     <Compile Include="Controllers\CacInfoControllerTests.cs" />
     <Compile Include="Helpers\JsonNetResultTests.cs" />
     <Compile Include="Helpers\JsonNetSerializerTests.cs" />
@@ -44,6 +45,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\CacInfoTests.cs" />
+    <Compile Include="Services\ClientCertificateTests.cs" />
     <Compile Include="Services\JqueryDataTables\ActionButtonTests.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableModelBinderTests.cs" />
     <Compile Include="Services\JqueryDataTables\TableHtmlWriterTests.cs" />
@@ -82,6 +84,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>

@@ -154,6 +154,7 @@
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Services\JqueryDataTables\TableHtmlWriter.cs" />
     <Compile Include="Services\JqueryDataTables\ViewAllPath.cs" />
+    <Compile Include="Services\ClientCertificate.cs" />
     <Content Include="Content\Images\alt-gravatar.png" />
     <Content Include="Content\Images\kuujinbo_320-30.gif" />
     <Content Include="Content\NAV_MENU.html" />

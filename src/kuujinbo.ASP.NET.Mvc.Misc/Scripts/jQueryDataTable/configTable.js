@@ -159,7 +159,6 @@
                 }
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
                 configTable.jqModalError(
                     jqXHR.statusText || jqXHR.responseJSON
                 );

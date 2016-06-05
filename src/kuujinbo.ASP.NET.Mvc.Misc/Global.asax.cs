@@ -27,6 +27,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<CacInfo>().As<ICacInfo>();
+            builder.RegisterType<ClientCertificate>().As<IClientCertificate>();
 
             // register all controllers using assembly scanning
             // builder.RegisterControllers(typeof(MvcApplication).Assembly);
