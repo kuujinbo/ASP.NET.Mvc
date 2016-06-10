@@ -1,7 +1,7 @@
 # ASP.NET.Mvc.Misc
 ASP.NET MVC miscellaneous code
 
-- CacInfo - Get simple information from a CAC. (https://en.wikipedia.org/wiki/Common_Access_Card) See README.txt and screenshot  in the Views directory to enable SSL and client certificates in IIS Express / Visual Studio. Tested on 2013/2013.
+- CacInfo - Get simple information from a CAC. (https://en.wikipedia.org/wiki/Common_Access_Card) See README.txt and screenshot  in the Views directory to enable SSL and client certificates in IIS Express / Visual Studio. (tested on 2012/2013)
 - LINQ to Entities jQuery DataTables - https://datatables.net/
 - AngularJS directive - Plupload
 - WebAPI Ajax Binary File Download
