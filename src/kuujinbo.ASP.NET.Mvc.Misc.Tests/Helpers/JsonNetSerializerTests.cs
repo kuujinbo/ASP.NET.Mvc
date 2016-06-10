@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
@@ -100,6 +101,21 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Helpers
                 .Split(new char[] { '/' }, StringSplitOptions.None)
                 .Select(x => Int32.Parse(x))
                 .ToArray();
+        }
+
+        public class TestClass 
+        {
+            public string Name { get; set; }
+            public TestEnum TestEnum { get; set; }
+        }
+        public enum TestEnum { TestEnum }
+
+        [Fact]
+        public void SimpleEnumConverter_WriteJsonNull_WritesNullString()
+        {
+            Assert.Equal<string>(
+                "\"Test Enum\"", JsonNetSerializer.Get(TestEnum.TestEnum)
+            );
         }
     }
 }

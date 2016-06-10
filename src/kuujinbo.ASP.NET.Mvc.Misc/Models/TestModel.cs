@@ -3,6 +3,11 @@ using kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Models
 {
+    public enum Status
+    {
+        FullTime, PartTime
+    }
+
     public class TestModel : IIdentifiable
     {
         public int Id { get; set; }
@@ -20,5 +25,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Models
         public string Salary { get; set; }
         [DataTableColumn(DisplayOrder = 7)]
         public bool? Salaried { get; set; }
+        [DataTableColumn(DisplayOrder = 7)]
+        public Status Status { get; set; }
     }
 }

@@ -38,6 +38,7 @@
     <Compile Include="Controllers\CacInfoControllerTests.cs" />
     <Compile Include="Helpers\JsonNetResultTests.cs" />
     <Compile Include="Helpers\JsonNetSerializerTests.cs" />
+    <Compile Include="Helpers\RegexUtilsTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

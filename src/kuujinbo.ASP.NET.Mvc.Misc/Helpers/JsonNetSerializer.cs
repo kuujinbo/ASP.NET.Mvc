@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using kuujinbo.ASP.NET.Mvc.Misc.Helpers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Utilities;
 
 namespace System.Web.Mvc
 {
@@ -25,15 +27,14 @@ namespace System.Web.Mvc
                 settings.Converters.Add(
                     new IsoDateTimeConverter() { DateTimeFormat = dateFormat }
                 );
+                settings.Converters.Add(new SimpleEnumConverter());
 
-                    // MVC cannot handle microsoft's JSON date serialization
                 return JsonConvert.SerializeObject(
                     value, Formatting.Indented, settings
                 );
             }
 
             throw new FormatException(BAD_DATE_FORMAT);
-
         }
 
         private static bool IsValidDateFormat(string dateFormat)
@@ -42,6 +43,19 @@ namespace System.Web.Mvc
             return DateTime.TryParse(
                 DateTime.Now.ToString(dateFormat), out outDate
             );
+        }
+    }
+
+    public class SimpleEnumConverter : StringEnumConverter
+    {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+            writer.WriteValue(RegexUtils.PascalCaseSplit(value.ToString()));
         }
     }
 }

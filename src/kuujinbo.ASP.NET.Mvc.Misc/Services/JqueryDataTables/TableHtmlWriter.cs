@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Misc.Helpers;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 {
@@ -78,6 +79,26 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
     <option value='false'>No</option>
 </select></th>
                     ", i);
+                }
+                else if (c.Type.IsEnum)
+                {
+                    s.AppendFormat(
+                        "<th data-is-searchable='{0}' data-type='{1}'>\n",
+                        c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
+                        c.Type
+                    );
+                    s.AppendFormat(@"
+<select name='select' class='form-control input-sm' data-column-number='{0}'>
+<option value='' selected='selected'></option>"
+                    , i);
+                    foreach (var e in Enum.GetValues(c.Type))
+                    {
+                        s.AppendFormat(
+                            "<option value='{0}'>{1}</option>",
+                            e, RegexUtils.PascalCaseSplit(e.ToString())
+                        );
+                    }
+                    s.Append("</select></th>");
                 }
                 else
                 {

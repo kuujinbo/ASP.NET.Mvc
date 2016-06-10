@@ -203,8 +203,36 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.Equal("No", options.ElementAt(2).Value);
         }
 
+        public enum TestEnum { OneTwo, ThreeFour}
         [Fact]
-        public void GetGetTableHtml_WithNonBoolPropertyType_AddsTextInputFiltersToTfoot()
+        public void GetGetTableHtml_WithEnumPropertyType_AddsSelectFilterToTfoot()
+        {
+            var columns = new List<Column>() { new Column() { Type = typeof(TestEnum) } };
+            var table = new Table() { Columns = columns };
+
+            var xElement = XElement.Parse(string.Format(
+                "<div>{0}</div>", table.GetTableHtml()
+            ));
+
+            var select = xElement.XPathSelectElement("//select");
+            var options = select.Nodes().OfType<XElement>();
+
+            Assert.Equal("select", select.Attribute("name").Value);
+            Assert.False(string.IsNullOrWhiteSpace(select.Attribute("class").Value));
+            Assert.False(string.IsNullOrWhiteSpace(select.Attribute("data-column-number").Value));
+
+            Assert.Equal(3, options.Count());
+            Assert.Equal("", options.ElementAt(0).Attribute("value").Value);
+            Assert.Equal("selected", options.ElementAt(0).Attribute("selected").Value);
+            Assert.Equal("", options.ElementAt(0).Value);
+            Assert.Equal(TestEnum.OneTwo.ToString(), options.ElementAt(1).Attribute("value").Value);
+            Assert.Equal("One Two", options.ElementAt(1).Value);
+            Assert.Equal(TestEnum.ThreeFour.ToString(), options.ElementAt(2).Attribute("value").Value);
+            Assert.Equal("Three Four", options.ElementAt(2).Value);
+        }
+
+        [Fact]
+        public void GetGetTableHtml_WithAnyOtherPropertyType_AddsTextInputFiltersToTfoot()
         {
             var columns = new List<Column>() { new Column() };
             var table = new Table() { Columns = columns };
@@ -223,7 +251,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         }
  
         [Fact]
-        public void GetGetTableHtml_WithNonBoolPropertyType_AddsSpansToTfoot()
+        public void GetGetTableHtml_WithAnyOtherPropertyType_AddsSpansToTfoot()
         {
             var columns = new List<Column>() { new Column() };
             var table = new Table() { Columns = columns };
@@ -286,6 +314,5 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.Equal<int>(dataUrl.Count(x => x == '/'), 1);
             Assert.EndsWith("}", json);
         }
-
     }
 }

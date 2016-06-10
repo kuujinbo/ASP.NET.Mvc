@@ -244,10 +244,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 }
                 data = string.Join(", ", items.OrderBy(val => val));
             }
-            //else if (propertyInfo.PropertyType.IsEnum)
-            //{
-            //    data = RegexUtil.PascalCaseStem((propertyInfo.GetValue(entity) ?? "").ToString());
-            //}
             else if (columnAttribute.FieldAccessor != null)
             {
                 var value = propertyInfo.GetValue(entity);
