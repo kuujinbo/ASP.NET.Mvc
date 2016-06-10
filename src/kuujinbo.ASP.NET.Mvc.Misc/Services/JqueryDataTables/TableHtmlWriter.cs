@@ -60,8 +60,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 
         private void GetTfootHtml(StringBuilder s, bool showCheckboxColumn)
         {
+            // first column checkbox, so we start at 1 instead of 0
+            var i = 1;
             s.AppendLine("<th></th>");
-                var i = 1;
+
             foreach (var c in Columns)
             {
                 if (c.Type == typeof(bool) || c.Type == typeof(bool?))
