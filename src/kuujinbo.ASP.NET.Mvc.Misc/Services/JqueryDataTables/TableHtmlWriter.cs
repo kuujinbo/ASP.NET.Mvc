@@ -82,7 +82,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
 </select></th>
                     ", i);
                 }
-                else if (c.Type.IsEnum)
+                else if (c.Type != null && c.Type.IsEnum)
                 {
                     s.AppendFormat(
                         "<th data-is-searchable='{0}' data-type='{1}'>\n",

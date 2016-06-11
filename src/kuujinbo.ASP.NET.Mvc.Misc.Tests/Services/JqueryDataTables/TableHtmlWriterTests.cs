@@ -15,8 +15,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
  */
     public class TableHtmlWriterTests
     {
-        const int TH_AUTO_COLUMS = 2;
-        const int TF_AUTO_COLUMS = 1;
         private readonly ITestOutputHelper _output;
 
         public TableHtmlWriterTests(ITestOutputHelper output)
@@ -90,13 +88,9 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             var xElement = XElement.Parse(string.Format(
                 "<div>{0}</div>", table.GetTableHtml()
             ));
-
-            // throw new Exception(xElement.ToString());
-            var expectedCount = TF_AUTO_COLUMS + columns.Count;
             var expectedDataSet = xElement.XPathSelectElement("//th[@data-is-searchable]");
 
             Assert.Equal(table.Columns.ElementAt(0).IsSearchable, false);
-            Assert.Equal(expectedCount, xElement.Nodes().Count());
             Assert.Equal(
                 "", expectedDataSet.Attribute("data-is-searchable").Value
             );
@@ -111,10 +105,8 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             var xElement = XElement.Parse(string.Format(
                 "<div>{0}</div>", table.GetTableHtml()
             ));
-            var expectedCount = TF_AUTO_COLUMS + columns.Count;
             var expectedDataSet = xElement.XPathSelectElement("//th[@data-is-searchable]");
 
-            Assert.Equal(expectedCount, xElement.Nodes().Count());
             _output.WriteLine("{0}", expectedDataSet);
             Assert.Equal(
                 "true", expectedDataSet.Attribute("data-is-searchable").Value
@@ -136,7 +128,6 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             ));
 
             var theads = xElement.XPathSelectElements("//thead/tr/th");
-            // var theads = select.Nodes().OfType<XElement>();
 
             // first column is checkbox, last for per-row actions
             Assert.Equal(4, theads.Count());
@@ -158,6 +149,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             var xElement = XElement.Parse(string.Format(
                 "<div>{0}</div>", table.GetTableHtml()
             ));
+            var expectedDataSet = xElement.XPathSelectElement("//th[@data-is-searchable]");
+
+            Assert.Equal(table.Columns.ElementAt(0).IsSearchable, false);
+            Assert.Equal(
+                "", expectedDataSet.Attribute("data-is-searchable").Value
+            );
 
             var select = xElement.XPathSelectElement("//select");
             var options = select.Nodes().OfType<XElement>();
@@ -179,12 +176,21 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         [Fact]
         public void GetGetTableHtml_WithNullableBoolPropertyType_AddsSelectFilterToTfoot()
         {
-            var columns = new List<Column>() { new Column() { Type = typeof(bool?) } };
+            var columns = new List<Column>()
+            { 
+                new Column() { Type = typeof(bool?), IsSearchable = true } 
+            };
             var table = new Table() { Columns = columns };
 
             var xElement = XElement.Parse(string.Format(
                 "<div>{0}</div>", table.GetTableHtml()
             ));
+
+            var expectedDataSet = xElement.XPathSelectElement("//th[@data-is-searchable]");
+            _output.WriteLine("{0}", expectedDataSet);
+            Assert.Equal(
+                "true", expectedDataSet.Attribute("data-is-searchable").Value
+            );
 
             var select = xElement.XPathSelectElement("//select");
             var options = select.Nodes().OfType<XElement>();
@@ -207,16 +213,30 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         [Fact]
         public void GetGetTableHtml_WithEnumPropertyType_AddsSelectFilterToTfoot()
         {
-            var columns = new List<Column>() { new Column() { Type = typeof(TestEnum) } };
+            var columns = new List<Column>()
+            { 
+                new Column() { Type = typeof(TestEnum) },
+                new Column() { Type = typeof(TestEnum), IsSearchable = true } 
+            };
             var table = new Table() { Columns = columns };
 
             var xElement = XElement.Parse(string.Format(
                 "<div>{0}</div>", table.GetTableHtml()
             ));
 
+            var expectedDataSet = xElement.XPathSelectElements("//th[@data-is-searchable]");
+            Assert.Equal(table.Columns.ElementAt(0).IsSearchable, false);
+            Assert.Equal(table.Columns.ElementAt(1).IsSearchable, true);
+            Assert.Equal(2, xElement.Nodes().Count());
+            Assert.Equal(
+                "", expectedDataSet.ElementAt(0).Attribute("data-is-searchable").Value
+            );
+            Assert.Equal(
+                "true", expectedDataSet.ElementAt(1).Attribute("data-is-searchable").Value
+            );
+
             var select = xElement.XPathSelectElement("//select");
             var options = select.Nodes().OfType<XElement>();
-
             Assert.Equal("select", select.Attribute("name").Value);
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("class").Value));
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("data-column-number").Value));

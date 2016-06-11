@@ -129,6 +129,31 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             }
         }
 
+
+        [Fact]
+        public void ShowCheckboxColumn_WithoutActionButtons_ReturnsFalse()
+        {
+            var table = new Table()
+            {
+                ActionButtons = new List<ActionButton>()
+                {
+                    new ActionButton("/Create", "Create"),
+                    new ActionButton("/Delete", "Delete")
+                }
+            };
+
+            Assert.Equal(true, table.ShowCheckboxColumn());
+        }
+
+        [Fact]
+        public void ShowCheckboxColumn_WithActionButtons_ReturnsTrue()
+        {
+            var table = new Table();
+
+            Assert.Equal(false, table.ShowCheckboxColumn());
+        }
+
+
         [Fact]
         public void SetColumns_WhenCalled_AddsColumnsToTable()
         {
