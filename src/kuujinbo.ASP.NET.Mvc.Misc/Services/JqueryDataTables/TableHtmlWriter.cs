@@ -68,8 +68,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
             {
                 if (c.Type == typeof(bool) || c.Type == typeof(bool?))
                 {
-                    s.AppendFormat(
-                        "<th data-is-searchable='{0}' data-type='{1}'>\n",
+                    s.AppendFormat("<th data-is-searchable='{0}' data-type='{1}'>",
                         c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
                         c.Type
                     );
@@ -79,13 +78,12 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
     <option value='' selected='selected'></option> 
     <option value='true'>Yes</option>
     <option value='false'>No</option>
-</select></th>
-                    ", i);
+</select></th>"
+                    , i);
                 }
                 else if (c.Type != null && c.Type.IsEnum)
                 {
-                    s.AppendFormat(
-                        "<th data-is-searchable='{0}' data-type='{1}'>\n",
+                    s.AppendFormat("<th data-is-searchable='{0}' data-type='{1}'>",
                         c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
                         c.Type
                     );
@@ -95,8 +93,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                     , i);
                     foreach (var e in Enum.GetValues(c.Type))
                     {
-                        s.AppendFormat(
-                            "<option value='{0}'>{1}</option>",
+                        s.AppendFormat("<option value='{0}'>{1}</option>\n",
                             e, RegexUtils.PascalCaseSplit(e.ToString())
                         );
                     }
@@ -104,16 +101,14 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
                 }
                 else
                 {
-                    s.AppendFormat(
-                        "<th data-is-searchable='{0}' data-type='{1}'>\n",
+                    s.AppendFormat("<th data-is-searchable='{0}' data-type='{1}'>",
                         c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
                         c.Type
                     );
                     s.AppendFormat(@"
-<input style='width:100% !important;display: block !important;'
-data-column-number='{0}'
-class='form-control' type='text' placeholder='Search' /></th>
-                    ", i);
+<input style='width:100% !important;display: block !important;' data-column-number='{0}'
+class='form-control input-sm' type='text' placeholder='Search' /></th>"
+                    , i);
                 }
                 ++i;
             }

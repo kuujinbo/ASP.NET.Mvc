@@ -136,6 +136,7 @@
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
     <Compile Include="Controllers\CacInfoController.cs" />
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
+    <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\RegexUtils.cs" />
     <Compile Include="Services\CacInfo.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableColumnAttribute.cs" />
