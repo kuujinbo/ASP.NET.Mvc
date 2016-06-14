@@ -151,12 +151,14 @@
                 type: 'POST'
             })
             .done(function (data, textStatus, jqXHR) {
+                configTable.draw();
+
                 configTable.jqModalOK(data);
 
-                // redisplay UI on row delete
-                if (url === _configValues.deleteRowUrl) {
-                    configTable.draw();
-                }
+                //// redisplay UI on row delete
+                //if (url === _configValues.deleteRowUrl) {
+                //    configTable.draw();
+                //}
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(

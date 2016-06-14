@@ -275,11 +275,14 @@ describe('configTable', function() {
         it('should call jqModalOK and showSpin when promise is fulfilled', function () {
             var httpResponseMsg = 'HTTP response success';
             spyOn(configTable, 'jqModalOK');
+            spyOn(configTable, 'draw');
 
             deferred.resolve(httpResponseMsg);
 
+            // ajax.done()
             expect(configTable.jqModalOK.calls.count()).toEqual(1);
             expect(configTable.jqModalOK).toHaveBeenCalledWith(httpResponseMsg);
+            expect(configTable.draw).toHaveBeenCalledTimes(1);
             expect(configTable.showSpin.calls.count()).toEqual(2);
             expect(configTable.getXsrfToken).toHaveBeenCalledTimes(1);
             // ajax.always()
@@ -293,6 +296,7 @@ describe('configTable', function() {
 
             deferred.reject(jqXHR);
 
+            // ajax.fail()
             expect(configTable.jqModalError.calls.count()).toEqual(1);
             expect(configTable.jqModalError).toHaveBeenCalledWith(httpResponseMsg);
             expect(configTable.showSpin.calls.count()).toEqual(2);
