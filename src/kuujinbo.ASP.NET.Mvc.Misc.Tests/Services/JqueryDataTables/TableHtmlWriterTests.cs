@@ -9,10 +9,10 @@ using Xunit.Abstractions;
 
 namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
 {
-/* --------------------------------------------------------------------
- * HTML/JavaScript written to Partial View
- * --------------------------------------------------------------------
- */
+    /* --------------------------------------------------------------------
+     * HTML/JavaScript written to Partial View
+     * --------------------------------------------------------------------
+     */
     public class TableHtmlWriterTests
     {
         private readonly ITestOutputHelper _output;
@@ -209,7 +209,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.Equal("No", options.ElementAt(2).Value);
         }
 
-        public enum TestEnum { OneTwo, ThreeFour}
+        public enum TestEnum { OneTwo, ThreeFour }
         [Fact]
         public void GetGetTableHtml_WithEnumPropertyType_AddsSelectFilterToTfoot()
         {
@@ -269,7 +269,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
             Assert.False(string.IsNullOrWhiteSpace(input.Attribute("class").Value));
             Assert.False(string.IsNullOrWhiteSpace(input.Attribute("placeholder").Value));
         }
- 
+
         [Fact]
         public void GetGetTableHtml_WithAnyOtherPropertyType_AddsSpansToTfoot()
         {
@@ -326,7 +326,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
                 .Where(x => x != "{" && x != "}");
             var dataUrl = lines.ElementAt(0).Trim();
 
-            Assert.Equal<int>(5, lines.Count());
+            Assert.Equal<int>(6, lines.Count());
             Assert.StartsWith("{", json);
             Assert.Equal<int>(dataUrl.Count(x => x == '"'), 4);
             Assert.Matches("^\"dataUrl\"", dataUrl);

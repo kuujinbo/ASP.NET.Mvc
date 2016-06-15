@@ -15,6 +15,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         public string DataUrl { get; set; }
         public string DeleteRowUrl { get; set; }
         public string EditRowUrl { get; set; }
+        public string InfoRowUrl { get; set; }
         public bool CheckboxColumn { get; set; }
 
         /// <summary>

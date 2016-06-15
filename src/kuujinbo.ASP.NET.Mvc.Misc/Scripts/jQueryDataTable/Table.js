@@ -1,6 +1,6 @@
 ﻿// $.fn.DataTable.ext.pager.numbers_length = 5;
 $(document).tooltip({
-    open: function(event, ui) {
+    open: function (event, ui) {
         $(ui.tooltip).siblings('.ui-tooltip').remove();
     },
     track: true, items: '*:not(.ui-dialog-titlebar-close)'
@@ -76,11 +76,11 @@ var table = $(configTable.getTableId()).DataTable({
         }
     },
     rowCallback: function (row, data, index) {
-    //    var color = data[7].toLowerCase() !== 'yellow' ? '#fff' : '#000';
-    //    $('td:eq(7)', row).css({
-    //        backgroundColor: data[7].toLowerCase(), color: color,
-    //        fontWeight: 'bold', opacity: 0.79
-    //    });
+        //    var color = data[7].toLowerCase() !== 'yellow' ? '#fff' : '#000';
+        //    $('td:eq(7)', row).css({
+        //        backgroundColor: data[7].toLowerCase(), color: color,
+        //        fontWeight: 'bold', opacity: 0.79
+        //    });
     },
     columnDefs: [
     {   // checkboxes => bulk action button(s), also holds recordId
@@ -97,14 +97,37 @@ var table = $(configTable.getTableId()).DataTable({
         searchable: false,
         orderable: false,
         render: function (data, type, row, meta) {
-            var title =  row[1];
-            return "<span class='glyphicon glyphicon-edit green link-icons' title='Edit ["
-                + (title || 'this record')
-                + "]'></span>"
-                + " <span class='glyphicon glyphicon-remove-circle red link-icons' title='Delete ["
-                + (title || 'this record')
-                + "]'><span></span></span>";
+            var title = row[1];
+
+            var infoLink = configTable.getConfigValues().infoRowUrl
+                ? "<span class='glyphicon glyphicon-info-sign blue link-icons' data-action='"
+                    + configTable.getInfoAction()
+                    + "' title='Information'></span>"
+                : '';
+
+            var editLink = configTable.getConfigValues().editRowUrl
+                ? "<span class='glyphicon glyphicon-edit green link-icons' data-action='"
+                    + configTable.getEditAction()
+                    + "' title='Edit'></span>"
+                : '';
+
+            var deleteLink = configTable.getConfigValues().deleteRowUrl
+                ? "<span class='glyphicon glyphicon-remove-circle red link-icons' data-action='"
+                    + configTable.getDeleteAction()
+                    + "' title='Delete'><span></span></span>"
+                : '';
+
+            return [infoLink, editLink, deleteLink].join(' ');
         }
+        //render: function (data, type, row, meta) {
+        //    var title =  row[1];
+        //    return "<span class='glyphicon glyphicon-edit green link-icons' title='Edit ["
+        //        + (title || 'this record')
+        //        + "]'></span>"
+        //        + " <span class='glyphicon glyphicon-remove-circle red link-icons' title='Delete ["
+        //        + (title || 'this record')
+        //        + "]'><span></span></span>";
+        //}
     }]
 });
 

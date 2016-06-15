@@ -56,6 +56,11 @@
         getSearchFilterSelector: function () { return 'th input[type=text], th select'; },
         getCheckedSelector: function () { return 'input[type="checkbox"]:checked'; },
         getUncheckedSelector: function () { return 'input[type="checkbox"]:not(:checked)'; },
+
+        getInfoAction: function () { return 'info'; },
+        getEditAction: function () { return 'edit'; },
+        getDeleteAction: function () { return 'delete'; },
+
         /* -----------------------------------------------------------------
             DataTables wrappers
         ----------------------------------------------------------------- */
@@ -116,9 +121,9 @@
                     ++searchCount;
                     configTable.setSearchColumn(elements[i]);
                 }
-                /* explicitly clear individual input, or will save last value 
-                   if user backspaces.
-                */
+                    /* explicitly clear individual input, or will save last value 
+                       if user backspaces.
+                    */
                 else {
                     elements[i].value = '';
                     configTable.setSearchColumn(elements[i]);
@@ -222,6 +227,8 @@
         },
         clickTable: function (e) {
             var target = e.target;
+            var action = target.dataset.action;
+
             // single checkbox click
             if (target.type === 'checkbox') {
                 var row = target.parentNode.parentNode;
@@ -234,11 +241,10 @@
                     }
                 }
             }
-            // edit & delete links
-            else if (target.tagName.toLowerCase() === 'span'
-            && target.classList.contains('glyphicon')) {
+                // info, edit, & delete links
+            else if (action) {
                 var row = target.parentNode.parentNode;
-                if (target.classList.contains('glyphicon-remove-circle')) {
+                if (action === configTable.getDeleteAction()) {
                     // delete record from dataset...
                     configTable.sendXhr(
                         target,
@@ -247,9 +253,16 @@
                     );
                     configTable.clearCheckAll();
                 }
-                else if (target.classList.contains('glyphicon-edit')) {
+                else if (action === configTable.getEditAction()) {
                     configTable.redirect(
                         configTable.getConfigValues().editRowUrl
+                        + '/'
+                        + configTable.getRowData(row)
+                    );
+                }
+                else if (action === configTable.getInfoAction()) {
+                    configTable.redirect(
+                        configTable.getConfigValues().infoRowUrl
                         + '/'
                         + configTable.getRowData(row)
                     );

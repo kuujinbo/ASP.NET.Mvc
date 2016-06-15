@@ -126,6 +126,7 @@ class='form-control input-sm' type='text' placeholder='Search' /></th>"
             return JsonNetSerializer.Get(new
             {
                 dataUrl = DataUrl,
+                infoRowUrl = InfoRowUrl,
                 deleteRowUrl = DeleteRowUrl,
                 editRowUrl = EditRowUrl,
                 showCheckboxColumn = ShowCheckboxColumn(),

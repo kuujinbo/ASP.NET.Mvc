@@ -4,12 +4,13 @@
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc.Misc/Scripts/jQueryDataTable/configTable.js" />
 'use strict';
 
-describe('configTable', function() {
-    beforeEach(function() {
+describe('configTable', function () {
+    beforeEach(function () {
         var configValues = {
             dataUrl: '/',
-            deleteRowUrl: '/delete',
+            infoRowUrl: '/info',
             editRowUrl: '/edit',
+            deleteRowUrl: '/delete',
             allowMultiColumnSorting: true
         };
         configTable.setConfigValues(configValues);
@@ -585,11 +586,25 @@ describe('configTable', function() {
     describe('clickTable link', function () {
         var event, config, recordId;
         beforeEach(function () {
+            var infoLink =
+                "<span class='glyphicon glyphicon-info-sign blue link-icons' data-action='"
+                + configTable.getInfoAction()
+                + "' title='Information'></span>";
+
+            var editLink =
+                "<span class='glyphicon glyphicon-edit green link-icons' data-action='"
+                + configTable.getEditAction()
+                + "' title='Edit'></span>";
+
+            var deleteLink =
+                "<span class='glyphicon glyphicon-remove-circle red link-icons' data-action='"
+                + configTable.getDeleteAction()
+                + "' title='Delete'><span></span></span>";
+
             event = {};
             config = configTable.getConfigValues();
             setFixtures('<table><tr><td>'
-                + "<span class='glyphicon glyphicon-edit green link-icons'></span>"
-                + "<span class='glyphicon glyphicon-remove-circle red link-icons'><span></span></span>"
+                + [infoLink, editLink, deleteLink].join(' ')
                 + "<span class='NO-MATCH'><span></span></span>"
                 + '</td></tr></table>'
             );
@@ -614,11 +629,42 @@ describe('configTable', function() {
             expect(configTable.clearCheckAll).not.toHaveBeenCalled();
         });
 
+        it('should redirect to the info page', function () {
+            spyOn(configTable, 'redirect');
+
+            event.target = document.querySelector('span[data-action=info]');
+            // event.target = document.querySelector('span.glyphicon-edit');
+            var row = document.querySelector('tr');
+            configTable.clickTable(event);
+
+            expect(event.target.tagName.toLowerCase()).toEqual('span');
+            expect(configTable.getConfigValues).toHaveBeenCalledTimes(1);
+            expect(configTable.getRowData).toHaveBeenCalledWith(row);
+            expect(configTable.redirect).toHaveBeenCalledWith(
+                config.infoRowUrl + '/' + recordId
+            );
+        });
+
+        it('should redirect to the edit page', function () {
+            spyOn(configTable, 'redirect');
+
+            event.target = document.querySelector('span[data-action=edit]');
+            var row = document.querySelector('tr');
+            configTable.clickTable(event);
+
+            expect(event.target.tagName.toLowerCase()).toEqual('span');
+            expect(configTable.getConfigValues).toHaveBeenCalledTimes(1);
+            expect(configTable.getRowData).toHaveBeenCalledWith(row);
+            expect(configTable.redirect).toHaveBeenCalledWith(
+                config.editRowUrl + '/' + recordId
+            );
+        });
+
         it('should delete the selected record', function () {
             spyOn(configTable, 'sendXhr');
             spyOn(configTable, 'clearCheckAll');
 
-            var span = document.querySelector('span.glyphicon-remove-circle');
+            var span = document.querySelector('span[data-action=delete]');
             var row = document.querySelector('tr');
             event.target = span;
             configTable.clickTable(event);
@@ -630,21 +676,6 @@ describe('configTable', function() {
             expect(configTable.getConfigValues).toHaveBeenCalledTimes(1);
             expect(configTable.getRowData).toHaveBeenCalledWith(row);
             expect(configTable.clearCheckAll).toHaveBeenCalledTimes(1);
-        });
-
-        it('should redirect to the edit page', function () {
-            spyOn(configTable, 'redirect');
-
-            event.target = document.querySelector('span.glyphicon-edit');
-            var row = document.querySelector('tr');
-            configTable.clickTable(event);
-
-            expect(event.target.tagName.toLowerCase()).toEqual('span');
-            expect(configTable.getConfigValues).toHaveBeenCalledTimes(1);
-            expect(configTable.getRowData).toHaveBeenCalledWith(row);
-            expect(configTable.redirect).toHaveBeenCalledWith(
-                config.editRowUrl + '/' + recordId
-            );
         });
     });
 
