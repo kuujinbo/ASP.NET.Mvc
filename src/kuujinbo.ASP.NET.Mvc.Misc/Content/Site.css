@@ -7,7 +7,7 @@ h3, .h3 {font-size: 1.5em;}
 .em-four { font-size: 4em; }
 .align-top { vertical-align: top; }
 .margin-10, div.margin-10 > div { margin: 10px; }
-.margin-tb4, div.margin-tb4 > div, div.margin-tb4 > div > div { margin: 0 5px; }
+.margin-top-bottom-8{ margin: 8px 0; }
 .margin-lr10 { margin: 0 10px; }
 .margin-tb10, div.margin-tb10 > div { margin: 10px 0; }
 .center { text-align:center;}

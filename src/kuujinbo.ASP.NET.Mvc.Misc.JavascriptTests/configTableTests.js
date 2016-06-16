@@ -249,23 +249,25 @@ describe('configTable', function () {
         var deferred, element;
         beforeEach(function () {
             deferred = new jQuery.Deferred();
-            element = document.createElement('div');
+            element = document.createElement('button');
             spyOn(jQuery, 'ajax').and.returnValue(deferred);
             spyOn(configTable, 'showSpin');
             spyOn(configTable, 'getXsrfToken');
-            configTable.sendXhr(element, '/', '');
         });
 
         it('should call jQuery.ajax()', function () {
             var expectedArgs = {
-                url: '/', headers: undefined, data: null, type: 'POST'
+                url: '/', headers: undefined, data: {}, type: 'POST'
             };
+            configTable.sendXhr(element, '/', {});
 
             expect(jQuery.ajax.calls.count()).toEqual(1);
             expect(jQuery.ajax).toHaveBeenCalledWith(expectedArgs);
         });
 
         it('should call showSpin before sending the XHR', function () {
+            configTable.sendXhr(element, '/', {});
+
             // mock XHR has **NOT** returned
             expect(deferred.state()).toEqual("pending");
             expect(configTable.showSpin.calls.count()).toEqual(1);
@@ -273,10 +275,28 @@ describe('configTable', function () {
             expect(configTable.getXsrfToken).toHaveBeenCalledTimes(1);
         });
 
-        it('should call jqModalOK and showSpin when promise is fulfilled', function () {
-            var httpResponseMsg = 'HTTP response success';
+        it('should call jqModalError and showSpin when promise is rejected', function () {
+            spyOn(configTable, 'jqModalError');
+            var httpResponseMsg = 'HTTP response error';
+            var jqXHR = { responseJSON: httpResponseMsg };
+            configTable.sendXhr(element, '/', {});
+
+            deferred.reject(jqXHR);
+
+            // ajax.fail()
+            expect(configTable.jqModalError.calls.count()).toEqual(1);
+            expect(configTable.jqModalError).toHaveBeenCalledWith(httpResponseMsg);
+            expect(configTable.showSpin.calls.count()).toEqual(2);
+            expect(configTable.getXsrfToken).toHaveBeenCalledTimes(1);
+            // ajax.always()
+            expect(configTable.showSpin).toHaveBeenCalledWith(element);
+        });
+
+        it('should call jqModalOK, showSpin, and draw when promise is fulfilled for bulk action', function () {
             spyOn(configTable, 'jqModalOK');
             spyOn(configTable, 'draw');
+            var httpResponseMsg = 'HTTP response success';
+            configTable.sendXhr(element, '/', {});
 
             deferred.resolve(httpResponseMsg);
 
@@ -290,16 +310,20 @@ describe('configTable', function () {
             expect(configTable.showSpin).toHaveBeenCalledWith(element);
         });
 
-        it('should call jqModalError and showSpin when promise is rejected', function () {
-            var httpResponseMsg = 'HTTP response error';
-            spyOn(configTable, 'jqModalError');
-            var jqXHR = { responseJSON: httpResponseMsg };
+        it('should call jqPartialViewModalOK and showSpin when promise is fulfilled for partial view action', function () {
+            spyOn(configTable, 'jqPartialViewModalOK');
+            var partialHtmlResponse = '<h1>Partial View</h1>';
+            var buttonText = 'Submit';
+            element.textContent = buttonText;
 
-            deferred.reject(jqXHR);
+            configTable.sendXhr(element, '/', null, 'GET');
 
-            // ajax.fail()
-            expect(configTable.jqModalError.calls.count()).toEqual(1);
-            expect(configTable.jqModalError).toHaveBeenCalledWith(httpResponseMsg);
+            deferred.resolve(partialHtmlResponse);
+
+            // ajax.done()
+            expect(configTable.jqPartialViewModalOK.calls.count()).toEqual(1);
+            expect(configTable.jqPartialViewModalOK)
+                .toHaveBeenCalledWith(partialHtmlResponse, buttonText);
             expect(configTable.showSpin.calls.count()).toEqual(2);
             expect(configTable.getXsrfToken).toHaveBeenCalledTimes(1);
             // ajax.always()
@@ -447,7 +471,7 @@ describe('configTable', function () {
             spyOn(configTable, 'sendXhr');
         });
 
-        it('should be an error when the button does not have a data URL', function () {
+        it('should be an error when a button does not have a data URL', function () {
             spyOn(configTable, 'getSelectedRowIds')
             spyOn(configTable, 'jqModalError');
             template.innerHTML = '<button class="btn btn-primary">Batch Update<span></span></button>';
@@ -464,7 +488,7 @@ describe('configTable', function () {
             );
         });
 
-        it('should be an error when no rows are selected', function () {
+        it('should be an error when no rows are selected for a bulk action', function () {
             spyOn(configTable, 'getSelectedRowIds').and.returnValue([]);
             spyOn(configTable, 'jqModalError');
             template.innerHTML = '<button class="btn btn-primary" data-url="/action">Batch Update<span></span></button>';
@@ -479,9 +503,8 @@ describe('configTable', function () {
             expect(configTable.jqModalError.calls.mostRecent().args[0]).toMatch('<h2>No Records Selected</h2>');
         });
 
-        it('should send XHR when rows are selected', function () {
+        it('should send XHR when rows are selected for a bulk action', function () {
             spyOn(configTable, 'getSelectedRowIds').and.returnValue([1, 2]);
-            spyOn(configTable, 'jqModalOK');
             template.innerHTML = '<button class="btn btn-primary" data-url="/action">Batch Update<span></span></button>';
             event.target = template.firstChild;
 
@@ -492,6 +515,21 @@ describe('configTable', function () {
             expect(configTable.getSelectedRowIds).toHaveBeenCalledTimes(1);
             expect(configTable.sendXhr).toHaveBeenCalledWith(
                 event.target, '/action', { ids: [1, 2] }
+            );
+        });
+
+        it('should send XHR GET with null data for a partial view action', function () {
+            template.innerHTML = "<button class='btn btn-primary' data-url='/action'"
+                + ' partial-view="">'
+                + '<span></span></button>';
+            event.target = template.firstChild;
+
+            var result = configTable.clickActionButton(event);
+
+            expect(result).toEqual(false);
+            expect(event.preventDefault).toHaveBeenCalledTimes(1);
+            expect(configTable.sendXhr).toHaveBeenCalledWith(
+                event.target, '/action', null, 'GET' 
             );
         });
     });
@@ -752,5 +790,4 @@ describe('configTable', function () {
        utility functions
        ========================================================================
     */
-
 });

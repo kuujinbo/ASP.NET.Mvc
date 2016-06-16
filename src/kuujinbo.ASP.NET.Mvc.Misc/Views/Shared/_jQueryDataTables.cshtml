@@ -1,11 +1,13 @@
 ﻿@model  kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables.Table
-
+ @*modal for 'batch' action buttons *@
 <div id='datatable-success-error-modal'></div>
+ @*modal for partial view action buttons *@
+<div id='datatable-partial-modal'></div>
 
 <h2>@ViewBag.Title</h2>
 
 @Html.AntiForgeryToken()
-@* element id selector used in /scripts/DataTables/jQDataTablesIndex.js *@
+@* element id selector used in /scripts/jQueryDataTable *@
 <div id='data-table-actions' style='margin:10px 0;'>
     @Html.Raw(@Model.ActionButtonsHtml())
 </div>

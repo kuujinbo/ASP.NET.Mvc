@@ -29,7 +29,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         }
 
         [Fact]
-        public void GetHtml_IsButton_ReturnsButtonHtml()
+        public void GetHtml_BulkAction_ReturnsButtonHtml()
         {
             var actionButton = new ActionButton("url", "text");
 
@@ -48,9 +48,30 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Tests.Services.JqueryDataTables
         }
 
         [Fact]
-        public void GetHtml_IsNotButton_ReturnsHyperlinkHtml()
+        public void GetHtml_PartialView_AddsPartialViewAttribute()
         {
-            var actionButton = new ActionButton("url", "text") { IsButton = false };
+            var actionButton = new ActionButton("url", "text") { PartialView = true };
+
+            var xElement = XElement.Parse(actionButton.GetHtml());
+
+            Assert.Equal(2, xElement.Nodes().Count());
+            Assert.Equal("button", xElement.Name);
+            Assert.Equal("url", xElement.Attribute("data-url").Value);
+            Assert.NotNull(xElement.Attribute(ActionButton.PartialViewAttribute));
+            Assert.Equal(
+                "text",
+                string.Concat(
+                    xElement.Nodes().OfType<XText>().Select(x => x.Value.Trim())
+                )
+            );
+            Assert.Equal(1, xElement.Elements("span").Count());
+        }
+
+
+        [Fact]
+        public void GetHtml_NotBulkAction_ReturnsHyperlinkHtml()
+        {
+            var actionButton = new ActionButton("url", "text") { BulkAction = false };
 
             var xElement = XElement.Parse(actionButton.GetHtml());
 

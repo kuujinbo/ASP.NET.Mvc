@@ -135,6 +135,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
     <Compile Include="Controllers\CacInfoController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\RegexUtils.cs" />
@@ -217,6 +218,8 @@
     <Content Include="Views\CacInfo\Index.cshtml" />
     <Content Include="Views\CacInfo\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />
+    <Content Include="Views\jQueryDataTables\Info.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

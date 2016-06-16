@@ -18,7 +18,7 @@
     "Extension": 5797,
     "StartDate": null,
     "Salary": "$1,200,000",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -29,7 +29,7 @@
     "Extension": 1562,
     "StartDate": "2009-01-12T00:00:00",
     "Salary": "$86,000",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -40,7 +40,7 @@
     "Extension": 2558,
     "StartDate": "2012-10-13T00:00:00",
     "Salary": "$132,000",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -84,7 +84,7 @@
     "Extension": 8330,
     "StartDate": "2011-12-12T00:00:00",
     "Salary": "$106,450",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -95,7 +95,7 @@
     "Extension": 3990,
     "StartDate": "2011-12-06T00:00:00",
     "Salary": "$145,600",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -106,7 +106,7 @@
     "Extension": 6224,
     "StartDate": "2012-03-29T00:00:00",
     "Salary": "$433,060",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -150,7 +150,7 @@
     "Extension": 4226,
     "StartDate": "2011-01-25T00:00:00",
     "Salary": "$112,000",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -161,7 +161,7 @@
     "Extension": 3023,
     "StartDate": "2010-09-20T00:00:00",
     "Salary": "$85,600",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -172,7 +172,7 @@
     "Extension": 2927,
     "StartDate": "2009-07-07T00:00:00",
     "Salary": "$87,500",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -216,7 +216,7 @@
     "Extension": 8822,
     "StartDate": "2010-12-22T00:00:00",
     "Salary": "$92,575",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -227,7 +227,7 @@
     "Extension": 1721,
     "StartDate": "2009-04-10T00:00:00",
     "Salary": "$237,500",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -238,7 +238,7 @@
     "Extension": 3597,
     "StartDate": "2012-12-18T00:00:00",
     "Salary": "$313,500",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -282,7 +282,7 @@
     "Extension": 7031,
     "StartDate": "2008-12-16T00:00:00",
     "Salary": "$164,500",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -293,7 +293,7 @@
     "Extension": 1042,
     "StartDate": "2008-09-26T00:00:00",
     "Salary": "$645,750",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -304,7 +304,7 @@
     "Extension": 3814,
     "StartDate": "2008-12-19T00:00:00",
     "Salary": "$90,560",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -348,7 +348,7 @@
     "Extension": 8196,
     "StartDate": "2010-07-14T00:00:00",
     "Salary": "$86,500",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -359,7 +359,7 @@
     "Extension": 6733,
     "StartDate": "2009-02-27T00:00:00",
     "Salary": "$103,500",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -370,7 +370,7 @@
     "Extension": 8240,
     "StartDate": "2011-03-09T00:00:00",
     "Salary": "$324,050",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -414,7 +414,7 @@
     "Extension": 2120,
     "StartDate": "2011-02-03T00:00:00",
     "Salary": "$234,500",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -425,7 +425,7 @@
     "Extension": 3059,
     "StartDate": "2010-06-09T00:00:00",
     "Salary": "$725,000",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -436,7 +436,7 @@
     "Extension": 3606,
     "StartDate": "2011-05-07T00:00:00",
     "Salary": "$145,000",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -480,7 +480,7 @@
     "Extension": 8352,
     "StartDate": "2012-04-09T00:00:00",
     "Salary": "$138,575",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -491,7 +491,7 @@
     "Extension": 6373,
     "StartDate": "2008-11-13T00:00:00",
     "Salary": "$183,000",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -502,7 +502,7 @@
     "Extension": 8899,
     "StartDate": "2011-08-14T00:00:00",
     "Salary": "$163,000",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -546,7 +546,7 @@
     "Extension": 8327,
     "StartDate": "2013-08-11T00:00:00",
     "Salary": "$98,540",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -557,7 +557,7 @@
     "Extension": 5421,
     "StartDate": "2011-04-25T00:00:00",
     "Salary": "$320,800",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   },
   {
@@ -568,7 +568,7 @@
     "Extension": 7580,
     "StartDate": "2008-12-11T00:00:00",
     "Salary": "$136,200",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -612,7 +612,7 @@
     "Extension": 7439,
     "StartDate": "2010-01-04T00:00:00",
     "Salary": "$125,250",
-    "Salaried": true,
+    "Salaried": false,
     "Status": 0
   },
   {
@@ -623,7 +623,7 @@
     "Extension": 4389,
     "StartDate": "2012-06-01T00:00:00",
     "Salary": "$115,000",
-    "Salaried": false,
+    "Salaried": true,
     "Status": 1
   }
 ]

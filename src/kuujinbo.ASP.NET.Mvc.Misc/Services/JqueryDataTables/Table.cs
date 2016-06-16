@@ -280,7 +280,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Services.JqueryDataTables
         /// <returns></returns>
         public bool ShowCheckboxColumn()
         {
-            return ActionButtons.Where(x => x.IsButton).Count() > 0;
+            return ActionButtons.Where(x => x.BulkAction).Count() > 0;
         }
     }
 }

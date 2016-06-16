@@ -66,14 +66,13 @@ var table = $(configTable.getTableId()).DataTable({
         }
     },
     createdRow: function (row, data, index) {
-        for (var i = 0; i < data.length; ++i) {
-            if (/^true/i.test(data[i])) {
-                console.log('Yes');
-                $('td', row).eq(i).html('Yes');
-            } else if (/^false$/i.test(data[i])) {
-                $('td', row).eq(i).html('No');
-            }
-        }
+        //for (var i = 0; i < data.length; ++i) {
+        //    if (/^true/i.test(data[i])) {
+        //        $('td', row).eq(i).html('Yes');
+        //    } else if (/^false$/i.test(data[i])) {
+        //        $('td', row).eq(i).html('No');
+        //    }
+        //}
     },
     rowCallback: function (row, data, index) {
         //    var color = data[7].toLowerCase() !== 'yellow' ? '#fff' : '#000';

@@ -14,36 +14,10 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
     {
         private static ICollection<TestModel> _data;
 
-        private Table InitDataTable(UrlHelper url)
-        {
-            var table = new Table()
-            {
-                ActionButtons = new List<ActionButton>()
-                {
-                    new ActionButton(url.Action("Create"), "Create")
-                    { 
-                        IsButton = false
-                    }
-                    ,
-                    new ActionButton(url.Action("Rollover"), "Rollover")
-                    { 
-                        CssClass = ActionButton.Primary,
-                    },
-                    new ActionButton(url.Action("Approve"), "Approve"),
-                    new ActionButton(url.Action("Disapprove"), "Disapprove")
-                    { 
-                        CssClass = ActionButton.Danger,
-                    }
-                },
-                DataUrl = url.Action("JsonData"),
-                DeleteRowUrl = url.Action("DeleteOne"),
-                EditRowUrl = url.Action("Update"),
-            };
-            table.SetColumns<TestModel>();
-
-            return table;
-        }
-
+        /* ====================================================================
+         * setup DataTable instance on first HTTP request
+         * ====================================================================
+         */
         public ActionResult Index()
         {
             ViewBag.Title = "jQuery DataTables Test";
@@ -58,7 +32,7 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
                 //int i = 0;
                 //foreach (var d in _data)
                 //{
-                //    d.Status = ++i % 2 == 0 ? Status.FullTime : Status.PartTime;
+                //    d.Salaried = ++i % 3 == 0 ? true : false;
                 //}
                 //System.IO.File.WriteAllText(
                 //    Server.MapPath("~/app_data/dataTablesObjectData00.json"),
@@ -68,61 +42,71 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             return View("_jQueryDataTables", table);
         }
 
+        private Table InitDataTable(UrlHelper url)
+        {
+            var table = new Table()
+            {
+                ActionButtons = new List<ActionButton>()
+                {
+                    new ActionButton(url.Action("Create"), "Create")
+                    { 
+                        BulkAction = false
+                    }
+                    ,
+                    new ActionButton(url.Action("Index", "Reports"), "Reports")
+                    { 
+                        CssClass = ActionButton.Primary,
+                        PartialView = true
+                    },
+                    new ActionButton(url.Action("Delete"), "Delete")
+                    { 
+                        CssClass = ActionButton.Danger,
+                    }
+                },
+                DataUrl = url.Action("JsonData"),
+                InfoRowUrl = url.Action("Info"),
+                EditRowUrl = url.Action("Update"),
+                DeleteRowUrl = url.Action("DeleteOne")
+            };
+            table.SetColumns<TestModel>();
+
+            return table;
+        }
+
+        /* ====================================================================
+         * all subsequent HTTP requests are done via XHR to update DataTable
+         * ====================================================================
+         */
         [HttpAjaxPost]
         public ActionResult JsonData(Table table)
         {
-            //if (MyData.IsMyUrl(Request.UrlReferrer))
-            //{
-            //    System.Diagnostics.Debug.WriteLine(MyData.SEGMENT);            
-            //}
-
             Thread.Sleep(760);
-            return new JsonNetResult(table.GetData<TestModel>(_data));
+            return new JsonNetResult(table.GetData<TestModel>(_data), displayFor: true);
+        }
+
+        /* ====================================================================
+         * 'bulk' actions
+         * ====================================================================
+         */
+        [HttpAjaxPost]
+        public ActionResult Delete (IEnumerable<int> ids)
+        {
+            Thread.Sleep(760);
+            return new JsonNetResult(GetBatchUpdateResponseObject(ids));
         }
 
         private object GetBatchUpdateResponseObject(IEnumerable<int> ids)
         {
             return string.Format(
                 "XHR sent to:{2}[{0}]{2}with POST data [{1}]{2}succeeded!",
-                Request.Url, string.Join(", ",  ids), Environment.NewLine
+                Request.Url, string.Join(", ", ids), Environment.NewLine
             );
         }
 
-        [HttpAjaxPost]
-        public ActionResult Approve(IEnumerable<int> ids)
-        {
-            Thread.Sleep(760);
-            return new JsonNetResult(GetBatchUpdateResponseObject(ids));
-        }
-
-        [HttpAjaxPost]
-        public ActionResult Disapprove(IEnumerable<int> ids)
-        {
-            Thread.Sleep(760);
-            return new JsonNetResult(GetBatchUpdateResponseObject(ids));
-        }
-
-        [HttpAjaxPost]
-        public ActionResult Rollover(IEnumerable<int> ids)
-        {
-            Thread.Sleep(760);
-            return new JsonNetResult(GetBatchUpdateResponseObject(ids));
-        }
-
-        [HttpAjaxPost]
-        public ActionResult DeleteOne(int id)
-        {
-            Thread.Sleep(760);
-            var toDelete = _data.SingleOrDefault(x => x.Id == id);
-            if (toDelete != null)
-            {
-                _data.Remove(toDelete);
-                return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
-            }
-
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-
+        /* ====================================================================
+         * hyperlink action buttons
+         * ====================================================================
+         */
         public ActionResult Create()
         {
             return View();
@@ -139,11 +123,35 @@ namespace kuujinbo.ASP.NET.Mvc.Misc.Controllers
             );
         }
 
+        /* ====================================================================
+         * per-row/record actions
+         * ====================================================================
+         */
+        public ActionResult Info(int id)
+        {
+            return View(id);
+        }
+
         public ActionResult Update(int id)
         {
             return View(id);
         }
 
+        [HttpAjaxPost]
+        public ActionResult DeleteOne(int id)
+        {
+            Thread.Sleep(760);
+            var toDelete = _data.SingleOrDefault(x => x.Id == id);
+            if (toDelete != null)
+            {
+                _data.Remove(toDelete);
+                return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
+            }
 
+            return new HttpStatusCodeResult(
+                HttpStatusCode.BadRequest,
+                "There was a problem deleting the record. Please try again."
+            );
+        }
     }
 }

@@ -4,14 +4,24 @@
     var _xsrf = '__RequestVerificationToken';
 
     return {
-        jqModal: $('#datatable-success-error-modal').dialog({
+        jqPartialViewModal: $('#datatable-partial-modal').dialog({
+            autoOpen: false, width: 'auto'
+            // DO NOT SET THE FOLLOWING; IE's focus() is HORRIBLY broken
+            //, modal: true
+        }),
+        jqPartialViewModalOK: function (html, title) {
+            configTable.jqPartialViewModal.html(html)
+                .dialog({ title: title })
+                .dialog('open');
+        },
+        jqBulkActionModal: $('#datatable-success-error-modal').dialog({
             autoOpen: false, height: 276, width: 476
         }),
         jqModalOK: function (msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<div>' + (msg || success) + '</div>';
-            configTable.jqModal.html(html)
+            configTable.jqBulkActionModal.html(html)
                 .dialog({ title: success })
                 .dialog('open');
         },
@@ -19,7 +29,7 @@
             var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
                 + '<div>' + (msg || err) + '</div>';
-            configTable.jqModal.html(html)
+            configTable.jqBulkActionModal.html(html)
                 .dialog({ title: err })
                 .dialog('open');
         },
@@ -147,23 +157,25 @@
                 }
             }
         },
-        sendXhr: function (element, url, data) {
+        sendXhr: function (element, url, requestData, requestType) {
             configTable.showSpin(element, true);
             $.ajax({
                 url: url,
                 headers: configTable.getXsrfToken(),
-                data: data ? data : null,
-                type: 'POST'
+                data: requestData, // bulk action button => record Id array
+                type: requestType || 'POST'
             })
             .done(function (data, textStatus, jqXHR) {
-                configTable.draw();
-
-                configTable.jqModalOK(data);
-
-                //// redisplay UI on row delete
-                //if (url === _configValues.deleteRowUrl) {
-                //    configTable.draw();
-                //}
+                if (requestData !== null) {
+                    configTable.draw();
+                    configTable.jqModalOK(data);
+                }
+                else {
+                    configTable.jqPartialViewModalOK(
+                        data,               // HTML from partial view
+                        element.textContent // button text for modal title
+                    );
+                }
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(
@@ -181,18 +193,24 @@
             e.preventDefault();
             var target = e.target;
             var url = target.dataset.url;
+            var isPartialView = target.hasAttribute('partial-view');
 
             if (url) {
-                var ids = configTable.getSelectedRowIds();
-                if (ids.length > 0) {
-                    configTable.sendXhr(target, url, { ids: ids });
-                } else {
-                    configTable.jqModalError(
-                        '<h2>No Records Selected</h2>'
-                        + 'Select one or more records to process the '
-                        + (target.textContent || 'selected')
-                        + ' action.'
-                    );
+                if (isPartialView) {
+                    configTable.sendXhr(target, url, null, 'GET');
+                }
+                else {
+                    var ids = configTable.getSelectedRowIds();
+                    if (ids.length > 0) {
+                        configTable.sendXhr(target, url, { ids: ids });
+                    } else {
+                        configTable.jqModalError(
+                            '<h2>No Records Selected</h2>'
+                            + 'Select one or more records to process the '
+                            + (target.textContent || 'selected')
+                            + ' action.'
+                        );
+                    }
                 }
             }
             else {
@@ -241,7 +259,7 @@
                     }
                 }
             }
-                // info, edit, & delete links
+            // info, edit, & delete links
             else if (action) {
                 var row = target.parentNode.parentNode;
                 if (action === configTable.getDeleteAction()) {

@@ -10,11 +10,10 @@ namespace System.Web.Mvc
         public const string AppDateFormat = "M/d/yyyy";
         public const string BAD_DATE_FORMAT = "unrecognized date format";
 
-        public static string Get(object value)
-        {
-            return Get(value, AppDateFormat);
-        }
-        public static string Get(object value, string dateFormat)
+        public static string Get(
+            object value, 
+            string dateFormat = AppDateFormat,
+            bool displayFor = false)
         {
             if (value == null) throw new System.ArgumentNullException("value");
 
@@ -27,7 +26,12 @@ namespace System.Web.Mvc
                 settings.Converters.Add(
                     new IsoDateTimeConverter() { DateTimeFormat = dateFormat }
                 );
-                settings.Converters.Add(new SimpleEnumConverter());
+
+                if (displayFor)
+                {
+                    settings.Converters.Add(new SimpleEnumConverter());
+                    settings.Converters.Add(new BoolYesNoConverter());
+                }
 
                 return JsonConvert.SerializeObject(
                     value, Formatting.Indented, settings
@@ -56,6 +60,56 @@ namespace System.Web.Mvc
                 return;
             }
             writer.WriteValue(RegexUtils.PascalCaseSplit(value.ToString()));
+        }
+    }
+
+    /* =======================================================================
+     * 'true' and 'false' are obviously not end-user friendly
+     * =======================================================================
+     */
+    public class BoolYesNoConverter : JsonConverter
+    {
+        public const string YES = "Yes";
+        public const string NO = "No";
+        public string Yes { get; set; }
+        public string No { get; set; }
+
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(bool);
+        }
+
+        public override bool CanRead { get { return true; } }
+        public override bool CanWrite { get { return true; } }
+ 
+        public override object ReadJson(
+            JsonReader reader,
+            Type objectType,
+            Object existingValue,
+            JsonSerializer serializer)
+        {
+            switch (reader.Value.ToString().ToLower().Trim())
+            {
+                case "yes":
+                case "y":
+                case "true":
+                    return true;
+                case "no":
+                case "n":
+                case "false":
+                    return false;
+            }
+
+            // unrecognized - let Json.NET throw
+            return new JsonSerializer().Deserialize(reader, objectType);
+        }
+
+        public override void WriteJson(
+            JsonWriter writer, 
+            object value, 
+            JsonSerializer serializer)
+        {
+            writer.WriteValue(((bool)value) ? "Yes" ?? YES : "No" ?? NO);
         }
     }
 }
