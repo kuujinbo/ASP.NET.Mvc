@@ -1,0 +1,22 @@
+﻿// https://github.com/mmanela/chutzpah/wiki/tests-setting
+// >> chutzpah.console.exe /failOnError /path  ..\..\..\src\kuujinbo.ASP.NET.Mvc.JavascriptTests\Chutzpah.json
+
+// https://github.com/mmanela/chutzpah/wiki/Chutzpah-File-References
+// https://github.com/mmanela/chutzpah/wiki/Command-Line-Options
+// https://github.com/mmanela/chutzpah/wiki/Chutzpah.json-Settings-File
+{
+    "TestFileTimeout": "20000",
+    "Tests": [{
+            "Path": "./",
+            "Includes": [ "*.js" ],
+            "Excludes": ["*mock-ajax.js"],
+            "ExpandReferenceComments": "true"
+    }],
+    "References": [
+        { "Path": "./testHelpers/mock-ajax.js" },
+        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-2.2.3.js" },
+        { "Path": "./testHelpers/jasmine-jquery.js" },
+        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/angular.js" },
+        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/angular-mocks.js" }
+    ]
+}
