@@ -12,32 +12,25 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace kuujinbo.ASP.NET.Mvc.Json
+namespace kuujinbo.ASP.NET.Mvc.Services.Json
 {
     public class JsonNetResult : ContentResult
     {
         public object Data { get; private set; }
         public string Json { get; private set; }
-        public string DateFormat { get; private set; }
 
-        public JsonNetResult(
-            string json,
-            string dateFormat = null)
+        public JsonNetResult(string json)
         {
             if (json == null) throw new ArgumentNullException("data");
 
             Json = json;
-            DateFormat = dateFormat;
         }
 
-        public JsonNetResult(
-            object data, 
-            string dateFormat = null)
+        public JsonNetResult(object data)
         {
             if (data == null) throw new ArgumentNullException("data");
 
             Data = data;
-            DateFormat = dateFormat;
         }
 
         public override void ExecuteResult(ControllerContext context)
@@ -48,7 +41,7 @@ namespace kuujinbo.ASP.NET.Mvc.Json
             response.ContentType = "application/json";
             response.Write(
                 !string.IsNullOrWhiteSpace(Json)
-                    ? Json : new JsonNetSerializer().Get(Data, DateFormat)
+                    ? Json : new JsonNetSerializer().Get(Data)
             );
         }
     }

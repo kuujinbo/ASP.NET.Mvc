@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Json;
+using Newtonsoft.Json;
+using kuujinbo.ASP.NET.Mvc.Services.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {
@@ -175,11 +176,11 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             };
         }
 
-
-        public string GetJson<T>(IEnumerable<T> entities)
-            where T : class, IIdentifiable
+        public string GetJson<T>(
+            IEnumerable<T> entities)
+        where T : class, IIdentifiable
         {
-            return new JsonNetSerializer().GetDataTable(GetData(entities));
+            return new JsonNetSerializer().Get(GetData(entities), true);
         }
 
 

@@ -5,7 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using System.Threading;
 using Newtonsoft.Json;
-using kuujinbo.ASP.NET.Mvc.Json;
+using kuujinbo.ASP.NET.Mvc.Services.Json;
 using kuujinbo.ASP.NET.Mvc.Models;
 using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
 

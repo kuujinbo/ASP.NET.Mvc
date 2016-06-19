@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Helpers;
-using kuujinbo.ASP.NET.Mvc.Json;
+using kuujinbo.ASP.NET.Mvc.Services.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {

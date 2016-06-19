@@ -137,9 +137,11 @@
     <Compile Include="Controllers\CacInfoController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
-    <Compile Include="Json\BoolYesNoConverter.cs" />
+    <Compile Include="Services\DateFormatValidator.cs" />
+    <Compile Include="Services\JqueryDataTables\AppSettingsReader.cs" />
+    <Compile Include="Services\Json\WriteBoolConverter.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
-    <Compile Include="Json\SimpleEnumConverter.cs" />
+    <Compile Include="Services\Json\WriteEnumConverter.cs" />
     <Compile Include="Helpers\RegexUtils.cs" />
     <Compile Include="Services\CacInfo.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableColumnAttribute.cs" />
@@ -152,8 +154,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AjaxHelper.cs" />
-    <Compile Include="Json\JsonNetResult.cs" />
-    <Compile Include="Json\JsonNetSerializer.cs" />
+    <Compile Include="Services\Json\JsonNetResult.cs" />
+    <Compile Include="Services\Json\JsonNetSerializer.cs" />
     <Compile Include="Services\JqueryDataTables\DataTableModelBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />

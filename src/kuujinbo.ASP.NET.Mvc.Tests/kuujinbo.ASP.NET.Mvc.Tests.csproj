@@ -37,9 +37,13 @@
   <ItemGroup>
     <Compile Include="Controllers\CacInfoControllerTests.cs" />
     <Compile Include="Helpers\DateTimeExtensionsTests.cs" />
-    <Compile Include="Json\JsonNetResultTests.cs" />
-    <Compile Include="Json\JsonNetSerializerTests.cs" />
+    <Compile Include="Services\DateFormatValidatorTests.cs" />
+    <Compile Include="Services\Json\AppSettingsReaderTests.cs" />
+    <Compile Include="Services\Json\WriteBoolConverterTests.cs" />
+    <Compile Include="Services\Json\JsonNetResultTests.cs" />
+    <Compile Include="Services\Json\JsonNetSerializerTests.cs" />
     <Compile Include="Helpers\RegexUtilsTests.cs" />
+    <Compile Include="Services\Json\WriteEnumConverterTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -4,21 +4,21 @@ using System.Linq;
 using System.Web.Routing;
 using System.Web;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Json;
+using kuujinbo.ASP.NET.Mvc.Tests;
 using Xunit;
 using Moq;
 
-namespace kuujinbo.ASP.NET.Mvc.Tests.Helpers
+namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
 {
     public class FakeController : Controller
     {
+        public ActionResult JsonData(string json)
+        {
+            return new JsonNetResult(json);
+        }
         public ActionResult JsonData(object obj)
         {
             return new JsonNetResult(obj);
-        }
-        public ActionResult JsonData(object obj, string dateFormat)
-        {
-            return new JsonNetResult(obj, dateFormat);
         }
     }
 
@@ -41,13 +41,27 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Helpers
         }
 
         [Fact]
-        public void ExecuteResult_WithNullData_ThrowsArgumentNullException()
+        public void ExecuteResult_WithNullJsonString_ThrowsArgumentNullException()
         {
             _fakeController.SetFakeControllerContext();
 
             var exception = Assert.Throws<ArgumentNullException>(
                 () => _fakeController
-                    .JsonData(null)
+                    .JsonData((string)null)
+            );
+
+            Assert.Equal<string>("data", exception.ParamName);
+        }
+
+
+        [Fact]
+        public void ExecuteResult_WithNullObjectData_ThrowsArgumentNullException()
+        {
+            _fakeController.SetFakeControllerContext();
+
+            var exception = Assert.Throws<ArgumentNullException>(
+                () => _fakeController
+                    .JsonData((object)null)
             );
 
             Assert.Equal<string>("data", exception.ParamName);
@@ -122,7 +136,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Helpers
             );
 
             _fakeController
-                .JsonData(date, "yyyy-MM-dd")
+                .JsonData(date)
                 .ExecuteResult(_fakeController.ControllerContext);
             var dateParts = GetDataFromJsonIndented(json)
                 .Trim(new char[] { '"' })
