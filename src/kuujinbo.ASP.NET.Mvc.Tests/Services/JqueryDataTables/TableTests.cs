@@ -129,7 +129,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             }
         }
 
-
         [Fact]
         public void ShowCheckboxColumn_WithoutActionButtons_ReturnsFalse()
         {
@@ -152,7 +151,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             Assert.Equal(false, table.ShowCheckboxColumn());
         }
-
 
         [Fact]
         public void SetColumns_WhenCalled_AddsColumnsToTable()
@@ -282,6 +280,25 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             _table.Columns.ElementAt(1).Search = new Search() { Value = "lon", ColumnIndex = 1 };
 
             ActAndAssert(GREER, RAMOS);
+        }
+
+        [Fact]
+        public void GetJson_DefaultCall_ReturnsJson()
+        {
+            _table = new Table()
+            {
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>()
+            };
+            _table.SetColumns<TestModel>();
+
+            string json = _table.GetJson<TestModel>(_modelData);
+
+            Assert.IsType<string>(json);
+            Assert.StartsWith("{", json);
+            Assert.EndsWith("}", json);
         }
     }
 }

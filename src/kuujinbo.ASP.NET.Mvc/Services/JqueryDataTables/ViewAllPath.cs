@@ -22,7 +22,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         /// source code for HttpRuntime.AppDomainAppVirtualPath returns '/'
         /// or a virtual path that does not end with a slash
         /// </summary>
-        private string _appDomainAppVirtualPath ;
+        private string _appDomainAppVirtualPath;
 
         public ViewAllPath(HttpRuntimeWrapper httpRuntimeWrapper)
         {

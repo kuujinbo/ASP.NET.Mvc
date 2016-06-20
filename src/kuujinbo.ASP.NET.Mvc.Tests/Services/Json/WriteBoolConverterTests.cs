@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Xunit;
 using Moq;
+using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
 {
@@ -56,15 +57,14 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
                 false, Formatting.None, _converter
             ).Replace("\"", "");
 
-            Assert.Equal(WriteBoolConverter.TRUE, jsonTrue);
-            Assert.Equal(WriteBoolConverter.FALSE, jsonFalse);
+            Assert.Equal(DisplaySettings.DEFAULT_TRUE, jsonTrue);
+            Assert.Equal(DisplaySettings.DEFAULT_FALSE, jsonFalse);
         }
 
         [Fact]
-        public void WriteJson_PropertySetters_WriteTrueAndFalseValues()
+        public void WriteJson_InstantiatingOverloadedConstructor_WritesTrueAndFalseValues()
         {
-            _converter.True = "Y";
-            _converter.False = "N";
+            _converter = new WriteBoolConverter("Y", "N");
             string jsonTrue = JsonConvert.SerializeObject(
                 true, Formatting.None, _converter
             ).Replace("\"", "");
@@ -72,8 +72,8 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
                 false, Formatting.None, _converter
             ).Replace("\"", "");
 
-            Assert.Equal(_converter.True, jsonTrue);
-            Assert.Equal(_converter.False, jsonFalse);
+            Assert.Equal("Y", jsonTrue);
+            Assert.Equal("N", jsonFalse);
         }
     }
 }

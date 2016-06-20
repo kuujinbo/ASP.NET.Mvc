@@ -4,36 +4,30 @@
  * =======================================================================
  */
 using System;
+using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
 using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.Json
 {
     public class WriteBoolConverter : JsonConverter
     {
-        /// <summary>
-        /// default replacement for true
-        /// </summary>
-        public const string TRUE = "True";
-        /// <summary>
-        /// default replacement for false
-        /// </summary>
-        public const string FALSE = "False";
+        private string _boolTrue, _boolFalse;
 
-        /* --------------------------------------------------------------------
-         * or set even simpler strings. e.g. true => 'Y', false => 'N'
-         * --------------------------------------------------------------------
-         */
-        /// <summary>true</summary>
-        public string True { get; set; }
-        /// <summary>false</summary>
-        public string False { get; set; }
+        public WriteBoolConverter() : this(null, null) { }
+        public WriteBoolConverter(string boolTrue, string boolFalse)
+        {
+            _boolTrue = boolTrue;
+            _boolFalse = boolFalse;
+        }
 
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(bool);
         }
 
+        // do **NOT** allow deserialization
         public override bool CanRead { get { return false; } }
+        // allow serialization
         public override bool CanWrite { get { return true; } }
 
         public override object ReadJson(
@@ -52,7 +46,11 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json
             object value,
             JsonSerializer serializer)
         {
-            writer.WriteValue(((bool)value) ? True ?? TRUE : False ?? FALSE);
+            writer.WriteValue(
+                ((bool)value) 
+                ? _boolTrue ?? DisplaySettings.Settings.BoolTrue 
+                : _boolFalse ??  DisplaySettings.Settings.BoolFalse
+            );
         }
     }
 }

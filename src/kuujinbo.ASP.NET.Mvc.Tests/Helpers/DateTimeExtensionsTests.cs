@@ -41,7 +41,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Helpers
         [Fact]
         public void NextDayInclusive_StartGreaterThanWanted_ReturnsNextWantedDayOfWeek()
         {
-
             var start = DateTime.Today;
             var offset = -1;
             var wanted = start.AddDays(offset).DayOfWeek;

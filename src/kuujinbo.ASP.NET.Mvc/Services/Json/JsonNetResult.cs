@@ -9,8 +9,6 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.Json
 {

@@ -1,12 +1,11 @@
-﻿/* ---------------------------------------------------------------------------
+﻿/* ============================================================================
  * HTML/JavaScript written to Partial View:
  * ~/views/shared/_jQueryDataTables.cshtml
- * ---------------------------------------------------------------------------
+ * ============================================================================
  */
 using System;
 using System.Linq;
 using System.Text;
-using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Helpers;
 using kuujinbo.ASP.NET.Mvc.Services.Json;
 
@@ -77,10 +76,14 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                     s.AppendFormat(@"
 <select name='select' class='form-control input-sm' data-column-number='{0}'>
     <option value='' selected='selected'></option> 
-    <option value='true'>Yes</option>
-    <option value='false'>No</option>
-</select></th>"
-                    , i);
+    <option value='true'>{1}</option>
+    <option value='false'>{2}</option>
+</select></th>",
+                     
+                        i, 
+                        DisplaySettings.Settings.BoolTrue, 
+                        DisplaySettings.Settings.BoolFalse
+                    );
                 }
                 else if (c.Type != null && c.Type.IsEnum)
                 {

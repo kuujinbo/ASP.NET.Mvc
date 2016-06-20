@@ -138,7 +138,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
     <Compile Include="Services\DateFormatValidator.cs" />
-    <Compile Include="Services\JqueryDataTables\AppSettingsReader.cs" />
+    <Compile Include="Services\JqueryDataTables\DisplaySettings.cs" />
     <Compile Include="Services\Json\WriteBoolConverter.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Services\Json\WriteEnumConverter.cs" />

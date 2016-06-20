@@ -84,7 +84,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
         {
             _fakeController.SetFakeControllerContext();
 
-            var result = _fakeController.JsonData("");
+            var result = _fakeController.JsonData(1);
             result.ExecuteResult(_fakeController.ControllerContext);
 
             Assert.Equal("application/json",  _fakeController.Response.ContentType);
