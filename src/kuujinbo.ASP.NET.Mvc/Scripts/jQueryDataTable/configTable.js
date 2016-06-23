@@ -1,6 +1,7 @@
-﻿var configTable = function () {
+﻿var configTable = function() {
     var _table;
     var _configValues = {};
+    var _infoEditDelete = '';
     var _xsrf = '__RequestVerificationToken';
 
     return {
@@ -36,70 +37,96 @@
         /* -----------------------------------------------------------------
             selectors and DOM elements
         */
-        getTableId: function () { return '#jquery-data-table'; },
-        getCheckAllId: function () { return '#datatable-check-all'; },
+        getTableId: function() { return '#jquery-data-table'; },
+        getCheckAllId: function() { return '#datatable-check-all'; },
         setTable: function (table) {
             _table = table;
             return this;
         },
-        getConfigValues: function () { return _configValues; },
+        getConfigValues: function() { return _configValues; },
         setConfigValues: function (config) {
             _configValues = config;
+            // reset InfoEditDelete link cache
+            _infoEditDelete = null;
             return this;
         },
-        getLoadingElement: function () {
+        getLoadingElement: function() {
             return "<h1 class='dataTablesLoading'>"
                 + 'Loading data'
                 + " <span class='glyphicon glyphicon-refresh spin-infinite' />"
                 + '</h1>';
         },
-        getSpinClasses: function () {
+        getSpinClasses: function() {
             return 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
         },
-        getSelectedRowClass: function () {
+        getSelectedRowClass: function() {
             return 'datatable-select-row';
         },
-        getInvalidUrlMessage: function () {
+        getInvalidUrlMessage: function() {
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
         },
-        getActionButtonSelector: function () { return '#data-table-actions button.btn'; },
-        getSearchFilterSelector: function () { return 'th input[type=text], th select'; },
-        getCheckedSelector: function () { return 'input[type="checkbox"]:checked'; },
-        getUncheckedSelector: function () { return 'input[type="checkbox"]:not(:checked)'; },
+        getActionButtonSelector: function() { return '#data-table-actions button.btn'; },
+        getSearchFilterSelector: function() { return 'th input[type=text], th select'; },
+        getCheckedSelector: function() { return 'input[type="checkbox"]:checked'; },
+        getUncheckedSelector: function() { return 'input[type="checkbox"]:not(:checked)'; },
 
-        getInfoAction: function () { return 'info'; },
-        getEditAction: function () { return 'edit'; },
-        getDeleteAction: function () { return 'delete'; },
+        getInfoAction: function() { return 'info'; },
+        getEditAction: function() { return 'edit'; },
+        getDeleteAction: function() { return 'delete'; },
+        getInfoEditDelete: function() {
+            // calculate once then cache value
+            if (_infoEditDelete) return _infoEditDelete;
 
+            var infoLink = configTable.getConfigValues().infoRowUrl
+                ? "<span class='glyphicon glyphicon-info-sign blue link-icons' data-action='"
+                    + configTable.getInfoAction()
+                    + "' title='Information'></span>"
+                : '';
+
+            var editLink = configTable.getConfigValues().editRowUrl
+                ? "<span class='glyphicon glyphicon-edit green link-icons' data-action='"
+                    + configTable.getEditAction()
+                    + "' title='Edit'></span>"
+                : '';
+
+            var deleteLink = configTable.getConfigValues().deleteRowUrl
+                ? "<span class='glyphicon glyphicon-remove-circle red link-icons' data-action='"
+                    + configTable.getDeleteAction()
+                    + "' title='Delete'><span></span></span>"
+                : '';
+
+            _infoEditDelete = [infoLink, editLink, deleteLink].join(' ').trim();
+            return _infoEditDelete;
+        },
         /* -----------------------------------------------------------------
             DataTables wrappers
         ----------------------------------------------------------------- */
-        clearSearchColumns: function () { _table.search('').columns().search(''); },
-        draw: function () { _table.draw(false); },
-        drawAndGoToPage1: function () { _table.draw(); },
+        clearSearchColumns: function() { _table.search('').columns().search(''); },
+        draw: function() { _table.draw(false); },
+        drawAndGoToPage1: function() { _table.draw(); },
         getRowData: function (row) {
             return _table.row(row).data()[0];
         },
-        reload: function () { _table.ajax.reload(); },
+        reload: function() { _table.ajax.reload(); },
         setSearchColumn: function (element) {
             _table.column(element.dataset.columnNumber).search(element.value);
         },
         /* -----------------------------------------------------------------
             helper functions
         ----------------------------------------------------------------- */
-        clearCheckAll: function () {
+        clearCheckAll: function() {
             // ajax call only updates tbody
             var n = document.querySelector(configTable.getCheckAllId());
             if (n !== null) n.checked = false;
         },
-        clearSearchFilters: function () {
+        clearSearchFilters: function() {
             var selector = configTable.getSearchFilterSelector()
             var elements = document.querySelectorAll(selector);
             for (i = 0; i < elements.length; ++i) elements[i].value = '';
 
             configTable.clearSearchColumns();
         },
-        getSelectedRowIds: function () {
+        getSelectedRowIds: function() {
             var selectedIds = [];
             _table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var cb = this.node()
@@ -109,7 +136,7 @@
             });
             return selectedIds;
         },
-        getXsrfToken: function () {
+        getXsrfToken: function() {
             var token = document.querySelector('input[name=' + _xsrf + ']');
             if (token !== null) {
                 var xsrf = {};
@@ -121,7 +148,7 @@
         redirect: function (url) {
             document.location.href = url;
         },
-        search: function () {
+        search: function() {
             var searchCount = 0;
             var elements = document.querySelectorAll(configTable.getSearchFilterSelector());
             for (i = 0; i < elements.length; ++i) {
@@ -182,7 +209,7 @@
                     jqXHR.statusText || jqXHR.responseJSON
                 );
             })
-            .always(function () {
+            .always(function() {
                 configTable.showSpin(element)
             });
         },
@@ -193,10 +220,10 @@
             e.preventDefault();
             var target = e.target;
             var url = target.dataset.url;
-            var isPartialView = target.hasAttribute('partial-view');
+            var isModal = target.hasAttribute('data-modal');
 
             if (url) {
-                if (isPartialView) {
+                if (isModal) {
                     configTable.sendXhr(target, url, null, 'GET');
                 }
                 else {
@@ -326,7 +353,7 @@
                     .addEventListener('keyup', configTable.keyupSearch, false);
             }
         },
-        init: function () {
+        init: function() {
             var tableId = configTable.getTableId();
 
             configTable.addListeners(tableId);

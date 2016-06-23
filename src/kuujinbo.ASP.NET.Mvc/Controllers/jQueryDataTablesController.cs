@@ -57,7 +57,8 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
                     new ActionButton(url.Action("Index", "Reports"), "Reports")
                     { 
                         CssClass = ActionButton.Primary,
-                        PartialView = true
+                        BulkAction = false,
+                        Modal = true
                     },
                     new ActionButton(url.Action("Delete"), "Delete")
                     { 
@@ -142,12 +143,12 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         public ActionResult DeleteOne(int id)
         {
             Thread.Sleep(760);
-            var toDelete = _data.SingleOrDefault(x => x.Id == id);
-            if (toDelete != null)
-            {
-                _data.Remove(toDelete);
-                return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
-            }
+            //var toDelete = _data.SingleOrDefault(x => x.Id == id);
+            //if (toDelete != null)
+            //{
+            //    _data.Remove(toDelete);
+            //    return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
+            //}
 
             return new HttpStatusCodeResult(
                 HttpStatusCode.BadRequest,

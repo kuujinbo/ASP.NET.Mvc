@@ -48,16 +48,19 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         }
 
         [Fact]
-        public void GetHtml_PartialView_AddsPartialViewAttribute()
+        public void GetHtml_WhenModal_ReturnsButtonHtml()
         {
-            var actionButton = new ActionButton("url", "text") { PartialView = true };
+            var actionButton = new ActionButton("url", "text")
+            {
+                BulkAction = false,
+                Modal = true
+            };
 
             var xElement = XElement.Parse(actionButton.GetHtml());
 
             Assert.Equal(2, xElement.Nodes().Count());
             Assert.Equal("button", xElement.Name);
             Assert.Equal("url", xElement.Attribute("data-url").Value);
-            Assert.NotNull(xElement.Attribute(ActionButton.PartialViewAttribute));
             Assert.Equal(
                 "text",
                 string.Concat(
@@ -65,7 +68,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 )
             );
             Assert.Equal(1, xElement.Elements("span").Count());
+            Assert.NotNull(xElement.Attribute(ActionButton.ModalAttribute));
         }
+
 
 
         [Fact]

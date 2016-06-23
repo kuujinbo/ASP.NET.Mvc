@@ -69,26 +69,7 @@ var table = $(configTable.getTableId()).DataTable({
         searchable: false,
         orderable: false,
         render: function (data, type, row, meta) {
-            // TODO: move to configTable, and cache results
-            var infoLink = configTable.getConfigValues().infoRowUrl
-                ? "<span class='glyphicon glyphicon-info-sign blue link-icons' data-action='"
-                    + configTable.getInfoAction()
-                    + "' title='Information'></span>"
-                : '';
-
-            var editLink = configTable.getConfigValues().editRowUrl
-                ? "<span class='glyphicon glyphicon-edit green link-icons' data-action='"
-                    + configTable.getEditAction()
-                    + "' title='Edit'></span>"
-                : '';
-
-            var deleteLink = configTable.getConfigValues().deleteRowUrl
-                ? "<span class='glyphicon glyphicon-remove-circle red link-icons' data-action='"
-                    + configTable.getDeleteAction()
-                    + "' title='Delete'><span></span></span>"
-                : '';
-
-            return [infoLink, editLink, deleteLink].join(' ');
+            return configTable.getInfoEditDelete();
         }
     }]
 });

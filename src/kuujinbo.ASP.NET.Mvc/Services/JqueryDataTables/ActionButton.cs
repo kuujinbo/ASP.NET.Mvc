@@ -31,7 +31,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         /// DOM attribute => flag a MVC partial view should be displayed
         /// in client-side modal
         /// </summary>
-        public const string PartialViewAttribute = "partial-view";
+        public const string ModalAttribute = "data-modal";
 
         /// <summary>
         /// button performs 'bulk' action on one or more records
@@ -47,7 +47,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         public string CssClass { get; set; }
         public string Text { get; set; }
         public string Url { get; set; }
-        public bool PartialView { get; set; }
+        public bool Modal { get; set; }
 
         public ActionButton(string url, string text)
         {
@@ -68,19 +68,25 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         {
             if (BulkAction)
             {
-                var partial = PartialView 
-                    ? string.Format("{0}=''", PartialViewAttribute) 
-                    : string.Empty;
-
                 return string.Format(
-                    "<button class='{0}' data-url='{1}' {2}>{3} <span></span></button>\n",
-                    CssClass, Url, partial, Text
+                    "<button class='{0}' data-url='{1}'>{2} <span></span></button>\n",
+                    CssClass, Url, Text
                 );
             }
-            return string.Format(
-                "<a class='{0}' href='{1}'>{2}</a>\n",
-                CssClass, Url, Text
-            );
+            else if (Modal)
+            {
+                return string.Format(
+                    "<button class='{0}' data-url='{1}' {2}=''>{3} <span></span></button>\n",
+                    CssClass, Url, ModalAttribute, Text
+                );
+            }
+            else
+            {
+                return string.Format(
+                    "<a class='{0}' href='{1}'>{2}</a>\n",
+                    CssClass, Url, Text
+                );
+            }
         }
     }
 }
