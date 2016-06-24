@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
 using Xunit;
 
@@ -25,29 +26,43 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Assert.True(ViewAllPath.All(uri));
         }
 
-        //[Fact]
-        //public void MakeUrl_WithoutControllerName_ReturnsBasePathPlusSegment()
-        //{
-        //    var mock = new Moq.Mock<HttpRuntimeWrapper>();
-        //    mock.Setup(fake => fake.AppDomainAppVirtualPath).Returns("/");
+        [Fact]
+        public void MakeUrl_MissingHttpRequestBase_ThrowsArgumentNullException()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(
+                () => ViewAllPath.MakeUrl(null)
+            );
 
-        //    Assert.Equal(
-        //        string.Format("/{0}", ViewAllPath.SEGMENT), 
-        //        new ViewAllPath(mock.Object).MakeUrl()
-        //    );
-        //}
+            Assert.Equal<string>(ViewAllPath.REQUEST_NULL, exception.ParamName);
+        }
 
-        //[Fact]
-        //public void MakeUrl_WithControllerName_ReturnsBasePathControllerNameSegment()
-        //{
-        //    var name = "controllerName";
-        //    var mock = new Moq.Mock<HttpRuntimeWrapper>();
-        //    mock.Setup(fake => fake.AppDomainAppVirtualPath).Returns("/");
 
-        //    Assert.Equal(
-        //        string.Format("/{0}/{1}", name, ViewAllPath.SEGMENT),
-        //        new ViewAllPath(mock.Object).MakeUrl(name)
-        //    );
-        //}
+        [Fact]
+        public void MakeUrl_WithTrailingSlashAndNoControllerName_ReturnsBasePathPlusSegment()
+        {
+            var appPath = "/";
+            var mock = new Moq.Mock<HttpRequestBase>();
+            mock.Setup(x => x.ApplicationPath).Returns(appPath);
+
+            Assert.Equal(
+                string.Format("/{0}", ViewAllPath.SEGMENT),
+                ViewAllPath.MakeUrl(mock.Object)
+            );
+        }
+
+        [Fact]
+        public void MakeUrl_WithoutTrailingSlashAndWithControllerName_ReturnsBasePathControllerNameSegment()
+        {
+            var appPath = "/virtualDirectory";
+            var mock = new Moq.Mock<HttpRequestBase>();
+
+            mock.Setup(x => x.ApplicationPath).Returns(appPath);
+            var name = "controllerName";
+
+            Assert.Equal(
+                string.Format("{0}/{1}/{2}", appPath, name, ViewAllPath.SEGMENT),
+                ViewAllPath.MakeUrl(mock.Object, name)
+            );
+        }
     }
 }

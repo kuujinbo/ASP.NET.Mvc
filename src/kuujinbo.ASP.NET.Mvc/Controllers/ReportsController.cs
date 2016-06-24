@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
+using System.Data;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Services;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
 {
@@ -25,10 +23,35 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         public ActionResult Index(ReportParams reportParams)
         {
             return File(
-                System.IO.File.ReadAllBytes(Server.MapPath("~/app_data/hello-world.pdf")),
-                "application/pdf",
-                "hello.pdf"
+                new SimpleExcelFile().Create(GetData()),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "test.xlsx"
             );
+        }
+
+        private DataTable GetData()
+        {
+            using (var table = new DataTable())
+            {
+                for (var i = 0; i < 76; ++i)
+                {
+                    if (i % 2 == 0) { table.Columns.Add(i.ToString("D2"), typeof(DateTime)); }
+                    else { table.Columns.Add(i.ToString("D2"), typeof(int)); }
+                }
+
+                for (var i = 0; i < 76; ++i)
+                {
+                    DataRow row = table.NewRow();
+                    for (var j = 0; j < 76; ++j)
+                    {
+                        if (j % 2 == 0) { row[j.ToString("D2")] = DateTime.Now.AddDays(j); }
+                        else { row[j.ToString("D2")] = j; }
+                    }
+                    table.Rows.Add(row);
+                }
+
+                return table;            
+            }
         }
     }
 }
