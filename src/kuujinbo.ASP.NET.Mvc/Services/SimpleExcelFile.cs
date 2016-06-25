@@ -13,8 +13,12 @@ namespace kuujinbo.ASP.NET.Mvc.Services
 
     public class SimpleExcelFile : ISimpleExcelFile
     {
+        private int _columnCount;
+
         public byte[] Create(DataTable dataTable)
         {
+            _columnCount = dataTable.Columns.Count;
+
             using (var memoryStream = new MemoryStream())
             {
                 using (var spreadsheetDocument = SpreadsheetDocument.Create(
@@ -27,10 +31,10 @@ namespace kuujinbo.ASP.NET.Mvc.Services
                     var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
                     var sheets = workbookPart.Workbook.AppendChild<Sheets>(new Sheets());
                     sheets.Append(new Sheet()
-                    { 
-                        Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), 
+                    {
+                        Id = workbookPart.GetIdOfPart(worksheetPart),
                         SheetId = 1,
-                        Name = "sheet1" 
+                        Name = "sheet1"
                     });
 
                     using (var writer = OpenXmlWriter.Create(worksheetPart))
@@ -38,8 +42,19 @@ namespace kuujinbo.ASP.NET.Mvc.Services
                         writer.WriteStartElement(new Worksheet());
                         writer.WriteStartElement(new SheetData());
 
-                        WriteHeaderRow(dataTable, writer);
-                        WriteDataRows(dataTable, writer);
+                        // header row
+                        var headerRow = new object[_columnCount];
+                        for (int i = 0; i < _columnCount; i++)
+                        {
+                            headerRow[i] = dataTable.Columns[i].ColumnName;
+                        }
+                        WriteRow(writer, headerRow);
+
+                        // DB result set
+                        foreach (DataRow dataRow in dataTable.Rows)
+                        {
+                            WriteRow(writer, dataRow.ItemArray);
+                        }
 
                         writer.WriteEndElement();
                         writer.WriteEndElement();
@@ -49,35 +64,16 @@ namespace kuujinbo.ASP.NET.Mvc.Services
             }
         }
 
-        private void WriteHeaderRow(DataTable dataTable, OpenXmlWriter writer)
+        private void WriteRow(OpenXmlWriter writer, object[] row)
         {
             writer.WriteStartElement(new Row());
-            for (int i = 0; i < dataTable.Columns.Count; i++)
+            for (int i = 0; i < _columnCount; i++)
             {
-                writer.WriteElement(new Cell
-                {
-                    CellValue = new CellValue(dataTable.Columns[i].ColumnName),
-                    DataType = CellValues.String
-                });
-            }
-            writer.WriteEndElement();
-        }
-
-        private void WriteDataRows(DataTable dataTable, OpenXmlWriter writer)
-        {
-            foreach (DataRow row in dataTable.Rows)
-            {
-                writer.WriteStartElement(new Row());
-                for (int i = 0; i < dataTable.Columns.Count; i++)
-                {
-                    writer.WriteElement(new Cell
-                    {
-                        CellValue = new CellValue(row[i].ToString()),
-                        DataType = CellValues.String
-                    });
-                }
+                writer.WriteStartElement(new Cell() { DataType = CellValues.InlineString });
+                writer.WriteElement(new InlineString(new Text(row[i].ToString())));
                 writer.WriteEndElement();
             }
+            writer.WriteEndElement();
         }
     }
 }
