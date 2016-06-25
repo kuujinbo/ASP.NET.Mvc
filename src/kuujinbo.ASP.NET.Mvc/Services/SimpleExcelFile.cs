@@ -1,5 +1,8 @@
-﻿using System.Data;
+﻿using Microsoft.VisualBasic;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -13,7 +16,19 @@ namespace kuujinbo.ASP.NET.Mvc.Services
 
     public class SimpleExcelFile : ISimpleExcelFile
     {
+        private OpenXmlWriter _writer;
         private int _columnCount;
+        private Dictionary<int, CellValues> _cellTypes = new Dictionary<int, CellValues>();
+
+        public static Row ROW = new Row();
+        public static readonly Cell CELL_INLINE_STRING = new Cell()
+        { 
+            DataType = CellValues.InlineString 
+        };
+        public static readonly Cell CELL_NUMBER = new Cell() 
+        { 
+            DataType = CellValues.Number 
+        };
 
         public byte[] Create(DataTable dataTable)
         {
@@ -37,43 +52,72 @@ namespace kuujinbo.ASP.NET.Mvc.Services
                         Name = "sheet1"
                     });
 
-                    using (var writer = OpenXmlWriter.Create(worksheetPart))
+                    using (_writer = OpenXmlWriter.Create(worksheetPart))
                     {
-                        writer.WriteStartElement(new Worksheet());
-                        writer.WriteStartElement(new SheetData());
+                        _writer.WriteStartElement(new Worksheet());
+                        _writer.WriteStartElement(new SheetData());
 
-                        // header row
-                        var headerRow = new object[_columnCount];
-                        for (int i = 0; i < _columnCount; i++)
-                        {
-                            headerRow[i] = dataTable.Columns[i].ColumnName;
-                        }
-                        WriteRow(writer, headerRow);
+                        WriteHeaderRow(dataTable
+                            .Columns.Cast<DataColumn>()
+                            .Select(x => x.ColumnName)
+                            .ToArray()
+                        );
 
                         // DB result set
-                        foreach (DataRow dataRow in dataTable.Rows)
-                        {
-                            WriteRow(writer, dataRow.ItemArray);
-                        }
+                        SetCellTypes(dataTable.Rows[0].ItemArray);
+                        foreach (DataRow r in dataTable.Rows) WriteRow(r.ItemArray);
 
-                        writer.WriteEndElement();
-                        writer.WriteEndElement();
+                        _writer.WriteEndElement();
+                        _writer.WriteEndElement();
                     }
                 }
                 return memoryStream.ToArray();
             }
         }
 
-        private void WriteRow(OpenXmlWriter writer, object[] row)
+        private void WriteHeaderRow(string[] columns)
         {
-            writer.WriteStartElement(new Row());
+            _writer.WriteStartElement(ROW);
             for (int i = 0; i < _columnCount; i++)
             {
-                writer.WriteStartElement(new Cell() { DataType = CellValues.InlineString });
-                writer.WriteElement(new InlineString(new Text(row[i].ToString())));
-                writer.WriteEndElement();
+                _writer.WriteStartElement(CELL_INLINE_STRING);
+                _writer.WriteElement(new InlineString(new Text(columns[i])));
+                _writer.WriteEndElement();
             }
-            writer.WriteEndElement();
+            _writer.WriteEndElement();
+        }
+
+        private void SetCellTypes(object[] row)
+        {
+            for (int i = 0; i < _columnCount; i++)
+            {
+                _cellTypes.Add(
+                    i, Information.IsNumeric(row[i]) 
+                       ? CellValues.Number : CellValues.InlineString
+                );
+            }
+        }
+
+        private void WriteRow(object[] row)
+        {
+            _writer.WriteStartElement(ROW);
+            for (int i = 0; i < _columnCount; i++)
+            {
+                var val = row[i].ToString();
+                var type = _cellTypes[i];
+                if (type == CellValues.Number)
+                {
+                    _writer.WriteStartElement(CELL_NUMBER);
+                    _writer.WriteElement(new CellValue(val));
+                }
+                else
+                {
+                    _writer.WriteStartElement(CELL_INLINE_STRING);
+                    _writer.WriteElement(new InlineString(new Text(val)));
+                }
+                _writer.WriteEndElement();
+            }
+            _writer.WriteEndElement();
         }
     }
 }
