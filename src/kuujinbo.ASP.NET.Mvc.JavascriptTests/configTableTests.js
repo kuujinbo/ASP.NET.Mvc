@@ -1,6 +1,7 @@
 ﻿/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/DataTables/jquery.dataTables.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/DataTables/dataTables.bootstrap.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-ui-1.11.4.js" />
+/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryAjax/jquery-binary.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryDataTable/configTable.js" />
 'use strict';
 
@@ -72,7 +73,7 @@ describe('configTable', function()  {
             expect(links.textContent).toEqual('');
         });
 
-        it('should display the info link when info URL is set', function () {
+        it('should display the info link when info URL is set', function() {
             configTable.setConfigValues({ infoRowUrl: '/info' });
             setFixtures(
                 '<div id="' + infoEditDeleteId + '">'
@@ -87,7 +88,7 @@ describe('configTable', function()  {
             expect(links.children[0].dataset.action).toEqual('info');
         });
 
-        it('should display the edit link when info URL is set', function () {
+        it('should display the edit link when info URL is set', function() {
             configTable.setConfigValues({ editRowUrl: '/edit' });
             setFixtures(
                 '<div id="' + infoEditDeleteId + '">'
@@ -102,7 +103,7 @@ describe('configTable', function()  {
             expect(links.children[0].dataset.action).toEqual('edit');
         });
 
-        it('should display the delete link when info URL is set', function () {
+        it('should display the delete link when info URL is set', function() {
             configTable.setConfigValues({ deleteRowUrl: '/edit' });
             setFixtures(
                 '<div id="' + infoEditDeleteId + '">'
@@ -117,7 +118,7 @@ describe('configTable', function()  {
             expect(links.children[0].dataset.action).toEqual('delete');
         });
 
-        it('should display all links when the URLs are set', function () {
+        it('should display all links when the URLs are set', function() {
             setFixtures(
                 '<div id="' + infoEditDeleteId + '">'
                 + configTable.getInfoEditDelete()
@@ -294,7 +295,24 @@ describe('configTable', function()  {
             expect(configTable.clearCheckAll.calls.count()).toEqual(1);
             expect(configTable.drawAndGoToPage1.calls.count()).toEqual(1);
         });
+    });
 
+    describe('saveAs', function() {
+        beforeEach(function() {
+            spyOn(configTable, 'getAjaxParams').and.returnValue({ saveAs: true });
+            spyOn(configTable, 'getXsrfToken');
+            spyOn(configTable, 'getConfigValues').and.returnValue({ dataUrl: '/data' });
+            spyOn($.fn, 'downloadFile');
+        });
+
+        it('should download binary content', function() {
+            configTable.saveAs();
+
+            expect(configTable.getAjaxParams.calls.count()).toEqual(1);
+            expect(configTable.getXsrfToken.calls.count()).toEqual(1);
+            expect(configTable.getConfigValues.calls.count()).toEqual(1);
+            expect($.fn.downloadFile.calls.count()).toEqual(1);
+        });
     });
 
     // add / remove processing spinner (jasmine-jquery)
@@ -459,8 +477,9 @@ describe('configTable', function()  {
                     + "<th data-is-searchable='true'><input type='text' value='00' /></th>"
                     + "<th data-is-searchable='true'><input type='text' value='00' /></th>"
                     + "<th style='white-space: nowrap;'>"
-                    + "<span class='search-icons glyphicon glyphicon-search' title='Search'></span>"
-                    + "<span class='search-icons glyphicon glyphicon-repeat' title='Clear Search and reload page'></span>"
+                    + '<span title="Search" class="btn search-icons glyphicon glyphicon-search"></span>'
+                    + '<span title="Clear Search and Reload" class="btn search-icons glyphicon glyphicon-repeat"></span>'
+                    + '<span title="Save As..." class="btn btn-default glyphicon glyphicon-download-alt" id="datatable-save-as"></span>'
                     + "</th>"
                 + "</tr></tfoot>"
                 + "<tbody><tr>"
@@ -529,6 +548,16 @@ describe('configTable', function()  {
 
             expect(searchIcons.length).toEqual(2);
             expect(configTable.clickSearch.calls.count()).toEqual(2);
+        });
+
+        it('should call the click handler for the saveAs icon', function() {
+            spyOn(configTable, 'clickSaveAs');
+
+            configTable.init();
+            var saveAs = document.querySelector(configTable.getSaveAsId());
+            saveAs.dispatchEvent(new Event('click'));
+
+            expect(configTable.clickSaveAs.calls.count()).toEqual(1);
         });
 
         it('should call the keyup handler for the search input fields', function()  {

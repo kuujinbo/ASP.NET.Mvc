@@ -3,6 +3,7 @@
     var _configValues = {};
     var _infoEditDelete = '';
     var _xsrf = '__RequestVerificationToken';
+    var _xhrErrorMsg = 'There was a problem processing your request. If the problem continues, please contact the application administrators';
 
     return {
         jqPartialViewModal: $('#datatable-partial-modal').dialog({
@@ -10,7 +11,7 @@
             // DO NOT SET THE FOLLOWING; IE's focus() is HORRIBLY broken
             //, modal: true
         }),
-        jqPartialViewModalOK: function (html, title) {
+        jqPartialViewModalOK: function(html, title) {
             configTable.jqPartialViewModal.html(html)
                 .dialog({ title: title })
                 .dialog('open');
@@ -18,7 +19,7 @@
         jqBulkActionModal: $('#datatable-success-error-modal').dialog({
             autoOpen: false, height: 276, width: 476
         }),
-        jqModalOK: function (msg) {
+        jqModalOK: function(msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<div>' + (msg || success) + '</div>';
@@ -26,7 +27,7 @@
                 .dialog({ title: success })
                 .dialog('open');
         },
-        jqModalError: function (msg) {
+        jqModalError: function(msg) {
             var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
                 + '<div>' + (msg || err) + '</div>';
@@ -36,15 +37,16 @@
         },
         /* -----------------------------------------------------------------
             selectors and DOM elements
-        */
+        ----------------------------------------------------------------- */
         getTableId: function() { return '#jquery-data-table'; },
+        getSaveAsId: function() { return '#datatable-save-as'; },
         getCheckAllId: function() { return '#datatable-check-all'; },
-        setTable: function (table) {
+        setTable: function(table) {
             _table = table;
             return this;
         },
         getConfigValues: function() { return _configValues; },
-        setConfigValues: function (config) {
+        setConfigValues: function(config) {
             _configValues = config;
             // reset InfoEditDelete link cache
             _infoEditDelete = null;
@@ -101,14 +103,15 @@
         /* -----------------------------------------------------------------
             DataTables wrappers
         ----------------------------------------------------------------- */
+        getAjaxParams: function() { return _table.ajax.params(); },
         clearSearchColumns: function() { _table.search('').columns().search(''); },
         draw: function() { _table.draw(false); },
         drawAndGoToPage1: function() { _table.draw(); },
-        getRowData: function (row) {
+        getRowData: function(row) {
             return _table.row(row).data()[0];
         },
         reload: function() { _table.ajax.reload(); },
-        setSearchColumn: function (element) {
+        setSearchColumn: function(element) {
             _table.column(element.dataset.columnNumber).search(element.value);
         },
         /* -----------------------------------------------------------------
@@ -128,7 +131,7 @@
         },
         getSelectedRowIds: function() {
             var selectedIds = [];
-            _table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            _table.rows().every(function(rowIdx, tableLoop, rowLoop) {
                 var cb = this.node()
                     .querySelector(configTable.getCheckedSelector());
 
@@ -145,7 +148,7 @@
             }
             return null;
         },
-        redirect: function (url) {
+        redirect: function(url) {
             document.location.href = url;
         },
         search: function() {
@@ -158,9 +161,9 @@
                     ++searchCount;
                     configTable.setSearchColumn(elements[i]);
                 }
-                    /* explicitly clear individual input, or will save last value 
-                       if user backspaces.
-                    */
+                /* explicitly clear individual input, or will save last value 
+                   if user backspaces.
+                */
                 else {
                     elements[i].value = '';
                     configTable.setSearchColumn(elements[i]);
@@ -171,20 +174,33 @@
                 configTable.drawAndGoToPage1();
             }
         },
-        showSpin: function (element, doAdd) {
+        saveAs: function(before, fail, always) {
+            var params = configTable.getAjaxParams();
+            params.saveAs = true;
+
+            // return binary content via XHR => see ~/Scripts/jQueryAjax/
+            $().downloadFile(
+                configTable.getConfigValues().dataUrl,
+                params,
+                configTable.getXsrfToken(),
+                null,
+                before, fail, always
+            );
+        },
+        showSpin: function(element, doAdd) {
             var span = element.querySelector('span');
             if (span) {
                 if (doAdd) {
                     configTable.getSpinClasses()
-                        .forEach(function (i) { span.classList.add(i) });
+                        .forEach(function(i) { span.classList.add(i) });
                 }
                 else {
                     configTable.getSpinClasses()
-                        .forEach(function (i) { span.classList.remove(i) });
+                        .forEach(function(i) { span.classList.remove(i) });
                 }
             }
         },
-        sendXhr: function (element, url, requestData, requestType) {
+        sendXhr: function(element, url, requestData, requestType) {
             configTable.showSpin(element, true);
             $.ajax({
                 url: url,
@@ -192,7 +208,7 @@
                 data: requestData, // bulk action button => record Id array
                 type: requestType || 'POST'
             })
-            .done(function (data, textStatus, jqXHR) {
+            .done(function(data, textStatus, jqXHR) {
                 if (requestData !== null) {
                     configTable.draw();
                     configTable.jqModalOK(data);
@@ -204,10 +220,8 @@
                     );
                 }
             })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                configTable.jqModalError(
-                    jqXHR.statusText || jqXHR.responseJSON
-                );
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                configTable.jqModalError(jqXHR.responseJSON || _xhrErrorMsg);
             })
             .always(function() {
                 configTable.showSpin(element)
@@ -216,7 +230,7 @@
         /* -----------------------------------------------------------------
             event listeners
         ----------------------------------------------------------------- */
-        clickActionButton: function (e) {
+        clickActionButton: function(e) {
             e.preventDefault();
             var target = e.target;
             var url = target.dataset.url;
@@ -246,7 +260,24 @@
 
             return false;
         },
-        clickCheckAll: function (e) {
+        // send binary content via XHR
+        clickSaveAs: function(e) {
+            // explicitly show/hide 'processing' element; since XHR is not
+            // sent via jQuery DataTables API, need to handle this here
+            var before, always;
+            var n = document.querySelector('div.dataTables_processing');
+            if (n !== null) {
+                before = function() { n.style.display = 'block'; }
+                always = function() { n.style.display = 'none'; }
+            }
+            // and handle response errors
+            var fail = function(msg) {
+                configTable.jqModalError(msg || _xhrErrorMsg);
+            }
+
+            configTable.saveAs(before, fail, always);
+        },
+        clickCheckAll: function(e) {
             if (e.target.checked) {
                 var elements = document.querySelectorAll(
                     configTable.getUncheckedSelector()
@@ -260,7 +291,7 @@
             }
         },
         // search icons in <span>
-        clickSearch: function (e) {
+        clickSearch: function(e) {
             var target = e.target;
             if (target.classList.contains('glyphicon-search')) {
                 configTable.search();
@@ -270,7 +301,7 @@
                 configTable.reload();
             }
         },
-        clickTable: function (e) {
+        clickTable: function(e) {
             var target = e.target;
             var action = target.dataset.action;
 
@@ -315,12 +346,12 @@
             }
         },
         // search when ENTER key pressed in <input> text
-        keyupSearch: function (e) {
+        keyupSearch: function(e) {
             if (e.key === 'Enter') configTable.search();
         },
-        addListeners: function (tableId) {
+        addListeners: function(tableId) {
             // allow ENTER in search boxes, otherwise possible form submit
-            document.onkeypress = function (e) {
+            document.onkeypress = function(e) {
                 if ((e.which === 13) && (e.target.type === 'text')) { return false; }
             };
 
@@ -330,6 +361,12 @@
             );
             for (i = 0 ; i < buttons.length ; i++) {
                 buttons[i].addEventListener('click', configTable.clickActionButton, false);
+            }
+
+            // saveAs button
+            var saveAs = document.querySelector(configTable.getSaveAsId());
+            if (saveAs != null) {
+                saveAs.addEventListener('click', configTable.clickSaveAs, false);
             }
 
             // 'check all' checkbox

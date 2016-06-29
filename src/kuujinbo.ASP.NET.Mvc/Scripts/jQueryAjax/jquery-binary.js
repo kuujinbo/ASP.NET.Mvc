@@ -1,9 +1,14 @@
 ﻿(function ($) {
-    $.fn.downloadFile = function(url, data, requestType) {
+    $.fn.downloadFile = function (url, data, headers, requestType, before, fail, always) {
+        if (before && typeof before === 'function') before();
+
+        // explicitly add for asp.net MVC XSRF token
+        headers['X-Requested-With'] = 'XMLHttpRequest';
         $.ajax({
             url: url,
             data: data,
             type: requestType || 'POST',
+            headers: headers,
             dataType: 'binary'
         })
         .done(function(data, textStatus, jqXHR) {
@@ -16,9 +21,16 @@
             saveAs(blob, filename);
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            if (fail && typeof fail === 'function') {
+                fail(jqXHR.responseJSON);
+            }
+            else { // last resort if caller didn't supply a fail callback
+                alert('error');
+            }
         })
-        ;
+        .always(function () {
+            if (always && typeof always === 'function') always();
+        });
         return false;
     };
 }(jQuery));

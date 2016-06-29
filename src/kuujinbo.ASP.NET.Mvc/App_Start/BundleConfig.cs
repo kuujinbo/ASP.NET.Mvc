@@ -44,6 +44,9 @@ namespace kuujinbo.ASP.NET.Mvc
                 "~/Scripts/lib/DataTables/jquery.dataTables.min.js",
                 "~/Scripts/lib/DataTables/dataTables.bootstrap.min.js",
                 "~/Scripts/lib/jquery-ui-1.11.4.min.js",
+                "~/Scripts/jQueryAjax/FileSaver.js",
+                "~/Scripts/jQueryAjax/jquery.binarytransport.js",
+                "~/Scripts/jQueryAjax/jquery-binary.js",
                 "~/Scripts/jQueryDataTable/configTable.js",
                 "~/Scripts/jQueryDataTable/Table.js"
             ));

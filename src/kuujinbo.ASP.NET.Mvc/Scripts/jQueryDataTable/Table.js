@@ -1,11 +1,4 @@
-﻿$(document).tooltip({
-    open: function (event, ui) {
-        $(ui.tooltip).siblings('.ui-tooltip').remove();
-    },
-    track: true, items: '*:not(.ui-dialog-titlebar-close)'
-});
-
-// DataTables API instance => $().DataTable() - note CASE
+﻿// DataTables API instance => $().DataTable() - note CASE
 var table = $(configTable.getTableId()).DataTable({
     processing: true,
     serverSide: true,
@@ -44,7 +37,7 @@ var table = $(configTable.getTableId()).DataTable({
         data: { checkColumn: configValues.showCheckboxColumn },
         error: function (jqXHR, responseText, errorThrown) {
             // explicitly hide on error, or loading element never goes away
-            var n = document.querySelector('div.dataTables_processing')
+            var n = document.querySelector('div.dataTables_processing');
             if (n !== null) n.style.display = 'none';
 
             configTable.jqModalError(jqXHR.responseJSON || errorThrown);
@@ -68,6 +61,7 @@ var table = $(configTable.getTableId()).DataTable({
         targets: -1,
         searchable: false,
         orderable: false,
+        className: 'center',
         render: function (data, type, row, meta) {
             return configTable.getInfoEditDelete();
         }
