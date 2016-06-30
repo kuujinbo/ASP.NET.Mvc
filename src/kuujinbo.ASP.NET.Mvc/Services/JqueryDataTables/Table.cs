@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using kuujinbo.ASP.NET.Mvc.Services.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {
@@ -12,13 +10,41 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
     public partial class Table : ITable
     {
         public int Draw { get; set; }
-        public int Start { get; set; }
-        public int Length { get; set; }
+        public int RecordsTotal { get; set; }
+        public int RecordsFiltered { get; set; }
+        public List<List<object>> Data { get; set; }
+
+        public bool CheckboxColumn { get; set; }
+        public bool SaveAs { get; set; }
+        public string[] Headers { get; set; }
+
+        /* --------------------------------------------------------------------
+         * Start && Length values depend on whether the HTTP request wants:
+         * -- JSON data for web UI => left as-is from original request to
+         *    return a **PAGED** result set
+         * -- Binary content (Excel) => explicity set to return a **FULL**
+         *    result set
+         * --------------------------------------------------------------------
+         */
+        private int _start;
+        public int Start
+        {
+            get { return SaveAs ? 0 : _start; }
+            set { _start = value; }
+        }
+
+        private int _length;
+        public int Length
+        {
+            // TODO: add default start value and Settings
+            get { return SaveAs ? 10000 : _length; }
+            set { _length = value; }
+        }
+
         public string DataUrl { get; set; }
         public string DeleteRowUrl { get; set; }
         public string EditRowUrl { get; set; }
         public string InfoRowUrl { get; set; }
-        public bool CheckboxColumn { get; set; }
 
         /// <summary>
         /// allow client-side shift-click multiple column sorting
@@ -39,10 +65,15 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             // AllowMultiColumnSorting = true;
         }
 
-        /* --------------------------------------------------------------------
-         * model data and DataTableColumnAttribute
-         * --------------------------------------------------------------------
-         */
+        /// <summary>
+        /// first column only shown in **web UI** when one or more 'bulk'
+        /// action button(s) exist
+        /// </summary>
+        /// <returns></returns>
+        public bool ShowCheckboxColumn()
+        {
+            return ActionButtons.Where(x => x.BulkAction).Count() > 0;
+        }
 
         /// <summary>
         /// set table columns used to generate HTML markup in partial view
@@ -78,16 +109,22 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         }
 
         /// <summary>
-        /// get anonymous  typed data used for Ajax response
+        /// execute client-side XHR and populate table instance properties, 
+        /// most importantly [Data].
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entities"></param>
-        /// <returns></returns>
-        public object GetData<T>(IEnumerable<T> entities)
+        /// <seealso cref="DataTableModelBinder" />
+        /// <remarks>
+        /// this code is called in an MVC controller action, with a Table
+        /// instance. the DataTableModelBinder maps the HTTP request form 
+        /// values to the Table instance properties, and the 
+        /// </remarks>
+        public void ExecuteRequest<T>(IEnumerable<T> entities)
             where T : class, IIdentifiable
         {
             // get count **BEFORE** any search filter(s) applied
-            var recordsTotal = entities.Count();
+            RecordsTotal = entities.Count();
 
             // <property name, <objectId, property value>>
             var cache = new Dictionary<string, IDictionary<int, object>>();
@@ -163,26 +200,13 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                         entity, info.Item1, info.Item2, cache
                     ));
                 }
-                row.Insert(0, entity.Id);
+                if (!SaveAs) row.Insert(0, entity.Id);
                 tableData.Add(row);
             }
 
-            return new
-            {
-                draw = this.Draw,
-                recordsTotal = recordsTotal,
-                recordsFiltered = entities.Count(),
-                data = tableData
-            };
+            RecordsFiltered = entities.Count();
+            Data = tableData;
         }
-
-        public string GetJson<T>(
-            IEnumerable<T> entities)
-        where T : class, IIdentifiable
-        {
-            return new JsonNetSerializer().Get(GetData(entities), true);
-        }
-
 
         /// <summary>
         /// Type information for entity used to build the DataTable
@@ -232,11 +256,11 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             if (cache[propertyInfo.Name].TryGetValue(entity.Id, out data)) return data;
 
             var propertyIsCollection =
-                propertyInfo.PropertyType != typeof(string) &&
-                propertyInfo.PropertyType
-                    .GetInterfaces().Any(x =>
-                        x.IsGenericType &&
-                        x.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+                propertyInfo.PropertyType != typeof(string)
+                && propertyInfo.PropertyType.GetInterfaces().Any(
+                   x => x.IsGenericType
+                        && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                );
 
             if (propertyIsCollection)
             {
@@ -278,18 +302,9 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                     data = value;
                 }
             }
-
             cache[propertyInfo.Name][entity.Id] = data;
-            return data;
-        }
 
-        /// <summary>
-        /// first column only shown when one or more 'bulk' action button(s)
-        /// </summary>
-        /// <returns></returns>
-        public bool ShowCheckboxColumn()
-        {
-            return ActionButtons.Where(x => x.BulkAction).Count() > 0;
+            return data;
         }
     }
 }

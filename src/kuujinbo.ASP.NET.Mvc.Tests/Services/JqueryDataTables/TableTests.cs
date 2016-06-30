@@ -18,13 +18,13 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         }
 
         public int Id { get; set; }
-        
+
         [DataTableColumn(DisplayOrder = 1)]
         public string Name { get; set; }
-        
+
         [DataTableColumn(DisplayOrder = 2)]
         public string Office { get; set; }
-        
+
         [DataTableColumn(DisplayOrder = 3, DisplayName = "Start Date")]
         public DateTime? StartDate { get; set; }
 
@@ -106,25 +106,26 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             var totalRecords = _modelData.Count();
 
             // act
-            dynamic result = _table.GetData<TestModel>(_modelData);
+            _table.ExecuteRequest<TestModel>(_modelData);
+            var data = _table.Data;
 
             // assert
             for (int i = 0; i < entityCount; ++i)
             {
-                Assert.Equal(totalRecords, result.recordsTotal);
+                Assert.Equal(totalRecords, _table.RecordsTotal);
                 // recordsFiltered != recordsTotal when searching
-                Assert.Equal(entityCount, result.recordsFiltered);
+                Assert.Equal(entityCount, _table.RecordsFiltered);
 
-                Assert.IsType<List<List<object>>>(result.data);
+                Assert.IsType<List<List<object>>>(data);
 
-                Assert.Equal(entities[i].Id, result.data[i][0]);
-                Assert.Equal(entities[i].Name, result.data[i][1]);
-                Assert.Equal(entities[i].Office, result.data[i][2]);
-                Assert.Equal(entities[i].StartDate, result.data[i][3]);
-                Assert.Equal(entities[i].Salary.Amount, result.data[i][4]);
+                Assert.Equal(entities[i].Id, data[i][0]);
+                Assert.Equal(entities[i].Name, data[i][1]);
+                Assert.Equal(entities[i].Office, data[i][2]);
+                Assert.Equal(entities[i].StartDate, data[i][3]);
+                Assert.Equal(entities[i].Salary.Amount, data[i][4]);
                 Assert.Equal(
                     string.Join(", ", entities[i].Hobbies.Select(x => x.Name)),
-                    result.data[i][5]
+                    data[i][5]
                 );
             }
         }
@@ -169,7 +170,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
         // no sort or search criteria
         [Fact]
-        public void GetData_DefaultCall_ReturnsModelWithSpecifiedProperties()
+        public void GetData_DefaultCall_ReturnsUnsortedCollection()
         {
             _table = new Table()
             {
@@ -213,7 +214,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 SortOrders = new List<SortOrder>() 
                 { 
                     // sort ascending => 'Name' property
-                    // anything other than DataTableModelBinder.ORDER_ASC is descnding 
+                    // anything other than DataTableModelBinder.ORDER_ASC is descending 
                     new SortOrder { ColumnIndex = 0, Direction = "anything other than 'asc'" } 
                 }
             };
@@ -234,7 +235,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             };
             _table.SetColumns<TestModel>();
             _table.Columns.ElementAt(1).Search = new Search() { Value = "  ", ColumnIndex = 1 };
-            _table.Columns.ElementAt(2).Search = new Search() {ColumnIndex = 2};
+            _table.Columns.ElementAt(2).Search = new Search() { ColumnIndex = 2 };
 
             ActAndAssert(SATO, RAMOS, GREER);
         }
@@ -268,10 +269,8 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 { 
                     // sort ascending => 'StartDate' property
                     new SortOrder { ColumnIndex = 2, Direction = DataTableModelBinder.ORDER_ASC },
-                    /*
-                     * sort descending => 'Name' property, which should be
-                     * ignored, since 'StartDate' is evaluated first
-                     */
+                    // sort descending => 'Name' property, which should be
+                    // ignored, since 'StartDate' is evaluated first
                     new SortOrder { ColumnIndex = 0, Direction = "other" },
                 }
             };
@@ -280,25 +279,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             _table.Columns.ElementAt(1).Search = new Search() { Value = "lon", ColumnIndex = 1 };
 
             ActAndAssert(GREER, RAMOS);
-        }
-
-        [Fact]
-        public void GetJson_DefaultCall_ReturnsJson()
-        {
-            _table = new Table()
-            {
-                Draw = 1,
-                Start = 0,
-                Length = 10,
-                SortOrders = new List<SortOrder>()
-            };
-            _table.SetColumns<TestModel>();
-
-            string json = _table.GetJson<TestModel>(_modelData);
-
-            Assert.IsType<string>(json);
-            Assert.StartsWith("{", json);
-            Assert.EndsWith("}", json);
         }
     }
 }

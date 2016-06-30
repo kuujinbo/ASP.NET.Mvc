@@ -271,7 +271,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         }
 
         [Fact]
-        public void GetGetTableHtml_WithAnyOtherPropertyType_AddsSpansToTfoot()
+        public void GetGetTableHtml_LastTh_AddsSpansToTfoot()
         {
             var columns = new List<Column>() { new Column() };
             var table = new Table() { Columns = columns };
@@ -280,17 +280,19 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 "<div>{0}</div>", table.GetTableHtml()
             ));
 
-            var input = xElement.XPathSelectElement("//tfoot/tr/th[last()]");
-            var spans = input.Nodes().OfType<XElement>();
+            var lastTh = xElement.XPathSelectElement("//tfoot/tr/th[last()]");
+            var spans = lastTh.Nodes().OfType<XElement>();
+            var spanCount = 3;
 
-            Assert.False(string.IsNullOrWhiteSpace(input.Attribute("style").Value));
-            Assert.Equal(2, spans.Count());
-            Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(0).Attribute("class").Value));
-            Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(0).Attribute("title").Value));
-            Assert.Equal("", spans.ElementAt(0).Value);
-            Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(1).Attribute("class").Value));
-            Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(1).Attribute("title").Value));
-            Assert.Equal("", spans.ElementAt(1).Value);
+            Assert.False(string.IsNullOrWhiteSpace(lastTh.Attribute("style").Value));
+            Assert.Equal(spanCount, spans.Count());
+            for (int i = 0; i < spanCount; ++i)
+            {
+                Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(i).Attribute("class").Value));
+                Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(i).Attribute("title").Value));
+                Assert.Equal("", spans.ElementAt(i).Value);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(spans.ElementAt(spanCount - 1).Attribute("id").Value));
         }
 
         [Fact]

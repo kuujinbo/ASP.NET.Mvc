@@ -12,10 +12,6 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
 {
     public class FakeController : Controller
     {
-        public ActionResult JsonData(string json)
-        {
-            return new JsonNetResult(json);
-        }
         public ActionResult JsonData(object obj)
         {
             return new JsonNetResult(obj);
@@ -34,25 +30,11 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
         private string GetDataFromJsonIndented(string json)
         {
             return json.Split(
-                    new string[] { Environment.NewLine }, 
+                    new string[] { Environment.NewLine },
                     StringSplitOptions.None)
                 .Where(x => x != "{" && x != "}")
                 .ElementAt(0);
         }
-
-        [Fact]
-        public void ExecuteResult_WithNullJsonString_ThrowsArgumentNullException()
-        {
-            _fakeController.SetFakeControllerContext();
-
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => _fakeController
-                    .JsonData((string)null)
-            );
-
-            Assert.Equal<string>("data", exception.ParamName);
-        }
-
 
         [Fact]
         public void ExecuteResult_WithNullObjectData_ThrowsArgumentNullException()
@@ -87,7 +69,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
             var result = _fakeController.JsonData(1);
             result.ExecuteResult(_fakeController.ControllerContext);
 
-            Assert.Equal("application/json",  _fakeController.Response.ContentType);
+            Assert.Equal("application/json", _fakeController.Response.ContentType);
             Assert.IsType<JsonNetResult>(result);
         }
 
@@ -108,7 +90,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
             );
 
             _fakeController
-                .JsonData(new Dictionary<string, string> {{ "one", "1"}})
+                .JsonData(new Dictionary<string, string> { { "one", "1" } })
                 .ExecuteResult(_fakeController.ControllerContext);
             var data = GetDataFromJsonIndented(json);
 

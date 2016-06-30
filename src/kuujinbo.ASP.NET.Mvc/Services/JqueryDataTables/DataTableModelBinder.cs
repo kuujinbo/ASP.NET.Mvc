@@ -1,6 +1,6 @@
 ﻿/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- * see class tests for examples of how jQuery DataTables sends the HTTP
- * request form parameters
+ * see jQuery DataTables API and class tests for examples how HTTP form 
+ * parameters are sent via XHR
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 using System;
 using System.Collections.Generic;
@@ -11,12 +11,12 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
     public class DataTableModelBinder : DefaultModelBinder
     {
         /* ===================================================================
-         * custom data added in .js file - NOT part of jQuery DataTables API.
+         * custom data - **NOT** part of jQuery DataTables API
          * ================================================================ */
         public const string CHECK_COLUMN = "checkColumn";
-
+        public const string SAVE_AS = "saveAs";
         /* ===================================================================
-         * everything from here part of jQuery DataTables API.
+         * everything from here => jQuery DataTables API
          * ================================================================ */
         public const string DRAW = "draw";
         public const string START = "start";
@@ -39,11 +39,11 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             base.BindModel(controllerContext, bindingContext);
             var request = controllerContext.HttpContext.Request.Form;
 
-            // base table request properties
             var draw = Convert.ToInt32(request[DRAW]);
             var start = Convert.ToInt32(request[START]);
             var length = Convert.ToInt32(request[LENGTH]);
             var checkColumn = Convert.ToBoolean(request[CHECK_COLUMN]);
+            var saveAs = Convert.ToBoolean(request[SAVE_AS]);
 
             /* ===============================================================
              * jQuery DataTables regex **NOT** implemented - there's a reason 
@@ -107,6 +107,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                 Start = start,
                 Length = length,
                 CheckboxColumn = checkColumn,
+                SaveAs = saveAs,
                 Search = search,
                 SortOrders = order,
                 Columns = columns

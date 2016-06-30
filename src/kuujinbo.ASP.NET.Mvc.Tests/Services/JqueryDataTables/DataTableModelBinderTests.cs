@@ -77,6 +77,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             _form["start"] = "0";
             _form["length"] = "10";
             _form["checkColumn"] = "true";
+            _form["saveAs"] = "true";
             /* ================================================================
              * actual per column data processed starts here
              * ================================================================
@@ -129,6 +130,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Assert.Equal<int>(0, _table.Start);
             Assert.Equal<int>(10, _table.Length);
             Assert.Equal<bool>(true, _table.CheckboxColumn);
+            Assert.Equal<bool>(true, _table.SaveAs);
             Assert.Equal<string>("global search value", _table.Search.Value);
 
             Column data0 = _table.Columns.ElementAt(0);

@@ -1,10 +1,12 @@
 ﻿/* ============================================================================
+ * modified version of this:
  * http://www.hanselman.com/blog/ASPNETMVCSessionAtMix08TDDAndMvcMockHelpers.aspx
  * ========================================================================= */
 using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
@@ -29,6 +31,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
 
             context.Setup(ctx => ctx.Items).Returns(items.Object);
             context.Setup(ctx => ctx.Request).Returns(request.Object);
+            response.Setup(x => x.OutputStream).Returns(It.IsAny<Stream>);
             context.Setup(ctx => ctx.Response).Returns(response.Object);
             context.Setup(ctx => ctx.Session).Returns(session.Object);
             context.Setup(ctx => ctx.Server).Returns(server.Object);
@@ -56,10 +59,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
 
         static string GetUrlFileName(string url)
         {
-            if (url.Contains("?"))
-                return url.Substring(0, url.IndexOf("?"));
-            else
-                return url;
+            return url.Contains("?") ? url.Substring(0, url.IndexOf("?")) : url;
         }
 
         static NameValueCollection GetQueryStringParameters(string url)

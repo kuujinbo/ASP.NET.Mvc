@@ -145,6 +145,7 @@
     <Compile Include="Controllers\WebAPIAjaxFileController.cs" />
     <Compile Include="Services\DateFormatValidator.cs" />
     <Compile Include="Services\JqueryDataTables\DisplaySettings.cs" />
+    <Compile Include="Services\JqueryDataTables\JqueryDataTablesResult.cs" />
     <Compile Include="Services\Json\WriteBoolConverter.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Services\Json\WriteEnumConverter.cs" />
@@ -171,7 +172,6 @@
     <Compile Include="Services\SimpleExcelFile.cs" />
     <Content Include="Content\Images\alt-gravatar.png" />
     <Content Include="Content\Images\kuujinbo_320-30.gif" />
-    <Content Include="Content\NAV_MENU.html" />
     <Content Include="Content\octicons\octicons.css" />
     <Content Include="Content\octicons\octicons.svg" />
     <Content Include="Content\themes\base\accordion.css" />

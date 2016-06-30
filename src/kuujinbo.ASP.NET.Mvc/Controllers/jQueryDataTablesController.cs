@@ -65,7 +65,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
                         CssClass = ActionButton.Danger,
                     }
                 },
-                DataUrl = url.Action("JsonData"),
+                DataUrl = url.Action("GetResults"),
                 InfoRowUrl = url.Action("Info"),
                 EditRowUrl = url.Action("Update"),
                 DeleteRowUrl = url.Action("DeleteOne")
@@ -79,11 +79,13 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
          * all subsequent HTTP requests are done via XHR to update DataTable
          * ====================================================================
          */
-        [HttpAjaxPost]
-        public ActionResult JsonData(Table table)
+        [HttpPost]
+        public ActionResult GetResults(Table table)
         {
             Thread.Sleep(760);
-            return new JsonNetResult(table.GetJson<TestModel>(_data));
+
+            table.ExecuteRequest<TestModel>(_data);
+            return new JqueryDataTablesResult(table);
         }
 
         /* ====================================================================
@@ -91,7 +93,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
          * ====================================================================
          */
         [HttpAjaxPost]
-        public ActionResult Delete (IEnumerable<int> ids)
+        public ActionResult Delete(IEnumerable<int> ids)
         {
             Thread.Sleep(760);
             return new JsonNetResult(GetBatchUpdateResponseObject(ids));

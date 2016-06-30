@@ -79,9 +79,9 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
     <option value='true'>{1}</option>
     <option value='false'>{2}</option>
 </select></th>",
-                     
-                        i, 
-                        DisplaySettings.Settings.BoolTrue, 
+
+                        i,
+                        DisplaySettings.Settings.BoolTrue,
                         DisplaySettings.Settings.BoolFalse
                     );
                 }
@@ -115,10 +115,12 @@ class='form-control input-sm' type='text' placeholder='Search' /></th>"
                     , i);
                 }
                 ++i;
+
             }
             s.AppendLine("<th style='white-space: nowrap;'>");
-            s.AppendLine("<span class='search-icons glyphicon glyphicon-search' title='Search'></span>");
-            s.Append("<span class='search-icons glyphicon glyphicon-repeat' title='Clear Search and reload page'></span>\n");
+            s.Append("<span class='btn search-icons glyphicon glyphicon-search' title='Search'></span>");
+            s.Append("<span class='btn search-icons glyphicon glyphicon-repeat' title='Clear Search and Reload'></span>");
+            s.Append("<span id='datatable-save-as' class='btn btn-default glyphicon glyphicon-download-alt' title='Save As...'></span>\n");
             s.Append("</th>");
         }
 
