@@ -280,5 +280,33 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             ActAndAssert(GREER, RAMOS);
         }
+
+
+        [Fact]
+        public void GetData_SaveAsTrue_ReturnsDataWithColumnNamesDefaultStartDefaultLength()
+        {
+            _table = new Table()
+            {
+                SaveAs = true,
+                Start = 1000,   // should reset to 0 
+                Length = 10     // should reset to default
+            };
+            _table.SetColumns<TestModel>();
+
+            // act
+            _table.ExecuteRequest<TestModel>(_modelData);
+            var data = _table.Data;
+            var headerRow = data.ElementAt(0);
+
+            // assert
+            Assert.Equal(0, _table.Start);
+            Assert.Equal(TableSettings.DEFAULT_MAX_SAVE_AS, _table.Length);
+            Assert.Equal(5, headerRow.Count());
+            Assert.Equal("Name", headerRow.ElementAt(0));
+            Assert.Equal("Office", headerRow.ElementAt(1));
+            Assert.Equal("Start Date", headerRow.ElementAt(2));
+            Assert.Equal("Salary", headerRow.ElementAt(3));
+            Assert.Equal("Hobbies", headerRow.ElementAt(4));
+        }
     }
 }

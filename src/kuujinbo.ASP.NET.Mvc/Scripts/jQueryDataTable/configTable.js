@@ -177,6 +177,7 @@
         saveAs: function(before, fail, always) {
             var params = configTable.getAjaxParams();
             params.saveAs = true;
+            params.columnNames = JSON.stringify(configTable.getConfigValues().columnNames);
 
             // return binary content via XHR => see ~/Scripts/jQueryAjax/
             $().downloadFile(

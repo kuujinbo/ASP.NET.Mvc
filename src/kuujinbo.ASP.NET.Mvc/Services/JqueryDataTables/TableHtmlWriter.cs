@@ -81,8 +81,8 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 </select></th>",
 
                         i,
-                        DisplaySettings.Settings.BoolTrue,
-                        DisplaySettings.Settings.BoolFalse
+                        TableSettings.Settings.BoolTrue,
+                        TableSettings.Settings.BoolFalse
                     );
                 }
                 else if (c.Type != null && c.Type.IsEnum)
@@ -136,7 +136,7 @@ class='form-control input-sm' type='text' placeholder='Search' /></th>"
                 deleteRowUrl = DeleteRowUrl,
                 editRowUrl = EditRowUrl,
                 showCheckboxColumn = ShowCheckboxColumn(),
-                allowMultiColumnSorting = AllowMultiColumnSorting
+                columnNames = ColumnNames
             });
         }
     }

@@ -57,8 +57,8 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
                 false, Formatting.None, _converter
             ).Replace("\"", "");
 
-            Assert.Equal(DisplaySettings.DEFAULT_TRUE, jsonTrue);
-            Assert.Equal(DisplaySettings.DEFAULT_FALSE, jsonFalse);
+            Assert.Equal(TableSettings.DEFAULT_TRUE, jsonTrue);
+            Assert.Equal(TableSettings.DEFAULT_FALSE, jsonFalse);
         }
 
         [Fact]

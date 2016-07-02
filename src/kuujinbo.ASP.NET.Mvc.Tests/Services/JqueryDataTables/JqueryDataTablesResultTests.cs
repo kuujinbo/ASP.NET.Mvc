@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Routing;
-using System.Web;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
-using kuujinbo.ASP.NET.Mvc.Tests;
 using Xunit;
-using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 {
@@ -18,7 +13,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             return new JqueryDataTablesResult(table);
         }
     }
-
 
     public class JqueryDataTablesResultTests
     {
@@ -82,7 +76,5 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             Assert.Equal(JqueryDataTablesResult.CONTENT_TYPE, _fakeController.Response.ContentType);
         }
-
-
     }
 }

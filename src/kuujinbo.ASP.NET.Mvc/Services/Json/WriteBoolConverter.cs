@@ -48,8 +48,8 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json
         {
             writer.WriteValue(
                 ((bool)value) 
-                ? _boolTrue ?? DisplaySettings.Settings.BoolTrue 
-                : _boolFalse ??  DisplaySettings.Settings.BoolFalse
+                ? _boolTrue ?? TableSettings.Settings.BoolTrue 
+                : _boolFalse ??  TableSettings.Settings.BoolFalse
             );
         }
     }

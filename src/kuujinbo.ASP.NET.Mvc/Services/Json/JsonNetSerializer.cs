@@ -18,11 +18,11 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json
         static JsonNetSerializer()
         {
             _writeBoolConverter = new WriteBoolConverter(
-                DisplaySettings.Settings.BoolTrue,
-                DisplaySettings.Settings.BoolFalse 
+                TableSettings.Settings.BoolTrue,
+                TableSettings.Settings.BoolFalse 
             );
 
-            _appDateFormat = DisplaySettings.Settings.DateFormat;
+            _appDateFormat = TableSettings.Settings.DateFormat;
             DateFormatValidator.Parse(_appDateFormat);
             _isoDateTimeConverter = new IsoDateTimeConverter()
             {

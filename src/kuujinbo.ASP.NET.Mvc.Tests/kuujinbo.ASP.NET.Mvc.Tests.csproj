@@ -38,7 +38,7 @@
     <Compile Include="Controllers\CacInfoControllerTests.cs" />
     <Compile Include="Helpers\DateTimeExtensionsTests.cs" />
     <Compile Include="Services\DateFormatValidatorTests.cs" />
-    <Compile Include="Services\JqueryDataTables\DisplaySettingsTests.cs" />
+    <Compile Include="Services\JqueryDataTables\TableSettingsTests.cs" />
     <Compile Include="Services\JqueryDataTables\JqueryDataTablesResultTests.cs" />
     <Compile Include="Services\Json\WriteBoolConverterTests.cs" />
     <Compile Include="Services\Json\JsonNetResultTests.cs" />
@@ -94,6 +94,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

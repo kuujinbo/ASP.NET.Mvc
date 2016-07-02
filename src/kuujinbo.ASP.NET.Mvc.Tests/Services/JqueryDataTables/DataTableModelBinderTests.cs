@@ -60,7 +60,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
  * format. 'regex' form values are for reference only - don't and will
  * __NEVER__ implement Regex search
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-        void FakeHttpPostVisibleCheckColumn()
+        void FakeHttpPost()
         {
             /* ================================================================
              * first column **ALWAYS** sent, irregardless of UI visiblity
@@ -73,11 +73,12 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             _form["columns[0][search][value]"] = "";
             _form["columns[0][search][regex]"] = "false";
 
-            _form["draw"] = "0";
-            _form["start"] = "0";
-            _form["length"] = "10";
-            _form["checkColumn"] = "true";
-            _form["saveAs"] = "true";
+            _form[DataTableModelBinder.DRAW] = "0";
+            _form[DataTableModelBinder.START] = "0";
+            _form[DataTableModelBinder.LENGTH] = "10";
+            _form[DataTableModelBinder.CHECK_COLUMN] = "true";
+            _form[DataTableModelBinder.SAVE_AS] = "false";
+            _form[DataTableModelBinder.COLUMN_NAMES] = "['Name00', 'Name01']";
             /* ================================================================
              * actual per column data processed starts here
              * ================================================================
@@ -114,14 +115,14 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             _form["columns[1][search][value]"] = "SEARCH_00";
             _form["columns[2][search][value]"] = "SEARCH_01";
 
-            _form["search[value]"] = "global search value";
+            _form[DataTableModelBinder.SEARCH_VALUE] = "global search value";
             _form["search[regex]"] = "false";
         }
 
         [Fact]
-        public void BindModel_VisibleCheckboxColumn_MapsFormCollectionToModel()
+        public void BindModel_WithExpectedFormValues_MapsFormCollectionToModel()
         {
-            FakeHttpPostVisibleCheckColumn();
+            FakeHttpPost();
 
             _table = _binder.BindModel(_controllerContext, _modelBindingContext) as Table;
             Assert.NotNull(_table);
@@ -130,7 +131,8 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Assert.Equal<int>(0, _table.Start);
             Assert.Equal<int>(10, _table.Length);
             Assert.Equal<bool>(true, _table.CheckboxColumn);
-            Assert.Equal<bool>(true, _table.SaveAs);
+            Assert.Equal<bool>(false, _table.SaveAs);
+            Assert.Equal<string[]>(new string[] {"Name00", "Name01"}, _table.ColumnNames);
             Assert.Equal<string>("global search value", _table.Search.Value);
 
             Column data0 = _table.Columns.ElementAt(0);
@@ -156,6 +158,18 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             Assert.Equal<string>("SEARCH_00", data0.Search.Value);
             Assert.Equal<string>("SEARCH_01", data1.Search.Value);
+        }
+
+        [Fact]
+        public void BindModel_WithEmptyColumnNames_MapsFormCollectionToModel()
+        {
+            FakeHttpPost();
+            // initial HTTP request does **NOT** include column names
+            _form.Remove(DataTableModelBinder.COLUMN_NAMES);
+
+            _table = _binder.BindModel(_controllerContext, _modelBindingContext) as Table;
+
+            Assert.Null(_table.ColumnNames);
         }
     }
 }

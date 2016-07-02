@@ -11,7 +11,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         int RecordsFiltered { get; set; }
         List<List<object>> Data { get; set; }
         bool SaveAs { get; set; }
-        string[] Headers { get; set; }
+        string[] ColumnNames { get; set; }
 
         void SetColumns<T>() where T : class, IIdentifiable;
         void ExecuteRequest<T>(IEnumerable<T> entities) where T : class, IIdentifiable;

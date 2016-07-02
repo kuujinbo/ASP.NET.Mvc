@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {
@@ -15,6 +16,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
          * ================================================================ */
         public const string CHECK_COLUMN = "checkColumn";
         public const string SAVE_AS = "saveAs";
+        public const string COLUMN_NAMES = "columnNames";
         /* ===================================================================
          * everything from here => jQuery DataTables API
          * ================================================================ */
@@ -42,8 +44,6 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             var draw = Convert.ToInt32(request[DRAW]);
             var start = Convert.ToInt32(request[START]);
             var length = Convert.ToInt32(request[LENGTH]);
-            var checkColumn = Convert.ToBoolean(request[CHECK_COLUMN]);
-            var saveAs = Convert.ToBoolean(request[SAVE_AS]);
 
             /* ===============================================================
              * jQuery DataTables regex **NOT** implemented - there's a reason 
@@ -96,7 +96,6 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                         // jQuery DataTables POST is 1 behind when checkbox
                         // column is hidden
                         Value = request[string.Format(COLUMNS_SEARCH_VALUE, i)]
-                        // Value = request[string.Format(COLUMNS_SEARCH_VALUE, (checkColumn ? i : i - 1))]
                     } : null
                 });
             }
@@ -106,11 +105,14 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                 Draw = draw,
                 Start = start,
                 Length = length,
-                CheckboxColumn = checkColumn,
-                SaveAs = saveAs,
                 Search = search,
                 SortOrders = order,
-                Columns = columns
+                Columns = columns,
+                CheckboxColumn = Convert.ToBoolean(request[CHECK_COLUMN]),
+                SaveAs = Convert.ToBoolean(request[SAVE_AS]),
+                ColumnNames = !string.IsNullOrWhiteSpace(request[COLUMN_NAMES]) 
+                                ? JsonConvert.DeserializeObject<string[]>(request[COLUMN_NAMES])
+                                : null
             };
         }
     }

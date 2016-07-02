@@ -336,5 +336,26 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Assert.Equal<int>(dataUrl.Count(x => x == '/'), 1);
             Assert.EndsWith("}", json);
         }
+
+        [Fact]
+        public void GetJavaScriptConfig_WhenSaveAsTrue_AddsColumnNames()
+        {
+            var table = new Table()
+            {
+                SaveAs = true,
+                DataUrl = "/"
+            };
+            table.SetColumns<TestModel>();
+
+            var json = table.GetJavaScriptConfig();
+
+            Assert.Contains(DataTableModelBinder.COLUMN_NAMES, json);
+            Assert.Equal(5, table.ColumnNames.Length);
+            Assert.Contains(table.ColumnNames[0], json);
+            Assert.Contains(table.ColumnNames[1], json);
+            Assert.Contains(table.ColumnNames[2], json);
+            Assert.Contains(table.ColumnNames[3], json);
+            Assert.Contains(table.ColumnNames[4], json);
+        }
     }
 }

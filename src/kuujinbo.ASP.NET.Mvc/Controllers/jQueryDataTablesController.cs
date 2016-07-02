@@ -16,7 +16,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         private static ICollection<TestModel> _data;
 
         /* ====================================================================
-         * setup DataTable instance on first HTTP request
+         * setup DataTable instance on initial HTTP request
          * ====================================================================
          */
         public ActionResult Index()
