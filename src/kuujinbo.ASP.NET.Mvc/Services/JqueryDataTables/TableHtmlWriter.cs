@@ -62,16 +62,17 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         {
             // first column checkbox, so we start at 1 instead of 0
             var i = 1;
+            var thFormat = "<th data-is-searchable='{0}'>";
             s.AppendLine("<th></th>");
 
             foreach (var c in Columns)
             {
+                s.AppendFormat(thFormat,
+                    c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty
+                );
+
                 if (c.Type == typeof(bool) || c.Type == typeof(bool?))
                 {
-                    s.AppendFormat("<th data-is-searchable='{0}' data-type='{1}'>",
-                        c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
-                        c.Type
-                    );
                     // NOTE: MS hard-codes bool ToString(): 'True' and 'False'
                     s.AppendFormat(@"
 <select name='select' class='form-control input-sm' data-column-number='{0}'>
@@ -79,7 +80,6 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
     <option value='true'>{1}</option>
     <option value='false'>{2}</option>
 </select></th>",
-
                         i,
                         TableSettings.Settings.BoolTrue,
                         TableSettings.Settings.BoolFalse
@@ -87,10 +87,6 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                 }
                 else if (c.Type != null && c.Type.IsEnum)
                 {
-                    s.AppendFormat("<th data-is-searchable='{0}' data-type='{1}'>",
-                        c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
-                        c.Type
-                    );
                     s.AppendFormat(@"
 <select name='select' class='form-control input-sm' data-column-number='{0}'>
 <option value='' selected='selected'></option>"
@@ -105,18 +101,14 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                 }
                 else
                 {
-                    s.AppendFormat("<th data-is-searchable='{0}' data-type='{1}'>",
-                        c.IsSearchable ? c.IsSearchable.ToString().ToLower() : string.Empty,
-                        c.Type
-                    );
                     s.AppendFormat(@"
 <input style='width:100% !important;display: block !important;' data-column-number='{0}'
 class='form-control input-sm' type='text' placeholder='Search' /></th>"
                     , i);
                 }
                 ++i;
-
             }
+
             s.AppendLine("<th style='white-space: nowrap;'>");
             s.Append("<span class='btn search-icons glyphicon glyphicon-search' title='Search'></span>");
             s.Append("<span class='btn search-icons glyphicon glyphicon-repeat' title='Clear Search and Reload'></span>");

@@ -174,14 +174,15 @@
                 configTable.drawAndGoToPage1();
             }
         },
-        saveAs: function(before, fail, always) {
+        saveAs: function (before, fail, always) {
             var params = configTable.getAjaxParams();
             params.saveAs = true;
-            params.columnNames = JSON.stringify(configTable.getConfigValues().columnNames);
+            var config = configTable.getConfigValues();
+            params.columnNames = JSON.stringify(config.columnNames);
 
             // return binary content via XHR => see ~/Scripts/jQueryAjax/
             $().downloadFile(
-                configTable.getConfigValues().dataUrl,
+                config.dataUrl,
                 params,
                 configTable.getXsrfToken(),
                 null,
