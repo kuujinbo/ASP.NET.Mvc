@@ -96,7 +96,21 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         public ActionResult Delete(IEnumerable<int> ids)
         {
             Thread.Sleep(760);
-            return new JsonNetResult(GetBatchUpdateResponseObject(ids));
+
+            var success = true;
+            foreach (var id in ids) success = success && Delete(id);
+
+            if (success)
+            {
+                return new JsonNetResult(GetBatchUpdateResponseObject(ids));
+            }
+            else
+            {
+                return new HttpStatusCodeResult(
+                    HttpStatusCode.BadRequest,
+                    "There was a problem deleting the record. Please try again."
+                );
+            }
         }
 
         private object GetBatchUpdateResponseObject(IEnumerable<int> ids)
@@ -145,17 +159,33 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         public ActionResult DeleteOne(int id)
         {
             Thread.Sleep(760);
-            //var toDelete = _data.SingleOrDefault(x => x.Id == id);
-            //if (toDelete != null)
-            //{
-            //    _data.Remove(toDelete);
-            //    return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
-            //}
 
-            return new HttpStatusCodeResult(
-                HttpStatusCode.BadRequest,
-                "There was a problem deleting the record. Please try again."
-            );
+            if (Delete(id))
+            {
+                return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
+            }
+            else
+            {
+                return new HttpStatusCodeResult(
+                    HttpStatusCode.BadRequest,
+                    "There was a problem deleting the record. Please try again."
+                );
+            }
+        }
+
+        private bool Delete(int id)
+        {
+            try
+            {
+                var toDelete = _data.SingleOrDefault(x => x.Id == id);
+                if (toDelete != null)
+                {
+                    _data.Remove(toDelete);
+                    return true;
+                }
+            }
+            catch { }
+            return false;
         }
     }
 }
