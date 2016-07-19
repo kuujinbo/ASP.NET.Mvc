@@ -21,7 +21,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json
             }
             else
             {
-                writer.WriteValue(RegexUtils.PascalCaseSplit(value.ToString()));
+                writer.WriteValue(EnumUtils.DisplayText(value));
             }
         }
     }

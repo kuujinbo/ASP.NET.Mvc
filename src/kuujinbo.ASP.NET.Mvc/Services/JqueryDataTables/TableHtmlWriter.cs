@@ -75,7 +75,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                 {
                     // NOTE: MS hard-codes bool ToString(): 'True' and 'False'
                     s.AppendFormat(@"
-<select name='select' class='form-control input-sm' data-column-number='{0}'>
+<select class='form-control input-sm' data-column-number='{0}'>
     <option value='' selected='selected'></option> 
     <option value='true'>{1}</option>
     <option value='false'>{2}</option>
@@ -88,13 +88,13 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                 else if (c.Type != null && c.Type.IsEnum)
                 {
                     s.AppendFormat(@"
-<select name='select' class='form-control input-sm' data-column-number='{0}'>
+<select class='form-control input-sm' data-column-number='{0}'>
 <option value='' selected='selected'></option>"
                     , i);
                     foreach (var e in Enum.GetValues(c.Type))
                     {
                         s.AppendFormat("<option value='{0}'>{1}</option>\n",
-                            e, RegexUtils.PascalCaseSplit(e.ToString())
+                            e, EnumUtils.DisplayText(e)
                         );
                     }
                     s.Append("</select></th>");
