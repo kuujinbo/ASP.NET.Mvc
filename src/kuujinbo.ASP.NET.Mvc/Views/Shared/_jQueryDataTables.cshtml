@@ -18,8 +18,9 @@
 
 @section scripts
 {
-    <script type='text/javascript'>
-        var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
-    </script>
-    @Scripts.Render("~/bundles/jQueryDataTables")
+@Html.Raw(@Model.WriteScripts())
+<script type='text/javascript'>
+    var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
+</script>
+@Scripts.Render("~/bundles/jQueryDataTables")
 }

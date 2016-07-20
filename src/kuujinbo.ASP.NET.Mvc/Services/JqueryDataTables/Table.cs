@@ -24,6 +24,12 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         public bool SaveAs { get; set; }
         public string[] ColumnNames { get; set; }
 
+        /// <summary>
+        /// client-side table/app-specific customizations. caller responsible 
+        /// to pass correct path(s)
+        /// </summary>
+        public string[] ScriptPaths { get; set; }
+
         /* --------------------------------------------------------------------
          * Start && Length values depend on whether the HTTP request wants:
          * -- JSON data for web UI => left as-is from original request to

@@ -131,5 +131,21 @@ class='form-control input-sm' type='text' placeholder='Search' /></th>"
                 columnNames = ColumnNames
             });
         }
+
+        public string WriteScripts()
+        {
+            if (ScriptPaths != null)
+            {
+                var s = new StringBuilder();
+                var scripts = ScriptPaths.Length;
+                for (int i = 0; i < scripts; ++i) 
+                {
+                    s.AppendFormat("<script src='{0}'></script>\n", ScriptPaths[i]);
+                }
+                return s.ToString();
+            }
+
+            return string.Empty;
+        }
     }
 }

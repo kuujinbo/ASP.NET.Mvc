@@ -68,11 +68,32 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
                 DataUrl = url.Action("GetResults"),
                 InfoRowUrl = url.Action("Info"),
                 EditRowUrl = url.Action("Update"),
-                DeleteRowUrl = url.Action("DeleteOne")
+                DeleteRowUrl = url.Action("DeleteOne"),
+                ScriptPaths = new string[] { url.Content("~/scripts/jQueryDataTablesIndex.js") }
             };
             table.SetColumns<TestModel>();
 
             return table;
+        }
+
+        public ActionResult CustomOfficeFilter()
+        {
+            return new JsonNetResult(
+                _data.OrderBy(x => x.Office)
+                    .Select(x => x.Office)
+                    .Distinct()
+                    .ToArray()
+            );
+        }
+
+        public ActionResult CustomStartDateFilter()
+        {
+            var startDates = _data.OrderBy(x => x.StartDate)
+                .Select(x => x.StartDate.HasValue 
+                    ? x.StartDate.Value.ToString(TableSettings.Settings.DateFormat) : ""
+                ).ToArray();
+
+            return new JsonNetResult(startDates);
         }
 
         /* ====================================================================

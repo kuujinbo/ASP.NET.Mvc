@@ -159,7 +159,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             var select = xElement.XPathSelectElement("//select");
             var options = select.Nodes().OfType<XElement>();
 
-            Assert.Equal("select", select.Attribute("name").Value);
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("class").Value));
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("data-column-number").Value));
 
@@ -195,7 +194,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             var select = xElement.XPathSelectElement("//select");
             var options = select.Nodes().OfType<XElement>();
 
-            Assert.Equal("select", select.Attribute("name").Value);
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("class").Value));
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("data-column-number").Value));
 
@@ -237,7 +235,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             var select = xElement.XPathSelectElement("//select");
             var options = select.Nodes().OfType<XElement>();
-            Assert.Equal("select", select.Attribute("name").Value);
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("class").Value));
             Assert.False(string.IsNullOrWhiteSpace(select.Attribute("data-column-number").Value));
 
@@ -356,6 +353,45 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Assert.Contains(table.ColumnNames[2], json);
             Assert.Contains(table.ColumnNames[3], json);
             Assert.Contains(table.ColumnNames[4], json);
+        }
+
+
+        [Fact]
+        public void WriteScripts_WhenScriptPathsNull_ReturnsStringEmpty()
+        {
+            var table = new Table();
+
+            Assert.Equal(string.Empty, table.WriteScripts());
+        }
+
+        [Fact]
+        public void WriteScripts_WhenScriptPathsEmptyReturnsStringEmpty()
+        {
+            var table = new Table() {ScriptPaths = new string[] {} };
+
+            Assert.Equal(string.Empty, table.WriteScripts());
+        }
+
+        [Fact]
+        public void WriteScripts_WhenScriptPathsNotEmptyReturnsScriptTags()
+        {
+            var scripts = new string[] { "0.js", "1.js", "2.js", "3.js", "4.js"};
+            var table = new Table() { ScriptPaths = scripts };
+
+            var result = table.WriteScripts().Split(
+                new string[] {"\n"},
+                StringSplitOptions.RemoveEmptyEntries
+            );
+
+            Assert.Equal(scripts.Length, result.Length);
+            for (int i = 0; i < scripts.Length; ++i) 
+            {
+                var xElement = XElement.Parse(result[i]);
+
+                Assert.Equal("script", xElement.Name.ToString());
+                Assert.Equal(scripts[i], xElement.Attribute("src").Value);
+                Assert.Equal(string.Empty, xElement.Value);
+             }
         }
     }
 }

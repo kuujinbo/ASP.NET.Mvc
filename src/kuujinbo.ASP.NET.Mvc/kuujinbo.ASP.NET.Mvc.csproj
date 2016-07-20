@@ -211,6 +211,7 @@
     <Content Include="Scripts\jQueryAjax\FileSaver.js" />
     <Content Include="Scripts\jQueryAjax\jquery-binary.js" />
     <Content Include="Scripts\jQueryAjax\jquery.binarytransport.js" />
+    <Content Include="Scripts\jQueryDataTablesIndex.js" />
     <Content Include="Scripts\jQueryDataTable\configTable.js" />
     <Content Include="Scripts\jQueryDataTable\Table.js" />
     <None Include="Scripts\jQueryDataTable\Table.js.working" />
@@ -320,7 +321,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
