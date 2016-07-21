@@ -132,7 +132,7 @@ class='form-control input-sm' type='text' placeholder='Search' /></th>"
             });
         }
 
-        public string WriteScripts()
+        public string GetScriptElements()
         {
             if (ScriptPaths != null)
             {

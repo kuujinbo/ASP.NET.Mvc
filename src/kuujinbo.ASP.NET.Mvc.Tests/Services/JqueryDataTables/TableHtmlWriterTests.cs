@@ -357,28 +357,28 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
 
         [Fact]
-        public void WriteScripts_WhenScriptPathsNull_ReturnsStringEmpty()
+        public void GetScriptElements_WhenScriptPathsNull_ReturnsStringEmpty()
         {
             var table = new Table();
 
-            Assert.Equal(string.Empty, table.WriteScripts());
+            Assert.Equal(string.Empty, table.GetScriptElements());
         }
 
         [Fact]
-        public void WriteScripts_WhenScriptPathsEmptyReturnsStringEmpty()
+        public void GetScriptElements_WhenScriptPathsEmptyReturnsStringEmpty()
         {
             var table = new Table() {ScriptPaths = new string[] {} };
 
-            Assert.Equal(string.Empty, table.WriteScripts());
+            Assert.Equal(string.Empty, table.GetScriptElements());
         }
 
         [Fact]
-        public void WriteScripts_WhenScriptPathsNotEmptyReturnsScriptTags()
+        public void GetScriptElements_WhenScriptPathsNotEmptyReturnsScriptTags()
         {
             var scripts = new string[] { "0.js", "1.js", "2.js", "3.js", "4.js"};
             var table = new Table() { ScriptPaths = scripts };
 
-            var result = table.WriteScripts().Split(
+            var result = table.GetScriptElements().Split(
                 new string[] {"\n"},
                 StringSplitOptions.RemoveEmptyEntries
             );
