@@ -1,6 +1,6 @@
 ﻿/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/DataTables/jquery.dataTables.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/DataTables/dataTables.bootstrap.js" />
-/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-ui-1.11.4.js" />
+/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-ui-1.12.0.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryAjax/jquery-binary.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryDataTable/configTable.js" />
 'use strict';

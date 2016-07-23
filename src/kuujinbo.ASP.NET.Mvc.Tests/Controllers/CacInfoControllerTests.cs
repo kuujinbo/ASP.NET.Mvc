@@ -23,8 +23,8 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Controllers
 
         public CacInfoControllerTests()
         {
-            _httpContextBase = new Mock<HttpContextBase>(MockBehavior.Strict);
-            _httpRequestBase = new Mock<HttpRequestBase>(MockBehavior.Strict);
+            _httpContextBase = new Mock<HttpContextBase>();
+            _httpRequestBase = new Mock<HttpRequestBase>();
             _httpContextBase.Setup(x => x.Response)
                 .Returns(new Mock<HttpResponseBase>().Object);
             _httpContextBase.Setup(x => x.Request)

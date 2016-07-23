@@ -12,9 +12,8 @@ namespace kuujinbo.ASP.NET.Mvc
             bundles.Add(new StyleBundle("~/Content/css")
                 .Include("~/Content/bootstrap.css",
                 "~/Scripts/lib/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css",
-                // "~/Content/jquery.dataTables.css",
                 "~/Content/dataTables.bootstrap.css",
-                "~/Content/themes/base/all.css",
+                "~/Content/themes/base/jquery-ui.css",
                 "~/Content/octicons/octicons.css",
                 "~/Content/site.css"
             ));
@@ -43,7 +42,7 @@ namespace kuujinbo.ASP.NET.Mvc
             bundles.Add(new ScriptBundle("~/bundles/jQueryDataTables").Include(
                 "~/Scripts/lib/DataTables/jquery.dataTables.min.js",
                 "~/Scripts/lib/DataTables/dataTables.bootstrap.min.js",
-                "~/Scripts/lib/jquery-ui-1.11.4.min.js",
+                "~/Scripts/lib/jquery-ui-1.12.0.min.js",
                 "~/Scripts/jQueryAjax/FileSaver.js",
                 "~/Scripts/jQueryAjax/jquery.binarytransport.js",
                 "~/Scripts/jQueryAjax/jquery-binary.js",
