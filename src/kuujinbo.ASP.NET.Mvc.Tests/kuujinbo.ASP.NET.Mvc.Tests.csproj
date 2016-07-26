@@ -38,6 +38,7 @@
     <Compile Include="Controllers\CacInfoControllerTests.cs" />
     <Compile Include="Helpers\DateTimeExtensionsTests.cs" />
     <Compile Include="Helpers\EnumUtilsTests.cs" />
+    <Compile Include="Helpers\ExceptionExtensionsTests.cs" />
     <Compile Include="Services\DateFormatValidatorTests.cs" />
     <Compile Include="Services\JqueryDataTables\TableSettingsTests.cs" />
     <Compile Include="Services\JqueryDataTables\JqueryDataTablesResultTests.cs" />
@@ -97,6 +98,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -123,6 +126,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">

@@ -1,27 +1,22 @@
 ﻿using System;
 using kuujinbo.ASP.NET.Mvc.Services;
 using Xunit;
+using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services
 {
     public class DateFormatValidatorTests
     {
         [Fact]
-        public void Parse_InvalidFormat_ThrowsArgumentNullException()
+        public void TryParse_InvalidFormat_ReturnsFalse()
         {
-            var invalid = "invalid";
-            var exception = Assert.Throws<FormatException>(
-                () => DateFormatValidator.Parse(invalid)
-            );
-            var expected = string.Format(DateFormatValidator.BAD_DATE_FORMAT, invalid);
-
-            Assert.Equal<string>(expected, exception.Message);
+            Assert.False(DateFormatValidator.TryParse("invalid"));
         }
 
         [Fact]
-        public void Parse_ValidFormat_ThrowsArgumentNullException()
+        public void TryParse_ValidFormat_ReturnsTrue()
         {
-            Assert.True(DateFormatValidator.Parse("yyy-MM-dd"));
+            Assert.True(DateFormatValidator.TryParse(TableSettings.DEFAULT_DATE_FORMAT));
         }
     }
 }

@@ -3,7 +3,6 @@
     var _configValues = {};
     var _infoEditDelete = '';
     var _xsrf = '__RequestVerificationToken';
-    var _xhrErrorMsg = 'There was a problem processing your request. If the problem continues, please contact the application administrators';
 
     return {
         jqPartialViewModal: $('#datatable-partial-modal').dialog({
@@ -66,6 +65,9 @@
         },
         getInvalidUrlMessage: function() {
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
+        },
+        getXhrErrorMessage: function () {
+            return 'There was a problem processing your request. If the problem continues, please contact the application administrators';
         },
         getActionButtonSelector: function() { return '#data-table-actions button.btn'; },
         getSearchFilterSelector: function() { return 'th input[type=text], th select'; },
@@ -223,7 +225,10 @@
                 }
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                configTable.jqModalError(jqXHR.responseJSON || _xhrErrorMsg);
+                configTable.jqModalError(
+                    jqXHR.responseJSON
+                    || (jqXHR.status !== 500 ? jqXHR.statusText : configTable.getXhrErrorMessage())
+                );
             })
             .always(function() {
                 configTable.showSpin(element)
@@ -274,7 +279,7 @@
             }
             // and handle response errors
             var fail = function(msg) {
-                configTable.jqModalError(msg || _xhrErrorMsg);
+                configTable.jqModalError(msg || configTable.getXhrErrorMessage());
             }
 
             configTable.saveAs(before, fail, always);
