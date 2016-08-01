@@ -42,9 +42,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 
                 var data = JsonConvert.DeserializeObject<List<List<object>>>(json);
                 var f = new SimpleExcelFile().Create(data);
-                response.BinaryWrite(f);
-                // unit test fails with this call - research
-                // response.OutputStream.Write(f, 0, f.Length);
+                response.OutputStream.Write(f, 0, f.Length);
             }
             else
             {

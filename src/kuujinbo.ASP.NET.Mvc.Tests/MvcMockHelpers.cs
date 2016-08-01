@@ -31,7 +31,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
 
             context.Setup(ctx => ctx.Items).Returns(items.Object);
             context.Setup(ctx => ctx.Request).Returns(request.Object);
-            response.Setup(x => x.OutputStream).Returns(It.IsAny<Stream>);
             context.Setup(ctx => ctx.Response).Returns(response.Object);
             context.Setup(ctx => ctx.Session).Returns(session.Object);
             context.Setup(ctx => ctx.Server).Returns(server.Object);
@@ -40,6 +39,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
             identity.Setup(id => id.IsAuthenticated).Returns(true);
             identity.Setup(id => id.Name).Returns("username");
             context.Setup(ctx => ctx.Response.Cache).Returns(CreateCachePolicy());
+            context.Setup(ctx => ctx.Response.OutputStream).Returns(new MemoryStream());
             return context.Object;
         }
 
