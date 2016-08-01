@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace kuujinbo.ASP.NET.Mvc.Tests.Properties {
-    using System;
-    
-    
+namespace kuujinbo.ASP.NET.Mvc.Tests.Properties
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

@@ -1,4 +1,6 @@
-﻿/* ============================================================================
+﻿using kuujinbo.ASP.NET.Mvc.Services.Json;
+using Newtonsoft.Json;
+/* ============================================================================
  * convenience class to write JqueryDataTables results in following formats:
  * -- JSON      => XHR call for MVC view
  * -- binary    => excel file dump
@@ -8,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using kuujinbo.ASP.NET.Mvc.Services.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {

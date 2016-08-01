@@ -1,12 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using kuujinbo.ASP.NET.Mvc.Controllers;
+using kuujinbo.ASP.NET.Mvc.Services;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Autofac;
-using Autofac.Integration.Mvc;
-using kuujinbo.ASP.NET.Mvc.Controllers;
-using kuujinbo.ASP.NET.Mvc.Services;
 
 namespace kuujinbo.ASP.NET.Mvc
 {

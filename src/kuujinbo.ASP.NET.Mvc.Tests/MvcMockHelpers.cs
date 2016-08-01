@@ -1,4 +1,5 @@
-﻿/* ============================================================================
+﻿using Moq;
+/* ============================================================================
  * modified version of this:
  * http://www.hanselman.com/blog/ASPNETMVCSessionAtMix08TDDAndMvcMockHelpers.aspx
  * ========================================================================= */
@@ -11,7 +12,6 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests
 {

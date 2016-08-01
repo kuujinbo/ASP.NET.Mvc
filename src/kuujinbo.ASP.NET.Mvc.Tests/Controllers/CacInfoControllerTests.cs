@@ -1,9 +1,9 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Controllers;
+﻿using kuujinbo.ASP.NET.Mvc.Controllers;
 using kuujinbo.ASP.NET.Mvc.Services;
-using Xunit;
 using Moq;
+using System.Web;
+using System.Web.Mvc;
+using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Controllers
 {

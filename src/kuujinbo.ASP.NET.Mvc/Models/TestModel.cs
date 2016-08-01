@@ -1,5 +1,5 @@
-﻿using System;
-using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+﻿using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+using System;
 
 namespace kuujinbo.ASP.NET.Mvc.Models
 {

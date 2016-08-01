@@ -1,9 +1,9 @@
-﻿using System;
+﻿using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
 using Xunit;
 using Xunit.Abstractions;
 

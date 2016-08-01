@@ -1,11 +1,11 @@
-﻿/* =======================================================================
+﻿using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+using Newtonsoft.Json;
+/* =======================================================================
  * 'true' and 'false' are obviously not user friendly. use converter to 
  * **serialize** (display only) bool to more meaningful values
  * =======================================================================
  */
 using System;
-using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
-using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.Json
 {

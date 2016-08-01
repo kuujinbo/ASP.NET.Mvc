@@ -1,7 +1,6 @@
-﻿using System;
-using kuujinbo.ASP.NET.Mvc.Services;
-using Xunit;
+﻿using kuujinbo.ASP.NET.Mvc.Services;
 using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services
 {

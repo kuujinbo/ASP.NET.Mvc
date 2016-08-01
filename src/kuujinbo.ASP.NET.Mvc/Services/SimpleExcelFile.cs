@@ -1,4 +1,7 @@
-﻿/* ============================================================================
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+/* ============================================================================
  * __VERY__ simple Excel file dump using Open XML SDK
  * ============================================================================
  */
@@ -6,9 +9,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace kuujinbo.ASP.NET.Mvc.Services
 {
