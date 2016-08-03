@@ -14,7 +14,7 @@
     }],
     "References": [
         { "Path": "./testHelpers/mock-ajax.js" },
-        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-2.2.4.js" },
+        { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-3.1.0.min.js" },
         { "Path": "./testHelpers/jasmine-jquery.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/angular.js" },
         { "Path": "./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/angular-mocks.js" }
