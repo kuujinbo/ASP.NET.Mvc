@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Xml.Linq;
-using kuujinbo.ASP.NET.Mvc.Helpers;
+﻿using kuujinbo.ASP.NET.Mvc.Helpers;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Helpers

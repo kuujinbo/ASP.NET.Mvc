@@ -38,6 +38,7 @@
     <Compile Include="Controllers\CacInfoControllerTests.cs" />
     <Compile Include="Helpers\DateTimeExtensionsTests.cs" />
     <Compile Include="Helpers\EnumUtilsTests.cs" />
+    <Compile Include="Helpers\ExceptionExtensionsTests.cs" />
     <Compile Include="Services\DateFormatValidatorTests.cs" />
     <Compile Include="Services\JqueryDataTables\TableSettingsTests.cs" />
     <Compile Include="Services\JqueryDataTables\JqueryDataTablesResultTests.cs" />

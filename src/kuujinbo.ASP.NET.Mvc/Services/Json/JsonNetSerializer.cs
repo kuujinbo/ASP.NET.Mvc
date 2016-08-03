@@ -14,19 +14,15 @@ namespace kuujinbo.ASP.NET.Mvc.Services.Json
 
         private static readonly IsoDateTimeConverter _isoDateTimeConverter;
         private static readonly WriteBoolConverter _writeBoolConverter;
-        private static readonly string _appDateFormat;
         static JsonNetSerializer()
         {
             _writeBoolConverter = new WriteBoolConverter(
                 TableSettings.Settings.BoolTrue,
-                TableSettings.Settings.BoolFalse 
+                TableSettings.Settings.BoolFalse
             );
-
-            _appDateFormat = TableSettings.Settings.DateFormat;
-            DateFormatValidator.Parse(_appDateFormat);
             _isoDateTimeConverter = new IsoDateTimeConverter()
             {
-                DateTimeFormat = _appDateFormat
+                DateTimeFormat = TableSettings.Settings.DateFormat
             };
         }
 

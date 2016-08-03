@@ -397,6 +397,31 @@ describe('configTable', function()  {
             expect(configTable.showSpin).toHaveBeenCalledWith(element);
         });
 
+        it('should call jqModalError with default error message when promise is rejected and 500 error', function () {
+            spyOn(configTable, 'jqModalError');
+            var jqXHR = { status: 500 };
+            configTable.sendXhr(element, '/', {});
+
+            deferred.reject(jqXHR);
+
+            // ajax.fail()
+            expect(configTable.jqModalError.calls.count()).toEqual(1);
+            expect(configTable.jqModalError).toHaveBeenCalledWith(configTable.getXhrErrorMessage());
+        });
+
+        it('should call jqModalError with XMLHttpRequest.statusText when promise is rejected and not 500 error', function () {
+            spyOn(configTable, 'jqModalError');
+            var statusText = 'a custom HTTP response message';
+            var jqXHR = { status: 400, statusText: statusText };
+            configTable.sendXhr(element, '/', {});
+
+            deferred.reject(jqXHR);
+
+            // ajax.fail()
+            expect(configTable.jqModalError.calls.count()).toEqual(1);
+            expect(configTable.jqModalError).toHaveBeenCalledWith(statusText);
+        });
+
         it('should call jqModalOK, showSpin, and draw when promise is fulfilled for bulk action', function()  {
             spyOn(configTable, 'jqModalOK');
             spyOn(configTable, 'draw');

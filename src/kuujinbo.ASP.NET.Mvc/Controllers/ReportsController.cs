@@ -1,7 +1,7 @@
-﻿using System;
+﻿using kuujinbo.ASP.NET.Mvc.Services;
+using System;
 using System.Data;
 using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Services;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
 {

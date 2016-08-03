@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace kuujinbo.ASP.NET.Mvc.Helpers
 {

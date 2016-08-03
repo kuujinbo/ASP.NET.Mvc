@@ -4,8 +4,8 @@
  * ===========================================================================
  */
 using System;
-using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
 namespace kuujinbo.ASP.NET.Mvc.Services
 {

@@ -1,4 +1,6 @@
-﻿/* ============================================================================
+﻿using kuujinbo.ASP.NET.Mvc.Helpers;
+using kuujinbo.ASP.NET.Mvc.Services.Json;
+/* ============================================================================
  * HTML/JavaScript written to Partial View:
  * ~/views/shared/_jQueryDataTables.cshtml
  * ============================================================================
@@ -6,8 +8,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using kuujinbo.ASP.NET.Mvc.Helpers;
-using kuujinbo.ASP.NET.Mvc.Services.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {

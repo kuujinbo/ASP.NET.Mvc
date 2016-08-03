@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Web;
 using System.Web.Optimization;
 
 namespace kuujinbo.ASP.NET.Mvc

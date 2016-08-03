@@ -37,8 +37,10 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                     ? settings[BOOL_TRUE] : DEFAULT_TRUE;
                 Settings.BoolFalse = !string.IsNullOrWhiteSpace(settings[BOOL_FALSE])
                     ? settings[BOOL_FALSE] : DEFAULT_FALSE;
-                Settings.DateFormat = !string.IsNullOrWhiteSpace(settings[DATE_FORMAT])
-                    ? settings[DATE_FORMAT] : DEFAULT_DATE_FORMAT;
+                Settings.DateFormat =
+                    !string.IsNullOrWhiteSpace(settings[DATE_FORMAT])
+                    && DateFormatValidator.TryParse(settings[DATE_FORMAT])
+                        ? settings[DATE_FORMAT] : DEFAULT_DATE_FORMAT;
                 int maxSaveAs;
                 Settings.MaxSaveAs = int.TryParse(settings[MAX_SAVE_AS], out maxSaveAs)
                     ? maxSaveAs : DEFAULT_MAX_SAVE_AS;

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using kuujinbo.ASP.NET.Mvc.Services;
+using Moq;
+using System;
 using System.Collections.Specialized;
 using System.Web;
-using kuujinbo.ASP.NET.Mvc.Services;
 using Xunit;
-using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services
 {

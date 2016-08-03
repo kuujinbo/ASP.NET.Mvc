@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Moq;
+using Newtonsoft.Json;
 using Xunit;
-using Moq;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.Json.Tests
 {

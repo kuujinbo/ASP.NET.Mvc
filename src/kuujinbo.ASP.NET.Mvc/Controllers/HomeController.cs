@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.IO;
-using System.Web.Mvc;
 using System.Threading;
+using System.Web.Mvc;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
 {

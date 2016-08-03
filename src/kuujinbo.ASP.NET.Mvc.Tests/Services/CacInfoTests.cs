@@ -1,6 +1,6 @@
-﻿using System;
-using kuujinbo.ASP.NET.Mvc.Services;
+﻿using kuujinbo.ASP.NET.Mvc.Services;
 using kuujinbo.ASP.NET.Mvc.Tests.Properties;
+using System;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services
