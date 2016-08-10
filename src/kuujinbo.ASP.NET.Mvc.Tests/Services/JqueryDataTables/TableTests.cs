@@ -65,7 +65,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Salary = new TestSalary() { Amount = 80000 },
             Hobbies = new List<TestHobby>() 
             { 
-                new TestHobby() { Name = "1"}, new TestHobby() { Name = "2"}
+                new TestHobby() { Name = "2"},
+                new TestHobby(), 
+                new TestHobby() { Name = "  "}
             }
         };
         public static readonly TestModel RAMOS = new TestModel
@@ -77,7 +79,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Salary = new TestSalary() { Amount = 70000 },
             Hobbies = new List<TestHobby>() 
             { 
-                new TestHobby() { Name = "3"}, new TestHobby() { Name = "4"}
+                new TestHobby() { Name = "4"}, new TestHobby() { Name = "3"}
             }
         };
         public static readonly TestModel GREER = new TestModel
@@ -124,7 +126,10 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 Assert.Equal(entities[i].StartDate, data[i][3]);
                 Assert.Equal(entities[i].Salary.Amount, data[i][4]);
                 Assert.Equal(
-                    string.Join(", ", entities[i].Hobbies.Select(x => x.Name)),
+                    string.Join(", ", entities[i].Hobbies
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Name))
+                        .OrderBy(x => x.Name)
+                        .Select(x => x.Name)),
                     data[i][5]
                 );
             }

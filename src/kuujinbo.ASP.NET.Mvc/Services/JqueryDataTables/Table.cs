@@ -87,7 +87,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         ///     -- GetThead()
         ///     -- GetTfoot()
         /// </remarks>
-        public void SetColumns<T>() where T : class, IIdentifiable
+        public void SetColumns<T>() where T : class
         {
             // tuple used instead of creating a custom class
             IEnumerable<Tuple<PropertyInfo, DataTableColumnAttribute>> typeInfo = GetTypeInfo(typeof(T));
@@ -280,28 +280,25 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             object data = null;
             if (cache[propertyInfo.Name].TryGetValue(entity.Id, out data)) return data;
 
-            var propertyIsCollection =
-                propertyInfo.PropertyType != typeof(string)
-                && propertyInfo.PropertyType.GetInterfaces().Any(
-                   x => x.IsGenericType
-                        && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)
-                );
-
-            if (propertyIsCollection)
+            if (IsColection(propertyInfo.PropertyType))
             {
                 var fields = columnAttribute.FieldAccessor.Split('.');
-                var value = propertyInfo.GetValue(entity) as IEnumerable<object>;
-                var items = new List<string>();
-                foreach (var item in value)
+                var collection = propertyInfo.GetValue(entity) as IEnumerable<object>;
+                var csvValues = new SortedSet<string>();
+                foreach (var element in collection)
                 {
-                    var target = item;
+                    var value = element;
                     foreach (var field in fields)
                     {
-                        target = item.GetType().GetProperty(field).GetValue(item);
+                        value = element.GetType().GetProperty(field).GetValue(element);
                     }
-                    items.Add(target.ToString());
+                    if (value != null)
+                    {
+                        var stringVal = value.ToString(); 
+                        if (!string.IsNullOrWhiteSpace(stringVal)) csvValues.Add(stringVal);
+                    }
                 }
-                data = string.Join(", ", items.OrderBy(val => val));
+                data = string.Join(", ", csvValues);
             }
             else if (columnAttribute.FieldAccessor != null)
             {
@@ -320,16 +317,19 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
             }
             else
             {
-                var value = propertyInfo.GetValue(entity);
-                if (value != null)
-                {
-                    var type = propertyInfo.PropertyType;
-                    data = value;
-                }
+                data = propertyInfo.GetValue(entity);
             }
             cache[propertyInfo.Name][entity.Id] = data;
 
             return data;
+        }
+
+        private bool IsColection(Type type)
+        {
+            return type != typeof(string) && type.GetInterfaces().Any(
+                x => x.IsGenericType
+                && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+            );
         }
     }
 }

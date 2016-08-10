@@ -13,7 +13,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         bool SaveAs { get; set; }
         string[] ColumnNames { get; set; }
 
-        void SetColumns<T>() where T : class, IIdentifiable;
+        void SetColumns<T>() where T : class;
         void ExecuteRequest<T>(IEnumerable<T> entities) where T : class, IIdentifiable;
     }
 }
