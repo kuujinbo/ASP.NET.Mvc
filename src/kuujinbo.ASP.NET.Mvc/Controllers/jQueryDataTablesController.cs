@@ -1,13 +1,12 @@
-﻿using kuujinbo.ASP.NET.Mvc.Models;
-using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
-using kuujinbo.ASP.NET.Mvc.Services.Json;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Models;
+using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+using kuujinbo.ASP.NET.Mvc.Services.Json;
+using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
 {
@@ -15,10 +14,11 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
     {
         private static ICollection<TestModel> _data;
 
-        /* ====================================================================
-         * setup DataTable instance on initial HTTP request
-         * ====================================================================
-         */
+/* ############################################################################
+ * setup DataTable instance for initial HTTP request
+ * ############################################################################
+ */
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.Title = "jQuery DataTables Test";
@@ -30,15 +30,6 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
                 _data = JsonConvert.DeserializeObject<ICollection<TestModel>>(
                     System.IO.File.ReadAllText(dataFile)
                 );
-                //int i = 0;
-                //foreach (var d in _data)
-                //{
-                //    d.Salaried = ++i % 3 == 0 ? true : false;
-                //}
-                //System.IO.File.WriteAllText(
-                //    Server.MapPath("~/app_data/dataTablesObjectData00.json"),
-                //    JsonConvert.SerializeObject(_data, Formatting.Indented)
-                //);
             }
             return View("_jQueryDataTables", table);
         }
@@ -76,48 +67,38 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
             return table;
         }
 
-        public ActionResult CustomOfficeFilter()
-        {
-            return new JsonNetResult(
-                _data.OrderBy(x => x.Office)
-                    .Select(x => x.Office)
-                    .Distinct()
-                    .ToArray()
-            );
-        }
-
-        public ActionResult CustomStartDateFilter()
-        {
-            var startDates = _data.OrderBy(x => x.StartDate)
-                .Select(x => x.StartDate.HasValue 
-                    ? x.StartDate.Value.ToString(TableSettings.Settings.DateFormat) : ""
-                ).ToArray();
-
-            return new JsonNetResult(startDates);
-        }
-
+/* ############################################################################
+ * all subsequent HTTP requests are done via XHR to update DataTable
+ * ############################################################################
+*/
         /* ====================================================================
-         * all subsequent HTTP requests are done via XHR to update DataTable
+         * back-end database query via Entity Framework
          * ====================================================================
          */
         [HttpPost]
         public ActionResult GetResults(Table table)
         {
-            Thread.Sleep(760);
-
             table.ExecuteRequest<TestModel>(_data);
             return new JqueryDataTablesResult(table);
         }
 
         /* ====================================================================
-         * 'bulk' actions
+         * hyperlink action button(s)
          * ====================================================================
          */
-        [HttpAjaxPost]
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        /* ====================================================================
+         * 'bulk' action button(s); UI checked rows
+         * ====================================================================
+         */
+        [HttpPost]
         public ActionResult Delete(IEnumerable<int> ids)
         {
-            Thread.Sleep(760);
-
             var success = true;
             foreach (var id in ids) success = success && Delete(id);
 
@@ -134,6 +115,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
             }
         }
 
+        // simple JSON result for all 'bulk' actions
         private object GetBatchUpdateResponseObject(IEnumerable<int> ids)
         {
             return string.Format(
@@ -143,44 +125,27 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         }
 
         /* ====================================================================
-         * hyperlink action buttons
+         * per-row actions; three icon links at far right of each record's row
          * ====================================================================
          */
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Create(int id)
-        {
-            Thread.Sleep(760);
-            return new JsonNetResult(
-                string.Format(
-                    "XHR POST sent to [{0}] succeeded!", Request.Url
-                )
-            );
-        }
-
-        /* ====================================================================
-         * per-row/record actions
-         * ====================================================================
-         */
+        // details view
+        [HttpGet]
         public ActionResult Info(int id)
         {
             return View(id);
         }
 
+        // update view
+        [HttpGet]
         public ActionResult Update(int id)
         {
             return View(id);
         }
 
-        [HttpAjaxPost]
+        // delete
+        [HttpPost]
         public ActionResult DeleteOne(int id)
         {
-            Thread.Sleep(760);
-
             if (Delete(id))
             {
                 return new JsonNetResult(GetBatchUpdateResponseObject(new int[] { id }));
@@ -194,6 +159,25 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
             }
         }
 
+        /* ====================================================================
+         * actions that support pre-view custom JavaScript:
+         * JqueryDataTables.Table.ScriptPaths
+         * ====================================================================
+         */
+        public ActionResult CustomOfficeFilter()
+        {
+            return new JsonNetResult(
+                _data.OrderBy(x => x.Office)
+                    .Select(x => x.Office)
+                    .Distinct()
+                    .ToArray()
+            );
+        }
+
+        /* ====================================================================
+         * controller helper methods
+         * ====================================================================
+         */
         private bool Delete(int id)
         {
             try
