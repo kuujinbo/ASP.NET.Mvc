@@ -87,7 +87,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             Id = 20,
             Name = "Greer, Bradley",
             Office = "London",
-            Salary = new TestSalary() { Amount = 50000 },
+            Salary = new TestSalary() { Amount = 40000 },
             Hobbies = new List<TestHobby>() 
             { 
                 new TestHobby() { Name = "5"}
@@ -285,6 +285,46 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             ActAndAssert(GREER, RAMOS);
         }
+
+        [Fact]
+        public void GetData_MultiSearchCriteriaNoSortCriteria_ReturnsSearchMatchInOriginalOrder()
+        {
+            _table = new Table()
+            {
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>()
+            };
+            _table.SetColumns<TestModel>();
+            // search 'Salary' property
+            _table.Columns.ElementAt(3).Search = new Search() { Value = "40000|80000", ColumnIndex = 3 };
+
+            ActAndAssert(SATO, GREER);
+        }
+
+        [Fact]
+        public void GetData_MultiSearchAndSortCriteria_ReturnsSearchMatchInRequestedOrder()
+        {
+            _table = new Table()
+            {
+                Draw = 1,
+                Start = 0,
+                Length = 10,
+                SortOrders = new List<SortOrder>() 
+                { 
+                    // sort ascending => 'Salary' property
+                    new SortOrder { ColumnIndex = 3, Direction = DataTableModelBinder.ORDER_ASC },
+                }
+
+            };
+            _table.SetColumns<TestModel>();
+            // search 'Salary' property
+            _table.Columns.ElementAt(3).Search = new Search() { Value = "40000|80000", ColumnIndex = 3 };
+
+            ActAndAssert(GREER, SATO);
+        }
+
 
 
         [Fact]

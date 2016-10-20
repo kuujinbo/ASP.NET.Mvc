@@ -13,7 +13,13 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         {
             ActionButtons = new List<ActionButton>();
             SortOrders = new List<SortOrder>();
+            SearchTermSeparator = '|';
         }
+
+        /// <summary>
+        /// separator character that allows multi-value search terms 
+        /// </summary>
+        public char SearchTermSeparator { get; set; } 
 
         public int Draw { get; set; }
         public int RecordsTotal { get; set; }
@@ -157,17 +163,37 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                     && !string.IsNullOrWhiteSpace(column.Search.Value))
                 {
                     var tuple = typeInfo.ElementAt(column.Search.ColumnIndex);
-                    entities = entities.Where(e =>
+                    // multi-value search term 
+                    var inElements = column.Search.Value.Split(
+                        new char[] { SearchTermSeparator },
+                        StringSplitOptions.RemoveEmptyEntries
+                    );
+
+                    // multi-value search terms are the **EXCEPTION**, not rule
+                    if (inElements.Length <= 1)
                     {
-                        var value = GetPropertyValue(
-                            e, tuple.Item1, tuple.Item2, cache
-                        );
-                        return value != null
-                            && value.ToString().IndexOf(
-                                column.Search.Value,
-                                StringComparison.OrdinalIgnoreCase
-                            ) != -1;
-                    });
+                        entities = entities.Where(e =>
+                        {
+                            var value = GetPropertyValue(
+                                e, tuple.Item1, tuple.Item2, cache
+                            );
+                            return value != null
+                                && value.ToString().IndexOf(
+                                    column.Search.Value,
+                                    StringComparison.OrdinalIgnoreCase
+                                ) != -1;
+                        });
+                    }
+                    else
+                    {   // multi-value filters: each element **EXACT** match
+                        entities = entities.Where(e =>
+                        {
+                            var value = GetPropertyValue(
+                                e, tuple.Item1, tuple.Item2, cache
+                            );
+                            return value != null && inElements.Contains(value.ToString());
+                        });
+                    }
                 }
             }
 
