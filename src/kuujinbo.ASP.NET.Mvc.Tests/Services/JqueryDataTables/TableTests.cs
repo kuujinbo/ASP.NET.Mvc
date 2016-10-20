@@ -53,7 +53,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         IEnumerable<TestModel> _modelData;
         public TableTests()
         {
-            _modelData = new List<TestModel>() { SATO, RAMOS, GREER };
+            _modelData = new List<TestModel>() { SATO, RAMOS, GREER, KELLY, ITO };
         }
 
         public static readonly TestModel SATO = new TestModel
@@ -93,6 +93,26 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 new TestHobby() { Name = "5"}
             }
         };
+        public static readonly TestModel KELLY = new TestModel
+        {
+            Id = 4,
+            Name = "Kelly, Cedric",
+            Office = "Edinburgh",
+            Salary = new TestSalary() { Amount = 76000 },
+            Hobbies = new List<TestHobby>() 
+            { 
+                new TestHobby() { Name = "8"}
+            }
+        };
+        public static readonly TestModel ITO = new TestModel
+        {
+            Id = 30,
+            Name = "Itou, Shou",
+            // explicitly cover null property check in ExecuteRequest()
+            Office = null,
+            Salary = new TestSalary() { Amount = 100000 },
+
+        };
 
         /// <summary>
         /// act and assert for current [Fact]
@@ -112,14 +132,13 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             var data = _table.Data;
 
             // assert
+            Assert.Equal(totalRecords, _table.RecordsTotal);
+            Assert.IsType<List<List<object>>>(data);
+            // recordsFiltered != recordsTotal when searching
+            Assert.Equal(entityCount, _table.RecordsFiltered);
+
             for (int i = 0; i < entityCount; ++i)
             {
-                Assert.Equal(totalRecords, _table.RecordsTotal);
-                // recordsFiltered != recordsTotal when searching
-                Assert.Equal(entityCount, _table.RecordsFiltered);
-
-                Assert.IsType<List<List<object>>>(data);
-
                 Assert.Equal(entities[i].Id, data[i][0]);
                 Assert.Equal(entities[i].Name, data[i][1]);
                 Assert.Equal(entities[i].Office, data[i][2]);
@@ -186,7 +205,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             };
             _table.SetColumns<TestModel>();
 
-            ActAndAssert(SATO, RAMOS, GREER);
+            ActAndAssert(SATO, RAMOS, GREER, KELLY, ITO);
         }
 
         [Fact]
@@ -205,7 +224,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             };
             _table.SetColumns<TestModel>();
 
-            ActAndAssert(GREER, RAMOS, SATO);
+            ActAndAssert(GREER, ITO, KELLY, RAMOS, SATO);
         }
 
         [Fact]
@@ -225,7 +244,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             };
             _table.SetColumns<TestModel>();
 
-            ActAndAssert(SATO, RAMOS, GREER);
+            ActAndAssert(SATO, RAMOS, KELLY, ITO, GREER);
         }
 
         [Fact]
@@ -242,7 +261,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             _table.Columns.ElementAt(1).Search = new Search() { Value = "  ", ColumnIndex = 1 };
             _table.Columns.ElementAt(2).Search = new Search() { ColumnIndex = 2 };
 
-            ActAndAssert(SATO, RAMOS, GREER);
+            ActAndAssert(SATO, RAMOS, GREER, KELLY, ITO);
         }
 
         [Fact]
@@ -297,10 +316,10 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
                 SortOrders = new List<SortOrder>()
             };
             _table.SetColumns<TestModel>();
-            // search 'Salary' property
-            _table.Columns.ElementAt(3).Search = new Search() { Value = "40000|80000", ColumnIndex = 3 };
+            // search 'Office' property => case-insensitive
+            _table.Columns.ElementAt(1).Search = new Search() { Value = "EdiNBUrgh|LoNDon", ColumnIndex = 1 };
 
-            ActAndAssert(SATO, GREER);
+            ActAndAssert(RAMOS, GREER, KELLY);
         }
 
         [Fact]
@@ -324,8 +343,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 
             ActAndAssert(GREER, SATO);
         }
-
-
 
         [Fact]
         public void GetData_SaveAsTrue_ReturnsDataWithColumnNamesDefaultStartDefaultLength()

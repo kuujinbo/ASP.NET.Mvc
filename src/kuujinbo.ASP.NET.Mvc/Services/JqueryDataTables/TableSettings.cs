@@ -6,6 +6,8 @@ using System.Configuration;
 
 namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
 {
+    // no reason to test ConfigurationManager.AppSettings
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class TableSettings
     {
         // singleton

@@ -169,7 +169,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                         StringSplitOptions.RemoveEmptyEntries
                     );
 
-                    // multi-value search terms are the **EXCEPTION**, not rule
+                    // single-value search terms are the norm
                     if (inElements.Length <= 1)
                     {
                         entities = entities.Where(e =>
@@ -185,13 +185,15 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                         });
                     }
                     else
-                    {   // multi-value filters: each element **EXACT** match
+                    {   // make multi-value search terms case-insensitive
+                        for (int j = 0; j < inElements.Length; j++) inElements[j] = inElements[j].ToLower();
                         entities = entities.Where(e =>
                         {
                             var value = GetPropertyValue(
                                 e, tuple.Item1, tuple.Item2, cache
                             );
-                            return value != null && inElements.Contains(value.ToString());
+                            // but each element is **EXACT** term match
+                            return value != null && inElements.Contains(value.ToString().ToLower());
                         });
                     }
                 }
