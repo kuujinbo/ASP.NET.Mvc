@@ -160,18 +160,55 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         }
 
         /* ====================================================================
-         * actions that support pre-view custom JavaScript:
+         * actions that support per-view custom JavaScript:
          * JqueryDataTables.Table.ScriptPaths
          * ====================================================================
          */
+        [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0)]
+        public ActionResult CustomPositionFilter()
+        {
+            try
+            {
+                //System.Threading.Thread.Sleep(500);
+                // throw new Exception("ERROR");
+                return new JsonNetResult(
+                    _data.OrderBy(x => x.Position)
+                        .Select(x => x.Position)
+                        .Distinct()
+                        .ToArray()
+                );
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(
+                    HttpStatusCode.BadRequest,
+                    "There was a problem looking up Offices. Please try again."
+                );
+            }
+        }
+
+        [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult CustomOfficeFilter()
         {
-            return new JsonNetResult(
-                _data.OrderBy(x => x.Office)
-                    .Select(x => x.Office)
-                    .Distinct()
-                    .ToArray()
-            );
+            try
+            {
+                // throw new Exception("ERROR");
+                return new JsonNetResult(
+                    _data.OrderBy(x => x.Office)
+                        .Select(x => x.Office)
+                        .Distinct()
+                        .ToArray()
+                );
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(
+                    HttpStatusCode.BadRequest,
+                    "There was a problem looking up Offices. Please try again."
+                );
+            }
         }
 
         /* ====================================================================

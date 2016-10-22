@@ -172,6 +172,7 @@
     <Compile Include="Services\JqueryDataTables\ViewAllPath.cs" />
     <Compile Include="Services\ClientCertificate.cs" />
     <Compile Include="Services\SimpleExcelFile.cs" />
+    <Content Include="Content\jQueryDataTables.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />

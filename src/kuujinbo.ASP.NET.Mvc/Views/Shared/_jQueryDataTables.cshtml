@@ -1,7 +1,7 @@
 ﻿@model  kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables.Table
- @*modal for 'batch' action buttons *@
+@*modal for 'batch' action buttons *@
 <div id='datatable-success-error-modal'></div>
- @*modal for partial view action buttons *@
+@*modal for partial view action buttons *@
 <div id='datatable-partial-modal'></div>
 
 <h2>@ViewBag.Title</h2>
@@ -18,9 +18,9 @@
 
 @section scripts
 {
-@Html.Raw(@Model.GetScriptElements())
-<script type='text/javascript'>
-    var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
-</script>
-@Scripts.Render("~/bundles/jQueryDataTables")
+    <script type='text/javascript'>
+        var configValues = @Html.Raw(@Model.GetJavaScriptConfig());
+    </script>
+    @Scripts.Render("~/bundles/jQueryDataTables")
+    @Html.Raw(@Model.GetScriptElements())
 }

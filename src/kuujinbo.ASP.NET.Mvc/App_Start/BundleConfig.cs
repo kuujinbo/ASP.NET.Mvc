@@ -14,7 +14,8 @@ namespace kuujinbo.ASP.NET.Mvc
                 "~/Content/dataTables.bootstrap.css",
                 "~/Content/themes/base/jquery-ui.css",
                 "~/Content/octicons/octicons.css",
-                "~/Content/site.css"
+                "~/Content/site.css",
+                "~/Content/jQueryDataTables.css"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery")

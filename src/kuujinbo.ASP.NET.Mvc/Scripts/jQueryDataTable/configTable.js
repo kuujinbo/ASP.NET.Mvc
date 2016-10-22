@@ -2,7 +2,10 @@
     var _table;
     var _configValues = {};
     var _infoEditDelete = '';
+    // MS @Html.AntiForgeryToken() **IGNORES** HTML4 naming standards:
+    // https://www.w3.org/TR/html4/types.html#type-id ('name' token)
     var _xsrf = '__RequestVerificationToken';
+    var _idNo = 0;
 
     return {
         jqPartialViewModal: $('#datatable-partial-modal').dialog({
@@ -66,7 +69,7 @@
         getInvalidUrlMessage: function() {
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
         },
-        getXhrErrorMessage: function () {
+        getXhrErrorMessage: function() {
             return 'There was a problem processing your request. If the problem continues, please contact the application administrators';
         },
         getActionButtonSelector: function() { return '#data-table-actions button.btn'; },
@@ -163,9 +166,9 @@
                     ++searchCount;
                     configTable.setSearchColumn(elements[i]);
                 }
-                /* explicitly clear individual input, or will save last value 
-                   if user backspaces.
-                */
+                    /* explicitly clear individual input, or will save last value 
+                       if user backspaces.
+                    */
                 else {
                     elements[i].value = '';
                     configTable.setSearchColumn(elements[i]);
@@ -176,7 +179,7 @@
                 configTable.drawAndGoToPage1();
             }
         },
-        saveAs: function (before, fail, always) {
+        saveAs: function(before, fail, always) {
             var params = configTable.getAjaxParams();
             params.saveAs = true;
             var config = configTable.getConfigValues();
@@ -324,7 +327,7 @@
                     }
                 }
             }
-            // info, edit, & delete links
+                // info, edit, & delete links
             else if (action) {
                 var row = target.parentNode.parentNode;
                 if (action === configTable.getDeleteAction()) {
@@ -401,6 +404,144 @@
             var tableId = configTable.getTableId();
 
             configTable.addListeners(tableId);
+        },
+        /* -----------------------------------------------------------------
+            UI widget for multi-value column search terms
+        ----------------------------------------------------------------- */
+        getNewWidgetId: function() {
+            return 'columnFilterId__' + _idNo++;
+        },
+        // store widget id => multiple widgets in DOM
+        getWidgetIdName: function() { return '_widgetIdName_'; },
+        // store selectable filter values
+        getFilterStringArrayName: function() { return '_filterStringArrayName_'; },
+        // store column search term input field selector
+        getFilterSelectorName: function() { return '_filterSelectorName_'; },
+
+        addColumnFilterInput: function(selector, stringArray) {
+            var el = document.querySelector(selector);
+            if (el !== null
+                && stringArray !== null
+                && Array.isArray(stringArray)
+                && stringArray.length > 0) {
+                // non-typed languages are great - create properties on the fly
+                var newId = configTable.getNewWidgetId();
+                el[configTable.getWidgetIdName()] = newId;
+                el[configTable.getFilterStringArrayName()] = stringArray;
+                el[configTable.getFilterSelectorName()] = selector;
+
+                el.addEventListener('focus', configTable.enterColumnFilterInput, false);
+                el.addEventListener('blur', configTable.leaveColumnFilterInput, false);
+            }
+        },
+        enterColumnFilterInput: function(e) {
+            var target = e.target;
+            var multiValueId = target[configTable.getWidgetIdName()];
+
+            if (document.querySelector('#' + multiValueId) !== null) return;
+
+            var values = target[configTable.getFilterStringArrayName()];
+            var inner = '';
+            values.forEach(function(item) {
+                inner += "<div class='columnFilterBox'>" + item + '</div>';
+            });
+
+            inner += "<input type='button' style='margin:8px;' value='Select' />";
+            var div = document.createElement('div');
+            div.innerHTML = inner;
+
+            var selectList = div.children;
+            for (var i = 0; i < selectList.length - 1; i++) {
+                selectList[i].addEventListener(
+                    'click', configTable.swapSelectedColumnFilterValue, false
+                );
+            }
+            // can't use negative index
+            selectList[selectList.length - 1].addEventListener(
+                'click', configTable.columnFilterButtonClick, false
+            );
+            selectList[selectList.length - 1][configTable.getFilterSelectorName()] =
+                target[configTable.getFilterSelectorName()];
+
+            configTable.styleMultiFilterWidget(div, target.getBoundingClientRect());
+            div.id = multiValueId;
+            document.body.appendChild(div);
+        },
+        leaveColumnFilterInput: function(e) {
+            var multiValueId = e.target[configTable.getWidgetIdName()];
+            var focusEl = document.activeElement;
+            console.log(focusEl.tagName);
+
+            if (// DOM standard: https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement
+                focusEl === null
+                // as usual IE is **NON-COMPLIANT**
+                || focusEl.id === multiValueId
+                || focusEl.parentElement.id === multiValueId && focusEl.type !== 'button'
+                || focusEl.tagName.toLowerCase() === 'body'
+                )
+            { return; }
+
+            configTable.cleanUpWidget(multiValueId);
+        },
+        cleanUpWidget: function(selector) {
+            console.log('in cleanup');
+            // clean up all references
+            var el = document.querySelector('#' + selector);
+            if (el !== null) {
+                el[configTable.getWidgetIdName()] = null;
+                el[configTable.getFilterStringArrayName()] = null;
+                el[configTable.getFilterSelectorName()] = null;
+
+                var selectList = el.children;
+                // compliant browsers handle when element removed from DOM 
+                // below; IE doesn't qualify as standards compliant....
+                for (var i = 0; i < selectList.length - 1; i++) {
+                    selectList[i].removeEventListener(
+                        'click', configTable.swapSelectedColumnFilterValue, false
+                    );
+                }
+                selectList[selectList.length - 1].removeEventListener(
+                    'click', configTable.columnFilterButtonClick, false
+                );
+
+                el.parentNode.removeChild(el);
+            }
+        },
+        columnFilterButtonClick: function(e) {
+            var target = e.target;
+            var filterField = document.querySelector(target[configTable.getFilterSelectorName()]);
+            if (filterField !== null) {
+                var el = document.querySelector('#' + filterField[configTable.getWidgetIdName()]);
+                if (el !== null) {
+                    var values = [];
+                    var childEls = el.children;
+                    for (var i = 0; i < childEls.length - 1; i++) {
+                        if (childEls[i].classList.contains('dataTableSelected')) {
+                            values.push(childEls[i].textContent);
+                        }
+                    }
+                    if (values.length > 0) {
+                        filterField.value = values.join('|');
+                    }
+                }
+
+                configTable.cleanUpWidget(filterField[configTable.getWidgetIdName()]);
+            }
+        },
+        styleMultiFilterWidget: function(div, rect) {
+            div.style.position = 'absolute';
+            div.style.zIndex = '88888888';
+            div.style.backgroundColor = '#fff';
+            div.style.border = '1px ridge #eaeaea';
+            div.style.fontSize = '0.8em';
+            div.style.margin = '0';
+            div.style.padding = '0';
+            div.style.left = rect.left + 'px';
+            div.style.top = rect.bottom + 'px';
+            div.style.minWidth = rect.width + 'px';
+        },
+        swapSelectedColumnFilterValue: function(e) {
+            e.target.classList.toggle('dataTableSelected');
         }
     }
 }();
