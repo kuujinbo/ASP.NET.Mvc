@@ -432,10 +432,11 @@
             var multiValueId = target[configTable.getWidgetIdName()];
 
             var w = document.querySelector('#' + multiValueId);
-            if (document.querySelector('#' + multiValueId) !== null) {
-                w.style.display = 'block';
-                return;
-            }
+            // if (document.querySelector('#' + multiValueId) !== null) w.style.display = 'block';
+            if (document.querySelector('#' + multiValueId) !== null) return;
+
+
+            console.log('creating the widget');
 
             var values = target[configTable.getFilterStringArrayName()];
             var inner = '';
@@ -443,7 +444,7 @@
                 inner += "<div class='columnFilterBox'>" + item + '</div>';
             });
 
-            inner += "<input type='button' style='margin:8px;' value='Add / Clear' />";
+            inner += "<input type='button' style='margin:8px;' value='Select' />";
             var div = document.createElement('div');
             div.innerHTML = inner;
 
@@ -462,10 +463,6 @@
 
             configTable.styleMultiFilterWidget(div, target.getBoundingClientRect());
             div.id = multiValueId;
-            if (values.length > 10) {
-                div.style.overflowY = 'scroll';
-                div.style.height = '200px';
-            };
             target.parentNode.appendChild(div);
 
             div.addEventListener('blur', configTable.leaveColumnFilterInput, false);
@@ -473,10 +470,7 @@
         leaveColumnFilterInput: function(e) {
             // https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement
             // https://developer.mozilla.org/en-US/docs/Web/Events/blur
-            // IE10 >= sets document.activeElement to element focus moves to,
-            // which allows fine-grained show/hide of the filter widget. all
-            // other browsers set document.activeElement to document.body, and
-            // must manually close the widget
+            // IE10 >= sets document.activeElement to element focus moves to
             if (_ieGTE10) {
                 var focusEl = document.activeElement;
                 var target = e.target;
@@ -491,22 +485,47 @@
                 if (multiValueId || focusEl !== null) {
                     if (focusEl.id === multiValueId
                         || focusEl.parentElement.id === multiValueId && focusEl.type !== 'button'
-                        || focusEl.parentElement.id === multiValueId && focusEl.type === 'button'
-                    ) { return; }
+                        )
+                    { return; }
                     configTable.cleanUpWidget(multiValueId);
                 }
             }
+
+            // Firefox and Chrome set to document.body
+            //if (focusEl !== null && focusEl.tagName.toLowerCase() === 'body') {
+            //    return;
+            //}
+
+
         },
         cleanUpWidget: function(selector) {
+            // clean up all references
             var el = document.querySelector('#' + selector);
             if (el !== null) {
-                var divChildren = el.children;
-                for (var i = 0; i < divChildren.length; ++i) divChildren[i].classList.remove('dataTableSelected');
-                el.style.display = 'none';
-                return;
+
+                //el.style.display = 'none';
+                //return;
+
+                el[configTable.getWidgetIdName()] = null;
+                el[configTable.getFilterStringArrayName()] = null;
+                el[configTable.getFilterSelectorName()] = null;
+
+                var selectList = el.children;
+                // compliant browsers handle when element removed from DOM 
+                // below; IE doesn't qualify as standards compliant....
+                for (var i = 0; i < selectList.length - 1; i++) {
+                    selectList[i].removeEventListener(
+                        'click', configTable.swapSelectedColumnFilterValue, false
+                    );
+                }
+                selectList[selectList.length - 1].removeEventListener(
+                    'click', configTable.columnFilterButtonClick, false
+                );
+
+                el.parentNode.removeChild(el);
             }
         },
-        columnFilterButtonClick: function (e) {
+        columnFilterButtonClick: function(e) {
             var target = e.target;
             var filterField = document.querySelector(target[configTable.getFilterSelectorName()]);
             if (filterField !== null) {
@@ -519,7 +538,9 @@
                             values.push(childEls[i].textContent);
                         }
                     }
-                    filterField.value =  values.length > 0 ? values.join('|') : '';
+                    if (values.length > 0) {
+                        filterField.value = values.join('|');
+                    }
                 }
 
                 configTable.cleanUpWidget(filterField[configTable.getWidgetIdName()]);
