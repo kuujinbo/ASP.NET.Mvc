@@ -463,8 +463,9 @@
             configTable.styleMultiFilterWidget(div, target.getBoundingClientRect());
             div.id = multiValueId;
             if (values.length > 10) {
-                div.style.overflowY = 'scroll';
-                div.style.height = '200px';
+                div.style.overflowY = 'auto';
+                div.style.outline = 'none'; // focus => overflow-y 
+                div.style.height = '276px';
             };
             target.parentNode.appendChild(div);
 
