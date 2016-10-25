@@ -2,6 +2,11 @@
 /*.dataTable > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     padding: 4px !important;
 }*/
+.ui-dialog { z-index: 99999999 !important;}
+.pointer {cursor: pointer; }
+.blue {color: #4285f4; }
+.green {color: green; }
+.red {color: red; }
 td.center { text-align:center; }
 div.dataTables_wrapper div.dataTables_length label,
 div.dataTables_length { display: inline;}
@@ -73,7 +78,16 @@ th span.btn {
     border:1px solid #d8d8d8;
 }
 
-.columnFilterBox {
+.valuePicker {
+    position: absolute;
+    z-index: 88888888;
+    background-color: #fff;
+    border: 1px ridge #eaeaea;
+    font-size: 0.8em;
+    margin: 0;
+    padding: 0;
+}
+.valuePickerItem {
     width: 100%;
     padding: 4px 8px;
     box-shadow:

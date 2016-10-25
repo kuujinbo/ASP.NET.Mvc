@@ -128,7 +128,8 @@ class='form-control input-sm' type='text' placeholder='Search' /></th>"
                 deleteRowUrl = DeleteRowUrl,
                 editRowUrl = EditRowUrl,
                 showCheckboxColumn = ShowCheckboxColumn(),
-                columnNames = ColumnNames
+                columnNames = ColumnNames,
+                multiValueFilterSeparator = MultiValueFilterSeparator
             });
         }
 

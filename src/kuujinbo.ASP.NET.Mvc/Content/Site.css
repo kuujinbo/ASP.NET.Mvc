@@ -54,12 +54,6 @@ textarea {
     max-width: 280px;
 }
 
-.ui-dialog { z-index: 99999999 !important;}
-.pointer {cursor: pointer; }
-.blue {color: #4285f4; }
-.green {color: green; }
-.red {color: red; }
-
 .spin-infinite {
     -webkit-animation: spin-infinite .8s infinite linear;
     -moz-animation: spin-infinite 1s infinite linear;

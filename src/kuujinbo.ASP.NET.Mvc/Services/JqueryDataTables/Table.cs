@@ -13,13 +13,13 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         {
             ActionButtons = new List<ActionButton>();
             SortOrders = new List<SortOrder>();
-            SearchTermSeparator = '|';
+            MultiValueFilterSeparator = '|';
         }
 
         /// <summary>
-        /// separator character that allows multi-value search terms 
+        /// separator character; exact match multi-value filter(s)
         /// </summary>
-        public char SearchTermSeparator { get; set; } 
+        public char MultiValueFilterSeparator { get; set; } 
 
         public int Draw { get; set; }
         public int RecordsTotal { get; set; }
@@ -165,7 +165,7 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                     var tuple = typeInfo.ElementAt(column.Search.ColumnIndex);
                     // multi-value search term 
                     var inElements = column.Search.Value.Split(
-                        new char[] { SearchTermSeparator },
+                        new char[] { MultiValueFilterSeparator },
                         StringSplitOptions.RemoveEmptyEntries
                     );
 

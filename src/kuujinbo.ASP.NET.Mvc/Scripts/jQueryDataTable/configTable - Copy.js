@@ -1,4 +1,4 @@
-﻿var configTable = function() {
+﻿var configTable = function () {
     var _table;
     var _configValues = {};
     var _infoEditDelete = '';
@@ -15,7 +15,7 @@
             // DO NOT SET THE FOLLOWING; IE's focus() is HORRIBLY broken
             //, modal: true
         }),
-        jqPartialViewModalOK: function(html, title) {
+        jqPartialViewModalOK: function (html, title) {
             configTable.jqPartialViewModal.html(html)
                 .dialog({ title: title })
                 .dialog('open');
@@ -23,7 +23,7 @@
         jqBulkActionModal: $('#datatable-success-error-modal').dialog({
             autoOpen: false, height: 276, width: 476
         }),
-        jqModalOK: function(msg) {
+        jqModalOK: function (msg) {
             var success = 'Request Processed Successfully';
             var html = "<h1><span class='glyphicon glyphicon-ok green'></span></h1>"
                 + '<div>' + (msg || success) + '</div>';
@@ -31,7 +31,7 @@
                 .dialog({ title: success })
                 .dialog('open');
         },
-        jqModalError: function(msg) {
+        jqModalError: function (msg) {
             var err = 'Error Processing Your Request'
             var html = "<h1><span class='glyphicon glyphicon-flag red'></span></h1>"
                 + '<div>' + (msg || err) + '</div>';
@@ -42,47 +42,47 @@
         /* -----------------------------------------------------------------
             selectors and DOM elements
         ----------------------------------------------------------------- */
-        getTableId: function() { return '#jquery-data-table'; },
-        getSaveAsId: function() { return '#datatable-save-as'; },
-        getCheckAllId: function() { return '#datatable-check-all'; },
-        setTable: function(table) {
+        getTableId: function () { return '#jquery-data-table'; },
+        getSaveAsId: function () { return '#datatable-save-as'; },
+        getCheckAllId: function () { return '#datatable-check-all'; },
+        setTable: function (table) {
             _table = table;
             return this;
         },
-        getConfigValues: function() { return _configValues; },
-        setConfigValues: function(config) {
+        getConfigValues: function () { return _configValues; },
+        setConfigValues: function (config) {
             _configValues = config;
             // reset InfoEditDelete link cache
             _infoEditDelete = null;
             return this;
         },
-        getLoadingElement: function() {
+        getLoadingElement: function () {
             return "<h1 class='dataTablesLoading'>"
                 + 'Loading data'
                 + " <span class='glyphicon glyphicon-refresh spin-infinite' />"
                 + '</h1>';
         },
-        getSpinClasses: function() {
+        getSpinClasses: function () {
             return 'glyphicon glyphicon-refresh spin-infinite'.split(/\s+/);
         },
-        getSelectedRowClass: function() {
+        getSelectedRowClass: function () {
             return 'datatable-select-row';
         },
-        getInvalidUrlMessage: function() {
+        getInvalidUrlMessage: function () {
             return '<h2>Invalid URL</h2>Please contact the application administrators.';
         },
-        getXhrErrorMessage: function() {
+        getXhrErrorMessage: function () {
             return 'There was a problem processing your request. If the problem continues, please contact the application administrators';
         },
-        getActionButtonSelector: function() { return '#data-table-actions button.btn'; },
-        getSearchFilterSelector: function() { return 'th input[type=text], th select'; },
-        getCheckedSelector: function() { return 'input[type="checkbox"]:checked'; },
-        getUncheckedSelector: function() { return 'input[type="checkbox"]:not(:checked)'; },
+        getActionButtonSelector: function () { return '#data-table-actions button.btn'; },
+        getSearchFilterSelector: function () { return 'th input[type=text], th select'; },
+        getCheckedSelector: function () { return 'input[type="checkbox"]:checked'; },
+        getUncheckedSelector: function () { return 'input[type="checkbox"]:not(:checked)'; },
 
-        getInfoAction: function() { return 'info'; },
-        getEditAction: function() { return 'edit'; },
-        getDeleteAction: function() { return 'delete'; },
-        getInfoEditDelete: function() {
+        getInfoAction: function () { return 'info'; },
+        getEditAction: function () { return 'edit'; },
+        getDeleteAction: function () { return 'delete'; },
+        getInfoEditDelete: function () {
             // calculate once then cache value
             if (_infoEditDelete) return _infoEditDelete;
 
@@ -110,35 +110,35 @@
         /* -----------------------------------------------------------------
             DataTables wrappers
         ----------------------------------------------------------------- */
-        getAjaxParams: function() { return _table.ajax.params(); },
-        clearSearchColumns: function() { _table.search('').columns().search(''); },
-        draw: function() { _table.draw(false); },
-        drawAndGoToPage1: function() { _table.draw(); },
-        getRowData: function(row) {
+        getAjaxParams: function () { return _table.ajax.params(); },
+        clearSearchColumns: function () { _table.search('').columns().search(''); },
+        draw: function () { _table.draw(false); },
+        drawAndGoToPage1: function () { _table.draw(); },
+        getRowData: function (row) {
             return _table.row(row).data()[0];
         },
-        reload: function() { _table.ajax.reload(); },
-        setSearchColumn: function(element) {
+        reload: function () { _table.ajax.reload(); },
+        setSearchColumn: function (element) {
             _table.column(element.dataset.columnNumber).search(element.value);
         },
         /* -----------------------------------------------------------------
             helper functions
         ----------------------------------------------------------------- */
-        clearCheckAll: function() {
+        clearCheckAll: function () {
             // ajax call only updates tbody
             var n = document.querySelector(configTable.getCheckAllId());
             if (n !== null) n.checked = false;
         },
-        clearSearchFilters: function() {
+        clearSearchFilters: function () {
             var selector = configTable.getSearchFilterSelector()
             var elements = document.querySelectorAll(selector);
             for (i = 0; i < elements.length; ++i) elements[i].value = '';
 
             configTable.clearSearchColumns();
         },
-        getSelectedRowIds: function() {
+        getSelectedRowIds: function () {
             var selectedIds = [];
-            _table.rows().every(function(rowIdx, tableLoop, rowLoop) {
+            _table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var cb = this.node()
                     .querySelector(configTable.getCheckedSelector());
 
@@ -146,7 +146,7 @@
             });
             return selectedIds;
         },
-        getXsrfToken: function() {
+        getXsrfToken: function () {
             var token = document.querySelector('input[name=' + _xsrf + ']');
             if (token !== null) {
                 var xsrf = {};
@@ -155,10 +155,10 @@
             }
             return null;
         },
-        redirect: function(url) {
+        redirect: function (url) {
             document.location.href = url;
         },
-        search: function() {
+        search: function () {
             var searchCount = 0;
             var elements = document.querySelectorAll(configTable.getSearchFilterSelector());
             for (i = 0; i < elements.length; ++i) {
@@ -181,7 +181,7 @@
                 configTable.drawAndGoToPage1();
             }
         },
-        saveAs: function(before, fail, always) {
+        saveAs: function (before, fail, always) {
             var params = configTable.getAjaxParams();
             params.saveAs = true;
             var config = configTable.getConfigValues();
@@ -196,19 +196,19 @@
                 before, fail, always
             );
         },
-        showSpin: function(element, doAdd) {
+        showSpin: function (element, doAdd) {
             var span = element.querySelector('span');
             if (span) {
                 if (doAdd) {
                     configTable.getSpinClasses()
-                        .forEach(function(i) { span.classList.add(i) });
+                        .forEach(function (i) { span.classList.add(i) });
                 } else {
                     configTable.getSpinClasses()
-                        .forEach(function(i) { span.classList.remove(i) });
+                        .forEach(function (i) { span.classList.remove(i) });
                 }
             }
         },
-        sendXhr: function(element, url, requestData, requestType) {
+        sendXhr: function (element, url, requestData, requestType) {
             configTable.showSpin(element, true);
             $.ajax({
                 url: url,
@@ -216,7 +216,7 @@
                 data: requestData, // bulk action button => record Id array
                 type: requestType || 'POST'
             })
-            .done(function(data, textStatus, jqXHR) {
+            .done(function (data, textStatus, jqXHR) {
                 if (requestData !== null) {
                     configTable.draw();
                     configTable.jqModalOK(data);
@@ -227,20 +227,20 @@
                     );
                 }
             })
-            .fail(function(jqXHR, textStatus, errorThrown) {
+            .fail(function (jqXHR, textStatus, errorThrown) {
                 configTable.jqModalError(
                     jqXHR.responseJSON
                     || (jqXHR.status !== 500 ? jqXHR.statusText : configTable.getXhrErrorMessage())
                 );
             })
-            .always(function() {
+            .always(function () {
                 configTable.showSpin(element)
             });
         },
         /* -----------------------------------------------------------------
             event listeners
         ----------------------------------------------------------------- */
-        clickActionButton: function(e) {
+        clickActionButton: function (e) {
             e.preventDefault();
             var target = e.target;
             var url = target.dataset.url;
@@ -269,23 +269,23 @@
             return false;
         },
         // send binary content via XHR
-        clickSaveAs: function(e) {
+        clickSaveAs: function (e) {
             // explicitly show/hide 'processing' element; since XHR is not
             // sent via jQuery DataTables API, need to handle this here
             var before, always;
             var n = document.querySelector('div.dataTables_processing');
             if (n !== null) {
-                before = function() { n.style.display = 'block'; }
-                always = function() { n.style.display = 'none'; }
+                before = function () { n.style.display = 'block'; }
+                always = function () { n.style.display = 'none'; }
             }
             // and handle response errors
-            var fail = function(msg) {
+            var fail = function (msg) {
                 configTable.jqModalError(msg || configTable.getXhrErrorMessage());
             }
 
             configTable.saveAs(before, fail, always);
         },
-        clickCheckAll: function(e) {
+        clickCheckAll: function (e) {
             if (e.target.checked) {
                 var elements = document.querySelectorAll(
                     configTable.getUncheckedSelector()
@@ -299,7 +299,7 @@
             }
         },
         // search icons in <span>
-        clickSearch: function(e) {
+        clickSearch: function (e) {
             var target = e.target;
             if (target.classList.contains('glyphicon-search')) {
                 configTable.search();
@@ -308,7 +308,7 @@
                 configTable.reload();
             }
         },
-        clickTable: function(e) {
+        clickTable: function (e) {
             var target = e.target;
             var action = target.dataset.action;
 
@@ -349,12 +349,12 @@
             }
         },
         // search when ENTER key pressed in <input> text
-        keyupSearch: function(e) {
+        keyupSearch: function (e) {
             if (e.key === 'Enter') configTable.search();
         },
-        addListeners: function(tableId) {
+        addListeners: function (tableId) {
             // allow ENTER in search boxes, otherwise possible form submit
-            document.onkeypress = function(e) {
+            document.onkeypress = function (e) {
                 if ((e.which === 13) && (e.target.type === 'text')) { return false; }
             };
 
@@ -393,7 +393,7 @@
                     .addEventListener('keyup', configTable.keyupSearch, false);
             }
         },
-        init: function() {
+        init: function () {
             var tableId = configTable.getTableId();
 
             configTable.addListeners(tableId);
@@ -401,17 +401,17 @@
         /* -----------------------------------------------------------------
             UI widget for multi-value column search terms
         ----------------------------------------------------------------- */
-        getNewWidgetId: function() {
+        getNewWidgetId: function () {
             return 'columnFilterId__' + _idNo++;
         },
         // store widget id => multiple widgets in DOM
-        getWidgetIdName: function() { return '_widgetIdName_'; },
+        getWidgetIdName: function () { return '_widgetIdName_'; },
         // store selectable filter values
-        getFilterStringArrayName: function() { return '_filterStringArrayName_'; },
+        getFilterStringArrayName: function () { return '_filterStringArrayName_'; },
         // store column search term input field selector
-        getFilterSelectorName: function() { return '_filterSelectorName_'; },
+        getFilterSelectorName: function () { return '_filterSelectorName_'; },
 
-        addColumnFilterInput: function(selector, stringArray) {
+        addColumnFilterInput: function (selector, stringArray) {
             var el = document.querySelector(selector);
             if (el !== null
                 && stringArray !== null
@@ -427,7 +427,7 @@
                 el.addEventListener('blur', configTable.leaveColumnFilterInput, false);
             }
         },
-        enterColumnFilterInput: function(e) {
+        enterColumnFilterInput: function (e) {
             var target = e.target;
             var multiValueId = target[configTable.getWidgetIdName()];
 
@@ -440,8 +440,8 @@
 
             var values = target[configTable.getFilterStringArrayName()];
             var inner = '';
-            values.forEach(function(item) {
-                inner += "<div class='columnFilterBox'>" + item + '</div>';
+            values.forEach(function (item) {
+                inner += "<div class='valuePickerItem'>" + item + '</div>';
             });
 
             inner += "<input type='button' style='margin:8px;' value='Select' />";
@@ -467,7 +467,7 @@
 
             div.addEventListener('blur', configTable.leaveColumnFilterInput, false);
         },
-        leaveColumnFilterInput: function(e) {
+        leaveColumnFilterInput: function (e) {
             // https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement
             // https://developer.mozilla.org/en-US/docs/Web/Events/blur
             // IE10 >= sets document.activeElement to element focus moves to
@@ -498,7 +498,7 @@
 
 
         },
-        cleanUpWidget: function(selector) {
+        cleanUpWidget: function (selector) {
             // clean up all references
             var el = document.querySelector('#' + selector);
             if (el !== null) {
@@ -525,7 +525,7 @@
                 el.parentNode.removeChild(el);
             }
         },
-        columnFilterButtonClick: function(e) {
+        columnFilterButtonClick: function (e) {
             var target = e.target;
             var filterField = document.querySelector(target[configTable.getFilterSelectorName()]);
             if (filterField !== null) {
@@ -546,7 +546,7 @@
                 configTable.cleanUpWidget(filterField[configTable.getWidgetIdName()]);
             }
         },
-        styleMultiFilterWidget: function(div, rect) {
+        styleMultiFilterWidget: function (div, rect) {
             if (_ieGTE10) div.tabIndex = '0';
             div.style.position = 'absolute';
             div.style.zIndex = '88888888';
@@ -557,7 +557,7 @@
             div.style.padding = '0';
             div.style.minWidth = rect.width + 'px';
         },
-        swapSelectedColumnFilterValue: function(e) {
+        swapSelectedColumnFilterValue: function (e) {
             e.target.classList.toggle('dataTableSelected');
             if (_ieGTE10) e.target.parentNode.focus();
         }

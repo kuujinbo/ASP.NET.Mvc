@@ -6,7 +6,7 @@
     // https://www.w3.org/TR/html4/types.html#type-id ('name' token)
     var _xsrf = '__RequestVerificationToken';
     var _idNo = 0;
-    // per column mutli-value filter
+    // per column multi-value search terms
     var _ieGTE10 = document.documentMode >= 10;
 
     return {
@@ -399,79 +399,79 @@
             configTable.addListeners(tableId);
         },
         /* -----------------------------------------------------------------
-            UI widget for multi-value column search terms
+            UI widget for per-column multi-value filter
         ----------------------------------------------------------------- */
-        getNewWidgetId: function() {
-            return 'columnFilterId__' + _idNo++;
+        getValuePickerId: function() {
+            return 'valuePickerId__' + _idNo++;
         },
         // store widget id => multiple widgets in DOM
-        getWidgetIdName: function() { return '_widgetIdName_'; },
-        // store selectable filter values
-        getFilterStringArrayName: function() { return '_filterStringArrayName_'; },
+        getValuePickerIdName: function() { return '_valuePickerIdName:_'; },
         // store column search term input field selector
-        getFilterSelectorName: function() { return '_filterSelectorName_'; },
+        getSearchInputSelectorName: function() { return '_searchInputSelectorName_'; },
 
-        addColumnFilterInput: function(selector, stringArray) {
-            var el = document.querySelector(selector);
-            if (el !== null
+        addValuePicker: function(selector, stringArray) {
+            var searchInput = document.querySelector(selector);
+            if (searchInput !== null
                 && stringArray !== null
                 && Array.isArray(stringArray)
                 && stringArray.length > 0) {
                 // non-typed languages are great - create properties on the fly
-                var newId = configTable.getNewWidgetId();
-                el[configTable.getWidgetIdName()] = newId;
-                el[configTable.getFilterStringArrayName()] = stringArray;
-                el[configTable.getFilterSelectorName()] = selector;
+                var newId = configTable.getValuePickerId();
+                searchInput[configTable.getValuePickerIdName()] = newId;
+                searchInput[configTable.getSearchInputSelectorName()] = selector;
 
-                el.addEventListener('focus', configTable.enterColumnFilterInput, false);
-                el.addEventListener('blur', configTable.leaveColumnFilterInput, false);
+                searchInput.addEventListener('focus', configTable.enterSearchInput, false);
+                searchInput.addEventListener('blur', configTable.leaveSearchInput, false);
+
+                // first 
+                var inner = '';
+                stringArray.forEach(function(item) {
+                    inner += "<div class='valuePickerItem'>" + item + '</div>';
+                });
+
+                inner += "<input type='button' style='margin:8px;' value='Add / Clear' />";
+                var div = document.createElement('div');
+                div.innerHTML = inner;
+
+                var selectList = div.children;
+                for (var i = 0; i < selectList.length - 1; i++) {
+                    selectList[i].addEventListener(
+                        'click', configTable.toggleValuePickerItem, false
+                    );
+                }
+                // can't use negative index
+                selectList[selectList.length - 1].addEventListener(
+                    'click', configTable.valuePickerButtonClick, false
+                );
+                selectList[selectList.length - 1][configTable.getSearchInputSelectorName()] =
+                    searchInput[configTable.getSearchInputSelectorName()];
+
+
+                if (_ieGTE10) div.tabIndex = '0';
+                div.id = newId;
+                div.classList.add('valuePicker');
+                div.style.minWidth = searchInput.getBoundingClientRect().width + 'px';
+                div.style.display = 'none';
+                if (stringArray.length > 10) {
+                    div.style.overflowY = 'auto';
+                    div.style.outline = 'none'; // focus => overflow-y 
+                    div.style.height = '276px';
+                };
+                searchInput.parentNode.appendChild(div);
+
+                div.addEventListener('blur', configTable.leaveSearchInput, false);
             }
         },
-        enterColumnFilterInput: function(e) {
+        enterSearchInput: function(e) {
             var target = e.target;
-            var multiValueId = target[configTable.getWidgetIdName()];
+            var multiValueId = target[configTable.getValuePickerIdName()];
 
             var w = document.querySelector('#' + multiValueId);
             if (document.querySelector('#' + multiValueId) !== null) {
                 w.style.display = 'block';
-                return;
             }
-
-            var values = target[configTable.getFilterStringArrayName()];
-            var inner = '';
-            values.forEach(function(item) {
-                inner += "<div class='columnFilterBox'>" + item + '</div>';
-            });
-
-            inner += "<input type='button' style='margin:8px;' value='Add / Clear' />";
-            var div = document.createElement('div');
-            div.innerHTML = inner;
-
-            var selectList = div.children;
-            for (var i = 0; i < selectList.length - 1; i++) {
-                selectList[i].addEventListener(
-                    'click', configTable.swapSelectedColumnFilterValue, false
-                );
-            }
-            // can't use negative index
-            selectList[selectList.length - 1].addEventListener(
-                'click', configTable.columnFilterButtonClick, false
-            );
-            selectList[selectList.length - 1][configTable.getFilterSelectorName()] =
-                target[configTable.getFilterSelectorName()];
-
-            configTable.styleMultiFilterWidget(div, target.getBoundingClientRect());
-            div.id = multiValueId;
-            if (values.length > 10) {
-                div.style.overflowY = 'auto';
-                div.style.outline = 'none'; // focus => overflow-y 
-                div.style.height = '276px';
-            };
-            target.parentNode.appendChild(div);
-
-            div.addEventListener('blur', configTable.leaveColumnFilterInput, false);
         },
-        leaveColumnFilterInput: function(e) {
+        leaveSearchInput: function(e) {
             // https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement
             // https://developer.mozilla.org/en-US/docs/Web/Events/blur
             // IE10 >= sets document.activeElement to element focus moves to,
@@ -484,9 +484,9 @@
                 var targetName = target.tagName.toLowerCase();
                 var multiValueId = '';
                 if (targetName === 'input') {
-                    multiValueId = target[configTable.getWidgetIdName()];
+                    multiValueId = target[configTable.getValuePickerIdName()];
                 } else if (targetName === 'div') {
-                    multiValueId = target.previousSibling[configTable.getWidgetIdName()];
+                    multiValueId = target.previousSibling[configTable.getValuePickerIdName()];
                 }
 
                 if (multiValueId || focusEl !== null) {
@@ -494,11 +494,11 @@
                         || focusEl.parentElement.id === multiValueId && focusEl.type !== 'button'
                         || focusEl.parentElement.id === multiValueId && focusEl.type === 'button'
                     ) { return; }
-                    configTable.cleanUpWidget(multiValueId);
+                    configTable.resetValuePicker(multiValueId);
                 }
             }
         },
-        cleanUpWidget: function(selector) {
+        resetValuePicker: function(selector) {
             var el = document.querySelector('#' + selector);
             if (el !== null) {
                 var divChildren = el.children;
@@ -507,11 +507,12 @@
                 return;
             }
         },
-        columnFilterButtonClick: function (e) {
+        valuePickerButtonClick: function(e) {
             var target = e.target;
-            var filterField = document.querySelector(target[configTable.getFilterSelectorName()]);
+            var filterField = document.querySelector(target[configTable.getSearchInputSelectorName()]);
             if (filterField !== null) {
-                var el = document.querySelector('#' + filterField[configTable.getWidgetIdName()]);
+                var valuePickerId = filterField[configTable.getValuePickerIdName()];
+                var el = document.querySelector('#' + valuePickerId);
                 if (el !== null) {
                     var values = [];
                     var childEls = el.children;
@@ -520,24 +521,14 @@
                             values.push(childEls[i].textContent);
                         }
                     }
-                    filterField.value =  values.length > 0 ? values.join('|') : '';
+                    filterField.value = values.length > 0
+                        ? values.join(configTable.getConfigValues().multiValueFilterSeparator) : '';
                 }
 
-                configTable.cleanUpWidget(filterField[configTable.getWidgetIdName()]);
+                configTable.resetValuePicker(valuePickerId);
             }
         },
-        styleMultiFilterWidget: function(div, rect) {
-            if (_ieGTE10) div.tabIndex = '0';
-            div.style.position = 'absolute';
-            div.style.zIndex = '88888888';
-            div.style.backgroundColor = '#fff';
-            div.style.border = '1px ridge #eaeaea';
-            div.style.fontSize = '0.8em';
-            div.style.margin = '0';
-            div.style.padding = '0';
-            div.style.minWidth = rect.width + 'px';
-        },
-        swapSelectedColumnFilterValue: function(e) {
+        toggleValuePickerItem: function(e) {
             e.target.classList.toggle('dataTableSelected');
             if (_ieGTE10) e.target.parentNode.focus();
         }

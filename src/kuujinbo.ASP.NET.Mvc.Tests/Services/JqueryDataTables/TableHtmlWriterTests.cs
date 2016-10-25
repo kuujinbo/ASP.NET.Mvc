@@ -1,11 +1,12 @@
-﻿using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+﻿using Xunit;
+using Xunit.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Xunit;
-using Xunit.Abstractions;
+using kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables;
+using Newtonsoft.Json.Linq;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
 {
@@ -316,22 +317,39 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         }
 
         [Fact]
-        public void GetJavaScriptConfig_WhenDataUrlNotWhiteSpace_ReturnsJsonWithDataUrl()
+        public void GetJavaScriptConfig_WhenDataUrlNotWhiteSpaceAndOtherPropertiesNotSet_ReturnsJson()
         {
             var table = new Table() { DataUrl = "/" };
 
             var json = table.GetJavaScriptConfig();
-            var lines = json.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
-                .Where(x => x != "{" && x != "}");
-            var dataUrl = lines.ElementAt(0).Trim();
+            dynamic d = JObject.Parse(json);
+            Assert.Equal<string>(table.DataUrl, d.dataUrl.ToString());
+            Assert.Equal<string>("", d.infoRowUrl.ToString());
+            Assert.Equal<string>("", d.deleteRowUrl.ToString());
+            Assert.Equal<string>("", d.editRowUrl.ToString());
+            Assert.Equal(table.ShowCheckboxColumn(), d.showCheckboxColumn.ToObject<bool>());
+            Assert.Equal<string>("", d.columnNames.ToString());
+            Assert.Equal<char>(table.MultiValueFilterSeparator, Convert.ToChar(d.multiValueFilterSeparator));
+        }
 
-            Assert.Equal<int>(6, lines.Count());
-            Assert.StartsWith("{", json);
-            Assert.Equal<int>(dataUrl.Count(x => x == '"'), 4);
-            Assert.Matches("^\"dataUrl\"", dataUrl);
-            Assert.Equal<int>(dataUrl.Count(x => x == ':'), 1);
-            Assert.Equal<int>(dataUrl.Count(x => x == '/'), 1);
-            Assert.EndsWith("}", json);
+        [Fact]
+        public void GetJavaScriptConfig_WhenOtherSimplePropertiesSet_ReturnsJson()
+        {
+            var table = new Table()
+            {
+                DataUrl = "/",
+                InfoRowUrl = "/i",
+                DeleteRowUrl = "/d",
+                EditRowUrl = "/e",
+                MultiValueFilterSeparator = '?'
+            };
+
+            var json = table.GetJavaScriptConfig();
+            dynamic d = JObject.Parse(json);
+            Assert.Equal<string>(table.InfoRowUrl, d.infoRowUrl.ToString());
+            Assert.Equal<string>(table.DeleteRowUrl, d.deleteRowUrl.ToString());
+            Assert.Equal<string>(table.EditRowUrl, d.editRowUrl.ToString());
+            Assert.Equal<char>(table.MultiValueFilterSeparator, d.multiValueFilterSeparator.ToObject<char>());
         }
 
         [Fact]
@@ -345,16 +363,15 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
             table.SetColumns<TestModel>();
 
             var json = table.GetJavaScriptConfig();
+            dynamic d = JObject.Parse(json);
+            var names = d.columnNames.ToObject<string[]>();
 
-            Assert.Contains(DataTableModelBinder.COLUMN_NAMES, json);
-            Assert.Equal(5, table.ColumnNames.Length);
-            Assert.Contains(table.ColumnNames[0], json);
-            Assert.Contains(table.ColumnNames[1], json);
-            Assert.Contains(table.ColumnNames[2], json);
-            Assert.Contains(table.ColumnNames[3], json);
-            Assert.Contains(table.ColumnNames[4], json);
+            Assert.Equal(table.ColumnNames[0], names[0]);
+            Assert.Equal(table.ColumnNames[1], names[1]);
+            Assert.Equal(table.ColumnNames[2], names[2]);
+            Assert.Equal(table.ColumnNames[3], names[3]);
+            Assert.Equal(table.ColumnNames[4], names[4]);
         }
-
 
         [Fact]
         public void GetScriptElements_WhenScriptPathsNull_ReturnsStringEmpty()
@@ -367,7 +384,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         [Fact]
         public void GetScriptElements_WhenScriptPathsEmptyReturnsStringEmpty()
         {
-            var table = new Table() {ScriptPaths = new string[] {} };
+            var table = new Table() { ScriptPaths = new string[] { } };
 
             Assert.Equal(string.Empty, table.GetScriptElements());
         }
@@ -375,23 +392,23 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Services.JqueryDataTables
         [Fact]
         public void GetScriptElements_WhenScriptPathsNotEmptyReturnsScriptTags()
         {
-            var scripts = new string[] { "0.js", "1.js", "2.js", "3.js", "4.js"};
+            var scripts = new string[] { "0.js", "1.js", "2.js", "3.js", "4.js" };
             var table = new Table() { ScriptPaths = scripts };
 
             var result = table.GetScriptElements().Split(
-                new string[] {"\n"},
+                new string[] { "\n" },
                 StringSplitOptions.RemoveEmptyEntries
             );
 
             Assert.Equal(scripts.Length, result.Length);
-            for (int i = 0; i < scripts.Length; ++i) 
+            for (int i = 0; i < scripts.Length; ++i)
             {
                 var xElement = XElement.Parse(result[i]);
 
                 Assert.Equal("script", xElement.Name.ToString());
                 Assert.Equal(scripts[i], xElement.Attribute("src").Value);
                 Assert.Equal(string.Empty, xElement.Value);
-             }
+            }
         }
     }
 }
