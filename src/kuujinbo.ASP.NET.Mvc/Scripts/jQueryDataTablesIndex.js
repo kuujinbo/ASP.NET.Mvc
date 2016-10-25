@@ -12,10 +12,10 @@
                     // resolved
                     element.then(function(data, textStatus, jqXHR) {
                         if (index === 0) {
-                            configTable.addValuePicker("th > input[data-column-number='2']", data);
+                            configTable.addValuePicker(2, data);
                         }
                         else {
-                            configTable.addValuePicker("th > input[data-column-number='3']", data);
+                            configTable.addValuePicker(3, data);
                         }
                     },
                     // rejected

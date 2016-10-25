@@ -19,6 +19,10 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
         /// <summary>
         /// separator character; exact match multi-value filter(s)
         /// </summary>
+        /// <remarks>
+        /// multi-value filters perform **EXACT** match; EF/LINQ translates
+        /// to SQL 'IN' operator.
+        /// </remarks>
         public char MultiValueFilterSeparator { get; set; } 
 
         public int Draw { get; set; }
@@ -163,13 +167,15 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                     && !string.IsNullOrWhiteSpace(column.Search.Value))
                 {
                     var tuple = typeInfo.ElementAt(column.Search.ColumnIndex);
-                    // multi-value search term 
+                    // multi-value filters perform **EXACT** match; EF/LINQ 
+                    // translates to SQL 'IN' operator. 
                     var inElements = column.Search.Value.Split(
                         new char[] { MultiValueFilterSeparator },
                         StringSplitOptions.RemoveEmptyEntries
                     );
 
-                    // single-value search terms are the norm
+                    // single-value search terms are the norm, and perform
+                    // **PARTIAL** match
                     if (inElements.Length <= 1)
                     {
                         entities = entities.Where(e =>
@@ -184,15 +190,16 @@ namespace kuujinbo.ASP.NET.Mvc.Services.JqueryDataTables
                                 ) != -1;
                         });
                     }
+                    // multi-value filter terms perform **EXACT** match; 
+                    // EF/LINQ translates to SQL 'IN' operator.
                     else
-                    {   // make multi-value search terms case-insensitive
+                    {   // make multi-value filter terms case-insensitive
                         for (int j = 0; j < inElements.Length; j++) inElements[j] = inElements[j].ToLower();
                         entities = entities.Where(e =>
                         {
                             var value = GetPropertyValue(
                                 e, tuple.Item1, tuple.Item2, cache
                             );
-                            // but each element is **EXACT** term match
                             return value != null && inElements.Contains(value.ToString().ToLower());
                         });
                     }
