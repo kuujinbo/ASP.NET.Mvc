@@ -454,7 +454,6 @@
                 div.style.display = 'none';
                 if (stringArray.length > 10) {
                     div.style.overflowY = 'auto';
-                    div.style.outline = 'none'; // focus => overflow-y 
                     div.style.height = '276px';
                 };
                 searchInput.parentNode.appendChild(div);
