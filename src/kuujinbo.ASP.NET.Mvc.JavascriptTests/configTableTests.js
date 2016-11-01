@@ -2,10 +2,12 @@
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/DataTables/dataTables.bootstrap.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/lib/jquery-ui-1.12.0.js" />
 /// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryAjax/jquery-binary.js" />
-/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryDataTable/configTable.js" />
+/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc/Scripts/jQueryDataTable/TableConfig.js" />
 'use strict';
 
 describe('configTable', function()  {
+    var configTable = null;
+
     beforeEach(function()  {
         var configValues = {
             dataUrl: '/',
@@ -14,6 +16,8 @@ describe('configTable', function()  {
             deleteRowUrl: '/delete',
             allowMultiColumnSorting: true
         };
+        configTable = new TableConfig();
+        configTable.init();
         configTable.setConfigValues(configValues);
     });
 
@@ -928,7 +932,107 @@ describe('configTable', function()  {
     });
 
     /* ========================================================================
-       utility functions
+        value picker       
        ========================================================================
     */
+    describe('value picker', function () {
+        var col1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var col2 = ['zero', 'one', 'two', 'three', 'four'];
+        var selectedClass = 'dataTableSelected';
+        var table = '', valuePickers = '', vp1ChildDivs = '', vp2ChildDivs = '';
+
+        beforeEach(function () {
+            setFixtures(
+                "<table id='jquery-data-table'><tfoot></tr>"
+                + "<th rowspan='1' colspan='1'></th>"
+                + "<th><input type='text' data-column-number='1'></th>"
+                + "<th><input type='text' data-column-number='2'></th>"
+                + "<th><input type='text' data-column-number='3'></th>"
+                + "<th><input type='text' data-column-number='4'></th>"
+                + '</tr><tfoot></table>'
+            );
+
+            spyOn(configTable, 'enterSearchInput');
+            spyOn(configTable, 'toggleValuePickerItem');
+
+            configTable.addValuePicker(1, col1);
+            configTable.addValuePicker(2, col2);
+            configTable.addValuePicker(3, 'this should be ignored, since not array');
+
+            table = document.querySelector(configTable.getTableId());
+            valuePickers = table.querySelectorAll('div.valuePicker');
+            vp1ChildDivs = valuePickers[0].querySelectorAll('div.valuePickerItem');
+            vp2ChildDivs = valuePickers[1].querySelectorAll('div.valuePickerItem');
+        });
+
+        it('should create the value pickers with correct ids', function () {
+            expect(valuePickers.length).toEqual(2);
+            expect(valuePickers[0].id).toEqual('valuePickerId__0');
+            expect(valuePickers[1].id).toEqual('valuePickerId__1');
+        });
+
+        it('should hide the value pickers when created', function () {
+            expect(valuePickers[0].style.display).toEqual('none');
+            expect(valuePickers[1].style.display).toEqual('none');
+        });
+
+        it('should create the value pickers child items', function () {
+            // divs + 1 for input type='button'
+            expect(valuePickers[0].children.length).toEqual(col1.length + 1);
+            expect(valuePickers[1].children.length).toEqual(col2.length + 1);
+        });
+
+        it('should create the value pickers child divs', function () {
+            expect(vp1ChildDivs.length).toEqual(col1.length);
+            expect(vp2ChildDivs.length).toEqual(col2.length);
+        });
+
+        it('should create the value pickers child input button', function () {
+            var vp1ChildButton = valuePickers[0].querySelectorAll('input[type=button]');
+            var vp2ChildButton = valuePickers[1].querySelectorAll('input[type=button]');
+
+            expect(vp1ChildButton.length).toEqual(1);
+            expect(vp1ChildButton[0].value).toEqual('Add / Clear');
+            expect(vp2ChildButton.length).toEqual(1);
+            expect(vp2ChildButton[0].value).toEqual('Add / Clear');
+        });
+
+        it('should call the focus handler for value picker', function () {
+            document.querySelector("th > input[data-column-number='1']")
+                .dispatchEvent(new Event('focus'));
+            document.querySelector("th > input[data-column-number='2']")
+                .dispatchEvent(new Event('focus'));
+
+            expect(configTable.enterSearchInput.calls.count()).toEqual(2);
+        });
+
+        it('should call resetValuePicker when the value picker button is clicked', function () {
+            spyOn(configTable, 'resetValuePicker');
+
+            for (var i = 0; i < vp1ChildDivs.length; ++i) {
+                vp1ChildDivs[i].dispatchEvent(new Event('click'));
+            }
+            console.log(valuePickers[0].innerHTML);
+            valuePickers[0].querySelector('input[type=button]')
+                .dispatchEvent(new Event('click'));
+            console.log(valuePickers[0].innerHTML);
+            expect(configTable.resetValuePicker.calls.count()).toEqual(1);
+            expect(valuePickers[0].style.display).toEqual('none');
+        });
+
+        it('should call the click handler for value picker items', function () {
+            for (var i = 0; i < vp1ChildDivs.length; ++i) {
+                vp1ChildDivs[i].dispatchEvent(new Event('click'));
+            }
+            for (var i = 0; i < vp2ChildDivs.length; ++i) {
+                vp2ChildDivs[i].dispatchEvent(new Event('click'));
+            }
+            expect(configTable.toggleValuePickerItem.calls.count())
+                .toEqual(col1.length + col2.length);
+        });
+
+        
+
+
+    });
 });

@@ -46,7 +46,8 @@ namespace kuujinbo.ASP.NET.Mvc
                 "~/Scripts/jQueryAjax/FileSaver.js",
                 "~/Scripts/jQueryAjax/jquery.binarytransport.js",
                 "~/Scripts/jQueryAjax/jquery-binary.js",
-                "~/Scripts/jQueryDataTable/configTable.js",
+                "~/Scripts/jQueryDataTable/TableConfig.js",
+                // "~/Scripts/jQueryDataTable/configTable.js",
                 "~/Scripts/jQueryDataTable/Table.js"
             ));
         }

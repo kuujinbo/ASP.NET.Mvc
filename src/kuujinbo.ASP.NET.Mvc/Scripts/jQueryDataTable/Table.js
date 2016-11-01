@@ -1,4 +1,6 @@
-﻿// DataTables API instance => $().DataTable() - note CASE
+﻿var configTable = new TableConfig(); //.setTable(table).setConfigValues(configValues).init();
+configTable.init();
+// DataTables API instance => $().DataTable() - note CASE
 var table = $(configTable.getTableId()).DataTable({
     processing: true,
     serverSide: true,
@@ -68,4 +70,5 @@ var table = $(configTable.getTableId()).DataTable({
     }]
 });
 
-configTable.setTable(table).setConfigValues(configValues).init();
+configTable.setTable(table).setConfigValues(configValues);// .init();
+// configTable.setTable(table).setConfigValues(configValues).init();
