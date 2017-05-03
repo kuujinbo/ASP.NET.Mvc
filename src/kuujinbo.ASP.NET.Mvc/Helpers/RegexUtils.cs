@@ -5,15 +5,15 @@ namespace kuujinbo.ASP.NET.Mvc.Helpers
     public class RegexUtils
     {
         static Regex pascalRegex = new Regex(
-        @"				# lookbehind/lookahead match on **boundaries**
+        @"	# lookbehind/lookahead match on **boundaries**
             # positive lookbehind
             (?<=			# start
-	            [A-Za-z]	# SINGLE upper OR lower
+                [A-Za-z]	# SINGLE upper OR lower
             )         		# end
             
             # positive lookahead
             (?=				# start
-	            [A-Z][a-z]	# upper FOLLOWED by lower
+                [A-Z][a-z]	# upper FOLLOWED by lower
             )         		# end
             ",
              RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace

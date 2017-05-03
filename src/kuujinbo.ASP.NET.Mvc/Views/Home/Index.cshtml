@@ -12,7 +12,7 @@
     <div class='col-xs-6'>
 <fieldset>
     <legend>WebAPI Ajax Binary File Download</legend>
-    <button id='web-api-ajax-file' class='btn btn-primary'>Send GET</button>
+    <a href='/api/WebAPIAjaxFile' class='btn btn-primary'>Send GET</a>
 </fieldset>
     </div>
 </div>
@@ -70,18 +70,4 @@
 @section scripts
 {
 @Scripts.Render("~/bundles/plupload")
-
-@* [1] https://github.com/eligrey/FileSaver.js *@
-<script src='~/Scripts/ajax/FileSaver.js'></script>
-@* [2] https://github.com/henrya/js-jquery/tree/master/BinaryTransport *@
-<script src='~/Scripts/ajax/jquery.binarytransport.js'></script>
-@** [3] a simple jQuery plugin helper *@
-<script src="~/Scripts/ajax/jquery-binary.js"></script>
-<script type='text/javascript'>
-$('#web-api-ajax-file').click(function () {
-    $(this).downloadFile('/api/WebAPIAjaxFile', null, 'GET');
-
-    return false;
-});
-</script>
 }

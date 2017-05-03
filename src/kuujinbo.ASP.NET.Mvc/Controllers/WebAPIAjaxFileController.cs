@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
@@ -10,21 +12,18 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
     {
         public HttpResponseMessage Get()
         {
+            var file = HostingEnvironment.MapPath("~/app_data/hello-world.pdf");
             var response = Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new ByteArrayContent(
-                File.ReadAllBytes(
-                    System.Web.Hosting.HostingEnvironment.MapPath(
-                        "~/app_data/hello-world.pdf"
-                    )
-                )
-            );
+            var stream = File.OpenRead(file);
+            response.Content = new StreamContent(stream, 8192);
             response.Content.Headers.ContentDisposition =
                 new ContentDispositionHeaderValue("attachment")
                 {
                     FileName = "test.pdf"
                 };
-            response.Content.Headers.ContentType =
-                new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(
+                MimeMapping.GetMimeMapping(Path.GetExtension(file))
+            );
 
             return response;
         }
