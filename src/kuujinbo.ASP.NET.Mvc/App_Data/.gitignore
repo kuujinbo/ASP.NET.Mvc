@@ -1,7 +1,3 @@
 *
 !.gitignore
-!dataTablesArrayData.json
-!dataTablesObjectData.json
-!dataTablesObjectData0.json
-!dataTablesObjectData00.json
-!hello-world.pdf
+!moby-dick.pdf
