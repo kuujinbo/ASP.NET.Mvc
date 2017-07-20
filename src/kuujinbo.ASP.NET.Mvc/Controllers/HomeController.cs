@@ -71,7 +71,22 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
             );
             return Redirect("~/");
         }
+        
+        public class TestModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
 
+        [ValidateJsonAntiForgeryToken]
+        [HttpPost]
+        public ActionResult JsonAntiForgery(TestModel testModel)
+        {
+            return new JsonResult
+            {
+                Data = testModel.Name
+            };
+        }
     }
 
 
