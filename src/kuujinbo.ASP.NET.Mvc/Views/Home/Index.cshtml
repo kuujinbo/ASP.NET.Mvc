@@ -120,7 +120,7 @@
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 alert(
-                    qXHR.responseJSON
+                    jqXHR.responseJSON
                     || (jqXHR.status !== 500 ? jqXHR.statusText : 'Error!')
                 );
             });
