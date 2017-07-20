@@ -1,10 +1,13 @@
 ﻿using kuujinbo.ASP.NET.Mvc.Services;
 using kuujinbo.ASP.NET.Mvc.Tests.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Services
 {
+    // M$ code coverage is too stupid to ignore successful Exception testing 
+    [ExcludeFromCodeCoverage]
     public class CacInfoTests
     {
         private CacInfo _cacInfo;

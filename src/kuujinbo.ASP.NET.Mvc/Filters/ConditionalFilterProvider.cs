@@ -23,10 +23,12 @@ namespace System.Web.Mvc
             ControllerContext controllerContext,
             ActionDescriptor actionDescriptor)
         {
-            return from condition in _conditions
+            var result = (from condition in _conditions
                select condition(controllerContext, actionDescriptor) into filter
                where filter != null
-               select new Filter(filter, FilterScope.Global, null);
+               select new Filter(filter, FilterScope.Global, null)).Cast<Filter>();
+
+            return result;
         }
     }
 }

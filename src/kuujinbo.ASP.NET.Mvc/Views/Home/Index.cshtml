@@ -54,7 +54,6 @@
                 <input id='json-antiforgery-token' class='btn btn-primary' type='submit' value='Submit' />
 
             </fieldset>
-
         }
     </div>
     <div class='col-xs-6'>
@@ -112,7 +111,7 @@
             $.ajax({
                 url: url,
                 headers: self.getXsrfToken(element),
-                data: requestData, // bulk action button => record Id array
+                data: requestData,
                 type: requestType || 'POST'
             })
             .done(function (data, textStatus, jqXHR) {

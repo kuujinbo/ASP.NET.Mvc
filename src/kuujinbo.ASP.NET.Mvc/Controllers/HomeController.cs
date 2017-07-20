@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Web.Mvc;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class HomeController : Controller
     {
         FileWriterUtility _fu = new FileWriterUtility();
@@ -54,6 +56,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         }
 
         [HttpPost]
+        // [HttpAjaxPost]
         public ActionResult Post()
         {
             TempData["result"] = string.Format(
@@ -84,7 +87,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         {
             return new JsonResult
             {
-                Data = testModel.Name
+                Data = string.Format("data: {0} HTTP response @{1}", testModel.Name, DateTime.Now)
             };
         }
     }
@@ -95,6 +98,7 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
         bool WriteChunk(int? chunk, int chunks, string name, Stream stream);
     }
 
+    [ExcludeFromCodeCoverage]
     public class FileWriterUtility : IFileWriterUtility
     {
         public bool WriteChunk(int? chunk, int chunks, string localPath, Stream stream)

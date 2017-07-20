@@ -6,11 +6,48 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Diagnostics.CodeAnalysis;
 
 namespace kuujinbo.ASP.NET.Mvc.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class WebApiChunkedDownloadController : ApiController
     {
+        public HttpResponseMessage Get()
+        {
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            using (var stream = new MemoryStream(CreatePdf()))
+            {
+                response.Content = new StreamContent(new MemoryStream(stream.ToArray()));
+                response.Content.Headers.ContentDisposition =
+                new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = "test.pdf"
+                };
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue(
+                    "application/pdf"
+                );
+            } 
+            return response;
+        }
+
+        byte[] CreatePdf()
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var document = new Document())
+                {
+                    PdfWriter.GetInstance(document, stream);
+                    document.Open();
+                    document.Add(new Paragraph("TEST"));
+                }
+                return stream.ToArray();
+            }
+        }
+
+/*
         public HttpResponseMessage Get()
         {
             var response = Request.CreateResponse(HttpStatusCode.OK);
@@ -38,5 +75,6 @@ namespace kuujinbo.ASP.NET.Mvc.Controllers
             }
             return response;
         }
+ */
     }
 }

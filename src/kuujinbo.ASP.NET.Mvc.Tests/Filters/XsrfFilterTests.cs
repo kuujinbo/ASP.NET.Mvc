@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace kuujinbo.ASP.NET.Mvc.Tests
+namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
 {
     public class XsrfFilterTests
     {
@@ -129,7 +129,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
                 Assert.Null(postResult);
             }
         }
-
 
         [Fact]
         public void Get_XsrfMethods_ReturnsConditionalFilterProvider()
