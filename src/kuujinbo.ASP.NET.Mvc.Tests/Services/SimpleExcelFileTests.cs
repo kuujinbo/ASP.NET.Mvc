@@ -1,14 +1,12 @@
-﻿using Xunit;
-using Xunit.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using kuujinbo.ASP.NET.Mvc.Services;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Xunit;
 
-namespace kuujinbo.ASP.NET.Mvc.Tests.Services
+namespace kuujinbo.ASP.NET.Mvc.Tests
 {
     public class SimpleExcelFileTests
     {

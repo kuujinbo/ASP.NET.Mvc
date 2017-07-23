@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 
-namespace System.Web.Mvc
+namespace kuujinbo.ASP.NET.Mvc
 {
     /// <summary>
     /// Provide support to apply action filters using custom criteria that

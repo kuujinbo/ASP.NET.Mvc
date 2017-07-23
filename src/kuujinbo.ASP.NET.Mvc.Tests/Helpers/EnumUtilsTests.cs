@@ -1,5 +1,5 @@
-﻿using kuujinbo.ASP.NET.Mvc.Helpers;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using kuujinbo.ASP.NET.Mvc.Helpers;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Helpers

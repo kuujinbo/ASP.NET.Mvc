@@ -1,5 +1,4 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Moq;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
