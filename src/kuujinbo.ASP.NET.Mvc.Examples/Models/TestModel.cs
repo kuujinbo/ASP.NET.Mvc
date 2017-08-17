@@ -6,7 +6,12 @@ namespace kuujinbo.ASP.NET.Mvc.Models
     {
         FullTime, PartTime
     }
-    //[Validator(typeof(TestModelValidator))]
+
+    public class TestHobby
+    {
+        public string Name { get; set; }
+    }
+
     public class TestModel
     {
         public int Id { get; set; }
@@ -17,6 +22,8 @@ namespace kuujinbo.ASP.NET.Mvc.Models
         public DateTime? StartDate { get; set; }
         public string Salary { get; set; }
         public bool? Salaried { get; set; }
+
         public Status Status { get; set; }
+        public TestHobby Hobby { get; set; }
     }
 }

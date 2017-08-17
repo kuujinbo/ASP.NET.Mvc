@@ -25,12 +25,10 @@ namespace kuujinbo.ASP.NET.Mvc
             ControllerContext controllerContext,
             ActionDescriptor actionDescriptor)
         {
-            var result = (from condition in _conditions
-               select condition(controllerContext, actionDescriptor) into filter
-               where filter != null
-               select new Filter(filter, FilterScope.Global, null)).Cast<Filter>();
-
-            return result;
+            return from condition in _conditions
+                   select condition(controllerContext, actionDescriptor) into filter
+                   where filter != null
+                   select new Filter(filter, FilterScope.Global, null);
         }
     }
 }
