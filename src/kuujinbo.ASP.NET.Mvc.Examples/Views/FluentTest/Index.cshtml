@@ -1,0 +1,54 @@
+﻿@model kuujinbo.ASP.NET.Mvc.Models.TestModel
+
+<div>
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+         {
+             Text = "Full Time",
+             Value = "FullTime"
+         });
+    listItems.Add(new SelectListItem
+         {
+             Text = "Part Time",
+             Value = "PartTime"
+         });
+}
+
+
+    @using (Html.BeginForm("Index", "FluentTest", FormMethod.Post, new { @class = "form-inline" }))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div>
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter Name" })
+        @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+
+        <div>
+        @Html.DropDownListFor(model => model.Status, listItems, "-- Select Status --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Status)
+        </div>
+
+
+        <div>
+            @Html.TextBoxFor(model => model.Position, new { @class = "form-control", placeholder = "Enter Position" })
+            @Html.ValidationMessageFor(model => model.Position)
+        </div>
+
+
+
+        <div class="form-group clearfix">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    }
+</div>
+
+@section scripts
+{
+    <script type='text/javascript'>
+
+    </script>
+}

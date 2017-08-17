@@ -7,7 +7,7 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using kuujinbo.ASP.NET.Mvc.Examples.Controllers;
 
-namespace kuujinbo.ASP.NET.Mvc
+namespace kuujinbo.ASP.NET.Mvc.Examples
 {
     [ExcludeFromCodeCoverage]
     public class MvcApplication : System.Web.HttpApplication
