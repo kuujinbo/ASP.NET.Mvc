@@ -6,6 +6,7 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
 using kuujinbo.ASP.NET.Mvc.Examples.Controllers;
+using FluentValidation.Mvc;
 
 namespace kuujinbo.ASP.NET.Mvc.Examples
 {
@@ -14,6 +15,10 @@ namespace kuujinbo.ASP.NET.Mvc.Examples
     {
         protected void Application_Start()
         {
+            // disable default MVC validators
+            ModelValidatorProviders.Providers.Clear();
+            FluentValidationModelValidatorProvider.Configure();
+
             InitAutofac();
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);

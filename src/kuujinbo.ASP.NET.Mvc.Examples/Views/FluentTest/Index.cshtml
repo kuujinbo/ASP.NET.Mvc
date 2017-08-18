@@ -1,20 +1,5 @@
 ﻿@model kuujinbo.ASP.NET.Mvc.Models.TestModel
 
-@{
-    List<SelectListItem> listItems = new List<SelectListItem>();
-    listItems.Add(new SelectListItem
-         {
-             Text = "Full Time",
-             Value = "FullTime"
-         });
-    listItems.Add(new SelectListItem
-         {
-             Text = "Part Time",
-             Value = "PartTime"
-         });
-}
-
-
     @using (Html.BeginForm("Index", "FluentTest", FormMethod.Post, new { @class = "form-inline" }))
     {
         @Html.AntiForgeryToken()
@@ -25,7 +10,7 @@
         </div>
 
         <div>
-        @Html.DropDownListFor(model => model.Status, listItems, "-- Select Status --", new { @class = "form-control" })
+        @Html.EnumDropDownListFor(model => model.Status, "-- Select Status --", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.Status)
         </div>
 
