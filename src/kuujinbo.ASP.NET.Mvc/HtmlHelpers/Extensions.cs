@@ -4,6 +4,14 @@ namespace System.Web.Mvc
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Simple file upload HTML. You **MUST** pass a `HttpPostedFileBase`
+        /// with parameter name 'simpleFileUpload' to the controller action.
+        /// E.g.: 
+        /// public ActionResult Create(Model model, HttpPostedFileBase simpleFileUpload)
+        /// </summary>
+        /// <param name="helper"></param>
+        /// <param name="buttonText"></param>
         public static MvcHtmlString SimpleFileUpload(this HtmlHelper helper, string buttonText = "Browse")
         {
             var html = new StringBuilder("<script type='text/javascript'>", 4096);
