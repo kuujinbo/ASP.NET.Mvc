@@ -1,6 +1,6 @@
 ﻿@model kuujinbo.ASP.NET.Mvc.Models.TestModel
 
-    @using (Html.BeginForm("Index", "FluentTest", FormMethod.Post, new { @class = "form-inline" }))
+    @using (Html.BeginForm("Index", "FluentTest", FormMethod.Post, new { @class = "form-inline", enctype = "multipart/form-data"}))
     {
         @Html.AntiForgeryToken()
 
@@ -25,17 +25,15 @@
         </div>
 
 
-        <div class="form-group clearfix">
+        <div class="form-group">
             <input type="submit" value="Submit" class="btn btn-primary" />
         </div>
-        
+
+@Html.SimpleFileUpload()
     }
 
 <p><a href='/FluentTest'>Reset</a></p>
 
 @section scripts
 {
-    <script type='text/javascript'>
-
-    </script>
 }
