@@ -1,8 +1,7 @@
 ﻿using FluentValidation.Attributes;
-using kuujinbo.ASP.NET.Mvc.Examples.Services;
 using System;
 
-namespace kuujinbo.ASP.NET.Mvc.Models
+namespace kuujinbo.ASP.NET.Mvc.Examples.Models
 {
     public enum Status
     {

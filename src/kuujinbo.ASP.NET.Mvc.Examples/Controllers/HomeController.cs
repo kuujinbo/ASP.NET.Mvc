@@ -2,11 +2,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
+using System.Web;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Examples.Models;
 
 namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 {
-    [ExcludeFromCodeCoverage]
+    // [ExcludeFromCodeCoverage]
     public class HomeController : Controller
     {
         FileWriterUtility _fu = new FileWriterUtility();
@@ -75,12 +77,6 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
             return Redirect("~/");
         }
         
-        public class TestModel
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
-
         [ValidateJsonAntiForgeryToken]
         [HttpPost]
         public ActionResult JsonAntiForgery(TestModel testModel)
@@ -90,8 +86,48 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
                 Data = string.Format("data: {0} HTTP response @{1}", testModel.Name, DateTime.Now)
             };
         }
-    }
 
+        [HttpPost]
+        public ActionResult Upload(TestModel model, HttpPostedFileBase simpleFileUpload)
+        {
+            if (ModelState.IsValid)
+            {
+                if (simpleFileUpload != null 
+                    && simpleFileUpload.ContentLength > 0)
+                {
+                    simpleFileUpload.SaveAs(Path.Combine(
+                        Server.MapPath("~/app_data"),
+                        Path.GetFileName(simpleFileUpload.FileName)
+                    ));
+                }
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View("Index", model);
+            }
+            /*
+             * #############################################################
+             * if fluentvalidation.mvc not used/registered
+             * #############################################################
+            TestModelValidator validator = new TestModelValidator();
+            var result = validator.Validate(model);
+            if (result.IsValid)
+            if (ModelState.IsValid) 
+            {
+                return View(model);
+            }
+            else {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+                return View("Index", model); 
+            }
+             */
+        }
+    }
 
     public interface IFileWriterUtility
     {

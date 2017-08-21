@@ -146,7 +146,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DodCacController.cs" />
-    <Compile Include="Controllers\FluentTestController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Compile Include="Services\DateFormatValidator.cs" />
@@ -155,8 +154,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\TestHobbyValidator.cs" />
-    <Compile Include="Services\TestModelValidator.cs" />
+    <Compile Include="Models\Validators.cs" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -198,7 +196,6 @@
     <Content Include="Views\CacInfo\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\FluentTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

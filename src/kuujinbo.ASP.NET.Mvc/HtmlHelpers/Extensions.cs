@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Properties;
 
-namespace System.Web.Mvc
+namespace kuujinbo.ASP.NET.Mvc
 {
     public static class Extensions
     {
@@ -15,7 +17,7 @@ namespace System.Web.Mvc
         public static MvcHtmlString SimpleFileUpload(this HtmlHelper helper, string buttonText = "Browse")
         {
             var html = new StringBuilder("<script type='text/javascript'>", 4096);
-            html.AppendLine(kuujinbo.ASP.NET.Mvc.Properties.Resources.SimpleFileUpload);
+            html.AppendLine(Resources.SimpleFileUpload);
             html.AppendFormat(@"
 </script>
 <div class='input-group'>
