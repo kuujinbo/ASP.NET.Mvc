@@ -88,16 +88,16 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(TestModel model, HttpPostedFileBase simpleFileUpload)
+        public ActionResult Upload(TestModel model, HttpPostedFileBase fileUploadField)
         {
             if (ModelState.IsValid)
             {
-                if (simpleFileUpload != null 
-                    && simpleFileUpload.ContentLength > 0)
+                if (fileUploadField != null 
+                    && fileUploadField.ContentLength > 0)
                 {
-                    simpleFileUpload.SaveAs(Path.Combine(
+                    fileUploadField.SaveAs(Path.Combine(
                         Server.MapPath("~/app_data"),
-                        Path.GetFileName(simpleFileUpload.FileName)
+                        Path.GetFileName(fileUploadField.FileName)
                     ));
                 }
 
