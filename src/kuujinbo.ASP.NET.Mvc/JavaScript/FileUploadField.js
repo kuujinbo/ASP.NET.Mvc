@@ -1,16 +1,21 @@
-﻿function fileUpload(upload) {
+﻿function toMB(bytes) {
+    var multiplier = 1024;
+    var i = Math.floor(Math.log(bytes) / Math.log(multiplier))
+    return parseFloat((bytes / Math.pow(multiplier, i)).toFixed(2)) + " MB";
+}
+
+function fileUpload(upload) {
     if (upload.files.length > 0) {
         var file = upload.files[0];
-        var maxuploadSize = upload.dataset.maxSize;
+        var maxuploadSize = upload.dataset.maxSize * 1024; // convert from KB
         if (maxuploadSize >= file.size) {
             filename = upload.parentNode.parentNode.nextElementSibling;
             filename.value = file.name;
             filename.nextElementSibling.style.display = 'block';
         } else {
             alert(
-                'File [' + file.name + '] is '
-                + (Math.round((file.size / Math.pow(1024, 2)) * 10) / 10).toFixed(1) + 'MB.\n\n'
-                + 'Maximum allowed upload size is ' + maxuploadSize / 1024 + 'MB.\n\n'
+                '[' + file.name + '] is ' + toMB(file.size) + '\n\n'
+                + 'Maximum allowed upload size is ' + toMB(maxuploadSize) + '.\n\n'
                 + 'Please select another file.'
             );
             // must explicitly clear file upload

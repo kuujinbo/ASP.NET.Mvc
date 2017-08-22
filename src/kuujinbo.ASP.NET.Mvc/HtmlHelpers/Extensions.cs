@@ -32,7 +32,7 @@ namespace kuujinbo.ASP.NET.Mvc
                    onchange='fileUpload(this)' />{1}....
         </label>
     </span>
-    <input disabled type='text' class='form-control'>
+    <input style='pointer-events:none;background-color:#eee' type='text' required class='form-control'>
     <span class='input-group-btn' style='display:none;'>
         <button class='btn btn-danger' type='button' onclick='clearUpload(this)'><span class='glyphicon glyphicon-remove'></span></button>
     </span>
