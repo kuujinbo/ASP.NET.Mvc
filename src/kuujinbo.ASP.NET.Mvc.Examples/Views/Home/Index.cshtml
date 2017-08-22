@@ -52,7 +52,7 @@
 
                     @Html.TextBoxFor(model => model.Position, new { @class = "form-control input-sm", placeholder = "Enter Position" })
                     @Html.ValidationMessageFor(model => model.Position)
-                    @Html.EnumDropDownListFor(model => model.Status, "-- Select Status --", new { @class = "form-control input-sm" })
+                    @Html.EnumDropDownListFor(model => model.Status, "Select Status....", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Status)
                     @Html.TextBoxFor(model => model.Hobby.Name, new { @class = "form-control input-sm", placeholder = "Enter Hobby" })
                     @Html.ValidationMessageFor(model => model.Hobby.Name)

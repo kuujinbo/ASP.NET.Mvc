@@ -2,7 +2,6 @@
     if (upload.files.length > 0) {
         var file = upload.files[0];
         var maxuploadSize = upload.dataset.maxSize;
-        console.log('file size: ' + maxuploadSize + 'file size: ' + file.size);
         if (maxuploadSize >= file.size) {
             filename = upload.parentNode.parentNode.nextElementSibling;
             filename.value = file.name;
@@ -14,6 +13,8 @@
                 + 'Maximum allowed upload size is ' + maxuploadSize / 1024 + 'MB.\n\n'
                 + 'Please select another file.'
             );
+            // must explicitly clear file upload
+            upload.value = '';
         }
     }
 }
