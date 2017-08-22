@@ -66,16 +66,17 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         ///        filename = upload.parentNode.parentNode.nextElementSibling;
         ///        filename.value = upload.files[0].name;
         ///        filename.nextElementSibling.style.display = &apos;block&apos;;
-        ///        console.log(upload.files[0]);
         ///    }
         ///}
         ///function clearUpload(button) {
         ///    button.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.value = &apos;&apos;;
-        ///    console.log(button.parentNode.parentNode.firstElementChild.firstElementChild.firs [rest of string was truncated]&quot;;.
+        ///    button.parentNode.previousElementSibling.value = &apos;&apos;;
+        ///    button.parentNode.style.display = &apos;none&apos;;
+        ///}.
         /// </summary>
-        public static string SimpleFileUpload {
+        public static string FileUploadField {
             get {
-                return ResourceManager.GetString("SimpleFileUpload", resourceCulture);
+                return ResourceManager.GetString("FileUploadField", resourceCulture);
             }
         }
     }
