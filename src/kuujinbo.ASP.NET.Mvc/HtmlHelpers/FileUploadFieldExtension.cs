@@ -21,14 +21,14 @@ namespace kuujinbo.ASP.NET.Mvc
             var html = new StringBuilder("<script type='text/javascript'>", 4096);
             html.AppendLine(Resources.FileUploadField);
             html.AppendFormat(@"</script>
-<div class='input-group'>
+<div class='input-group input-group-sm'>
     <span class='input-group-btn'>
         <label class='btn btn-success' type='button'>
             <input id='fileUploadField' name='fileUploadField' type='file' style='display:none;'
                    data-max-size='{0}' />{1}....
         </label>
     </span>
-    <input tabindex='-1' style='pointer-events:none;background-color:#eee' type='text' required class='form-control'>
+    <input tabindex='-1' style='width:90%;pointer-events:none;background-color:#eee' type='text' required class='form-control'>
     <span class='input-group-btn' style='display:none;'>
         <button class='fileUploadFieldButton btn btn-danger' type='button'><span class='glyphicon glyphicon-remove'></span></button>
     </span>

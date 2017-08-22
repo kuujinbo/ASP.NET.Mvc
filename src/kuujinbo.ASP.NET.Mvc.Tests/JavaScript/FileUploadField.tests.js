@@ -2,9 +2,9 @@
 
 'use strict';
 
-describe('FileUploadField', function () {
+describe('FileUploadField', function() {
     var fileUploadField, inputFile, button, MB4, MB10;
-    beforeEach(function () {
+    beforeEach(function() {
         MB4 = 4194304;
         MB10 = 10485760;
         setFixtures(getFixture());
@@ -15,18 +15,18 @@ describe('FileUploadField', function () {
 
     // **MUST** update if kuujinbo.ASP.NET.Mvc.FileUploadFieldExtension.cs changes
     function getFixture() {
-        return  "<div class='input-group'><span class='input-group-btn'>"
+        return "<div class='input-group input-group-sm'><span class='input-group-btn'>"
             + "<label class='btn btn-success' type='button'>"
-            + "<input id='fileUploadField' name='fileUploadField' style='display:none;' data-max-size='4096' type='file'>Browse...."
+            + "<input id='fileUploadField' name='fileUploadField' type='file' style='display:none;' data-max-size='4096' />Browse...."
             + "</label></span>"
-            + "<input tabindex='-1' style='pointer-events:none;background-color:#eee' type='text' required class='form-control'>"
+            + "<input tabindex='-1' style='pointer-events:none;background-color:#eee' type='text' required class='form-control' />"
             + "<span class='input-group-btn' style='display:none;'>"
             + "<button class='fileUploadFieldButton btn btn-danger' type='button'><span class='glyphicon glyphicon-remove'></span></button>"
             + "</span></div>"
     }
 
-    describe('DOM manipulation', function () {
-        it('adds event listeners when calling addListeners()', function () {
+    describe('DOM manipulation', function() {
+        it('adds event listeners when calling addListeners()', function() {
             spyOn(fileUploadField, 'clearUpload');
             spyOn(fileUploadField, 'processFile');
 
@@ -40,8 +40,8 @@ describe('FileUploadField', function () {
             expect(fileUploadField.clearUpload).toHaveBeenCalledWith(jasmine.any(Event));
         });
 
-        describe('clearUpload', function () {
-            it('updates the DOM when the button is clicked', function () {
+        describe('clearUpload', function() {
+            it('updates the DOM when the button is clicked', function() {
                 spyOn(fileUploadField, 'clearUpload').and.callThrough();
                 spyOn(fileUploadField, 'clearUploadUpateDom');
 
@@ -54,8 +54,8 @@ describe('FileUploadField', function () {
             });
         });
 
-        describe('processFile', function () {
-            it('is a no-op when no files are selected', function () {
+        describe('processFile', function() {
+            it('is a no-op when no files are selected', function() {
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
                 spyOn(fileUploadField, 'processFileGetFiles');
@@ -69,7 +69,7 @@ describe('FileUploadField', function () {
                 expect(window.alert).not.toHaveBeenCalled();
             });
 
-            it('shows error message and clears input[type=file].value when file size exceeds max', function () {
+            it('shows error message and clears input[type=file].value when file size exceeds max', function() {
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
 
@@ -94,7 +94,7 @@ describe('FileUploadField', function () {
                 expect(inputFile.value).toBe('');
             });
 
-            it('updates the DOM when file size is valid', function () {
+            it('updates the DOM when file size is valid', function() {
                 spyOn(fileUploadField, 'processFileUpdateDom');
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
@@ -118,8 +118,8 @@ describe('FileUploadField', function () {
         });
     });
 
-    describe('toMB', function () {
-        it('returns a string formatted in MB when a number of bytes is passed in', function () {
+    describe('toMB', function() {
+        it('returns a string formatted in MB when a number of bytes is passed in', function() {
             var bytes = 4194304;
             var result = fileUploadField.toMB(bytes);
 

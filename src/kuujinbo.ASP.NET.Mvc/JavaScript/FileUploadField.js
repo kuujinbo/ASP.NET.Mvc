@@ -7,10 +7,10 @@ FileUploadField.prototype = {
         var i = Math.floor(Math.log(sizeInBytes) / Math.log(multiplier))
         return parseFloat((sizeInBytes / Math.pow(multiplier, i)).toFixed(2)) + " MB";
     },
-    clearUpload: function (e) {
+    clearUpload: function(e) {
         this.clearUploadUpateDom(e.target);
     },
-    clearUploadUpateDom: function (button) {
+    clearUploadUpateDom: function(button) {
         button.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.value = '';
         button.parentNode.previousElementSibling.value = '';
         button.parentNode.style.display = 'none';
@@ -34,10 +34,10 @@ FileUploadField.prototype = {
             }
         }
     },
-    processFileGetFiles: function (inputFile) {
+    processFileGetFiles: function(inputFile) {
         return inputFile.files;
     },
-    processFileUpdateDom: function (inputFile, filename) {
+    processFileUpdateDom: function(inputFile, filename) {
         var inputText = inputFile.parentNode.parentNode.nextElementSibling;
         inputText.value = filename;
         inputText.nextElementSibling.style.display = 'block';
