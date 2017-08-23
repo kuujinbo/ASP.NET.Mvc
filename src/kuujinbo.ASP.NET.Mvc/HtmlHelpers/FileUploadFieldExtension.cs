@@ -1,31 +1,28 @@
-﻿using System.Text;
-using System.Web.Mvc;
-using kuujinbo.ASP.NET.Mvc.Helpers;
+﻿using kuujinbo.ASP.NET.Mvc.Helpers;
 using kuujinbo.ASP.NET.Mvc.Properties;
+using System.Text;
+using System.Web.Mvc;
 
-namespace kuujinbo.ASP.NET.Mvc
+namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
     public static class FileUploadFieldExtension
     {
-        /// <summary>
-        /// File upload HTML, ONLY USE ONCE PER View. You **MUST** pass a 
-        /// `HttpPostedFileBase` with parameter name 'fileUploadField' to the 
-        /// controller action. E.g.: 
-        /// public ActionResult Create(Model model, HttpPostedFileBase fileUploadField)
-        /// </summary>
-        public static MvcHtmlString FileUploadField(this HtmlHelper helper, string buttonText = "Browse")
+        public static readonly string JavaScript;
+        static FileUploadFieldExtension()
         {
-            var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
-                helper.ViewContext.HttpContext.Request.ApplicationPath
-            );
-            var html = new StringBuilder("<script type='text/javascript'>", 4096);
-            html.AppendLine(Resources.FileUploadField);
-            html.AppendFormat(@"</script>
+            var script = new StringBuilder("<script type='text/javascript'>", 4096);
+            script.AppendLine(Resources.FileUploadField);
+            script.AppendLine("</script>");
+            JavaScript = script.ToString();
+        }
+        
+        public const string DEFAULT_BUTTON_TEXT = "Browse....";
+        public const string HTML_FORMAT = @"
 <div class='input-group input-group-sm'>
     <span class='input-group-btn'>
         <label class='btn btn-success' type='button'>
             <input id='fileUploadField' name='fileUploadField' type='file' style='display:none;'
-                   data-max-size='{0}' />{1}....
+                   data-max-size='{0}' />{1}
         </label>
     </span>
     <input tabindex='-1' style='width:90%;pointer-events:none;background-color:#eee' type='text' required class='form-control'>
@@ -37,11 +34,28 @@ namespace kuujinbo.ASP.NET.Mvc
 <script type='text/javascript'>
     var fu = new FileUploadField();
     fu.addListeners();
-</script>"
-            , maxuploadSize
-            , buttonText
-            , maxuploadSize / 1024
-        );
+</script>";
+
+        /// <summary>
+        /// File upload HTML, ONLY USE ONCE PER View. You **MUST** pass a 
+        /// `HttpPostedFileBase` with parameter name 'fileUploadField' to the 
+        /// controller action. E.g.: 
+        /// public ActionResult Create(Model model, HttpPostedFileBase fileUploadField)
+        /// </summary>
+        public static MvcHtmlString FileUploadField(
+            this HtmlHelper helper, 
+            string buttonText = DEFAULT_BUTTON_TEXT)
+        {
+            var html = new StringBuilder(JavaScript, 4096);
+            var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
+                new WebConfigHelper(helper.ViewContext.HttpContext.Request.ApplicationPath)
+            );
+            html.AppendFormat(
+                HTML_FORMAT
+                , maxuploadSize
+                , buttonText
+                , maxuploadSize / 1024
+            );
             return new MvcHtmlString(html.ToString());
         }
     }

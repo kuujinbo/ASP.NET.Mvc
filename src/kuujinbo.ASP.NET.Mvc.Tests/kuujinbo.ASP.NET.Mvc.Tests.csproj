@@ -42,7 +42,9 @@
     <Compile Include="Helpers\DateTimeExtensionsTests.cs" />
     <Compile Include="Helpers\EnumUtilsTests.cs" />
     <Compile Include="Helpers\ExceptionExtensionsTests.cs" />
+    <Compile Include="HtmlHelpers\FileUploadFieldExtensionTests.cs" />
     <Compile Include="Helpers\RegexUtilsTests.cs" />
+    <Compile Include="Helpers\WebConfigurationManagerHelperTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -160,6 +162,7 @@
       <Name>kuujinbo.ASP.NET.Mvc</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

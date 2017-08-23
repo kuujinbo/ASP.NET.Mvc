@@ -8,7 +8,7 @@ using kuujinbo.ASP.NET.Mvc.Examples.Models;
 
 namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 {
-    // [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     public class HomeController : Controller
     {
         FileWriterUtility _fu = new FileWriterUtility();
