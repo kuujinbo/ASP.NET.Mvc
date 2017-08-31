@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace kuujinbo.ASP.NET.Mvc
 {
@@ -32,6 +33,7 @@ namespace kuujinbo.ASP.NET.Mvc
 
     }
 
+    [ExcludeFromCodeCoverage]
     public class SimpleExcelFile : ISimpleExcelFile
     {
         /* --------------------------------------------------------------------

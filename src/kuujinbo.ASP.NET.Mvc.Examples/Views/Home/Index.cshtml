@@ -71,17 +71,39 @@
 </div>
 
 <div class='row'>
-    <div class='col-xs-6'>
+    <div class='col-xs-4'>
         <fieldset>
             <legend>CAC</legend>
             <a href='https://localhost:44343/CacInfo'>Get CAC Information</a>
         </fieldset>
     </div>
 
-    <div class='col-xs-6'>
+    <div class='col-xs-4'>
         <fieldset>
             <legend>Web API Buffered Download</legend>
             <a href='/api/WebApiChunkedDownload' class='btn btn-primary'>Send GET</a>
+        </fieldset>
+    </div>
+
+    <div class='col-xs-4'>
+        <fieldset>
+            <legend>CheckboxGroupToggler Html Helper</legend>
+
+            <ul class='list-group' id='ul-group'>
+                <li class='list-group-item'><input name='fldArchiveFlag' type='checkbox' /> ArchiveFlag</li>
+                <li class='list-group-item'><input name='fldId' type='checkbox' /> Id</li>
+                <li class='list-group-item'><input name='fldName' type='checkbox' /> Name</li>
+                <li class='list-group-item'><input name='fldUpdated' type='checkbox' /> Updated</li>
+            </ul>
+
+            <div id='inline-checkboxes'>
+                <input name='00' type='checkbox' /> 00
+                <input name='01' type='checkbox' /> 01
+                <input name='02' type='checkbox' /> 02
+            </div>
+
+            @Html.CheckboxGroupToggler("#ul-group")
+            @Html.CheckboxGroupToggler("#inline-checkboxes", true)
         </fieldset>
     </div>
 </div>

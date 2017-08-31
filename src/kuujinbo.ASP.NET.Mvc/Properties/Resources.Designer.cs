@@ -61,18 +61,42 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function fileUpload(upload) {
-        ///    if (upload.files.length &gt; 0) {
-        ///        filename = upload.parentNode.parentNode.nextElementSibling;
-        ///        filename.value = upload.files[0].name;
-        ///        filename.nextElementSibling.style.display = &apos;block&apos;;
-        ///    }
-        ///}
-        ///function clearUpload(button) {
-        ///    button.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.value = &apos;&apos;;
-        ///    button.parentNode.previousElementSibling.value = &apos;&apos;;
-        ///    button.parentNode.style.display = &apos;none&apos;;
-        ///}.
+        ///   Looks up a localized string similar to function CheckboxGroupToggler(groupSelector) {
+        ///    Object.defineProperty(this, &apos;initError&apos;, {
+        ///        value: &apos;CSS selector for the checkbox group parent DOM element required.&apos;
+        ///    });
+        ///
+        ///    Object.defineProperty(this, &apos;containerError&apos;, {
+        ///        value: &apos;checkbox group parent DOM element not found. verify CSS selector is correct&apos;
+        ///    });
+        ///
+        ///    Object.defineProperty(this, &apos;buttonUncheckClassList&apos;, {
+        ///        value: &apos;btn btn-default&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;buttonCheckClassList&apos;, {
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CheckboxGroupToggler {
+            get {
+                return ResourceManager.GetString("CheckboxGroupToggler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function FileUploadField() { }
+        ///
+        ///FileUploadField.prototype = {
+        ///    constructor: FileUploadField,
+        ///    toMB: function(sizeInBytes) {
+        ///        var multiplier = 1024;
+        ///        var i = Math.floor(Math.log(sizeInBytes) / Math.log(multiplier))
+        ///        return parseFloat((sizeInBytes / Math.pow(multiplier, i)).toFixed(2)) + &quot; MB&quot;;
+        ///    },
+        ///    clearUpload: function(e) {
+        ///        this.clearUploadUpateDom(e.target);
+        ///    },
+        ///    clearUploadUpateDom: function(button) {
+        ///        button.parentNode.parentNode.firstEle [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FileUploadField {
             get {
