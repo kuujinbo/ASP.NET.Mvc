@@ -1,4 +1,4 @@
-﻿/// <reference path="./../../src/kuujinbo.ASP.NET.Mvc.Examples/Scripts/appConfig.js" />
+﻿/// <reference path="./../../../src/kuujinbo.ASP.NET.Mvc.Examples/Scripts/appConfig.js" />
 'use strict';
 
 describe('angular1.config xsrfRegex', function () {

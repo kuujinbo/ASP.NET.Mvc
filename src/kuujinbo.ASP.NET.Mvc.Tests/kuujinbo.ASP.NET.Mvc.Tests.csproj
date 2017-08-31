@@ -61,6 +61,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Chutzpah.json" />
+    <Content Include="JavaScript\appConfig.UnitTests.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.Tests.js" />
     <Content Include="JavaScript\FileUploadField.tests.js" />
     <None Include="packages.config" />

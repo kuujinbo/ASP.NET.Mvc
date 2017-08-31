@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9587A2
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuujinbo.ASP.NET.Mvc.JavaScriptTests", "src\kuujinbo.ASP.NET.Mvc.JavascriptTests\kuujinbo.ASP.NET.Mvc.JavaScriptTests.csproj", "{6C36C65D-13CE-475F-B506-00CF3554EF79}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuujinbo.ASP.NET.Mvc.Tests", "src\kuujinbo.ASP.NET.Mvc.Tests\kuujinbo.ASP.NET.Mvc.Tests.csproj", "{2EAA0833-3EC1-43B4-9648-08A32FE09D2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuujinbo.ASP.NET.Mvc.Examples", "src\kuujinbo.ASP.NET.Mvc.Examples\kuujinbo.ASP.NET.Mvc.Examples.csproj", "{B3909476-321C-47C5-BE43-B621958E0432}"
@@ -24,10 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C36C65D-13CE-475F-B506-00CF3554EF79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C36C65D-13CE-475F-B506-00CF3554EF79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C36C65D-13CE-475F-B506-00CF3554EF79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C36C65D-13CE-475F-B506-00CF3554EF79}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2EAA0833-3EC1-43B4-9648-08A32FE09D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EAA0833-3EC1-43B4-9648-08A32FE09D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EAA0833-3EC1-43B4-9648-08A32FE09D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,7 +39,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6C36C65D-13CE-475F-B506-00CF3554EF79} = {788EFFBB-CAB7-42E4-A5F3-76D190453A1C}
 		{2EAA0833-3EC1-43B4-9648-08A32FE09D2D} = {788EFFBB-CAB7-42E4-A5F3-76D190453A1C}
 		{B3909476-321C-47C5-BE43-B621958E0432} = {788EFFBB-CAB7-42E4-A5F3-76D190453A1C}
 		{343C15B2-7C86-4CA1-833C-6874902A325A} = {788EFFBB-CAB7-42E4-A5F3-76D190453A1C}
