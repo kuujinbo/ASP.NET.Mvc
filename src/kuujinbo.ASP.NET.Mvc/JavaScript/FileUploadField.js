@@ -1,4 +1,8 @@
-﻿function FileUploadField() { }
+﻿function FileUploadField() {
+    Object.defineProperty(this, 'maxSizeExceeded', {
+        value: 'Max File Upload Size Exceeded'
+    });
+}
 
 FileUploadField.prototype = {
     constructor: FileUploadField,
@@ -24,15 +28,34 @@ FileUploadField.prototype = {
             if (maxuploadSize >= file.size) {
                 this.processFileUpdateDom(inputFile, file.name);
             } else {
-                alert(
-                    '[' + file.name + '] is ' + this.toMB(file.size) + '\n\n'
-                    + 'Maximum allowed inputFile size is ' + this.toMB(maxuploadSize) + '.\n\n'
-                    + 'Please select another file.'
-                );
+                var errorLines = [
+                    '[' + file.name + '] is ' + this.toMB(file.size)
+                    , 'Maximum allowed file upload size is ' + this.toMB(maxuploadSize)
+                    , 'Please select another file.'
+                ];
+                if (typeof jQuery !== 'undefined'
+                    && typeof jQuery.ui !== 'undefined'
+                    && typeof jQuery.ui.dialog === 'function') {
+                    var error = "<h1><span style='color:red' class='glyphicon glyphicon-flag'></span>"
+                        + this.maxSizeExceeded + '</h1>';
+                    for (var i = 0; i < errorLines.length; ++i) {
+                        error += '<p>' + errorLines[i] + '</p>'
+                    }
+                    this.showDialog(error);
+                } else {
+                    alert(errorLines.join('\n\n'));
+                }
+
                 // **MUST** explicitly clear file inputFile
                 inputFile.value = '';
             }
         }
+    },
+    showDialog: function(message) {
+        $('<div></div>').html(message)
+        .dialog({
+            width: 'auto', modal: true, title: this.maxSizeExceeded
+        });
     },
     processFileGetFiles: function(inputFile) {
         return inputFile.files;

@@ -94,6 +94,35 @@ describe('FileUploadField', function() {
                 expect(inputFile.value).toBe('');
             });
 
+            it('shows jQuery UI dialog error message when jQuery UI is available', function() {
+                spyOn(window, 'alert');
+                spyOn(fileUploadField, 'toMB').and.callThrough();
+                spyOn(fileUploadField, 'showDialog').and.callThrough;
+                window.jQuery = {
+                    ui: {
+                        dialog: function () { console.log('stub jQuery.ui.dialog'); }
+                    }
+                }
+                var filename = "test.jpg";
+                spyOn(fileUploadField, 'processFileGetFiles').and.returnValue([{
+                    name: filename, size: MB10
+                }]);
+
+                fileUploadField.addListeners();
+                inputFile.dispatchEvent(new Event('change'));
+
+
+                expect(fileUploadField.processFileGetFiles).toHaveBeenCalledTimes(1);
+                expect(fileUploadField.processFileGetFiles).toHaveBeenCalledWith(inputFile);
+                expect(fileUploadField.toMB).toHaveBeenCalledTimes(2);
+                // max upload size - getFixture()
+                expect(fileUploadField.toMB).toHaveBeenCalledWith(MB4);
+                // uploaded file size
+                expect(fileUploadField.toMB).toHaveBeenCalledWith(MB10);
+                expect(window.alert).toHaveBeenCalledTimes(0);
+                expect(fileUploadField.showDialog).toHaveBeenCalledTimes(1);
+            });
+
             it('updates the DOM when file size is valid', function() {
                 spyOn(fileUploadField, 'processFileUpdateDom');
                 spyOn(window, 'alert');

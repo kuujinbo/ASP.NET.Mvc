@@ -5,12 +5,12 @@ using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
 {
-    public class CheckboxGroupTogglerTests
+    public class CheckboxGroupTogglerHelperTests
     {
         HtmlHelper _helper;
         Mock<IViewDataContainer> _viewData;
 
-        public CheckboxGroupTogglerTests()
+        public CheckboxGroupTogglerHelperTests()
         {
             _viewData = new Mock<IViewDataContainer>();
             _viewData.Setup(x => x.ViewData).Returns(new ViewDataDictionary());

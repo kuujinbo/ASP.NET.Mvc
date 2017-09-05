@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
+    <Compile Include="Attributes\SessionTerminatorIgnoreAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
@@ -93,14 +94,16 @@
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\RegexUtils.cs" />
     <Compile Include="Helpers\WebConfigurationManagerHelper.cs" />
-    <Compile Include="HtmlHelpers\CheckboxGroupToggler.cs" />
-    <Compile Include="HtmlHelpers\FileUploadFieldExtension.cs" />
+    <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelper.cs" />
+    <Compile Include="HtmlHelpers\FileUploadFieldHelper.cs" />
+    <Compile Include="HtmlHelpers\SessionTerminatorHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SessionTerminator.cs" />
     <Compile Include="SimpleExcelFile.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +112,7 @@
   <ItemGroup>
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
+    <Content Include="JavaScript\SessionTerminator.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

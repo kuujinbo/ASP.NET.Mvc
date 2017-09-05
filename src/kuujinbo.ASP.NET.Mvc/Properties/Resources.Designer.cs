@@ -83,7 +83,11 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function FileUploadField() { }
+        ///   Looks up a localized string similar to function FileUploadField() {
+        ///    Object.defineProperty(this, &apos;maxSizeExceeded&apos;, {
+        ///        value: &apos;Max File Upload Size Exceeded&apos;
+        ///    });
+        ///}
         ///
         ///FileUploadField.prototype = {
         ///    constructor: FileUploadField,
@@ -93,14 +97,38 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         ///        return parseFloat((sizeInBytes / Math.pow(multiplier, i)).toFixed(2)) + &quot; MB&quot;;
         ///    },
         ///    clearUpload: function(e) {
-        ///        this.clearUploadUpateDom(e.target);
-        ///    },
-        ///    clearUploadUpateDom: function(button) {
-        ///        button.parentNode.parentNode.firstEle [rest of string was truncated]&quot;;.
+        ///        this.clearUploadUpateDo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FileUploadField {
             get {
                 return ResourceManager.GetString("FileUploadField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function SessionTerminator() {
+        ///    Object.defineProperty(this, &apos;initError&apos;, {
+        ///        value: &apos;logoutUrl required&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;adminTimeout&apos;, {
+        ///        value: 10 * 60 // STIG
+        ///    });
+        ///    Object.defineProperty(this, &apos;maxTimeout&apos;, {
+        ///        value: 15 * 60 // STIG
+        ///    });
+        ///
+        ///    this._timeoutID = 0;
+        ///    this._idleTimeout = this.adminTimeout;
+        ///    this._logoutUrl = &apos;&apos;;
+        ///}
+        ///
+        ///SessionTerminator.prototype = {
+        ///    constructor: SessionTerminator,
+        ///    init: function(timeoutInSe [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SessionTerminator {
+            get {
+                return ResourceManager.GetString("SessionTerminator", resourceCulture);
             }
         }
     }

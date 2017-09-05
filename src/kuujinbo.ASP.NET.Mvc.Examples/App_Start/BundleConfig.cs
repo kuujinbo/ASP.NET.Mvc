@@ -17,11 +17,9 @@ namespace kuujinbo.ASP.NET.Mvc
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery")
+            //    .Include("~/Scripts/lib/bootstrap.js")
                 .Include("~/Scripts/lib/jquery-{version}.js")
-            );
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap")
-                .Include("~/Scripts/lib/bootstrap.js")
+                .Include("~/Scripts/lib/jquery-ui-{version}.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(

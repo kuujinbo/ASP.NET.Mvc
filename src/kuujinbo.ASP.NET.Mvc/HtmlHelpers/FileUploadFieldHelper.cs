@@ -5,15 +5,15 @@ using System.Web.Mvc;
 
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
-    public static class FileUploadFieldExtension
+    public static class FileUploadFieldHelper
     {
-        public static readonly string JavaScript;
-        static FileUploadFieldExtension()
+        public static readonly string JavaScriptBlock;
+        static FileUploadFieldHelper()
         {
             var script = new StringBuilder("<script type='text/javascript'>", 4096);
             script.AppendLine(Resources.FileUploadField);
             script.AppendLine("</script>");
-            JavaScript = script.ToString();
+            JavaScriptBlock = script.ToString();
         }
         
         public const string DEFAULT_BUTTON_TEXT = "Browse....";
@@ -46,7 +46,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             this HtmlHelper helper, 
             string buttonText = DEFAULT_BUTTON_TEXT)
         {
-            var html = new StringBuilder(JavaScript, 4096);
+            var html = new StringBuilder(JavaScriptBlock, 4096);
             var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
                 new WebConfigHelper(helper.ViewContext.HttpContext.Request.ApplicationPath)
             );

@@ -7,13 +7,13 @@ using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
 {
-    public class FileUploadFieldExtensionTests
+    public class FileUploadFieldHelperTests
     {
         HtmlHelper _helper;
         static readonly int _defaultUploadSize = WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH;
         static readonly int _defaultUploadInMB = _defaultUploadSize / 1024;
 
-        public FileUploadFieldExtensionTests()
+        public FileUploadFieldHelperTests()
         {
             var request = new Mock<HttpRequestBase>();
             request.Setup(x => x.ApplicationPath).Returns("/");
@@ -31,11 +31,11 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         public void FileUploadField_DefaultParam_ReturnsHtml()
         {
             var result = _helper.FileUploadField();
-            var expected = FileUploadFieldExtension.JavaScript
+            var expected = FileUploadFieldHelper.JavaScriptBlock
                            + string.Format(
-                                FileUploadFieldExtension.HTML_FORMAT,
+                                FileUploadFieldHelper.HTML_FORMAT,
                                 _defaultUploadSize, 
-                                FileUploadFieldExtension.DEFAULT_BUTTON_TEXT, 
+                                FileUploadFieldHelper.DEFAULT_BUTTON_TEXT, 
                                 _defaultUploadInMB
                              );
 
@@ -47,9 +47,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         {
             var buttonText = "Select File";
             var result = _helper.FileUploadField(buttonText);
-            var expected = FileUploadFieldExtension.JavaScript
+            var expected = FileUploadFieldHelper.JavaScriptBlock
                            + string.Format(
-                                FileUploadFieldExtension.HTML_FORMAT,
+                                FileUploadFieldHelper.HTML_FORMAT,
                                 _defaultUploadSize,
                                 buttonText,
                                 _defaultUploadInMB
