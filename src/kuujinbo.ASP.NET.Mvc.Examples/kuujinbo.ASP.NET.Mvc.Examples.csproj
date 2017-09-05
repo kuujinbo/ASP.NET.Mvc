@@ -148,7 +148,6 @@
     <Compile Include="Controllers\DodCacController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
     <Compile Include="Models\TestModel.cs" />
-    <Compile Include="Services\DateFormatValidator.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
