@@ -30,7 +30,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
         <button class='fileUploadFieldButton btn btn-danger' type='button'><span class='glyphicon glyphicon-remove'></span></button>
     </span>
 </div>
-<div><strong>Max file upload size: <span style='text-decoration:underline'>{2}MB</span></strong></div>
+<div style='line-height:2em;font-size:0.9em'><strong>Max file upload size [ {2:0.00} MB ]</strong></div>
 <script type='text/javascript'>
     new FileUploadField().addListeners();
 </script>";
