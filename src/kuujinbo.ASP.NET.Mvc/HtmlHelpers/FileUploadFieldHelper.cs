@@ -25,15 +25,14 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
                    data-max-size='{0}' />{1}
         </label>
     </span>
-    <input tabindex='-1' style='width:90%;pointer-events:none;background-color:#eee' type='text' required class='form-control'>
+    <input tabindex='-1' style='width:90%;pointer-events:none;background-color:#eee' type='text' class='form-control'>
     <span class='input-group-btn' style='display:none;'>
         <button class='fileUploadFieldButton btn btn-danger' type='button'><span class='glyphicon glyphicon-remove'></span></button>
     </span>
 </div>
-<div><strong>Max upload file size: <span style='text-decoration:underline'>{2}MB</span></strong></div>
+<div><strong>Max file upload size: <span style='text-decoration:underline'>{2}MB</span></strong></div>
 <script type='text/javascript'>
-    var fu = new FileUploadField();
-    fu.addListeners();
+    new FileUploadField().addListeners();
 </script>";
 
         /// <summary>

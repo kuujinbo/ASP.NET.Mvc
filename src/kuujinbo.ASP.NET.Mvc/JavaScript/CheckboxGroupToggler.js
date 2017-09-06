@@ -8,10 +8,10 @@ function CheckboxGroupToggler(groupSelector) {
     });
 
     Object.defineProperty(this, 'buttonUncheckClassList', {
-        value: 'btn btn-default'
+        value: 'btn btn-sm btn-default'
     });
     Object.defineProperty(this, 'buttonCheckClassList', {
-        value: 'btn btn-primary checked'
+        value: 'btn btn-sm btn-primary checked'
     });
 
     if (!groupSelector || !groupSelector.match(/\w+/)) throw this.initError;
@@ -38,7 +38,7 @@ CheckboxGroupToggler.prototype = {
         var toggler = document.createElement('span');
         toggler.innerHTML = "<button type='button' class='"
             + this.buttonCheckClassList
-            + "' style='margin:8px 0;text-align:left;width:120px'>"
+            + "' style='margin:8px 0;text-align:left;width:100px'>"
             + this.getCheckAllHtml()
             + '</button>';
         var checkGroup = this.getCheckGroup();

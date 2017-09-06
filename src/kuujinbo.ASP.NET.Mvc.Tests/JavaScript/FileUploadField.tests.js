@@ -69,9 +69,10 @@ describe('FileUploadField', function() {
                 expect(window.alert).not.toHaveBeenCalled();
             });
 
-            it('shows error message and clears input[type=file].value when file size exceeds max', function() {
+            it('calls alert() and clears input[type=file].value when file size exceeds max', function() {
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
+                spyOn(fileUploadField, 'showDialog').and.callThrough;
 
                 var filename = "test.txt";
                 spyOn(fileUploadField, 'processFileGetFiles').and.returnValue([{
@@ -91,10 +92,11 @@ describe('FileUploadField', function() {
                 expect(window.alert).toHaveBeenCalledTimes(1);
                 expect(window.alert.calls.mostRecent().args[0]).toMatch(/10 MB/);
                 expect(window.alert.calls.mostRecent().args[0]).toMatch(new RegExp(filename));
+                expect(fileUploadField.showDialog).not.toHaveBeenCalled();
                 expect(inputFile.value).toBe('');
             });
 
-            it('shows jQuery UI dialog error message when jQuery UI is available', function() {
+            it('calls jQuery.UI dialog when jQuery UI is available', function() {
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
                 spyOn(fileUploadField, 'showDialog').and.callThrough;
@@ -119,8 +121,9 @@ describe('FileUploadField', function() {
                 expect(fileUploadField.toMB).toHaveBeenCalledWith(MB4);
                 // uploaded file size
                 expect(fileUploadField.toMB).toHaveBeenCalledWith(MB10);
-                expect(window.alert).toHaveBeenCalledTimes(0);
+                expect(window.alert).not.toHaveBeenCalled();
                 expect(fileUploadField.showDialog).toHaveBeenCalledTimes(1);
+                expect(inputFile.value).toBe('');
             });
 
             it('updates the DOM when file size is valid', function() {
