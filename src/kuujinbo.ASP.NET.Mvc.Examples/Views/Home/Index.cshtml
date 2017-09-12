@@ -59,7 +59,7 @@
                     @Html.ValidationMessageFor(model => model.Hobby.Name)
                 </div>
                 <div class='margin-top-bottom-8'>
-                    @Html.FileUploadField()
+                    @Html.FileUploadField(accept: new string[] { ".pdf", ".jpg", ".png" })
                 </div>
                 <div>
                     <input type='submit' value='Submit' class='btn btn-primary' />

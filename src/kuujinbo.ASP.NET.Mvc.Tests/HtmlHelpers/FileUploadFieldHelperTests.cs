@@ -33,26 +33,48 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             var result = _helper.FileUploadField();
             var expected = FileUploadFieldHelper.JavaScriptBlock
                            + string.Format(
-                                FileUploadFieldHelper.HTML_FORMAT,
-                                _defaultUploadSize, 
-                                FileUploadFieldHelper.DEFAULT_BUTTON_TEXT, 
-                                _defaultUploadInMB
+                                FileUploadFieldHelper.HTML_FORMAT
+                                , _defaultUploadSize 
+                                , FileUploadFieldHelper.ACCEPT_ALL
+                                , FileUploadFieldHelper.DEFAULT_BUTTON_TEXT
+                                , _defaultUploadInMB
+                                , string.Empty
                              );
 
             Assert.Equal(expected, result.ToString());
         }
 
         [Fact]
-        public void FileUploadField_ExplicitParam_ReturnsHtml()
+        public void FileUploadField_ButtonText_ReturnsHtml()
         {
             var buttonText = "Select File";
             var result = _helper.FileUploadField(buttonText);
             var expected = FileUploadFieldHelper.JavaScriptBlock
                            + string.Format(
-                                FileUploadFieldHelper.HTML_FORMAT,
-                                _defaultUploadSize,
-                                buttonText,
-                                _defaultUploadInMB
+                                FileUploadFieldHelper.HTML_FORMAT
+                                , _defaultUploadSize 
+                                , FileUploadFieldHelper.ACCEPT_ALL
+                                , buttonText
+                                , _defaultUploadInMB
+                                , string.Empty
+                             );
+
+            Assert.Equal(expected, result.ToString());
+        }
+
+        [Fact]
+        public void FileUploadField_AccetExtensions_ReturnsHtml()
+        {
+            var acceptExtensions = new string[] { ".pdf", ".jpg", ".png" };
+            var result = _helper.FileUploadField(accept: acceptExtensions);
+            var expected = FileUploadFieldHelper.JavaScriptBlock
+                           + string.Format(
+                                FileUploadFieldHelper.HTML_FORMAT
+                                , _defaultUploadSize 
+                                , string.Join(",", acceptExtensions)
+                                , FileUploadFieldHelper.DEFAULT_BUTTON_TEXT
+                                , _defaultUploadInMB
+                                , string.Format(FileUploadFieldHelper.ACCEPT_FORMAT, string.Join(",", acceptExtensions))
                              );
 
             Assert.Equal(expected, result.ToString());
