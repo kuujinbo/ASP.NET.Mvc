@@ -47,6 +47,14 @@ legend {
    ============================================================================
 */
 
+/*
+    jQuery UI
+*/
+.ui-autocomplete-loading { background:url('themes/base/images/indicator.gif') no-repeat right center }
+.ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}
+ul.ui-autocomplete li { line-height: 1em; font-size: .9em; }
+
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,

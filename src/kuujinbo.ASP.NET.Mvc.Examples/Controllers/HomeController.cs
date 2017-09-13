@@ -1,16 +1,54 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Examples.Models;
+using System.Collections.Generic;
+using System.Web.Hosting;
+using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 {
     [ExcludeFromCodeCoverage]
     public class HomeController : Controller
     {
+        static readonly ICollection<TestModel> _data;
+
+        static HomeController()
+        {
+            _data = JsonConvert.DeserializeObject<ICollection<TestModel>>(
+                System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/app_data/jsonData.json"))
+            );
+        }
+
+
+        public ActionResult SearchUsers(string searchText)
+        {
+            var users = from user in _data
+                        where user.Name.StartsWith(
+                            searchText, StringComparison.OrdinalIgnoreCase
+                        )
+                        select user;
+
+            var result = new List<dynamic>();
+            foreach (var user in users)
+            {
+                result.Add(new
+                {
+                    label = user.Name
+                    , value = user.Id,
+                });
+
+            }
+
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+
+
         FileWriterUtility _fu = new FileWriterUtility();
 
         [HttpGet]

@@ -24,9 +24,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             var cssSelector = "#selector";
 
             var result = _helper.CheckboxGroupToggler(cssSelector);
-            var expected = CheckboxGroupTogglerExtension.JavaScriptBlock
+            var expected = CheckboxGroupTogglerHelper.JavaScriptBlock
                            + string.Format(
-                                CheckboxGroupTogglerExtension.JAVASCRIPT_FORMAT,
+                                CheckboxGroupTogglerHelper.JAVASCRIPT_FORMAT,
                                 cssSelector, 
                                 false.ToString().ToLower()
                              );
@@ -34,7 +34,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             Assert.Equal(expected, result.ToString());
             Assert.Equal<bool>(
                 true, 
-                (bool)_viewData.Object.ViewData[CheckboxGroupTogglerExtension.VIEW_DATA]
+                (bool)_viewData.Object.ViewData[CheckboxGroupTogglerHelper.VIEW_DATA]
             );
         }
 
@@ -47,7 +47,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             var result = _helper.CheckboxGroupToggler(cssSelector);
 
             var expected = string.Format(
-                               CheckboxGroupTogglerExtension.JAVASCRIPT_FORMAT,
+                               CheckboxGroupTogglerHelper.JAVASCRIPT_FORMAT,
                                cssSelector,
                                false.ToString().ToLower()
                            );

@@ -73,39 +73,54 @@
 <div class='row'>
     <div class='col-xs-4'>
         <fieldset>
+            <legend>jQueryAutoComplete</legend>
+
+            @Html.jQueryAutoComplete(
+                "searchText"
+                , @Url.Action("SearchUsers", "Search").ToString()
+                , 1
+                , new {
+                    @class = "form-control input-sm",
+                    placeholder = "Search by Last Name"
+                }
+            )
+            <script type='text/javascript' src='@Url.Content("~/scripts/jQueryAutoCompleteTest.js")'></script>
+        </fieldset>
+
+        <fieldset>
             <legend>CAC</legend>
             <a href='https://localhost:44343/CacInfo'>Get CAC Information</a>
         </fieldset>
     </div>
 
-    <div class='col-xs-4'>
-        <fieldset>
-            <legend>Web API Buffered Download</legend>
-            <a href='/api/WebApiChunkedDownload' class='btn btn-primary'>Send GET</a>
-        </fieldset>
-    </div>
+<div class='col-xs-4'>
+    <fieldset>
+        <legend>Web API Buffered Download</legend>
+        <a href='/api/WebApiChunkedDownload' class='btn btn-primary'>Send GET</a>
+    </fieldset>
+</div>
 
-    <div class='col-xs-4'>
-        <fieldset>
-            <legend>CheckboxGroupToggler Html Helper</legend>
+<div class='col-xs-4'>
+    <fieldset>
+        <legend>CheckboxGroupToggler Html Helper</legend>
 
-            <ul class='list-group' id='ul-group'>
-                <li class='list-group-item'><input name='fldArchiveFlag' type='checkbox' /> ArchiveFlag</li>
-                <li class='list-group-item'><input name='fldId' type='checkbox' /> Id</li>
-                <li class='list-group-item'><input name='fldName' type='checkbox' /> Name</li>
-                <li class='list-group-item'><input name='fldUpdated' type='checkbox' /> Updated</li>
-            </ul>
+        <ul class='list-group' id='ul-group'>
+            <li class='list-group-item'><input name='fldArchiveFlag' type='checkbox' /> ArchiveFlag</li>
+            <li class='list-group-item'><input name='fldId' type='checkbox' /> Id</li>
+            <li class='list-group-item'><input name='fldName' type='checkbox' /> Name</li>
+            <li class='list-group-item'><input name='fldUpdated' type='checkbox' /> Updated</li>
+        </ul>
 
-            <div id='inline-checkboxes'>
-                <input name='00' type='checkbox' /> 00
-                <input name='01' type='checkbox' /> 01
-                <input name='02' type='checkbox' /> 02
-            </div>
+        <div id='inline-checkboxes'>
+            <input name='00' type='checkbox' /> 00
+            <input name='01' type='checkbox' /> 01
+            <input name='02' type='checkbox' /> 02
+        </div>
 
-            @Html.CheckboxGroupToggler("#ul-group")
-            @Html.CheckboxGroupToggler("#inline-checkboxes", true)
-        </fieldset>
-    </div>
+        @Html.CheckboxGroupToggler("#ul-group")
+        @Html.CheckboxGroupToggler("#inline-checkboxes", true)
+    </fieldset>
+</div>
 </div>
 
 <div class='row'>
@@ -113,32 +128,32 @@
         <fieldset>
             <legend>Angular Plupoad Directive</legend>
             <plupload-wrapper upload-url='@Url.Action("Index", "Home")'
-                              delete-url='@Url.Action("Delete", "Home")'
-                              chunk-size='1mb'></plupload-wrapper>
-        </fieldset>
-    </div>
-    <div class='col-xs-10'>
-        <fieldset>
-            <legend>Angular $http Interceptor</legend>
-            <div ng-controller="HttpRequestInterceptorTestController">
-                <form class="form-inline">
-                    <div class='form-group'>
-                        <select ng-model="method" aria-label="Request method">
-                            <option>GET</option>
-                            <option>POST</option>
-                            <option>DELETE</option>
-                            <option>PUT</option>
-                        </select>
-                    </div>
-                    <button id="fetch-btn" type='submit' class='btn btn-primary' ng-click="fetch()">Submit</button>
-                </form>
-                <p>
-                    <pre>Status code: {{status}}</pre>
-                    <pre>Response data: {{data}}</pre>
-                </p>
-            </div>
-        </fieldset>
-    </div>
+    delete-url='@Url.Action("Delete", "Home")'
+    chunk-size='1mb'></plupload-wrapper>
+</fieldset>
+</div>
+<div class='col-xs-10'>
+    <fieldset>
+        <legend>Angular $http Interceptor</legend>
+        <div ng-controller="HttpRequestInterceptorTestController">
+            <form class="form-inline">
+                <div class='form-group'>
+                    <select ng-model="method" aria-label="Request method">
+                        <option>GET</option>
+                        <option>POST</option>
+                        <option>DELETE</option>
+                        <option>PUT</option>
+                    </select>
+                </div>
+                <button id="fetch-btn" type='submit' class='btn btn-primary' ng-click="fetch()">Submit</button>
+            </form>
+            <p>
+                <pre>Status code: {{status}}</pre>
+                <pre>Response data: {{data}}</pre>
+            </p>
+        </div>
+    </fieldset>
+</div>
 </div>
 
 
@@ -196,7 +211,11 @@
             }
         );
     }
-</script>
+            </script>
+
+
+
+
 
 
 

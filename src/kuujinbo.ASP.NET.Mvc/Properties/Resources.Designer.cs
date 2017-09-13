@@ -71,10 +71,9 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         ///    });
         ///
         ///    Object.defineProperty(this, &apos;buttonUncheckClassList&apos;, {
-        ///        value: &apos;btn btn-default&apos;
+        ///        value: &apos;btn btn-sm btn-default&apos;
         ///    });
-        ///    Object.defineProperty(this, &apos;buttonCheckClassList&apos;, {
-        ///  [rest of string was truncated]&quot;;.
+        ///    Object.defineProperty(this, &apos;buttonCheckClassList [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CheckboxGroupToggler {
             get {
@@ -102,6 +101,26 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         public static string FileUploadField {
             get {
                 return ResourceManager.GetString("FileUploadField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, searchUrl, selectCallback) {
+        ///    Object.defineProperty(this, &apos;jQueryRequiredError&apos;, {
+        ///        value: &apos;jQuery and jQuery UI libraries required.&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;searchInputError&apos;, {
+        ///        value: &apos;Search &lt;input&gt; selector missing or DOM element could not be found.&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;searchUrlError&apos;, {
+        ///        value: &apos;Search URL required.&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string jQueryAutoComplete {
+            get {
+                return ResourceManager.GetString("jQueryAutoComplete", resourceCulture);
             }
         }
         

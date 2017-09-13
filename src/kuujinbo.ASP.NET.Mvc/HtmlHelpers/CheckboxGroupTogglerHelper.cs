@@ -5,16 +5,16 @@ using kuujinbo.ASP.NET.Mvc.Properties;
 
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
-    public static class CheckboxGroupTogglerExtension
+    public static class CheckboxGroupTogglerHelper
     {
         /// <summary>
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string VIEW_DATA = typeof(CheckboxGroupTogglerExtension).ToString();
+        public static readonly string VIEW_DATA = typeof(CheckboxGroupTogglerHelper).ToString();
 
         public static readonly string JavaScriptBlock;
-        static CheckboxGroupTogglerExtension()
+        static CheckboxGroupTogglerHelper()
         {
             var script = new StringBuilder("<script type='text/javascript'>", 4096);
             script.AppendLine(Resources.CheckboxGroupToggler);

@@ -1,0 +1,1 @@
+﻿var autoComplete = new jQueryAutoComplete('', '', '');
