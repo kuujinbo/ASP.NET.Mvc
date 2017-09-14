@@ -1,0 +1,73 @@
+﻿using kuujinbo.ASP.NET.Mvc.HtmlHelpers;
+using Moq;
+using System.Web.Mvc;
+using Xunit;
+using Xunit.Abstractions;
+
+namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
+{
+    public class jQueryAutoCompleteHelperTests
+    {
+        readonly ITestOutputHelper _output;
+        HtmlHelper _helper;
+        Mock<IViewDataContainer> _viewData;
+
+        public jQueryAutoCompleteHelperTests(ITestOutputHelper output)
+        {
+            _output = output;
+
+            _viewData = new Mock<IViewDataContainer>();
+            _viewData.Setup(x => x.ViewData).Returns(new ViewDataDictionary());
+
+            _helper = new HtmlHelper(new Mock<ViewContext>().Object, _viewData.Object);
+        }
+
+        private string CreateInputElement(
+            string cssIdSelector
+            , string searchUrl
+            , string minSearchLength = "1")
+        {
+            var tagBuilder = new TagBuilder("input");
+            tagBuilder.MergeAttribute(jQueryAutoCompleteHelper.ID_ATTR, cssIdSelector, true);
+            tagBuilder.MergeAttribute(jQueryAutoCompleteHelper.URL_ATTR, searchUrl, true);
+            tagBuilder.MergeAttribute(jQueryAutoCompleteHelper.MIN_LEN_ATTR, minSearchLength, true);
+
+            return tagBuilder.ToString();
+        }
+
+        [Fact]
+        public void jQueryAutoComplete_CalledOnce_ReturnsHtmlWithOneScriptBlock()
+        {
+            var cssSelector = "#selector";
+            var url = "/url";
+
+            var result = _helper.jQueryAutoComplete(cssSelector, url);
+            var expected = CreateInputElement(cssSelector, url)
+                           + jQueryAutoCompleteHelper.JavaScriptBlock;
+
+            Assert.Equal(expected, result.ToString());
+            Assert.Equal<bool>(
+                true, 
+                (bool)_viewData.Object.ViewData[jQueryAutoCompleteHelper.VIEW_DATA]
+            );
+
+        }
+
+        [Fact]
+        public void jQueryAutoComplete_CalledMoreThanOnce_DoesNotWriteScriptBlock()
+        {
+            var cssSelector = "#selector";
+            var url = "/url";
+
+            _helper.jQueryAutoComplete(cssSelector, url);
+            var result = _helper.jQueryAutoComplete(cssSelector, url);
+            var expected = CreateInputElement(cssSelector, url);
+
+            Assert.Equal(expected, result.ToString());
+            Assert.Equal<bool>(
+                true,
+                (bool)_viewData.Object.ViewData[jQueryAutoCompleteHelper.VIEW_DATA]
+            );
+        }
+    }
+}

@@ -1,13 +1,24 @@
-﻿using kuujinbo.ASP.NET.Mvc.Helpers;
-using kuujinbo.ASP.NET.Mvc.Properties;
-using System.Collections.Generic;
+﻿using kuujinbo.ASP.NET.Mvc.Properties;
 using System.Text;
 using System.Web.Mvc;
 
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
+    /// <summary>
+    /// Simple jQuery autocomplete helper. Caller is responsible for:
+    /// [1] Hooking up server-side JSON response with collection of custom 
+    ///     objects that **MUST** include 'label' and 'value' properties.
+    /// [2] Hooking up client-side JavaScript to process server response.
+    /// </summary>
     public static class jQueryAutoCompleteHelper
     {
+        /// <summary>
+        /// HTML input element attributes
+        /// </summary>
+        public const string ID_ATTR = "id";
+        public const string URL_ATTR = "search-url";
+        public const string MIN_LEN_ATTR = "min-search-length";
+
         /// <summary>
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
@@ -32,15 +43,12 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             , object htmlAttributes = null)
         {
             var tagBuilder = new TagBuilder("input");
-            if (htmlAttributes != null)
-            {
-                tagBuilder.MergeAttributes<string, object>(
-                    HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)
-                );
-            }
-            tagBuilder.MergeAttribute("id", cssIdSelector, true);
-            tagBuilder.MergeAttribute("search-url", searchUrl, true);
-            tagBuilder.MergeAttribute("min-search-length", minSearchLength.ToString(), true);
+            tagBuilder.MergeAttributes<string, object>(
+                HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)
+            );
+            tagBuilder.MergeAttribute(ID_ATTR, cssIdSelector, true);
+            tagBuilder.MergeAttribute(URL_ATTR, searchUrl, true);
+            tagBuilder.MergeAttribute(MIN_LEN_ATTR, minSearchLength.ToString(), true);
 
             var html = new StringBuilder(tagBuilder.ToString(), 4096);
 

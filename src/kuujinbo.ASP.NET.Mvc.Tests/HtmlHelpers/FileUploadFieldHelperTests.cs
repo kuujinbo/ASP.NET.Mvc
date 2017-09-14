@@ -10,6 +10,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
     public class FileUploadFieldHelperTests
     {
         HtmlHelper _helper;
+        Mock<IViewDataContainer> _viewData;
         static readonly int _defaultUploadSize = WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH;
         static readonly int _defaultUploadInMB = _defaultUploadSize / 1024;
 
@@ -24,7 +25,10 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             var viewContext = new Mock<ViewContext>();
             viewContext.Setup(x => x.HttpContext).Returns(httpContext.Object);
 
-            _helper = new HtmlHelper(viewContext.Object, new Mock<IViewDataContainer>().Object);
+            _viewData = new Mock<IViewDataContainer>();
+            _viewData.Setup(x => x.ViewData).Returns(new ViewDataDictionary());
+
+            _helper = new HtmlHelper(viewContext.Object, _viewData.Object);
         }
 
         [Fact]
@@ -45,6 +49,24 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         }
 
         [Fact]
+        public void FileUploadField_CalledMoreThanOnce_DoesNotWriteScriptBlock()
+        {
+            _helper.FileUploadField();
+            var result = _helper.FileUploadField();
+            var expected = string.Format(
+                                FileUploadFieldHelper.HTML_FORMAT
+                                , _defaultUploadSize
+                                , FileUploadFieldHelper.ACCEPT_ALL
+                                , FileUploadFieldHelper.DEFAULT_BUTTON_TEXT
+                                , _defaultUploadInMB
+                                , string.Empty
+                             );
+
+            Assert.Equal(expected, result.ToString());
+        }
+
+
+        [Fact]
         public void FileUploadField_ButtonText_ReturnsHtml()
         {
             var buttonText = "Select File";
@@ -63,7 +85,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         }
 
         [Fact]
-        public void FileUploadField_AccetExtensions_ReturnsHtml()
+        public void FileUploadField_AcceptExtensions_ReturnsHtml()
         {
             var acceptExtensions = new string[] { ".pdf", ".jpg", ".png" };
             var result = _helper.FileUploadField(accept: acceptExtensions);

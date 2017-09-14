@@ -28,12 +28,12 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
         [Fact]
         public void Get_ValidRawDataCertificate_ReturnsPopulatedCacInfo()
         {
-            var cacInfo = _dodCac.Get(Resources.CacInfo_cert);
+            var cac = _dodCac.Get(Resources.DodCac_cert);
 
-            Assert.Equal<string>("Last", cacInfo.LastName);
-            Assert.Equal<string>("First", cacInfo.FirstName);
-            Assert.Equal<string>("0987654321", cacInfo.Edipi);
-            Assert.Equal<string>("email@domain", cacInfo.Email);
+            Assert.Equal<string>("Last", cac.LastName);
+            Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("0987654321", cac.Edipi);
+            Assert.Equal<string>("email@domain", cac.Email);
         }
 
         [Fact]
@@ -59,31 +59,31 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
         [Fact]
         public void ParseSimpleName_ThreeParts_ReturnsCacInfo()
         {
-            var cacInfo = DodCac.GetDodCac("last.first.0987654321");
+            var cac = DodCac.GetDodCac("last.first.0987654321");
 
-            Assert.Equal<string>("Last", cacInfo.LastName);
-            Assert.Equal<string>("First", cacInfo.FirstName);
-            Assert.Equal<string>("0987654321", cacInfo.Edipi);
+            Assert.Equal<string>("Last", cac.LastName);
+            Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("0987654321", cac.Edipi);
         }
 
         [Fact]
         public void ParseSimpleName_FourParts_ReturnsCacInfo()
         {
-            var cacInfo = DodCac.GetDodCac("last.first.middle.0987654321");
+            var cac = DodCac.GetDodCac("last.first.middle.0987654321");
 
-            Assert.Equal<string>("Last", cacInfo.LastName);
-            Assert.Equal<string>("First", cacInfo.FirstName);
-            Assert.Equal<string>("0987654321", cacInfo.Edipi);
+            Assert.Equal<string>("Last", cac.LastName);
+            Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("0987654321", cac.Edipi);
         }
 
         [Fact]
         public void ParseSimpleName_MoreThanFourParts_ReturnsCacInfo()
         {
-            var cacInfo = DodCac.GetDodCac("last.first.middle.cac-office-typo.0987654321");
+            var cac = DodCac.GetDodCac("last.first.middle.cac-office-typo.0987654321");
 
-            Assert.Equal<string>("Last", cacInfo.LastName);
-            Assert.Equal<string>("First", cacInfo.FirstName);
-            Assert.Equal<string>("0987654321", cacInfo.Edipi);
+            Assert.Equal<string>("Last", cac.LastName);
+            Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("0987654321", cac.Edipi);
         }
 
         [Fact]

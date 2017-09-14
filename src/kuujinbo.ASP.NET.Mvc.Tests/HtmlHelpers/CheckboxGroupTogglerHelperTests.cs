@@ -39,7 +39,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         }
 
         [Fact]
-        public void CheckboxGroupToggler_CalledMoreThanOnce_ReturnsHtmlWithOneScriptBlock()
+        public void CheckboxGroupToggler_CalledMoreThanOnce_DoesNotWriteScriptBlock()
         {
             var cssSelector = "#selector";
 

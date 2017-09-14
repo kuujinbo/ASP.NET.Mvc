@@ -1,4 +1,7 @@
 ﻿function jQueryAutoComplete(searchSelector, selectCallback) {
+    // selectCallback **MUST** name parameters **EXACTLY** same as below
+    // function (event, ui) {}
+
     Object.defineProperty(this, 'jQueryRequiredError', {
         value: 'jQuery and jQuery UI libraries required.'
     });
@@ -6,11 +9,13 @@
         value: 'Search <input> selector missing or DOM element could not be found.'
     });
     Object.defineProperty(this, 'selectCallbackError', {
-        value: 'selectCallback URL required.'
+        value: 'selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\n'
+                + 'function (event, ui) {}'
     });
     Object.defineProperty(this, 'searchUrl', {
         value: 'search-url'
     });
+
     Object.defineProperty(this, 'minSearchLength', {
         value: 'min-search-length'
     });
@@ -47,7 +52,6 @@ jQueryAutoComplete.prototype = {
             }
             , minLength: that._searchInputElement.getAttribute(that.minSearchLength) || 1
             , focus: function(event, ui) {
-                // this._searchInputElement.value = ui.item.label;
                 that._searchInputElement.value = '';
                 return false;
             }
@@ -65,7 +69,17 @@ jQueryAutoComplete.prototype = {
             dataType: 'json',
             data: { searchText: that._searchInputElement.value }
         })
-        .done(function(data, textStatus, jqXHR) {
+        .done(function (data, textStatus, jqXHR) {
+            var resultElement = document.querySelector('ul.ui-autocomplete');
+            if (resultElement) {
+                if (data.length > 4) {
+                    resultElement.style.overflowX = 'hidden';
+                    resultElement.style.overflowY = 'auto';
+                    resultElement.style.height = '100px';
+                } else {
+                    resultElement.style.height = 'auto';
+                }
+            }
             response(data);
         })
         .fail(function(jqXHR, textStatus, errorThrown) {

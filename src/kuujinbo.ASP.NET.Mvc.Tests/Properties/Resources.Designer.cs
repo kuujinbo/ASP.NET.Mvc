@@ -63,9 +63,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] CacInfo_cert {
+        internal static byte[] DodCac_cert {
             get {
-                object obj = ResourceManager.GetObject("CacInfo_cert", resourceCulture);
+                object obj = ResourceManager.GetObject("DodCac_cert", resourceCulture);
                 return ((byte[])(obj));
             }
         }

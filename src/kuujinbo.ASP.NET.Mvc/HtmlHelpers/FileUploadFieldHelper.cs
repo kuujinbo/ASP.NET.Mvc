@@ -7,10 +7,15 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
     public static class FileUploadFieldHelper
     {
-
         public const string ACCEPT_ALL = "*.*";
         public const string ACCEPT_FORMAT = @"
 <div style='line-height:1em;font-size:0.9em'><strong>Allowed file types: [ {0} ]</strong></div>";
+
+        /// <summary>
+        /// Flag when extension called multiple times per view to ensure that
+        /// JavaScript block only added once.
+        /// </summary>
+        public static readonly string VIEW_DATA = typeof(FileUploadFieldHelper).ToString();
 
         public static readonly string JavaScriptBlock;
 
@@ -58,7 +63,13 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             , string[] accept = null
             )
         {
-            var html = new StringBuilder(JavaScriptBlock, 4096);
+            var html = new StringBuilder(4096);
+            if (!helper.ViewData.ContainsKey(VIEW_DATA))
+            {
+                html.Append(JavaScriptBlock);
+                helper.ViewData.Add(VIEW_DATA, true);
+            }
+
             var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
                 new WebConfigHelper(helper.ViewContext.HttpContext.Request.ApplicationPath)
             );

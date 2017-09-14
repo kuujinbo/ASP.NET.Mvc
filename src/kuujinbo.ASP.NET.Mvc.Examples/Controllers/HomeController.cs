@@ -38,13 +38,26 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
                 result.Add(new
                 {
                     label = user.Name
-                    , value = user.Id,
+                    , value = user.Id
+                    , office = user.Office
                 });
 
             }
 
             Thread.Sleep(1000);
             return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult AddUsers(string[] users)
+        {
+            return new JsonResult
+            {
+                Data = string.Format(
+                    "<h1>Users Added</h1> {0}", 
+                    string.Join("<br />", users)
+                )
+            };
         }
 
 
