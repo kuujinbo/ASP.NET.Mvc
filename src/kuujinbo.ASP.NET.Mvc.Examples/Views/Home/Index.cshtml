@@ -77,14 +77,13 @@
 
             @Html.jQueryAutoComplete(
                 "searchText"
-                , @Url.Action("SearchUsers", "Search").ToString()
+                , @Url.Action("SearchUsers", "Home").ToString()
                 , 1
                 , new {
                     @class = "form-control input-sm",
                     placeholder = "Search by Last Name"
                 }
             )
-            <script type='text/javascript' src='@Url.Content("~/scripts/jQueryAutoCompleteTest.js")'></script>
         </fieldset>
 
         <fieldset>
@@ -222,4 +221,5 @@
 @section scripts
 {
 @Scripts.Render("~/bundles/plupload")
+<script type='text/javascript' src='@Url.Content("~/scripts/jQueryAutoCompleteTest.js")'></script>
 }

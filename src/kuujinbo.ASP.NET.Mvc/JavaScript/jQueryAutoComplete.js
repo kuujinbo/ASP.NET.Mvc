@@ -32,9 +32,6 @@
         throw this.searchInputError;
     }
 
-    if (searchUrl) { this._searchUrl = searchUrl; }
-    else { throw this.searchUrlError; }
-
     if (selectCallback && typeof selectCallback === 'function') { this._selectCallback = selectCallback; }
     else { throw this.selectCallbackError; }
 
@@ -43,28 +40,30 @@
 jQueryAutoComplete.prototype = {
     constructor: jQueryAutoComplete
     , autocomplete: function() {
-        $(this._searchInputElement).autocomplete({
+        var that = this;
+        $(that._searchInputElement).autocomplete({
             source: function(request, response) {
-                this.sendXhr(request, response);
+                that.sendXhr(request, response);
             }
-            , minLength: this._searchInputElement.getAttribute(this.minSearchLength) || 1
+            , minLength: that._searchInputElement.getAttribute(that.minSearchLength) || 1
             , focus: function(event, ui) {
                 // this._searchInputElement.value = ui.item.label;
-                this._searchInputElement.value = '';
+                that._searchInputElement.value = '';
                 return false;
             }
             , select: function(event, ui) {
-                this._selectCallback(event, ui)
+                that._selectCallback(event, ui)
                 // console.log('Selected: ' + ui.item.value + ' SOME_PROPERTY ' + ui.item.someProperty);
                 return false;
             }
         });
     }
     , sendXhr: function(request, response) {
+        var that = this;
         $.ajax({
             url: this._url,
             dataType: 'json',
-            data: { searchText: this._searchInputElement.value }
+            data: { searchText: that._searchInputElement.value }
         })
         .done(function(data, textStatus, jqXHR) {
             response(data);
@@ -72,8 +71,8 @@ jQueryAutoComplete.prototype = {
         .fail(function(jqXHR, textStatus, errorThrown) {
             alert('Error');
         })
-        .always(function() {
-            this._searchInputElement.classList.remove('ui-autocomplete-loading');
+        .always(function () {
+            that._searchInputElement.classList.remove('ui-autocomplete-loading');
         });
     }
 }
