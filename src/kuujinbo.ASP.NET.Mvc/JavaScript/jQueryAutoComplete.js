@@ -12,13 +12,9 @@
         value: 'selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\n'
                 + 'function (event, ui) {}'
     });
-    Object.defineProperty(this, 'searchUrl', {
-        value: 'search-url'
-    });
 
-    Object.defineProperty(this, 'minSearchLength', {
-        value: 'min-search-length'
-    });
+    Object.defineProperty(this, 'searchUrl', { value: 'search-url' });
+    Object.defineProperty(this, 'minSearchLength', { value: 'min-search-length' });
 
     if (typeof jQuery === 'undefined'
         || typeof jQuery.ui === 'undefined'
@@ -27,7 +23,6 @@
         throw this.jQueryRequiredError;
     }
 
-    this._searchSelector = searchSelector;
     this._searchInputElement = null;
     if (searchSelector 
         && (this._searchInputElement = document.querySelector(searchSelector)))

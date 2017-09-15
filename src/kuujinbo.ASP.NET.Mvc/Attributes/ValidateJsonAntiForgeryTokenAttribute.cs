@@ -1,7 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
 using System.Web.Helpers;
+using System.Web.Mvc;
 
-namespace System.Web.Mvc
+namespace kuujinbo.ASP.NET.Mvc.Attributes
 {
     /// <summary>
     /// Workaround to allow Antiforgery Token Validation via HTTP Header for AJAX requests

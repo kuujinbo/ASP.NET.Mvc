@@ -7,11 +7,10 @@ addButton.addEventListener(
         if (toAdd && toAdd.length > 0) {
             var users = [];
             for (var i = 0; i < toAdd.length; ++i) { users.push(toAdd[i].innerText); }
-            console.log(users);
+            console.log(new Xhr().getXsrfToken(target));
 
             $.ajax({
                 url: target.dataset.url
-                // , data: { users: ["1", "2"] }
                 , data: { users: users }
                 , type: 'POST'
                 , headers: new Xhr().getXsrfToken(target)
@@ -36,16 +35,10 @@ userContainer.addEventListener(
     function (e) {
         var target = e.target;
         var tag = target.tagName.toLowerCase();
-        if (tag === 'span') {
-            removeFromDom(target.parentElement)
-        } else if (tag === 'div') {
-            removeFromDom(target)
-        }
-        console.log(target);
+        if (tag === 'span') { removeFromDom(target.parentElement) }
     }
     , false
 );
-// console.log(userContainer);
 
 function addToDom(id, name, office) {
     if (!userContainer.querySelector('[data-id="' + id + '"]')) {

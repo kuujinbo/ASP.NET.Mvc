@@ -1,0 +1,23 @@
+﻿@using kuujinbo.ASP.NET.Mvc.HtmlHelpers;
+<fieldset>
+    <legend>jQueryAutoComplete</legend>
+    @Html.jQueryAutoComplete(
+                "searchText"
+                , @Url.Action("SearchUsers", "Home").ToString()
+                , 1
+                , new
+                {
+                    @class = "form-control input-sm",
+                    placeholder = "Search by Last Name"
+                }
+            )
+    <form id='user-list' style='display:block;'>
+        <div class='margin-tb10'>
+
+        </div>
+        <input id='add-users' class=' btn btn-primary' type='submit'
+               data-url='@Url.Action("AddUsers", "Home")' value='Add' />
+    </form>
+
+</fieldset>
+@Html.AddViewScript(string.Format("<script type='text/javascript' src='{0}'></script>", @Url.Content("~/scripts/jQueryAutoCompleteTest.js")))

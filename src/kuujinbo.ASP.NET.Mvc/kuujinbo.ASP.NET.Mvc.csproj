@@ -43,6 +43,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -68,6 +69,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -80,6 +82,7 @@
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
+    <Compile Include="CookieFactory.cs" />
     <Compile Include="DodCac.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Filters\XsrfFilter.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Helpers\WebConfigurationManagerHelper.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelper.cs" />
     <Compile Include="HtmlHelpers\FileUploadFieldHelper.cs" />
+    <Compile Include="HtmlHelpers\ScriptManagerHelper.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

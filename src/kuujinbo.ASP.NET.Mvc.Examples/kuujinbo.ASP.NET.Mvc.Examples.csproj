@@ -235,6 +235,7 @@
     <Content Include="Views\CacInfo\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_jQueryAutoComplete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using kuujinbo.ASP.NET.Mvc.Tests._testHelpers;
+using System;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using kuujinbo.ASP.NET.Mvc.Attributes;
-using Moq;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests
@@ -31,8 +28,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
         {
             Assert.Equal(SessionTerminator.PrivilegedTimeout, _sessionTerminator.GetTimeout(true));
         }
-
-        /*
 
         [Fact]
         public void Logout_DefaultParameters_SetsTempDataKey()
@@ -79,6 +74,5 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
                 now.AddDays(-1).Day
             );
         }
-         */
     }
 }

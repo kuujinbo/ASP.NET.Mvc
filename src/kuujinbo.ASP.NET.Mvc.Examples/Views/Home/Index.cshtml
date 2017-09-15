@@ -75,7 +75,8 @@
     </div>
 
     <div class='col-xs-6'>
-        <fieldset>
+        @Html.Partial("_jQueryAutoComplete")
+        @*<fieldset>
             <legend>jQueryAutoComplete</legend>
             @Html.jQueryAutoComplete(
                 "searchText"
@@ -93,10 +94,9 @@
                 </div>
                 <input id='add-users' class=' btn btn-primary' type='submit'
                        data-url='@Url.Action("AddUsers", "Home")' value='Add' />
-                @Html.AntiForgeryToken()
             </form>
 
-        </fieldset>
+        </fieldset>*@
     </div>
 </div>
 
@@ -190,5 +190,5 @@
     }
 </script>
 
-<script type='text/javascript' src='@Url.Content("~/scripts/jQueryAutoCompleteTest.js")'></script>
 }
+@*@Html.AddViewScript(string.Format("<script type='text/javascript' src='{0}'></script>", @Url.Content("~/scripts/jQueryAutoCompleteTest.js")));*@

@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Properties;
 
-
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
     public static class CheckboxGroupTogglerHelper

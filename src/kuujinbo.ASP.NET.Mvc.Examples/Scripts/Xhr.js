@@ -8,7 +8,8 @@ Xhr.prototype = {
     constructor: Xhr,
 
     getXsrfToken: function (element) {
-        var token = element.form.querySelector('input[name=' + this._xsrf + ']');
+        // var token = element.form.querySelector('input[name=' + this._xsrf + ']');
+        var token = document.querySelector('input[name=' + this._xsrf + ']');
         if (token !== null) {
             var xsrf = {};
             xsrf[this._xsrf] = token.value;

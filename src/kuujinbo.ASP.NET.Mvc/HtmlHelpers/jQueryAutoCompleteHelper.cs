@@ -23,7 +23,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string VIEW_DATA = typeof(jQueryAutoCompleteHelper).ToString();
+        public static readonly string SCRIPT_KEY = typeof(jQueryAutoCompleteHelper).ToString();
 
         public static readonly string JavaScriptBlock;
 
@@ -50,15 +50,15 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             tagBuilder.MergeAttribute(URL_ATTR, searchUrl, true);
             tagBuilder.MergeAttribute(MIN_LEN_ATTR, minSearchLength.ToString(), true);
 
-            var html = new StringBuilder(tagBuilder.ToString(), 4096);
+            //if (!helper.ViewData.ContainsKey(VIEW_DATA))
+            //{
+            //    html.Append(JavaScriptBlock);
+            //    helper.ViewData.Add(VIEW_DATA, true);
+            //}
 
-            if (!helper.ViewData.ContainsKey(VIEW_DATA))
-            {
-                html.Append(JavaScriptBlock);
-                helper.ViewData.Add(VIEW_DATA, true);
-            }
+            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock);
 
-            return new MvcHtmlString(html.ToString());
+            return new MvcHtmlString(tagBuilder.ToString());
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Moq;
 
-namespace kuujinbo.ASP.NET.Mvc.Tests
+namespace kuujinbo.ASP.NET.Mvc.Tests._testHelpers
 {
     [ExcludeFromCodeCoverage]
     public static class MvcMockHelpers
@@ -31,6 +31,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
 
             context.Setup(ctx => ctx.Items).Returns(items.Object);
             context.Setup(ctx => ctx.Request).Returns(request.Object);
+            request.Setup(r => r.Cookies).Returns(new HttpCookieCollection());
             context.Setup(ctx => ctx.Response).Returns(response.Object);
             context.Setup(ctx => ctx.Session).Returns(session.Object);
             context.Setup(ctx => ctx.Server).Returns(server.Object);
@@ -117,6 +118,24 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
                 .Returns(GetUrlFileName(url));
             mock.Setup(req => req.PathInfo)
                 .Returns(string.Empty);
+        }
+
+        public static void SetRequestCookies(this HttpRequestBase request, HttpCookieCollection cookies)
+        {
+            if (cookies == null) throw new ArgumentNullException("cookies");
+
+            Mock.Get(request)
+              .SetupGet(req => req.Cookies)
+              .Returns(cookies);
+        }
+
+        public static void SetRequestQueryString(this HttpRequestBase request, NameValueCollection querystring)
+        {
+            if (querystring == null) throw new ArgumentNullException("querystring");
+
+            Mock.Get(request)
+              .SetupGet(req => req.QueryString)
+              .Returns(querystring);
         }
 
         public static HttpCachePolicyBase CreateCachePolicy()

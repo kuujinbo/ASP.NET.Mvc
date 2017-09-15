@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using kuujinbo.ASP.NET.Mvc.HtmlHelpers
+<!DOCTYPE html>
 <html ng-app='angular1'>
 <head>
 <meta name="viewport" content="width=device-width" />
@@ -16,5 +17,6 @@
 <script type='text/javascript' src='@Url.Content("~/scripts/Xhr.js")'></script>
 
 @RenderSection("scripts", required: false)
+@Html.RenderViewScripts()
 </body>
 </html>
