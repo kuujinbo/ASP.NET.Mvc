@@ -29,10 +29,11 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 
         static jQueryAutoCompleteHelper()
         {
-            var script = new StringBuilder("<script type='text/javascript'>\n", 4096);
-            script.AppendLine(Resources.jQueryAutoComplete);
-            script.AppendLine("</script>");
-            JavaScriptBlock = script.ToString();
+            //var script = new StringBuilder("<script type='text/javascript'>\n", 4096);
+            //script.AppendLine(Resources.jQueryAutoComplete);
+            //script.AppendLine("</script>");
+            //JavaScriptBlock = script.ToString();
+            JavaScriptBlock = Resources.jQueryAutoComplete;
         }
 
         public static MvcHtmlString jQueryAutoComplete(

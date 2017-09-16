@@ -53,7 +53,8 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             _helper.AddViewScript("b");
             _helper.RenderViewScripts();
 
-            _textWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(2));
+            // 2 extra calls for opening and closing <script> tag
+            _textWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(4));
         }
 
         [Fact]
@@ -68,7 +69,8 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             _helper.AddViewScript(scriptBlock, scriptKey);
             _helper.RenderViewScripts();
 
-            _textWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(2));
+            // 2 extra calls for opening and closing <script> tag
+            _textWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(4));
         }
 
     }

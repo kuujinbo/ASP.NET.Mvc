@@ -20,4 +20,4 @@
     </form>
 
 </fieldset>
-@Html.AddViewScript(string.Format("<script type='text/javascript' src='{0}'></script>", @Url.Content("~/scripts/jQueryAutoCompleteTest.js")))
+@Html.AddScriptSrc(@Url.Content("~/scripts/jQueryAutoCompleteTest.js"))

@@ -47,9 +47,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 </div>
 <div style='line-height:1.76em;font-size:0.9em'><strong>Max file upload size [ {3:0.00} MB ]</strong></div>
 {4}
-<script type='text/javascript'>
-    new FileUploadField().addListeners();
-</script>";
+<script type='text/javascript'>new FileUploadField().addListeners();</script>";
 
         /// <summary>
         /// File upload HTML, ONLY USE ONCE PER View. You **MUST** pass a 
