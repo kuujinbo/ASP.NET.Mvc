@@ -1,6 +1,8 @@
-﻿using kuujinbo.ASP.NET.Mvc.HtmlHelpers;
-using Moq;
+﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.HtmlHelpers;
+using Moq;
 using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
@@ -12,47 +14,27 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
 
         public CheckboxGroupTogglerHelperTests()
         {
+            var httpContext = new Mock<HttpContextBase>();
+            httpContext.Setup(x => x.Items).Returns(new Dictionary<string, object>());
+
+            var viewContext = new Mock<ViewContext>();
+            viewContext.Setup(x => x.HttpContext).Returns(httpContext.Object);
+
             _viewData = new Mock<IViewDataContainer>();
             _viewData.Setup(x => x.ViewData).Returns(new ViewDataDictionary());
 
-            _helper = new HtmlHelper(new Mock<ViewContext>().Object, _viewData.Object);
+            _helper = new HtmlHelper(viewContext.Object, _viewData.Object);
         }
 
         [Fact]
-        public void CheckboxGroupToggler_CalledOnce_ReturnsHtmlWithOneScriptBlock()
-        {
-            var cssSelector = "#selector";
-
-            var result = _helper.CheckboxGroupToggler(cssSelector);
-            var expected = CheckboxGroupTogglerHelper.JavaScriptBlock
-                           + string.Format(
-                                CheckboxGroupTogglerHelper.JAVASCRIPT_FORMAT,
-                                cssSelector, 
-                                false.ToString().ToLower()
-                             );
-
-            Assert.Equal(expected, result.ToString());
-            Assert.Equal<bool>(
-                true, 
-                (bool)_viewData.Object.ViewData[CheckboxGroupTogglerHelper.VIEW_DATA]
-            );
-        }
-
-        [Fact]
-        public void CheckboxGroupToggler_CalledMoreThanOnce_DoesNotWriteScriptBlock()
+        public void CheckboxGroupToggler_WhenCalled_ReturnsStringEmpty()
         {
             var cssSelector = "#selector";
 
             _helper.CheckboxGroupToggler(cssSelector);
             var result = _helper.CheckboxGroupToggler(cssSelector);
 
-            var expected = string.Format(
-                               CheckboxGroupTogglerHelper.JAVASCRIPT_FORMAT,
-                               cssSelector,
-                               false.ToString().ToLower()
-                           );
-
-            Assert.Equal(expected, result.ToString());
+            Assert.Equal(string.Empty, result.ToString());
         }
     }
 }

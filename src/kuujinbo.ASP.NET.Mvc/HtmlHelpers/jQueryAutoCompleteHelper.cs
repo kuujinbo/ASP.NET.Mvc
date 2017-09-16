@@ -1,6 +1,6 @@
-﻿using kuujinbo.ASP.NET.Mvc.Properties;
-using System.Text;
+﻿using System.Text;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Properties;
 
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
@@ -29,7 +29,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 
         static jQueryAutoCompleteHelper()
         {
-            var script = new StringBuilder("<script type='text/javascript'>", 4096);
+            var script = new StringBuilder("<script type='text/javascript'>\n", 4096);
             script.AppendLine(Resources.jQueryAutoComplete);
             script.AppendLine("</script>");
             JavaScriptBlock = script.ToString();
@@ -50,13 +50,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             tagBuilder.MergeAttribute(URL_ATTR, searchUrl, true);
             tagBuilder.MergeAttribute(MIN_LEN_ATTR, minSearchLength.ToString(), true);
 
-            //if (!helper.ViewData.ContainsKey(VIEW_DATA))
-            //{
-            //    html.Append(JavaScriptBlock);
-            //    helper.ViewData.Add(VIEW_DATA, true);
-            //}
-
-            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock);
+            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
 
             return new MvcHtmlString(tagBuilder.ToString());
         }

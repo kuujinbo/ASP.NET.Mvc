@@ -41,7 +41,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
+
                 Assert.False(_fakeContext.Request.IsAjaxRequest());
                 Assert.Equal(method, _fakeContext.Request.HttpMethod);
                 Assert.Null(postResult);
@@ -56,7 +58,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
+                
                 Assert.False(_fakeContext.Request.IsAjaxRequest());
                 Assert.Equal(method, _fakeContext.Request.HttpMethod);
                 Assert.IsType<ValidateAntiForgeryTokenAttribute>(postResult);
@@ -72,7 +76,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _fakeContext.Request.SetAjaxHeaders();
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
+                
                 Assert.True(_fakeContext.Request.IsAjaxRequest());
                 Assert.Equal(method, _fakeContext.Request.HttpMethod);
                 Assert.Null(postResult);
@@ -88,7 +94,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _fakeContext.Request.SetAjaxHeaders();
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var postResult = XsrfFilter.GetFilter(_fakeContext.Request, new object[0]);
+                
                 Assert.True(_fakeContext.Request.IsAjaxRequest());
                 Assert.Equal(method, _fakeContext.Request.HttpMethod);
                 Assert.IsType<ValidateJsonAntiForgeryTokenAttribute>(postResult);
@@ -103,10 +111,12 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var postResult = XsrfFilter.GetFilter(
                     _fakeContext.Request, 
                     new object[] { new IgnoreXsrfFilterAttribute()}
                 );
+                
                 Assert.False(_fakeContext.Request.IsAjaxRequest());
                 Assert.Equal(method, _fakeContext.Request.HttpMethod);
                 Assert.Null(postResult);
@@ -122,10 +132,12 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _fakeContext.Request.SetAjaxHeaders();
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var postResult = XsrfFilter.GetFilter(
                     _fakeContext.Request,
                     new object[] { new IgnoreXsrfFilterAttribute() }
                 );
+                
                 Assert.True(_fakeContext.Request.IsAjaxRequest());
                 Assert.Equal(method, _fakeContext.Request.HttpMethod);
                 Assert.Null(postResult);
@@ -140,12 +152,11 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Filters
                 _fakeContext = MvcMockHelpers.FakeHttpContext();
                 _fakeContext.Request.SetHttpMethodResult(method);
                 _output.WriteLine("HttpMethod => {0}", method);
+                
                 var filter = XsrfFilter.Get();
 
                 Assert.IsType(typeof(ConditionalFilterProvider), filter);
             }
         }
-
-
     }
 }

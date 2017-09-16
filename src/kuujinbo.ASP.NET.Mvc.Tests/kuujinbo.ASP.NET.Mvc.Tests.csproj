@@ -49,6 +49,7 @@
     <Compile Include="Helpers\RegexUtilsTests.cs" />
     <Compile Include="Helpers\WebConfigurationManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\jQueryAutoCompleteHelperTests.cs" />
+    <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelperTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -54,43 +54,5 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
 
             Assert.Equal(expected, result.ToString());
         }
-
-
-        /*
-        [Fact]
-        public void jQueryAutoComplete_CalledOnce_ReturnsHtmlWithOneScriptBlock()
-        {
-            var cssSelector = "#selector";
-            var url = "/url";
-
-            var result = _helper.jQueryAutoComplete(cssSelector, url);
-            var expected = CreateInputElement(cssSelector, url)
-                           + jQueryAutoCompleteHelper.JavaScriptBlock;
-
-            Assert.Equal(expected, result.ToString());
-            Assert.Equal<bool>(
-                true, 
-                (bool)_viewData.Object.ViewData[jQueryAutoCompleteHelper.VIEW_DATA]
-            );
-
-        }
-
-        [Fact]
-        public void jQueryAutoComplete_CalledMoreThanOnce_DoesNotWriteScriptBlock()
-        {
-            var cssSelector = "#selector";
-            var url = "/url";
-
-            _helper.jQueryAutoComplete(cssSelector, url);
-            var result = _helper.jQueryAutoComplete(cssSelector, url);
-            var expected = CreateInputElement(cssSelector, url);
-
-            Assert.Equal(expected, result.ToString());
-            Assert.Equal<bool>(
-                true,
-                (bool)_viewData.Object.ViewData[jQueryAutoCompleteHelper.VIEW_DATA]
-            );
-        }
-         * */
     }
 }

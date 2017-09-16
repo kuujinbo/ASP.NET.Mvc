@@ -82,6 +82,15 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to function CheckboxGroupToggler(a) { Object.defineProperty(this, &quot;initError&quot;, { value: &quot;CSS selector for the checkbox group parent DOM element required.&quot; }); Object.defineProperty(this, &quot;containerError&quot;, { value: &quot;checkbox group parent DOM element not found. verify CSS selector is correct&quot; }); Object.defineProperty(this, &quot;buttonUncheckClassList&quot;, { value: &quot;btn btn-sm btn-default&quot; }); Object.defineProperty(this, &quot;buttonCheckClassList&quot;, { value: &quot;btn btn-sm btn-primary checked&quot; }); if (!a || !a.match(/\w+/)) th [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CheckboxGroupToggler_min {
+            get {
+                return ResourceManager.GetString("CheckboxGroupToggler_min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to function FileUploadField() {
         ///    Object.defineProperty(this, &apos;maxSizeExceeded&apos;, {
         ///        value: &apos;Max File Upload Size Exceeded&apos;
@@ -105,18 +114,18 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, searchUrl, selectCallback) {
+        ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, selectCallback) {
+        ///    // selectCallback **MUST** name parameters **EXACTLY** same as below
+        ///    // function (event, ui) {}
+        ///
         ///    Object.defineProperty(this, &apos;jQueryRequiredError&apos;, {
         ///        value: &apos;jQuery and jQuery UI libraries required.&apos;
         ///    });
         ///    Object.defineProperty(this, &apos;searchInputError&apos;, {
         ///        value: &apos;Search &lt;input&gt; selector missing or DOM element could not be found.&apos;
         ///    });
-        ///    Object.defineProperty(this, &apos;searchUrlError&apos;, {
-        ///        value: &apos;Search URL required.&apos;
-        ///    });
         ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
-        ///     [rest of string was truncated]&quot;;.
+        ///         [rest of string was truncated]&quot;;.
         /// </summary>
         public static string jQueryAutoComplete {
             get {

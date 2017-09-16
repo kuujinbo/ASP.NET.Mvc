@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HtmlHelpers\jQueryAutoCompleteHelper.cs" />
+    <Content Include="JavaScript\CheckboxGroupToggler.min.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
     <Content Include="JavaScript\jQueryAutoComplete.js" />
