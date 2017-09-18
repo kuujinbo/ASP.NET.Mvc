@@ -4,6 +4,7 @@ using Moq;
 using System.Web;
 using System.Web.Mvc;
 using Xunit;
+using System.Collections.Generic;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
 {
@@ -20,6 +21,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             request.Setup(x => x.ApplicationPath).Returns("/");
             
             var httpContext = new Mock<HttpContextBase>();
+            httpContext.Setup(x => x.Items).Returns(new Dictionary<string, object>());
             httpContext.Setup(x => x.Request).Returns(request.Object);
 
             var viewContext = new Mock<ViewContext>();
@@ -35,8 +37,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         public void FileUploadField_DefaultParam_ReturnsHtml()
         {
             var result = _helper.FileUploadField();
-            var expected = FileUploadFieldHelper.JavaScriptBlock
-                           + string.Format(
+            var expected = string.Format(
                                 FileUploadFieldHelper.HTML_FORMAT
                                 , _defaultUploadSize 
                                 , FileUploadFieldHelper.ACCEPT_ALL
@@ -49,30 +50,11 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         }
 
         [Fact]
-        public void FileUploadField_CalledMoreThanOnce_DoesNotWriteScriptBlock()
-        {
-            _helper.FileUploadField();
-            var result = _helper.FileUploadField();
-            var expected = string.Format(
-                                FileUploadFieldHelper.HTML_FORMAT
-                                , _defaultUploadSize
-                                , FileUploadFieldHelper.ACCEPT_ALL
-                                , FileUploadFieldHelper.DEFAULT_BUTTON_TEXT
-                                , _defaultUploadInMB
-                                , string.Empty
-                             );
-
-            Assert.Equal(expected, result.ToString());
-        }
-
-
-        [Fact]
         public void FileUploadField_ButtonText_ReturnsHtml()
         {
             var buttonText = "Select File";
             var result = _helper.FileUploadField(buttonText);
-            var expected = FileUploadFieldHelper.JavaScriptBlock
-                           + string.Format(
+            var expected = string.Format(
                                 FileUploadFieldHelper.HTML_FORMAT
                                 , _defaultUploadSize 
                                 , FileUploadFieldHelper.ACCEPT_ALL
@@ -89,8 +71,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         {
             var acceptExtensions = new string[] { ".pdf", ".jpg", ".png" };
             var result = _helper.FileUploadField(accept: acceptExtensions);
-            var expected = FileUploadFieldHelper.JavaScriptBlock
-                           + string.Format(
+            var expected = string.Format(
                                 FileUploadFieldHelper.HTML_FORMAT
                                 , _defaultUploadSize 
                                 , string.Join(",", acceptExtensions)

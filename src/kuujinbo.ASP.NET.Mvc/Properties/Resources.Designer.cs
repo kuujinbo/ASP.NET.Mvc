@@ -61,27 +61,6 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function CheckboxGroupToggler(groupSelector) {
-        ///    Object.defineProperty(this, &apos;initError&apos;, {
-        ///        value: &apos;CSS selector for the checkbox group parent DOM element required.&apos;
-        ///    });
-        ///
-        ///    Object.defineProperty(this, &apos;containerError&apos;, {
-        ///        value: &apos;checkbox group parent DOM element not found. verify CSS selector is correct&apos;
-        ///    });
-        ///
-        ///    Object.defineProperty(this, &apos;buttonUncheckClassList&apos;, {
-        ///        value: &apos;btn btn-sm btn-default&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;buttonCheckClassList [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string CheckboxGroupToggler {
-            get {
-                return ResourceManager.GetString("CheckboxGroupToggler", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to function CheckboxGroupToggler(a) { Object.defineProperty(this, &quot;initError&quot;, { value: &quot;CSS selector for the checkbox group parent DOM element required.&quot; }); Object.defineProperty(this, &quot;containerError&quot;, { value: &quot;checkbox group parent DOM element not found. verify CSS selector is correct&quot; }); Object.defineProperty(this, &quot;buttonUncheckClassList&quot;, { value: &quot;btn btn-sm btn-default&quot; }); Object.defineProperty(this, &quot;buttonCheckClassList&quot;, { value: &quot;btn btn-sm btn-primary checked&quot; }); if (!a || !a.match(/\w+/)) th [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CheckboxGroupToggler_min {
@@ -91,72 +70,39 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function FileUploadField() {
-        ///    Object.defineProperty(this, &apos;maxSizeExceeded&apos;, {
-        ///        value: &apos;Max File Upload Size Exceeded&apos;
-        ///    });
-        ///}
-        ///
-        ///FileUploadField.prototype = {
-        ///    constructor: FileUploadField,
-        ///    toMB: function(sizeInBytes) {
-        ///        var multiplier = 1024;
-        ///        var i = Math.floor(Math.log(sizeInBytes) / Math.log(multiplier))
-        ///        return parseFloat((sizeInBytes / Math.pow(multiplier, i)).toFixed(2)) + &quot; MB&quot;;
-        ///    },
-        ///    clearUpload: function(e) {
-        ///        this.clearUploadUpateDo [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function FileUploadField(){Object.defineProperty(this,&quot;maxSizeExceeded&quot;,{value:&quot;Max File Upload Size Exceeded&quot;})} FileUploadField.prototype={constructor:FileUploadField,toMB:function(a){return parseFloat((a/Math.pow(1024,Math.floor(Math.log(a)/Math.log(1024)))).toFixed(2))+&quot; MB&quot;},clearUpload:function(a){this.clearUploadUpateDom(a.target)},clearUploadUpateDom:function(a){a.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.value=&quot;&quot;;a.parentNode.previousElementSibling.value=&quot;&quot;;a.paren [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string FileUploadField {
+        public static string FileUploadField_min {
             get {
-                return ResourceManager.GetString("FileUploadField", resourceCulture);
+                return ResourceManager.GetString("FileUploadField_min", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, selectCallback) {
-        ///    // selectCallback **MUST** name parameters **EXACTLY** same as below
-        ///    // function (event, ui) {}
-        ///
-        ///    Object.defineProperty(this, &apos;jQueryRequiredError&apos;, {
-        ///        value: &apos;jQuery and jQuery UI libraries required.&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;searchInputError&apos;, {
-        ///        value: &apos;Search &lt;input&gt; selector missing or DOM element could not be found.&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
-        ///         [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function Xhr(a,b,c){Object.defineProperty(this,&quot;urlError&quot;,{value:&quot;url required.&quot;});Object.defineProperty(this,&quot;doneCallbackError&quot;,{value:&quot;doneCallback required, and must be a function().&quot;});Object.defineProperty(this,&quot;failTitle&quot;,{value:&quot;Unable to Process Request&quot;});Object.defineProperty(this,&quot;defaultFailMessage&quot;,{value:&quot;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&quot;});this._xsrf=&quot;__RequestVerificationToken&quot;;this._jQuery [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string jQueryAutoComplete {
+        public static string jQueryAjaxHelper_min {
             get {
-                return ResourceManager.GetString("jQueryAutoComplete", resourceCulture);
+                return ResourceManager.GetString("jQueryAjaxHelper_min", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function SessionTerminator() {
-        ///    Object.defineProperty(this, &apos;initError&apos;, {
-        ///        value: &apos;logoutUrl required&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;adminTimeout&apos;, {
-        ///        value: 10 * 60 // STIG
-        ///    });
-        ///    Object.defineProperty(this, &apos;maxTimeout&apos;, {
-        ///        value: 15 * 60 // STIG
-        ///    });
-        ///
-        ///    this._timeoutID = 0;
-        ///    this._idleTimeout = this.adminTimeout;
-        ///    this._logoutUrl = &apos;&apos;;
-        ///}
-        ///
-        ///SessionTerminator.prototype = {
-        ///    constructor: SessionTerminator,
-        ///    init: function(timeoutInSe [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function jQueryAutoComplete(a,b){Object.defineProperty(this,&quot;jQueryRequiredError&quot;,{value:&quot;jQuery and jQuery UI libraries required.&quot;});Object.defineProperty(this,&quot;searchInputError&quot;,{value:&quot;Search &lt;input&gt; selector missing or DOM element could not be found.&quot;});Object.defineProperty(this,&quot;selectCallbackError&quot;,{value:&quot;selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\nfunction (event, ui) {}&quot;});Object.defineProperty(this,&quot;resultElementError&quot;,{value:&quot;autocomplete results DOM [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string SessionTerminator {
+        public static string jQueryAutoComplete_min {
             get {
-                return ResourceManager.GetString("SessionTerminator", resourceCulture);
+                return ResourceManager.GetString("jQueryAutoComplete_min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function SessionTerminator(){Object.defineProperty(this,&quot;initError&quot;,{value:&quot;logoutUrl required&quot;});Object.defineProperty(this,&quot;adminTimeout&quot;,{value:600});Object.defineProperty(this,&quot;maxTimeout&quot;,{value:900});this._timeoutID=0;this._idleTimeout=this.adminTimeout;this._logoutUrl=&quot;&quot;}
+        ///SessionTerminator.prototype={constructor:SessionTerminator,init:function(a,b){if(!b||!b.match(/[\/\w]+/))throw this.initError;this._idleTimeout=a&amp;&amp;a&lt;this.maxTimeout?1E3*a:1E3*this.maxTimeout;this._logoutUrl=b;window.onload=this.rese [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SessionTerminator_min {
+            get {
+                return ResourceManager.GetString("SessionTerminator_min", resourceCulture);
             }
         }
     }

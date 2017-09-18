@@ -230,7 +230,6 @@
     <Content Include="Content\octicons\octicons.woff" />
     <Content Include="Scripts\lib\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\lib\jquery-ui-1.12.1.min.js" />
-    <Content Include="Scripts\Xhr.js" />
     <Content Include="Views\CacInfo\Index.cshtml" />
     <Content Include="Views\CacInfo\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />

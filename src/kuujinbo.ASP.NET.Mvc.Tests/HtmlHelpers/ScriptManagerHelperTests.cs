@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +10,8 @@ using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
 {
+    // M$ code coverage is too stupid to ignore successful Exception testing 
+    [ExcludeFromCodeCoverage]
     public class ScriptManagerHelperTests : IDisposable
     {
         HtmlHelper _helper;
@@ -73,5 +76,14 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             _textWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(4));
         }
 
+        [Fact]
+        public void AddScriptSrc_RenderViewScripts_WritesScripts()
+        {
+            _helper.AddScriptSrc("/scripts/a.js");
+            _helper.AddScriptSrc("/scripts/b.js");
+            _helper.RenderViewScripts();
+
+            _textWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(2));
+        }
     }
 }

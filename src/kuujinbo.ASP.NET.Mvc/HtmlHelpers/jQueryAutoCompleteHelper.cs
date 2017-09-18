@@ -25,16 +25,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
         /// </summary>
         public static readonly string SCRIPT_KEY = typeof(jQueryAutoCompleteHelper).ToString();
 
-        public static readonly string JavaScriptBlock;
-
-        static jQueryAutoCompleteHelper()
-        {
-            //var script = new StringBuilder("<script type='text/javascript'>\n", 4096);
-            //script.AppendLine(Resources.jQueryAutoComplete);
-            //script.AppendLine("</script>");
-            //JavaScriptBlock = script.ToString();
-            JavaScriptBlock = Resources.jQueryAutoComplete;
-        }
+        public static readonly string JavaScriptBlock = Resources.jQueryAutoComplete_min;
 
         public static MvcHtmlString jQueryAutoComplete(
             this HtmlHelper helper
@@ -43,6 +34,8 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             , int minSearchLength = 1
             , object htmlAttributes = null)
         {
+            jQueryAjaxHelper.jQueryAjax(helper);
+
             var tagBuilder = new TagBuilder("input");
             tagBuilder.MergeAttributes<string, object>(
                 HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)

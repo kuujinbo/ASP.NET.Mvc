@@ -13,6 +13,12 @@
                 + 'function (event, ui) {}'
     });
 
+    Object.defineProperty(this, 'resultElementError', {
+        value: 'autocomplete results DOM element could not be found.'
+    });
+    Object.defineProperty(this, 'resultElementSelector', { value: 'ul.ui-autocomplete' });
+    Object.defineProperty(this, 'resultElementLoadingClass', { value: 'ui-autocomplete-loading' });
+
     Object.defineProperty(this, 'searchUrl', { value: 'search-url' });
     Object.defineProperty(this, 'minSearchLength', { value: 'min-search-length' });
 
@@ -40,48 +46,42 @@
 jQueryAutoComplete.prototype = {
     constructor: jQueryAutoComplete
     , autocomplete: function() {
-        var that = this;
-        $(that._searchInputElement).autocomplete({
-            source: function(request, response) {
-                that.sendXhr(request, response);
+        var self = this;
+        $(self._searchInputElement).autocomplete({
+            source: function (request, response) {
+                var xhr = new Xhr(self._url, function(data) { self.sourceCallback(response, data) } );
+                xhr.send(
+                    { searchText: self._searchInputElement.value }
+                    , 'GET'
+                    , function() { self._searchInputElement.classList.remove(self.resultElementLoadingClass); }
+                    , response
+                );
             }
-            , minLength: that._searchInputElement.getAttribute(that.minSearchLength) || 1
+            , minLength: self._searchInputElement.getAttribute(self.minSearchLength) || 1
             , focus: function(event, ui) {
-                that._searchInputElement.value = '';
+                self._searchInputElement.value = '';
                 return false;
             }
             , select: function(event, ui) {
-                that._selectCallback(event, ui)
+                self._selectCallback(event, ui)
                 // console.log('Selected: ' + ui.item.value + ' SOME_PROPERTY ' + ui.item.someProperty);
                 return false;
             }
         });
     }
-    , sendXhr: function(request, response) {
-        var that = this;
-        $.ajax({
-            url: this._url,
-            dataType: 'json',
-            data: { searchText: that._searchInputElement.value }
-        })
-        .done(function (data, textStatus, jqXHR) {
-            var resultElement = document.querySelector('ul.ui-autocomplete');
-            if (resultElement) {
-                if (data.length > 4) {
-                    resultElement.style.overflowX = 'hidden';
-                    resultElement.style.overflowY = 'auto';
-                    resultElement.style.height = '100px';
-                } else {
-                    resultElement.style.height = 'auto';
-                }
+    , sourceCallback: function(response, data) {
+        var resultElement = document.querySelector(this.resultElementSelector);
+        if (resultElement) {
+            if (data.length > 4) {
+                resultElement.style.overflowX = 'hidden';
+                resultElement.style.overflowY = 'auto';
+                resultElement.style.height = '100px';
+            } else {
+                resultElement.style.height = 'auto';
             }
             response(data);
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error');
-        })
-        .always(function () {
-            that._searchInputElement.classList.remove('ui-autocomplete-loading');
-        });
+        } else {
+            throw this.resultElementError;
+        }
     }
 }

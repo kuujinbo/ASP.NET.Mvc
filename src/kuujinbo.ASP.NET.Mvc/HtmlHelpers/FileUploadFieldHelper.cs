@@ -15,17 +15,9 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string VIEW_DATA = typeof(FileUploadFieldHelper).ToString();
+        public static readonly string SCRIPT_KEY = typeof(FileUploadFieldHelper).ToString();
 
-        public static readonly string JavaScriptBlock;
-
-        static FileUploadFieldHelper()
-        {
-            var script = new StringBuilder("<script type='text/javascript'>", 4096);
-            script.AppendLine(Resources.FileUploadField);
-            script.AppendLine("</script>");
-            JavaScriptBlock = script.ToString();
-        }
+        public static readonly string JavaScriptBlock = Resources.FileUploadField_min;
 
         public const string DEFAULT_BUTTON_TEXT = "Browse....";
         public const string HTML_FORMAT = @"
@@ -46,8 +38,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
     </span>
 </div>
 <div style='line-height:1.76em;font-size:0.9em'><strong>Max file upload size [ {3:0.00} MB ]</strong></div>
-{4}
-<script type='text/javascript'>new FileUploadField().addListeners();</script>";
+{4}";
 
         /// <summary>
         /// File upload HTML, ONLY USE ONCE PER View. You **MUST** pass a 
@@ -61,25 +52,21 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             , string[] accept = null
             )
         {
-            var html = new StringBuilder(4096);
-            if (!helper.ViewData.ContainsKey(VIEW_DATA))
-            {
-                html.Append(JavaScriptBlock);
-                helper.ViewData.Add(VIEW_DATA, true);
-            }
+            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddViewScript(helper, "new FileUploadField().addListeners();");
 
             var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
                 new WebConfigHelper(helper.ViewContext.HttpContext.Request.ApplicationPath)
             );
-            html.AppendFormat(
+
+            return new MvcHtmlString(string.Format(
                 HTML_FORMAT
                 , maxuploadSize
-                , accept != null ? string.Join(",", accept) : ACCEPT_ALL 
+                , accept != null ? string.Join(",", accept) : ACCEPT_ALL
                 , buttonText
                 , maxuploadSize / 1024
                 , accept != null ? string.Format(ACCEPT_FORMAT, string.Join(",", accept)) : string.Empty
-            );
-            return new MvcHtmlString(html.ToString());
+            ));
         }
     }
 }

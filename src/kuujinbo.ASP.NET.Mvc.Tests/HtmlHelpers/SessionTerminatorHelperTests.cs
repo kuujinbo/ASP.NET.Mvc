@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web;
+using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.HtmlHelpers;
 using Moq;
 using Xunit;
@@ -8,6 +10,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
     public class SessionTerminatorHelperTests
     {
         HtmlHelper _helper;
+        Mock<IViewDataContainer> _viewData;
         Mock<ControllerBase> _controller;
         const string _testUrl = "/controllerName/actionName";
 
@@ -17,10 +20,17 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             _controller.Object.TempData = new TempDataDictionary();
             _controller.Object.TempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] = true;
 
+            var httpContext = new Mock<HttpContextBase>();
+            httpContext.Setup(x => x.Items).Returns(new Dictionary<string, object>());
+
             var viewContext = new Mock<ViewContext>();
             viewContext.Setup(x => x.Controller).Returns(_controller.Object);
+            viewContext.Setup(x => x.HttpContext).Returns(httpContext.Object);
 
-            _helper = new HtmlHelper(viewContext.Object, new Mock<IViewDataContainer>().Object);
+            _viewData = new Mock<IViewDataContainer>();
+            _viewData.Setup(x => x.ViewData).Returns(new ViewDataDictionary());
+
+            _helper = new HtmlHelper(viewContext.Object, _viewData.Object);
         }
 
         [Fact]
@@ -39,8 +49,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, _testUrl);
 
             Assert.Equal(
-                SessionTerminatorHelper.JavaScriptBlock
-                + SessionTerminatorHelper.ShowLogout, 
+                SessionTerminatorHelper.ShowLogout, 
                 result.ToString()
             );
         }
@@ -53,8 +62,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, _testUrl);
 
             Assert.Equal(
-                SessionTerminatorHelper.JavaScriptBlock
-                + string.Format(
+                string.Format(
                     SessionTerminatorHelper.InitFormat,
                     SessionTerminator.PrivilegedTimeout,
                     _testUrl
@@ -62,6 +70,5 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
                 result.ToString()
             );
         }
-
     }
 }

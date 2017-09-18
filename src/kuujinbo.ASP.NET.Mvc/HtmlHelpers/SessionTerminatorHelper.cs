@@ -6,14 +6,13 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 {
     public static class SessionTerminatorHelper
     {
-        public static readonly string JavaScriptBlock;
-        static SessionTerminatorHelper()
-        {
-            var script = new StringBuilder("<script type='text/javascript'>", 4096);
-            script.AppendLine(Resources.SessionTerminator);
-            script.AppendLine("</script>");
-            JavaScriptBlock = script.ToString();
-        }
+        /// <summary>
+        /// Flag when extension called multiple times per view to ensure that
+        /// JavaScript block only added once.
+        /// </summary>
+        public static readonly string SCRIPT_KEY = typeof(SessionTerminatorHelper).ToString();
+
+        public static readonly string JavaScriptBlock = Resources.SessionTerminator_min;
 
         public const string InitFormat = @"<script type='text/javascript'>
 new SessionTerminator().init({0}, '{1}');
@@ -24,20 +23,19 @@ new SessionTerminator().showLogoutMessage();
 </script>";
 
         public static MvcHtmlString TerminateSession(
-            this HtmlHelper html, int timeout, string url)
+            this HtmlHelper helper, int timeout, string url)
         {
-            var tempData = html.ViewContext.Controller.TempData;
+            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
+
+            var tempData = helper.ViewContext.Controller.TempData;
 
             if (tempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] == null)
             {
-                return new MvcHtmlString(
-                    JavaScriptBlock 
-                    + string.Format(InitFormat, timeout, url)
-                );
+                return new MvcHtmlString(string.Format(InitFormat, timeout, url));
             }
             else if (tempData[SessionTerminator.SESSION_TIMED_OUT] != null)
             {
-                return new MvcHtmlString(JavaScriptBlock + ShowLogout);
+                return new MvcHtmlString(ShowLogout);
             }
             else { return new MvcHtmlString(""); }
         }

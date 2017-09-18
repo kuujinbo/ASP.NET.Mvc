@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Properties;
 
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
@@ -12,19 +11,10 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
         /// </summary>
         public static readonly string SCRIPT_KEY = typeof(CheckboxGroupTogglerHelper).ToString();
 
-        public static readonly string JavaScriptBlock;
-        static CheckboxGroupTogglerHelper()
-        {
-            //var script = new StringBuilder("<script type='text/javascript'>", 4096);
-            //script.Append(Resources.CheckboxGroupToggler_min);
-            //script.Append("</script>");
-            //JavaScriptBlock = script.ToString();
-            JavaScriptBlock = Resources.CheckboxGroupToggler_min;
-        }
+        public static readonly string JavaScriptBlock = Resources.CheckboxGroupToggler_min;
 
         public const string JAVASCRIPT_FORMAT =
 @"new CheckboxGroupToggler('{0}').addToggleElement({1});";
-// @"<script type='text/javascript'>new CheckboxGroupToggler('{0}').addToggleElement({1});</script>";
 
         public static MvcHtmlString CheckboxGroupToggler(
             this HtmlHelper helper,

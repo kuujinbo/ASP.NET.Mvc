@@ -1,7 +1,4 @@
-﻿using kuujinbo.ASP.NET.Mvc.Attributes;
-using kuujinbo.ASP.NET.Mvc.Examples.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -10,6 +7,9 @@ using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using kuujinbo.ASP.NET.Mvc.Attributes;
+using kuujinbo.ASP.NET.Mvc.Examples.Models;
+using Newtonsoft.Json;
 
 namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 {
@@ -45,7 +45,7 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
 

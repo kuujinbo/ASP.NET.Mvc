@@ -41,13 +41,11 @@
     <Compile Include="Controllers\DodCacControllerTests.cs" />
     <Compile Include="CookieFactoryTests.cs" />
     <Compile Include="Filters\ConditionalFilterProviderTests.cs" />
-    <Compile Include="Helpers\DateTimeExtensionsTests.cs" />
-    <Compile Include="Helpers\EnumUtilsTests.cs" />
-    <Compile Include="Helpers\ExceptionExtensionsTests.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelperTests.cs" />
     <Compile Include="HtmlHelpers\FileUploadFieldHelperTests.cs" />
     <Compile Include="Helpers\RegexUtilsTests.cs" />
     <Compile Include="Helpers\WebConfigurationManagerHelperTests.cs" />
+    <Compile Include="HtmlHelpers\jQueryAjaxHelperTests.cs" />
     <Compile Include="HtmlHelpers\jQueryAutoCompleteHelperTests.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelperTests.cs" />

@@ -174,7 +174,8 @@
 @section scripts
 {
 @Scripts.Render("~/bundles/plupload")
-<script type='text/javascript'>
+@Html.jQueryAjax()
+@*<script type='text/javascript'>
     var xhr = new Xhr();
     var jsonAntiForgeryButton = document.querySelector('#json-antiforgery-token');
 
@@ -188,7 +189,5 @@
             }
         );
     }
-</script>
-
+</script>*@
 }
-@*@Html.AddViewScript(string.Format("<script type='text/javascript' src='{0}'></script>", @Url.Content("~/scripts/jQueryAutoCompleteTest.js")));*@
