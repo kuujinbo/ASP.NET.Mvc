@@ -27,6 +27,7 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 
         public ActionResult SearchUsers(string searchText)
         {
+            // throw new Exception("wtf");
             var users = from user in _data
                         where user.Name.StartsWith(
                             searchText, StringComparison.OrdinalIgnoreCase

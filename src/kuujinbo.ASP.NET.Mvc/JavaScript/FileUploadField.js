@@ -2,6 +2,10 @@
     Object.defineProperty(this, 'maxSizeExceeded', {
         value: 'Max File Upload Size Exceeded'
     });
+
+    this._jQueryUI = typeof jQuery !== 'undefined'
+            && typeof jQuery.ui !== 'undefined'
+            && typeof jQuery.ui.dialog === 'function';
 }
 
 FileUploadField.prototype = {
@@ -33,9 +37,7 @@ FileUploadField.prototype = {
                     , 'Maximum allowed file upload size is ' + this.toMB(maxuploadSize)
                     , 'Please select another file.'
                 ];
-                if (typeof jQuery !== 'undefined'
-                    && typeof jQuery.ui !== 'undefined'
-                    && typeof jQuery.ui.dialog === 'function') {
+                if (this._jQueryUI) {
                     var error = "<h1><span style='color:red' class='glyphicon glyphicon-flag'></span>"
                         + this.maxSizeExceeded + '</h1>';
                     for (var i = 0; i < errorLines.length; ++i) {

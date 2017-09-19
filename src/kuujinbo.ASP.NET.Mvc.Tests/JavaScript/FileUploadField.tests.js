@@ -72,13 +72,15 @@ describe('FileUploadField', function() {
             it('calls alert() and clears input[type=file].value when file size exceeds max', function() {
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
-                spyOn(fileUploadField, 'showDialog').and.callThrough;
+                spyOn(fileUploadField, 'showDialog').and.callThrough();
 
                 var filename = "test.txt";
                 spyOn(fileUploadField, 'processFileGetFiles').and.returnValue([{
                     name: filename, size: MB10
                 }]);
 
+                // jQuery UI included in Chutzpah.json
+                fileUploadField._jQueryUI = false;
                 fileUploadField.addListeners();
                 inputFile.dispatchEvent(new Event('change'));
 
@@ -99,12 +101,8 @@ describe('FileUploadField', function() {
             it('calls jQuery.UI dialog when jQuery UI is available', function() {
                 spyOn(window, 'alert');
                 spyOn(fileUploadField, 'toMB').and.callThrough();
-                spyOn(fileUploadField, 'showDialog').and.callThrough;
-                window.jQuery = {
-                    ui: {
-                        dialog: function () { console.log('stub jQuery.ui.dialog'); }
-                    }
-                }
+                spyOn(fileUploadField, 'showDialog').and.callThrough();
+
                 var filename = "test.jpg";
                 spyOn(fileUploadField, 'processFileGetFiles').and.returnValue([{
                     name: filename, size: MB10

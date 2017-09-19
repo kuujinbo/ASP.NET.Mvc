@@ -135,6 +135,8 @@ describe('SessionTerminator', function() {
         it('calls window.alert() if jQuery is not available', function() {
             spyOn(window, 'alert');
 
+            // jQuery UI included in Chutzpah.json
+            terminator._jQueryUI = false;
             terminator.init(goodTimeout, goodLogoutUrl);
             terminator.showLogoutMessage();
 
@@ -144,11 +146,6 @@ describe('SessionTerminator', function() {
 
         it('calls showDialog() if jQuery is available', function() {
             spyOn(terminator, 'showDialog').and.callThrough;
-            window.jQuery = {
-                ui: {
-                    dialog: function() { console.log('stubbing jQuery.ui.dialog'); }
-                }
-            }
 
             terminator.init(goodTimeout, goodLogoutUrl);
             terminator.showLogoutMessage();
@@ -156,8 +153,5 @@ describe('SessionTerminator', function() {
             expect(terminator.showDialog).toHaveBeenCalledTimes(1);
             expect(terminator.showDialog).toHaveBeenCalledWith(jasmine.any(String));
         });
-    });
-
-    describe('XXX', function() {
     });
 });

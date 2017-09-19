@@ -79,7 +79,7 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function Xhr(a,b,c){Object.defineProperty(this,&quot;urlError&quot;,{value:&quot;url required.&quot;});Object.defineProperty(this,&quot;doneCallbackError&quot;,{value:&quot;doneCallback required, and must be a function().&quot;});Object.defineProperty(this,&quot;failTitle&quot;,{value:&quot;Unable to Process Request&quot;});Object.defineProperty(this,&quot;defaultFailMessage&quot;,{value:&quot;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&quot;});this._xsrf=&quot;__RequestVerificationToken&quot;;this._jQuery [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function Xhr(b,a,d){Object.defineProperty(this,&quot;urlError&quot;,{value:&quot;url required.&quot;});Object.defineProperty(this,&quot;doneCallbackError&quot;,{value:&quot;doneCallback required, and must be a function().&quot;});Object.defineProperty(this,&quot;failTitle&quot;,{value:&quot;Unable to Process Request&quot;});Object.defineProperty(this,&quot;defaultFailMessage&quot;,{value:&quot;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&quot;});Object.defineProperty(this,&quot;xsrf&quot;,{value:&quot;__RequestV [rest of string was truncated]&quot;;.
         /// </summary>
         public static string jQueryAjaxHelper_min {
             get {

@@ -9,6 +9,10 @@ function SessionTerminator() {
         value: 15 * 60 // STIG
     });
 
+    this._jQueryUI = typeof jQuery !== 'undefined'
+            && typeof jQuery.ui !== 'undefined'
+            && typeof jQuery.ui.dialog === 'function';
+
     this._timeoutID = 0;
     this._idleTimeout = this.adminTimeout;
     this._logoutUrl = '';
@@ -45,9 +49,7 @@ SessionTerminator.prototype = {
     },
     showLogoutMessage: function() {
         var d = new Date().toLocaleString();
-        if (typeof jQuery !== 'undefined'
-            && typeof jQuery.ui !== 'undefined'
-            && typeof jQuery.ui.dialog === 'function')
+        if (this._jQueryUI)
         {
             var logoutMessage = "<h1><span style='color:red' class='glyphicon glyphicon-flag'></span>Session Logout</h1>"
                 + "<p><strong style='text-decoration:underline'>Per DOD Cybersecurity policy</strong> you were logged out of the application at <em>"
