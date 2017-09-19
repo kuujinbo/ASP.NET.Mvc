@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DodBannerAuthorizeAttributeTests.cs" />
     <Compile Include="Attributes\SessionTerminatorIgnoreAttributeTests.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="Controllers\DodCacControllerTests.cs" />
