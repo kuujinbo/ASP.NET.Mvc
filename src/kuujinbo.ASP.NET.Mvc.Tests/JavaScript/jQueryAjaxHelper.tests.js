@@ -48,7 +48,6 @@ describe('jQueryAjaxHelper', function() {
         });
     });
 
-
     describe('getXsrfToken()', function () {
         beforeEach(function () {
             xhr = new Xhr(url, function(){});

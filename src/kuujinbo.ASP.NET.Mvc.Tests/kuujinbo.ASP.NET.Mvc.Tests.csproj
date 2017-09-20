@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="JavaScript\jQueryAjaxHelper.tests.js" />
+    <Content Include="JavaScript\jQueryAutoComplete.tests.js" />
     <Content Include="JavaScript\SessionTerminator.tests.js" />
     <Content Include="JavaScript\testHelpers\jasmine-jquery.js" />
     <Content Include="README-DodCac-cert.txt" />

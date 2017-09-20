@@ -120,7 +120,4 @@ describe('CheckboxGroupToggler', function() {
         });
 
     });
-
-    describe('XXX', function() {
-    });
 });
