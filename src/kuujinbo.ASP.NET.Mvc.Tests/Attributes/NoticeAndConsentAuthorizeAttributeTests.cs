@@ -25,7 +25,6 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
         {
             _context = new Mock<HttpContextBase>();
             _controller = new Mock<ControllerBase>();
-            var requestContext = new RequestContext(_context.Object, new RouteData());
             _request = new Mock<HttpRequestBase>();
             _request.Setup(x => x.Url).Returns(new Uri("http://invalid.test"));
             _request.Setup(x => x.Cookies).Returns(new HttpCookieCollection());
