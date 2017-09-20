@@ -1,7 +1,13 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 namespace kuujinbo.ASP.NET.Mvc.Attributes
 {
+    [AttributeUsage(
+        AttributeTargets.Method | AttributeTargets.Class,
+        AllowMultiple = false,
+        Inherited = true)
+    ]
     public sealed class SessionTerminatorIgnoreAttribute : ActionFilterAttribute, IActionFilter
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)

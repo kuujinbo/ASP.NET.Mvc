@@ -60,7 +60,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
         {
             _fakeContext = MvcMockHelpers.FakeHttpContext();
             _fakeContext.Request.SetRequestQueryString(new NameValueCollection());
-            var consentCookie = new HttpCookie(CookieFactory.DOD_NOTICE_CONSENT);
+            var consentCookie = new HttpCookie(CookieFactory.NOTICE_AND_CONSENT);
             var now = DateTime.Now;
             consentCookie.Value = now.ToString();
             var cookieCollection = new HttpCookieCollection();
@@ -69,8 +69,9 @@ namespace kuujinbo.ASP.NET.Mvc.Tests
 
             _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, new TempDataDictionary());
 
+            Assert.Equal(1, 1);
             Assert.Equal(
-                _fakeContext.Request.Cookies[CookieFactory.DOD_NOTICE_CONSENT].Expires.Day,
+                _fakeContext.Request.Cookies[CookieFactory.NOTICE_AND_CONSENT].Expires.Day,
                 now.AddDays(-1).Day
             );
         }

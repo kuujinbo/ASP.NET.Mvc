@@ -1,49 +1,43 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace kuujinbo.ASP.NET.Mvc.Attributes
 {
-    public sealed class DodBannerAuthorizeAttribute : AuthorizeAttribute
+    [AttributeUsage(
+        AttributeTargets.Method | AttributeTargets.Class,
+        AllowMultiple = false,
+        Inherited = true)
+    ]
+    public sealed class NoticeAndConsentAuthorizeAttribute : AuthorizeAttribute
     {
-        /// <summary>
-        /// Default DOD Banner controller name
-        /// </summary>
-        public const string CONTROLLER_NAME = "NoticeAndConsent";
-        /// <summary>
-        /// Default DOD Banner controller action
-        /// </summary>
-        public const string CONTROLLER_ACTION = "Index";
-
-        string _controllerName = CONTROLLER_NAME;
-        /// <summary>
-        /// DOD Banner controller name
-        /// </summary>
-        public string ControllerName
+        public NoticeAndConsentAuthorizeAttribute(string controllerName, string actionName)
         {
-            get { return _controllerName; }
-            set { _controllerName = value; }
+            ControllerName = controllerName;
+            ActionName = actionName;
         }
 
-        string _controllerActionName = CONTROLLER_ACTION;
         /// <summary>
+        /// Notice/Consent Acknowledgement controller name
+        /// </summary>
+        public string ControllerName { get; private set; }
+
+        /// <summary>
+        /// Notice/Consent Acknowledgement action name
         /// DOD Banner controller action
         /// </summary>
-        public string ControllerActionName
-        {
-            get { return _controllerActionName; }
-            set { _controllerActionName = value; }
-        }
+        public string ActionName { get; private set; } 
 
         /// <summary>
-        /// Deny access to any application page without first acknowledging DOD banner.
+        /// Deny access to any application page without user acknowledgment.
         /// </summary>
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var context = filterContext.HttpContext;
             var request = filterContext.HttpContext.Request;
 
-            // force DOD banner acknowledgement
-            if (request.Cookies[CookieFactory.DOD_NOTICE_CONSENT] == null)
+            // force acknowledgement
+            if (request.Cookies[CookieFactory.NOTICE_AND_CONSENT] == null)
             {
                 // redirect if return URL exists
                 if (context.Response.Cookies[CookieFactory.RETURN_URL] == null
@@ -59,7 +53,7 @@ namespace kuujinbo.ASP.NET.Mvc.Attributes
                 }
                 // redirect to application home
                 filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary(new { controller = ControllerName, action = ControllerActionName })
+                    new RouteValueDictionary(new { controller = ControllerName, action = ActionName })
                 );
             }
         }

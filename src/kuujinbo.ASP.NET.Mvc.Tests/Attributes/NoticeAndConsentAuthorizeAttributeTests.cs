@@ -8,9 +8,12 @@ using Xunit;
 
 namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
 {
-    public class DodBannerAuthorizeAttributeTests
+    public class NoticeAndConsentAuthorizeAttributeTests
     {
-        DodBannerAuthorizeAttribute _attribute;
+        const string CONTROLLER_NAME = "NoticeAndConsent";
+        const string ACTION_NAME = "Index";
+
+        NoticeAndConsentAuthorizeAttribute _attribute;
         AuthorizationContext _authorizationContext;
         Mock<HttpContextBase> _context;
         Mock<HttpRequestBase> _request;
@@ -18,7 +21,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
         Mock<ControllerBase> _controller;
         HttpCookieCollection _cookies;
 
-        public DodBannerAuthorizeAttributeTests()
+        public NoticeAndConsentAuthorizeAttributeTests()
         {
             _context = new Mock<HttpContextBase>();
             _controller = new Mock<ControllerBase>();
@@ -36,7 +39,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
             var controllerContext = new ControllerContext(_context.Object, new RouteData(), _controller.Object);
             _authorizationContext = new AuthorizationContext(controllerContext, actionDescriptor.Object);
 
-            _attribute = new DodBannerAuthorizeAttribute();
+            _attribute = new NoticeAndConsentAuthorizeAttribute(CONTROLLER_NAME, ACTION_NAME);
         }
 
         [Fact]
@@ -45,30 +48,19 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
             _attribute.OnAuthorization(_authorizationContext);
 
             var result = (RedirectToRouteResult)_authorizationContext.Result;
-            Assert.Equal(
-                DodBannerAuthorizeAttribute.CONTROLLER_ACTION,
-                result.RouteValues["action"].ToString()
-            );
-            Assert.Equal(
-                DodBannerAuthorizeAttribute.CONTROLLER_NAME,
-                result.RouteValues["controller"].ToString()
-            );
+            Assert.Equal(ACTION_NAME, result.RouteValues["action"].ToString());
+            Assert.Equal(CONTROLLER_NAME, result.RouteValues["controller"].ToString());
             _response.Verify(x => x.SetCookie(It.IsAny<HttpCookie>()), Times.Once());
         }
 
         [Fact]
         public void OnAuthorization_NoRequestCookieAndSettingControllerNameAndAction_RedirectsToApplicationEntry()
         {
-            var controllerName = "TestNameProperty";
-            var actionName = "TestActionProperty";
-            _attribute.ControllerName = controllerName;
-            _attribute.ControllerActionName = actionName;
-
             _attribute.OnAuthorization(_authorizationContext);
 
             var result = (RedirectToRouteResult)_authorizationContext.Result;
-            Assert.Equal(actionName, result.RouteValues["action"].ToString());
-            Assert.Equal(controllerName, result.RouteValues["controller"].ToString());
+            Assert.Equal(ACTION_NAME, result.RouteValues["action"].ToString());
+            Assert.Equal(CONTROLLER_NAME, result.RouteValues["controller"].ToString());
             _response.Verify(x => x.SetCookie(It.IsAny<HttpCookie>()), Times.Once());
         }
 
@@ -83,14 +75,8 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
             _attribute.OnAuthorization(_authorizationContext);
 
             var result = (RedirectToRouteResult)_authorizationContext.Result;
-            Assert.Equal(
-                DodBannerAuthorizeAttribute.CONTROLLER_ACTION,
-                result.RouteValues["action"].ToString()
-            );
-            Assert.Equal(
-                DodBannerAuthorizeAttribute.CONTROLLER_NAME,
-                result.RouteValues["controller"].ToString()
-            );
+            Assert.Equal(ACTION_NAME, result.RouteValues["action"].ToString());
+            Assert.Equal(CONTROLLER_NAME, result.RouteValues["controller"].ToString());
             _response.Verify(x => x.SetCookie(It.IsAny<HttpCookie>()), Times.Never());
         }
 
@@ -98,7 +84,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
         public void OnAuthorization_HasRequestCookie_IsNoOp()
         {
             var cookieCollection = new HttpCookieCollection();
-            cookieCollection.Add(new HttpCookie(CookieFactory.DOD_NOTICE_CONSENT)
+            cookieCollection.Add(new HttpCookie(CookieFactory.NOTICE_AND_CONSENT)
             {
                 Value = DateTime.Now.ToString()
             });
