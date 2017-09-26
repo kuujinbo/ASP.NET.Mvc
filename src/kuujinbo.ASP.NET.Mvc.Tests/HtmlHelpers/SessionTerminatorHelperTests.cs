@@ -34,7 +34,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         }
 
         [Fact]
-        public void SessionTerminatorJavaScript_IgnoreTimeout_ReturnsEmptyString()
+        public void TerminateSession_IgnoreTimeout_ReturnsEmptyString()
         {
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, "");
 
@@ -42,33 +42,23 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.HtmlHelpers
         }
 
         [Fact]
-        public void SessionTerminatorJavaScript_SessionTimedOut_ReturnsModalScriptBlock()
+        public void TerminateSession_SessionTimedOut_ReturnsEmptyString()
         {
             _controller.Object.TempData[SessionTerminator.SESSION_TIMED_OUT] = true;
 
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, _testUrl);
 
-            Assert.Equal(
-                SessionTerminatorHelper.ShowLogout, 
-                result.ToString()
-            );
+            Assert.Equal(string.Empty, result.ToString());
         }
 
         [Fact]
-        public void SessionTerminatorJavaScript_Init_ReturnsInitScriptBlock()
+        public void TerminateSession_Init_ReturnsEmptyString()
         {
             _controller.Object.TempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] = null;
 
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, _testUrl);
 
-            Assert.Equal(
-                string.Format(
-                    SessionTerminatorHelper.InitFormat,
-                    SessionTerminator.PrivilegedTimeout,
-                    _testUrl
-                ),
-                result.ToString()
-            );
+            Assert.Equal(string.Empty, result.ToString());
         }
     }
 }

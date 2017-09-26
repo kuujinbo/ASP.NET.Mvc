@@ -5,8 +5,7 @@ namespace kuujinbo.ASP.NET.Mvc
 {
     public static class CookieFactory
     {
-        public static readonly string KEY_NAME = typeof(CookieFactory).ToString();
-
+        public const string KEY_NAME = "_http-cookie";
 
         public const string BAD_COOKIE_NAME = "name";
 
@@ -14,17 +13,6 @@ namespace kuujinbo.ASP.NET.Mvc
         /// flag that user acknowledged application entry notice
         /// </summary>
         public static readonly string NOTICE_AND_CONSENT = KEY_NAME + "-NOTICE_AND_CONSENT";
-
-        /// <summary>
-        /// user last login date/time
-        /// </summary>
-        public static readonly string LAST_LOGIN_DATE = KEY_NAME + "-last-login-date";
-        public const string LAST_LOGIN_DATEFORMAT = "M/d/yyyy HH:mm";
-
-        /// <summary>
-        /// user last login location (IP address)
-        /// </summary>
-        public static readonly string LAST_LOGIN_LOCATION = KEY_NAME + "-last-login-location";
 
         /// <summary>
         /// redirect to page requested instead of default route. e.g. bookmark

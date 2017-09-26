@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using kuujinbo.ASP.NET.Mvc.Properties;
 
 namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
@@ -14,13 +13,9 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
 
         public static readonly string JavaScriptBlock = Resources.SessionTerminator_min;
 
-        public const string InitFormat = @"<script type='text/javascript'>
-new SessionTerminator().init({0}, '{1}');
-</script>";
+        public const string InitFormat = "new SessionTerminator().init({0}, '{1}');";
 
-        public const string ShowLogout = @"<script type='text/javascript'>
-new SessionTerminator().showLogoutMessage();
-</script>";
+        public const string ShowLogout = "new SessionTerminator().showLogoutMessage();";
 
         public static MvcHtmlString TerminateSession(
             this HtmlHelper helper, int timeout, string url)
@@ -31,13 +26,18 @@ new SessionTerminator().showLogoutMessage();
 
             if (tempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] == null)
             {
-                return new MvcHtmlString(string.Format(InitFormat, timeout, url));
+                ScriptManagerHelper.AddViewScript(
+                    helper, string.Format(InitFormat, timeout, url)
+                );
             }
             else if (tempData[SessionTerminator.SESSION_TIMED_OUT] != null)
             {
-                return new MvcHtmlString(ShowLogout);
+                ScriptManagerHelper.AddViewScript(
+                    helper, ShowLogout
+                );
             }
-            else { return new MvcHtmlString(""); }
+
+            return new MvcHtmlString("");
         }
     }
 }
