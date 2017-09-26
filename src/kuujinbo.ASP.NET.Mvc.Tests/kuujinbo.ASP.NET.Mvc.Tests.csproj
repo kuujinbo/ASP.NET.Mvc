@@ -40,7 +40,7 @@
     <Compile Include="Attributes\SessionTerminatorIgnoreAttributeTests.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="Controllers\DodCacControllerTests.cs" />
-    <Compile Include="CookieFactoryTests.cs" />
+    <Compile Include="HttpCookieFactoryTests.cs" />
     <Compile Include="Filters\ConditionalFilterProviderTests.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelperTests.cs" />
     <Compile Include="HtmlHelpers\FileUploadFieldHelperTests.cs" />

@@ -37,15 +37,15 @@ namespace kuujinbo.ASP.NET.Mvc.Attributes
             var request = filterContext.HttpContext.Request;
 
             // force acknowledgement
-            if (request.Cookies[CookieFactory.NOTICE_AND_CONSENT] == null)
+            if (request.Cookies[HttpCookieFactory.NOTICE_AND_CONSENT] == null)
             {
                 // redirect if return URL exists
-                if (context.Response.Cookies[CookieFactory.RETURN_URL] == null
-                    || string.IsNullOrWhiteSpace(context.Response.Cookies[CookieFactory.RETURN_URL].Value))
+                if (context.Response.Cookies[HttpCookieFactory.RETURN_URL] == null
+                    || string.IsNullOrWhiteSpace(context.Response.Cookies[HttpCookieFactory.RETURN_URL].Value))
                 {
                     context.Response.SetCookie(
-                        CookieFactory.Create(
-                            CookieFactory.RETURN_URL,
+                        HttpCookieFactory.Create(
+                            HttpCookieFactory.RETURN_URL,
                             request.Url.PathAndQuery,
                             secure: request.Url.Scheme.Equals("https")
                         )

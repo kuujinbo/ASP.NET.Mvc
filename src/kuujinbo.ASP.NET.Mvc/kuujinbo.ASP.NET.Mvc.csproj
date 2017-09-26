@@ -66,7 +66,7 @@
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
-    <Compile Include="CookieFactory.cs" />
+    <Compile Include="HttpCookieFactory.cs" />
     <Compile Include="DodCac.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Filters\XsrfFilter.cs" />

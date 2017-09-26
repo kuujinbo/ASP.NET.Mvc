@@ -3,7 +3,7 @@ using System.Web;
 
 namespace kuujinbo.ASP.NET.Mvc
 {
-    public static class CookieFactory
+    public static class HttpCookieFactory
     {
         public const string KEY_NAME = "_http-cookie";
 

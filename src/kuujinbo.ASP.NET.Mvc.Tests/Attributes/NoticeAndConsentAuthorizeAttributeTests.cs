@@ -66,7 +66,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
         [Fact]
         public void OnAuthorization_NoRequestCookieResponseReturnUrlCookie_RedirectsToApplicationEntry()
         {
-            _cookies.Add(new HttpCookie(CookieFactory.RETURN_URL)
+            _cookies.Add(new HttpCookie(HttpCookieFactory.RETURN_URL)
             {
                 Value = "http://invalid.test"
             });
@@ -83,7 +83,7 @@ namespace kuujinbo.ASP.NET.Mvc.Tests.Attributes
         public void OnAuthorization_HasRequestCookie_IsNoOp()
         {
             var cookieCollection = new HttpCookieCollection();
-            cookieCollection.Add(new HttpCookie(CookieFactory.NOTICE_AND_CONSENT)
+            cookieCollection.Add(new HttpCookie(HttpCookieFactory.NOTICE_AND_CONSENT)
             {
                 Value = DateTime.Now.ToString()
             });

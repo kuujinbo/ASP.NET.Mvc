@@ -62,7 +62,7 @@ namespace kuujinbo.ASP.NET.Mvc
             HttpResponseBase response,
             TempDataDictionary tempData = null)
         {
-            var cookie = request.Cookies[CookieFactory.NOTICE_AND_CONSENT];
+            var cookie = request.Cookies[HttpCookieFactory.NOTICE_AND_CONSENT];
             if (cookie != null)
             {
                 cookie.Expires = DateTime.Now.AddDays(-1);
