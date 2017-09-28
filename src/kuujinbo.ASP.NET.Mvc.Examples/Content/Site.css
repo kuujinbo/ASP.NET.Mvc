@@ -50,7 +50,7 @@ legend {
 /*
     jQuery UI
 */
-.ui-autocomplete-loading { background:url('themes/base/images/indicator.gif') no-repeat right center }
+.ui-autocomplete-loading { background:url('themes/base/images/ajax-loader.gif') no-repeat right center }
 ul.ui-autocomplete li { line-height: 1em; font-size: .9em; }
 
 
@@ -59,25 +59,4 @@ input,
 select,
 textarea {
     max-width: 280px;
-}
-
-.spin-infinite {
-    -webkit-animation: spin-infinite .8s infinite linear;
-    -moz-animation: spin-infinite 1s infinite linear;
-    -o-animation: spin-infinite 1s infinite linear;
-    animation: spin-infinite 1s infinite linear;
-}
-@-moz-keyframes spin-infinite {
-  from {-moz-transform: rotate(0deg);}  
-  to {-moz-transform: rotate(360deg);}
-}
-
-@-webkit-keyframes spin-infinite {
-  from {-webkit-transform: rotate(0deg);}
-  to { -webkit-transform: rotate(360deg);}
-}
-
-@keyframes spin-infinite {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
 }

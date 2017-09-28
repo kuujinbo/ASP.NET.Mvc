@@ -2,9 +2,11 @@
 <!DOCTYPE html>
 <html ng-app='angular1'>
 <head>
-<meta name="viewport" content="width=device-width" />
+<meta name='viewport' content='width=device-width' />
 <title>@ViewBag.Title</title>
 @Styles.Render("~/Content/css")
+@Html.Raw(Css.Style)
+@*@Html.LoadCss()*@
 </head>
 <body>
 @Html.Partial("_navMenu")

@@ -70,7 +70,59 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function FileUploadField(){Object.defineProperty(this,&quot;maxSizeExceeded&quot;,{value:&quot;Max File Upload Size Exceeded&quot;})} FileUploadField.prototype={constructor:FileUploadField,toMB:function(a){return parseFloat((a/Math.pow(1024,Math.floor(Math.log(a)/Math.log(1024)))).toFixed(2))+&quot; MB&quot;},clearUpload:function(a){this.clearUploadUpateDom(a.target)},clearUploadUpateDom:function(a){a.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.value=&quot;&quot;;a.parentNode.previousElementSibling.value=&quot;&quot;;a.paren [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;style type=&apos;text/css&apos;&gt;
+        ///.spin-infinite {
+        ///    -webkit-animation: spin-infinite .8s infinite linear;
+        ///    -moz-animation: spin-infinite 1s infinite linear;
+        ///    -o-animation: spin-infinite 1s infinite linear;
+        ///    animation: spin-infinite 1s infinite linear;
+        ///}
+        ///@-moz-keyframes spin-infinite {
+        ///  from {-moz-transform: rotate(0deg);}  
+        ///  to {-moz-transform: rotate(360deg);}
+        ///}
+        ///
+        ///@-webkit-keyframes spin-infinite {
+        ///  from {-webkit-transform: rotate(0deg);}
+        ///  to { -webkit-transform: rotate(360deg);}
+        ///}
+        ///
+        ///@ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Css {
+            get {
+                return ResourceManager.GetString("Css", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;style type=&apos;text/css&apos;&gt;
+        ///.spin-infinite {
+        ///    -webkit-animation: spin-infinite .8s infinite linear;
+        ///    -moz-animation: spin-infinite 1s infinite linear;
+        ///    -o-animation: spin-infinite 1s infinite linear;
+        ///    animation: spin-infinite 1s infinite linear;
+        ///}
+        ///@-moz-keyframes spin-infinite {
+        ///  from {-moz-transform: rotate(0deg);}  
+        ///  to {-moz-transform: rotate(360deg);}
+        ///}
+        ///
+        ///@-webkit-keyframes spin-infinite {
+        ///  from {-webkit-transform: rotate(0deg);}
+        ///  to { -webkit-transform: rotate(360deg);}
+        ///}
+        ///
+        ///@ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Css_min {
+            get {
+                return ResourceManager.GetString("Css_min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function FileUploadField(){Object.defineProperty(this,&quot;maxSizeExceeded&quot;,{value:&quot;Max File Upload Size Exceeded&quot;});this._jQueryUI=&quot;undefined&quot;!==typeof jQuery&amp;&amp;&quot;undefined&quot;!==typeof jQuery.ui&amp;&amp;&quot;function&quot;===typeof jQuery.ui.dialog} FileUploadField.prototype={constructor:FileUploadField,toMB:function(a){return parseFloat((a/Math.pow(1024,Math.floor(Math.log(a)/Math.log(1024)))).toFixed(2))+&quot; MB&quot;},clearUpload:function(a){this.clearUploadUpateDom(a.target)},clearUploadUpateDom:function(a){a.parentNode.parentNode.fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FileUploadField_min {
             get {
@@ -97,8 +149,7 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function SessionTerminator(){Object.defineProperty(this,&quot;initError&quot;,{value:&quot;logoutUrl required&quot;});Object.defineProperty(this,&quot;adminTimeout&quot;,{value:600});Object.defineProperty(this,&quot;maxTimeout&quot;,{value:900});this._timeoutID=0;this._idleTimeout=this.adminTimeout;this._logoutUrl=&quot;&quot;}
-        ///SessionTerminator.prototype={constructor:SessionTerminator,init:function(a,b){if(!b||!b.match(/[\/\w]+/))throw this.initError;this._idleTimeout=a&amp;&amp;a&lt;this.maxTimeout?1E3*a:1E3*this.maxTimeout;this._logoutUrl=b;window.onload=this.rese [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function SessionTerminator(){Object.defineProperty(this,&quot;initError&quot;,{value:&quot;logoutUrl required&quot;});Object.defineProperty(this,&quot;adminTimeout&quot;,{value:600});Object.defineProperty(this,&quot;maxTimeout&quot;,{value:900});this._jQueryUI=&quot;undefined&quot;!==typeof jQuery&amp;&amp;&quot;undefined&quot;!==typeof jQuery.ui&amp;&amp;&quot;function&quot;===typeof jQuery.ui.dialog;this._timeoutID=0;this._idleTimeout=this.adminTimeout;this._logoutUrl=&quot;&quot;} SessionTerminator.prototype={constructor:SessionTerminator,init:function(a,b){if(!b||!b.match(/[\/\w]+/))throw this.ini [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SessionTerminator_min {
             get {

@@ -27,7 +27,6 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 
         public ActionResult SearchUsers(string searchText)
         {
-            // throw new Exception("wtf");
             var users = from user in _data
                         where user.Name.StartsWith(
                             searchText, StringComparison.OrdinalIgnoreCase
@@ -134,6 +133,7 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
         [HttpPost]
         public ActionResult JsonAntiForgery(TestModel testModel)
         {
+            Thread.Sleep(2000);
             return new JsonResult
             {
                 Data = string.Format("data: {0} HTTP response @{1}", testModel.Name, DateTime.Now)

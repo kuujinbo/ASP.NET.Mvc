@@ -28,14 +28,15 @@
         }
     </div>
     <div class='col-xs-4'>
-        @using (Html.BeginForm("JsonAntiForgery", "Home"))
-        {
-            @Html.AntiForgeryToken()
-            <fieldset>
-                <legend>ValidateJsonAntiForgeryTokenAttribute</legend>
-                <input id='json-antiforgery-token' class='btn btn-primary' type='submit' value='Submit' />
-            </fieldset>
-        }
+@Html.AntiForgeryToken()
+<fieldset>
+    <legend>ValidateJsonAntiForgeryTokenAttribute</legend>
+    <button id='json-antiforgery-token' data-url='@Url.Action("JsonAntiForgery", "Home")' class='btn btn-primary' type='button'>
+        Submit 
+        <span style='display:none' class='glyphicon glyphicon-refresh spin-infinite'></span>
+    </button>
+</fieldset>
+
 @Html.AddViewScript(@"
 var jsonAntiForgeryButton = document.querySelector('#json-antiforgery-token');
 
@@ -43,15 +44,17 @@ if (jsonAntiForgeryButton != null) {
     jsonAntiForgeryButton.addEventListener(
         'click',
         function(e) {
+            e.target.firstElementChild.style.display = 'inline-block';
             var xhr = new Xhr(
-                '/Home/JsonAntiForgery'
+                e.target.dataset.url 
                 , function(data) { alert(data); }
             );
-            xhr.send({ Id: 1, Name: 'TEST NAME' });
-            e.preventDefault();
+            xhr.send({ Id: 1, Name: 'TEST NAME' }, 'POST', function() {
+                e.target.firstElementChild.style.display = 'none';
+            });
         }
     );
-}");        
+}")       
         </div>
     </div>
 
