@@ -25,6 +25,7 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
             );
         }
 
+        [HttpGet]
         public ActionResult SearchUsers(string searchText)
         {
             var users = from user in _data
@@ -45,7 +46,7 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
 
             }
 
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
 
@@ -133,6 +134,7 @@ namespace kuujinbo.ASP.NET.Mvc.Examples.Controllers
         [HttpPost]
         public ActionResult JsonAntiForgery(TestModel testModel)
         {
+            // throw new Exception("wtf");
             Thread.Sleep(2000);
             return new JsonResult
             {

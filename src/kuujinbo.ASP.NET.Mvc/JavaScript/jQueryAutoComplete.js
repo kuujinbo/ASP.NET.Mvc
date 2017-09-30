@@ -49,12 +49,15 @@ jQueryAutoComplete.prototype = {
         var self = this;
         $(self._searchInputElement).autocomplete({
             source: function (request, response) {
-                var xhr = new Xhr(self._url, function(data) { self.sourceCallback(response, data) } );
-                xhr.send(
-                    { searchText: self._searchInputElement.value }
-                    , 'GET'
-                    , function() { self._searchInputElement.classList.remove(self.resultElementLoadingClass); }
-                    , response
+                var jqxhr = new JQueryXhr();
+                jqxhr.alwaysCallback = function () {
+                    self._searchInputElement.classList.remove(self.resultElementLoadingClass);
+                };
+                jqxhr.send(
+                    self._url,
+                    function (data) { self.sourceCallback(response, data) },
+                    { searchText: self._searchInputElement.value },
+                    jqxhr.httpMethod.GET
                 );
             }
             , minLength: self._searchInputElement.getAttribute(self.minSearchLength) || 1

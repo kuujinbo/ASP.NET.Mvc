@@ -66,7 +66,7 @@
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
-    <Content Include="HtmlHelpers\CssHelper.cs.txt" />
+    <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
     <Compile Include="HttpCookieFactory.cs" />
     <Compile Include="DodCac.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
@@ -85,19 +85,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SessionTerminator.cs" />
-    <Compile Include="HtmlHelpers\Css.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HtmlHelpers\jQueryAutoCompleteHelper.cs" />
-    <Content Include="HtmlHelpers\Css.min.html" />
     <Content Include="JavaScript\CheckboxGroupToggler.min.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
+    <Content Include="JavaScript\JQueryXhr.js" />
     <Content Include="JavaScript\jQueryAjaxHelper.js" />
-    <Content Include="HtmlHelpers\Css.html" />
     <None Include="JavaScript\SessionTerminator.min.js" />
     <None Include="JavaScript\FileUploadField.min.js" />
     <None Include="JavaScript\jQueryAjaxHelper.min.js" />

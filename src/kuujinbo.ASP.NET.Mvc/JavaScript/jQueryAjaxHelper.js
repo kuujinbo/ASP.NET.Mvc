@@ -12,6 +12,15 @@
         value: 'There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.'
     });
 
+    Object.defineProperty(this, 'httpMethod', {
+        value: {
+            GET: 'GET',
+            POST: 'POST',
+            DELETE: 'DELETE',
+            PUT: 'PUT'
+        }
+    });
+
     // MS @Html.AntiForgeryToken() **IGNORES** HTML4 naming standards:
     // https://www.w3.org/TR/html4/types.html#type-id ('name' token)
     Object.defineProperty(this, 'xsrf', {
@@ -63,7 +72,6 @@ Xhr.prototype = {
                 var message = "<h1><span style='color:red' class='glyphicon glyphicon-flag'></span>"
                     + self.failTitle + '</h1>' + self._failMessage;
                 $('<div></div>').html(message).dialog(self.failModalArgs());
-                return;
             } else {
                 alert(self._failMessage);
             }

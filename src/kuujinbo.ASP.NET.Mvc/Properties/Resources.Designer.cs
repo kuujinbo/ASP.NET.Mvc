@@ -70,58 +70,6 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;style type=&apos;text/css&apos;&gt;
-        ///.spin-infinite {
-        ///    -webkit-animation: spin-infinite .8s infinite linear;
-        ///    -moz-animation: spin-infinite 1s infinite linear;
-        ///    -o-animation: spin-infinite 1s infinite linear;
-        ///    animation: spin-infinite 1s infinite linear;
-        ///}
-        ///@-moz-keyframes spin-infinite {
-        ///  from {-moz-transform: rotate(0deg);}  
-        ///  to {-moz-transform: rotate(360deg);}
-        ///}
-        ///
-        ///@-webkit-keyframes spin-infinite {
-        ///  from {-webkit-transform: rotate(0deg);}
-        ///  to { -webkit-transform: rotate(360deg);}
-        ///}
-        ///
-        ///@ [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Css {
-            get {
-                return ResourceManager.GetString("Css", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;style type=&apos;text/css&apos;&gt;
-        ///.spin-infinite {
-        ///    -webkit-animation: spin-infinite .8s infinite linear;
-        ///    -moz-animation: spin-infinite 1s infinite linear;
-        ///    -o-animation: spin-infinite 1s infinite linear;
-        ///    animation: spin-infinite 1s infinite linear;
-        ///}
-        ///@-moz-keyframes spin-infinite {
-        ///  from {-moz-transform: rotate(0deg);}  
-        ///  to {-moz-transform: rotate(360deg);}
-        ///}
-        ///
-        ///@-webkit-keyframes spin-infinite {
-        ///  from {-webkit-transform: rotate(0deg);}
-        ///  to { -webkit-transform: rotate(360deg);}
-        ///}
-        ///
-        ///@ [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Css_min {
-            get {
-                return ResourceManager.GetString("Css_min", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to function FileUploadField(){Object.defineProperty(this,&quot;maxSizeExceeded&quot;,{value:&quot;Max File Upload Size Exceeded&quot;});this._jQueryUI=&quot;undefined&quot;!==typeof jQuery&amp;&amp;&quot;undefined&quot;!==typeof jQuery.ui&amp;&amp;&quot;function&quot;===typeof jQuery.ui.dialog} FileUploadField.prototype={constructor:FileUploadField,toMB:function(a){return parseFloat((a/Math.pow(1024,Math.floor(Math.log(a)/Math.log(1024)))).toFixed(2))+&quot; MB&quot;},clearUpload:function(a){this.clearUploadUpateDom(a.target)},clearUploadUpateDom:function(a){a.parentNode.parentNode.fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FileUploadField_min {
@@ -140,11 +88,52 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, selectCallback) {
+        ///    // selectCallback **MUST** name parameters **EXACTLY** same as below
+        ///    // function (event, ui) {}
+        ///
+        ///    Object.defineProperty(this, &apos;jQueryRequiredError&apos;, {
+        ///        value: &apos;jQuery and jQuery UI libraries required.&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;searchInputError&apos;, {
+        ///        value: &apos;Search &lt;input&gt; selector missing or DOM element could not be found.&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
+        ///         [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string jQueryAutoComplete {
+            get {
+                return ResourceManager.GetString("jQueryAutoComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to function jQueryAutoComplete(a,b){Object.defineProperty(this,&quot;jQueryRequiredError&quot;,{value:&quot;jQuery and jQuery UI libraries required.&quot;});Object.defineProperty(this,&quot;searchInputError&quot;,{value:&quot;Search &lt;input&gt; selector missing or DOM element could not be found.&quot;});Object.defineProperty(this,&quot;selectCallbackError&quot;,{value:&quot;selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\nfunction (event, ui) {}&quot;});Object.defineProperty(this,&quot;resultElementError&quot;,{value:&quot;autocomplete results DOM [rest of string was truncated]&quot;;.
         /// </summary>
         public static string jQueryAutoComplete_min {
             get {
                 return ResourceManager.GetString("jQueryAutoComplete_min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function JQueryXhr() {
+        ///    Object.defineProperty(this, &apos;doneCallbackError&apos;, {
+        ///        value: &apos;doneCallback required, and must be a function().&apos;
+        ///    });
+        ///
+        ///    Object.defineProperty(this, &apos;failTitle&apos;, {
+        ///        value: &apos;Unable to Process Request&apos;
+        ///    });
+        ///    Object.defineProperty(this, &apos;defaultFailMessage&apos;, {
+        ///        value: &apos;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&apos;
+        ///    });
+        ///
+        ///    // MS @Html.AntiForgeryToken [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string JQueryXhr {
+            get {
+                return ResourceManager.GetString("JQueryXhr", resourceCulture);
             }
         }
         
