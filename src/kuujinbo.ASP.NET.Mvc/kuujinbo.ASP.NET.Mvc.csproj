@@ -75,7 +75,6 @@
     <Compile Include="Helpers\WebConfigurationManagerHelper.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelper.cs" />
     <Compile Include="HtmlHelpers\FileUploadFieldHelper.cs" />
-    <Compile Include="HtmlHelpers\jQueryAjaxHelper.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelper.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,12 +94,11 @@
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
     <Content Include="JavaScript\JQueryXhr.js" />
-    <Content Include="JavaScript\jQueryAjaxHelper.js" />
     <None Include="JavaScript\SessionTerminator.min.js" />
     <None Include="JavaScript\FileUploadField.min.js" />
-    <None Include="JavaScript\jQueryAjaxHelper.min.js" />
     <Content Include="JavaScript\jQueryAutoComplete.js" />
     <Content Include="JavaScript\jQueryAutoComplete.min.js" />
+    <None Include="JavaScript\JQueryXhr.min.js" />
     <Content Include="JavaScript\SessionTerminator.js" />
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
         /// </summary>
         public static readonly string SCRIPT_KEY = typeof(JQueryXhrHelper).ToString();
 
-        public static readonly string JavaScriptBlock = Resources.JQueryXhr;
+        public static readonly string JavaScriptBlock = Resources.JQueryXhr_min;
 
         public static MvcHtmlString JQueryXhr(this HtmlHelper helper)
         {

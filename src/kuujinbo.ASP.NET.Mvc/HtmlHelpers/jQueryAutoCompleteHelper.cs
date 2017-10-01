@@ -34,7 +34,6 @@ namespace kuujinbo.ASP.NET.Mvc.HtmlHelpers
             , int minSearchLength = 1
             , object htmlAttributes = null)
         {
-            jQueryAjaxHelper.jQueryAjax(helper);
             JQueryXhrHelper.JQueryXhr(helper);
 
             var tagBuilder = new TagBuilder("input");

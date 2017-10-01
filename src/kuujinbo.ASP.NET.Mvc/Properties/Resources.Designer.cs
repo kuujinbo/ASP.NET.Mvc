@@ -79,15 +79,6 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function Xhr(b,a,d){Object.defineProperty(this,&quot;urlError&quot;,{value:&quot;url required.&quot;});Object.defineProperty(this,&quot;doneCallbackError&quot;,{value:&quot;doneCallback required, and must be a function().&quot;});Object.defineProperty(this,&quot;failTitle&quot;,{value:&quot;Unable to Process Request&quot;});Object.defineProperty(this,&quot;defaultFailMessage&quot;,{value:&quot;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&quot;});Object.defineProperty(this,&quot;xsrf&quot;,{value:&quot;__RequestV [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string jQueryAjaxHelper_min {
-            get {
-                return ResourceManager.GetString("jQueryAjaxHelper_min", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, selectCallback) {
         ///    // selectCallback **MUST** name parameters **EXACTLY** same as below
         ///    // function (event, ui) {}
@@ -121,19 +112,28 @@ namespace kuujinbo.ASP.NET.Mvc.Properties {
         ///    Object.defineProperty(this, &apos;doneCallbackError&apos;, {
         ///        value: &apos;doneCallback required, and must be a function().&apos;
         ///    });
+        ///    Object.defineProperty(this, &apos;alwaysCallbackError&apos;, {
+        ///        value: &apos;alwaysCallback must be a function().&apos;
+        ///    });
         ///
         ///    Object.defineProperty(this, &apos;failTitle&apos;, {
         ///        value: &apos;Unable to Process Request&apos;
         ///    });
         ///    Object.defineProperty(this, &apos;defaultFailMessage&apos;, {
-        ///        value: &apos;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&apos;
-        ///    });
-        ///
-        ///    // MS @Html.AntiForgeryToken [rest of string was truncated]&quot;;.
+        ///        value: &apos;There was a problem processing your request. Please try ag [rest of string was truncated]&quot;;.
         /// </summary>
         public static string JQueryXhr {
             get {
                 return ResourceManager.GetString("JQueryXhr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function JQueryXhr(){Object.defineProperty(this,&quot;doneCallbackError&quot;,{value:&quot;doneCallback required, and must be a function().&quot;});Object.defineProperty(this,&quot;alwaysCallbackError&quot;,{value:&quot;alwaysCallback must be a function().&quot;});Object.defineProperty(this,&quot;failTitle&quot;,{value:&quot;Unable to Process Request&quot;});Object.defineProperty(this,&quot;defaultFailMessage&quot;,{value:&quot;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&quot;});var a= null;Objec [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string JQueryXhr_min {
+            get {
+                return ResourceManager.GetString("JQueryXhr_min", resourceCulture);
             }
         }
         
