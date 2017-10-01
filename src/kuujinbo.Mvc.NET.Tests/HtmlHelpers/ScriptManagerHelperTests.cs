@@ -43,7 +43,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         public void AddViewScript_BadScriptParameter_Throws()
         {
             var exception = Assert.Throws<ArgumentException>(
-                 () => _helper.AddViewScript(null)
+                 () => _helper.AddInlineScript(null)
              );
 
             Assert.Equal<string>(ScriptManagerHelper.BAD_SCRIPT_PARAM, exception.Message);
@@ -52,8 +52,8 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         [Fact]
         public void AddViewScript_RenderViewScripts_WritesScripts()
         {
-            _helper.AddViewScript("a");
-            _helper.AddViewScript("b");
+            _helper.AddInlineScript("a");
+            _helper.AddInlineScript("b");
             _helper.RenderViewScripts();
 
             // 2 extra calls for opening and closing <script> tag
@@ -66,10 +66,10 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var scriptKey = "script.key";
             var scriptBlock = "<script type='text/javascript'>console.log('test');</script>";
 
-            _helper.AddViewScript("a");
-            _helper.AddViewScript(scriptBlock, scriptKey);
+            _helper.AddInlineScript("a");
+            _helper.AddInlineScript(scriptBlock, scriptKey);
             // no-op - scriptKey already seen, so scriptBlock **NOT** written
-            _helper.AddViewScript(scriptBlock, scriptKey);
+            _helper.AddInlineScript(scriptBlock, scriptKey);
             _helper.RenderViewScripts();
 
             // 2 extra calls for opening and closing <script> tag

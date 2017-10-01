@@ -52,8 +52,8 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             , string[] accept = null
             )
         {
-            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
-            ScriptManagerHelper.AddViewScript(helper, "new FileUploadField().addListeners();");
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, "new FileUploadField().addListeners();");
 
             var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
                 new WebConfigHelper(helper.ViewContext.HttpContext.Request.ApplicationPath)

@@ -35,7 +35,7 @@
         Submit 
     </button>
 </fieldset>
-@Html.AddViewScript(@"
+@Html.AddInlineScript(@"
 var jsonAntiForgeryButton = document.querySelector('#json-antiforgery-token');
 
 if (jsonAntiForgeryButton != null) {

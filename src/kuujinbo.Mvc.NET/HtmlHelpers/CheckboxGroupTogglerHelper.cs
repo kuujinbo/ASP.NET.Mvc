@@ -21,8 +21,8 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             string cssSelector,
             bool addAfter = false)
         {
-            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
-            ScriptManagerHelper.AddViewScript(
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(
                 helper, 
                 string.Format(JAVASCRIPT_FORMAT, cssSelector, addAfter.ToString().ToLower())
             );

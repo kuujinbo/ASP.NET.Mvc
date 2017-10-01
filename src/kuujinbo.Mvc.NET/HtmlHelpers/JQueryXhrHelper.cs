@@ -15,7 +15,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
 
         public static MvcHtmlString JQueryXhr(this HtmlHelper helper)
         {
-            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
 
             return new MvcHtmlString("");
         }

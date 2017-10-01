@@ -36,7 +36,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// <param name="scriptKey"></param>
         /// <remarks>
         /// </remarks>
-        public static MvcHtmlString AddViewScript(this HtmlHelper helper, 
+        public static MvcHtmlString AddInlineScript(this HtmlHelper helper, 
             string script, 
             string scriptKey = null)
         {
@@ -64,7 +64,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         }
 
         /// <summary>
-        /// Render JavaScript from all AddViewScript() calls.
+        /// Render JavaScript from all AddInlineScript() calls.
         /// Use the Helper in ~/Views/Shared/_Layout.cshtml
         /// </summary>
         /// <remarks>

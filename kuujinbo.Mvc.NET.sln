@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{788EFFBB-CAB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9587A2BF-80F8-42E5-B151-907A1EDEB83B}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
+		.nuget\packages.config.txt = .nuget\packages.config.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuujinbo.Mvc.NET", "src\kuujinbo.Mvc.NET\kuujinbo.Mvc.NET.csproj", "{343C15B2-7C86-4CA1-833C-6874902A325A}"

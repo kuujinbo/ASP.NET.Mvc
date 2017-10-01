@@ -20,19 +20,19 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         public static MvcHtmlString TerminateSession(
             this HtmlHelper helper, int timeout, string url)
         {
-            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
 
             var tempData = helper.ViewContext.Controller.TempData;
 
             if (tempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] == null)
             {
-                ScriptManagerHelper.AddViewScript(
+                ScriptManagerHelper.AddInlineScript(
                     helper, string.Format(InitFormat, timeout, url)
                 );
             }
             else if (tempData[SessionTerminator.SESSION_TIMED_OUT] != null)
             {
-                ScriptManagerHelper.AddViewScript(
+                ScriptManagerHelper.AddInlineScript(
                     helper, ShowLogout
                 );
             }

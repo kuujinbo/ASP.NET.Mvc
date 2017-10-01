@@ -44,7 +44,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             tagBuilder.MergeAttribute(URL_ATTR, searchUrl, true);
             tagBuilder.MergeAttribute(MIN_LEN_ATTR, minSearchLength.ToString(), true);
 
-            ScriptManagerHelper.AddViewScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
 
             return new MvcHtmlString(tagBuilder.ToString());
         }
