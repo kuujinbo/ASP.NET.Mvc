@@ -1,0 +1,31 @@
+﻿@model kuujinbo.Mvc.NET.DodCac
+
+<div class='jumbotron'>
+    @if (@Model == null || string.IsNullOrWhiteSpace(@Model.Email))
+    {
+        <h1>Email Certificate not Selected</h1>
+        <p>Your email certificate must be selected to continue.</p>
+        <button id='clearAuthenticationCache' class='btn btn-primary'>Retry and Select Email Certificate</button>
+    }
+    else
+    {
+        <h1>Success</h1>
+        <p>
+        <div>Last Name: @Model.LastName</div>
+        <div>First Name: @Model.FirstName</div>
+        <div>Email: @Model.Email</div>
+        <div>Edipi: @Model.Edipi</div>
+        </p>
+    }
+</div>
+
+@section scripts
+{
+<script type='text/javascript'>
+    $('#clearAuthenticationCache').click(function () {
+        // ie-specific
+        document.execCommand('ClearAuthenticationCache', false);
+        document.location.reload(true);
+    });
+</script>
+}
