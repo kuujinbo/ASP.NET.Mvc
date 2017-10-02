@@ -47,7 +47,7 @@
     <Compile Include="HtmlHelpers\FileUploadFieldHelperTests.cs" />
     <Compile Include="Helpers\RegexUtilsTests.cs" />
     <Compile Include="Helpers\WebConfigurationManagerHelperTests.cs" />
-    <Compile Include="HtmlHelpers\jQueryAutoCompleteHelperTests.cs" />
+    <Compile Include="HtmlHelpers\JQueryAutoCompleteHelperTests.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelperTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -153,7 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="JavaScript\JQueryXhr.tests.js" />
-    <Content Include="JavaScript\jQueryAutoComplete.tests.js" />
+    <Content Include="JavaScript\JQueryAutoComplete.tests.js" />
     <Content Include="JavaScript\SessionTerminator.tests.js" />
     <Content Include="JavaScript\testHelpers\jasmine-jquery.js" />
     <Content Include="README-DodCac-cert.txt" />

@@ -1,8 +1,8 @@
-﻿/// <reference path="./../../../src/kuujinbo.Mvc.NET/JavaScript/jQueryAutoComplete.js" />
+﻿/// <reference path="./../../../src/kuujinbo.Mvc.NET/JavaScript/JQueryAutoComplete.js" />
 
 'use strict';
 
-describe('jQueryAutoComplete', function () {
+describe('JQueryAutoComplete', function () {
     var autocomplete, searchSelector;
 
     beforeEach(function () {
@@ -14,13 +14,13 @@ describe('jQueryAutoComplete', function () {
 
     describe('constructor', function () {
         beforeEach(function () {
-            autocomplete = new jQueryAutoComplete(searchSelector, function () { });
+            autocomplete = new JQueryAutoComplete(searchSelector, function () { });
+            autocomplete._jQueryUI = false;
         });
 
         it('throws when jQuery is missing', function () {
-            // jQuery = undefined;
 
-            expect(function () { new jQueryAutoComplete(searchSelector, function () { }) })
+            expect(function () { new JQueryAutoComplete(searchSelector, function () { }) })
                 .toThrow(autocomplete.jQueryRequiredError);
         });
 

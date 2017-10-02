@@ -89,15 +89,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HtmlHelpers\jQueryAutoCompleteHelper.cs" />
+    <Compile Include="HtmlHelpers\JQueryAutoCompleteHelper.cs" />
     <Content Include="JavaScript\CheckboxGroupToggler.min.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
     <Content Include="JavaScript\JQueryXhr.js" />
     <None Include="JavaScript\SessionTerminator.min.js" />
     <None Include="JavaScript\FileUploadField.min.js" />
-    <Content Include="JavaScript\jQueryAutoComplete.js" />
-    <Content Include="JavaScript\jQueryAutoComplete.min.js" />
+    <Content Include="JavaScript\JQueryAutoComplete.js" />
     <None Include="JavaScript\JQueryXhr.min.js" />
     <Content Include="JavaScript\SessionTerminator.js" />
   </ItemGroup>
@@ -105,6 +104,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

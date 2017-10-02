@@ -79,7 +79,7 @@ namespace kuujinbo.Mvc.NET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function jQueryAutoComplete(searchSelector, selectCallback) {
+        ///   Looks up a localized string similar to function JQueryAutoComplete(searchSelector, selectCallback) {
         ///    // selectCallback **MUST** name parameters **EXACTLY** same as below
         ///    // function (event, ui) {}
         ///
@@ -92,18 +92,9 @@ namespace kuujinbo.Mvc.NET.Properties {
         ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
         ///         [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string jQueryAutoComplete {
+        public static string JQueryAutoComplete {
             get {
-                return ResourceManager.GetString("jQueryAutoComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to function jQueryAutoComplete(a,b){Object.defineProperty(this,&quot;jQueryRequiredError&quot;,{value:&quot;jQuery and jQuery UI libraries required.&quot;});Object.defineProperty(this,&quot;searchInputError&quot;,{value:&quot;Search &lt;input&gt; selector missing or DOM element could not be found.&quot;});Object.defineProperty(this,&quot;selectCallbackError&quot;,{value:&quot;selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\nfunction (event, ui) {}&quot;});Object.defineProperty(this,&quot;resultElementError&quot;,{value:&quot;autocomplete results DOM [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string jQueryAutoComplete_min {
-            get {
-                return ResourceManager.GetString("jQueryAutoComplete_min", resourceCulture);
+                return ResourceManager.GetString("JQueryAutoComplete", resourceCulture);
             }
         }
         

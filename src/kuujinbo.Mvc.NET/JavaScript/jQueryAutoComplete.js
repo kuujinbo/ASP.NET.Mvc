@@ -1,4 +1,4 @@
-﻿function jQueryAutoComplete(searchSelector, selectCallback) {
+﻿function JQueryAutoComplete(searchSelector, selectCallback) {
     // selectCallback **MUST** name parameters **EXACTLY** same as below
     // function (event, ui) {}
 
@@ -22,12 +22,9 @@
     Object.defineProperty(this, 'searchUrl', { value: 'search-url' });
     Object.defineProperty(this, 'minSearchLength', { value: 'min-search-length' });
 
-    if (typeof jQuery === 'undefined'
-        || typeof jQuery.ui === 'undefined'
-        || typeof jQuery.ui.dialog !== 'function')
-    {
-        throw this.jQueryRequiredError;
-    }
+    this._jQueryUI = jQuery && jQuery.ui && typeof jQuery.ui.dialog === 'function';
+
+    if (!this._jQueryUI) throw this.jQueryRequiredError;
 
     this._searchInputElement = null;
     if (searchSelector 
@@ -38,13 +35,15 @@
         throw this.searchInputError;
     }
 
-    if (selectCallback && typeof selectCallback === 'function') { this._selectCallback = selectCallback; }
+    if (selectCallback && typeof selectCallback === 'function') {
+        this._selectCallback = selectCallback;
+    }
     else { throw this.selectCallbackError; }
 
 }
 
-jQueryAutoComplete.prototype = {
-    constructor: jQueryAutoComplete
+JQueryAutoComplete.prototype = {
+    constructor: JQueryAutoComplete
     , autocomplete: function() {
         var self = this;
         $(self._searchInputElement).autocomplete({

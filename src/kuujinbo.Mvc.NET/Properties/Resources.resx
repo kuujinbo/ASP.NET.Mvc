@@ -124,16 +124,13 @@
   <data name="FileUploadField_min" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\JavaScript\FileUploadField.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="jQueryAutoComplete_min" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\JavaScript\jQueryAutoComplete.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="SessionTerminator_min" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\JavaScript\SessionTerminator.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="JQueryXhr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\JavaScript\JQueryXhr.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="jQueryAutoComplete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="JQueryAutoComplete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\JavaScript\jQueryAutoComplete.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="JQueryXhr_min" type="System.Resources.ResXFileRef, System.Windows.Forms">

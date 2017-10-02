@@ -8,10 +8,14 @@ addButton.addEventListener(
             var users = [];
             for (var i = 0; i < toAdd.length; ++i) { users.push(toAdd[i].innerText); }
 
-            var xhr = new Xhr(target.dataset.url, function(data) {
-                $('<div></div>').html(data).dialog({ width: 'auto', modal: true, title: 'Users Added' });
-            });
-            xhr.send( { users: users } );
+            var jqxhr = new JQueryXhr();
+            jqxhr.send(
+                target.dataset.url, 
+                function (data) {
+                    $('<div></div>').html(data).dialog({ width: 'auto', modal: true, title: 'Users Added' });
+                },
+                { users: users }
+            );
         }
     }
     , false
@@ -42,7 +46,7 @@ function removeFromDom(element) {
     element.parentElement.removeChild(element);
 }
 
-var autoComplete = new jQueryAutoComplete(
+var autoComplete = new JQueryAutoComplete(
     '#searchText',
     // callback **MUST** name parameters **EXACTLY** same as below
     function(event, ui) {

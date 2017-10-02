@@ -8,13 +8,13 @@ using Xunit.Abstractions;
 
 namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
 {
-    public class jQueryAutoCompleteHelperTests
+    public class JQueryAutoCompleteHelperTests
     {
         readonly ITestOutputHelper _output;
         HtmlHelper _helper;
         Mock<IViewDataContainer> _viewData;
 
-        public jQueryAutoCompleteHelperTests(ITestOutputHelper output)
+        public JQueryAutoCompleteHelperTests(ITestOutputHelper output)
         {
             _output = output;
 
@@ -36,9 +36,9 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             , string minSearchLength = "1")
         {
             var tagBuilder = new TagBuilder("input");
-            tagBuilder.MergeAttribute(jQueryAutoCompleteHelper.ID_ATTR, cssIdSelector, true);
-            tagBuilder.MergeAttribute(jQueryAutoCompleteHelper.URL_ATTR, searchUrl, true);
-            tagBuilder.MergeAttribute(jQueryAutoCompleteHelper.MIN_LEN_ATTR, minSearchLength, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.ID_ATTR, cssIdSelector, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.URL_ATTR, searchUrl, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.MIN_LEN_ATTR, minSearchLength, true);
 
             return tagBuilder.ToString();
         }
@@ -49,7 +49,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var cssSelector = "#selector";
             var url = "/url";
 
-            var result = _helper.jQueryAutoComplete(cssSelector, url);
+            var result = _helper.JQueryAutoComplete(cssSelector, url);
             var expected = CreateInputElement(cssSelector, url);
 
             Assert.Equal(expected, result.ToString());

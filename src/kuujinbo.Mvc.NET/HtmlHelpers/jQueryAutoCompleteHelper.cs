@@ -10,7 +10,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
     ///     objects that **MUST** include 'label' and 'value' properties.
     /// [2] Hooking up client-side JavaScript to process server response.
     /// </summary>
-    public static class jQueryAutoCompleteHelper
+    public static class JQueryAutoCompleteHelper
     {
         /// <summary>
         /// HTML input element attributes
@@ -23,11 +23,11 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string SCRIPT_KEY = typeof(jQueryAutoCompleteHelper).ToString();
+        public static readonly string SCRIPT_KEY = typeof(JQueryAutoCompleteHelper).ToString();
 
-        public static readonly string JavaScriptBlock = Resources.jQueryAutoComplete;
+        public static readonly string JavaScriptBlock = Resources.JQueryAutoComplete;
 
-        public static MvcHtmlString jQueryAutoComplete(
+        public static MvcHtmlString JQueryAutoComplete(
             this HtmlHelper helper
             , string cssIdSelector
             , string searchUrl
