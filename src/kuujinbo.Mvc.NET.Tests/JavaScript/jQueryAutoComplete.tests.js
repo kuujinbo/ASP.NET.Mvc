@@ -12,19 +12,19 @@ describe('JQueryAutoComplete', function () {
         );
     });
 
-    describe('constructor', function () {
-        beforeEach(function () {
-            autocomplete = new JQueryAutoComplete(searchSelector, function () { });
-            autocomplete._jQueryUI = false;
-        });
+    //describe('constructor', function () {
+    //    beforeEach(function () {
+    //        autocomplete = new JQueryAutoComplete(searchSelector, function () { });
+    //        autocomplete._jQueryUI = false;
+    //    });
 
-        it('throws when jQuery is missing', function () {
+    //    it('throws when jQuery is missing', function () {
 
-            expect(function () { new JQueryAutoComplete(searchSelector, function () { }) })
-                .toThrow(autocomplete.jQueryRequiredError);
-        });
+    //        expect(function () { new JQueryAutoComplete(searchSelector, function () { }) })
+    //            .toThrow(autocomplete.jQueryRequiredError);
+    //    });
 
  
-    });
+    //});
 
 });

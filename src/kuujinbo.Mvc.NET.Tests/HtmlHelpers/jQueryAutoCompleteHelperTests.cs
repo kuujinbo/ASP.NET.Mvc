@@ -44,7 +44,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         }
 
         [Fact]
-        public void jQueryAutoComplete_DefaultParameters_ReturnsHtml()
+        public void JQueryAutoComplete_DefaultParameters_ReturnsHtml()
         {
             var cssSelector = "#selector";
             var url = "/url";
