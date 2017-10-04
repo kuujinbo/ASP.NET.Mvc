@@ -67,6 +67,7 @@
     <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
+    <Compile Include="HtmlHelpers\UserFriendlyBoolHelper.cs" />
     <Compile Include="HttpCookieFactory.cs" />
     <Compile Include="DodCac.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />

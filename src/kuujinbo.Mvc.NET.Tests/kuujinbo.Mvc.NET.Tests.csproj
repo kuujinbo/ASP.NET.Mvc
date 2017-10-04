@@ -41,6 +41,7 @@
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="Controllers\DodCacControllerTests.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelperTests.cs" />
+    <Compile Include="HtmlHelpers\UserFriendlyBoolHelperTests.cs" />
     <Compile Include="HttpCookieFactoryTests.cs" />
     <Compile Include="Filters\ConditionalFilterProviderTests.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelperTests.cs" />
