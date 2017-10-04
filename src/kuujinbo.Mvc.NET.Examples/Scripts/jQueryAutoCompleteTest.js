@@ -46,7 +46,7 @@ function removeFromDom(element) {
     element.parentElement.removeChild(element);
 }
 
-var autoComplete = new JQueryAutoComplete(
+new JQueryAutoComplete().autocomplete(
     '#searchText',
     // callback **MUST** name parameters **EXACTLY** same as below
     function(event, ui) {
@@ -54,4 +54,3 @@ var autoComplete = new JQueryAutoComplete(
         console.log('Selected label: ' + ui.item.label + ' value: ' + ui.item.value);
     }
 );
-autoComplete.autocomplete();

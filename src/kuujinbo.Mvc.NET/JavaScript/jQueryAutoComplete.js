@@ -1,7 +1,4 @@
-﻿function JQueryAutoComplete(searchSelector, selectCallback) {
-    // selectCallback **MUST** name parameters **EXACTLY** same as below
-    // function (event, ui) {}
-
+﻿function JQueryAutoComplete() {
     Object.defineProperty(this, 'jQueryRequiredError', {
         value: 'jQuery and jQuery UI libraries required.'
     });
@@ -10,7 +7,7 @@
     });
     Object.defineProperty(this, 'selectCallbackError', {
         value: 'selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\n'
-                + 'function (event, ui) {}'
+                + 'function(event, ui) {}'
     });
 
     Object.defineProperty(this, 'resultElementError', {
@@ -23,49 +20,54 @@
     Object.defineProperty(this, 'minSearchLength', { value: 'min-search-length' });
 
     this._jQueryUI = jQuery && jQuery.ui && typeof jQuery.ui.dialog === 'function';
-
-    if (!this._jQueryUI) throw this.jQueryRequiredError;
-
-    this._searchInputElement = null;
-    if (searchSelector 
-        && (this._searchInputElement = document.querySelector(searchSelector)))
-    {
-        this._url = this._searchInputElement.getAttribute(this.searchUrl);
-    } else {
-        throw this.searchInputError;
-    }
-
-    if (selectCallback && typeof selectCallback === 'function') {
-        this._selectCallback = selectCallback;
-    }
-    else { throw this.selectCallbackError; }
-
 }
 
 JQueryAutoComplete.prototype = {
     constructor: JQueryAutoComplete
-    , autocomplete: function() {
+
+    , validateSearchSelector: function(searchSelector) {
+        var searchInputElement = null;
+        if (searchSelector
+            && (searchInputElement = document.querySelector(searchSelector)))
+        {
+            return searchInputElement;
+        } else {
+            throw this.searchInputError;
+        }
+    }
+    , validateSelectCallback: function(selectCallback) {
+        if (!selectCallback || typeof selectCallback !== 'function') {
+            throw this.selectCallbackError;
+        }
+    }
+    // selectCallback **MUST** name parameters **MUST EXACTLY MATCH**:
+    // function(event, ui) {}
+    , autocomplete: function(searchSelector, selectCallback) {
+        if (!this._jQueryUI) throw this.jQueryRequiredError;
+        var searchInputElement = this.validateSearchSelector(searchSelector);
+        this.validateSelectCallback(selectCallback);
+
         var self = this;
-        $(self._searchInputElement).autocomplete({
-            source: function (request, response) {
+        $(searchInputElement).autocomplete({
+            source: function(request, response) {
                 var jqxhr = new JQueryXhr();
-                jqxhr.alwaysCallback = function () {
-                    self._searchInputElement.classList.remove(self.resultElementLoadingClass);
+                jqxhr.alwaysCallback = function() {
+                    searchInputElement.classList.remove(self.resultElementLoadingClass);
                 };
                 jqxhr.send(
-                    self._url,
-                    function (data) { self.sourceCallback(response, data) },
-                    { searchText: self._searchInputElement.value },
+                    searchInputElement.getAttribute(self.searchUrl),
+                    function(data) { self.sourceCallback(response, data) },
+                    { searchText: searchInputElement.value },
                     jqxhr.httpMethods.GET
                 );
             }
-            , minLength: self._searchInputElement.getAttribute(self.minSearchLength) || 1
+            , minLength: searchInputElement.getAttribute(self.minSearchLength) || 1
             , focus: function(event, ui) {
-                self._searchInputElement.value = '';
+                searchInputElement.value = '';
                 return false;
             }
             , select: function(event, ui) {
-                self._selectCallback(event, ui)
+                selectCallback(event, ui)
                 // console.log('Selected: ' + ui.item.value + ' SOME_PROPERTY ' + ui.item.someProperty);
                 return false;
             }
