@@ -79,10 +79,7 @@ namespace kuujinbo.Mvc.NET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function JQueryAutoComplete(searchSelector, selectCallback) {
-        ///    // selectCallback **MUST** name parameters **EXACTLY** same as below
-        ///    // function (event, ui) {}
-        ///
+        ///   Looks up a localized string similar to function JQueryAutoComplete() {
         ///    Object.defineProperty(this, &apos;jQueryRequiredError&apos;, {
         ///        value: &apos;jQuery and jQuery UI libraries required.&apos;
         ///    });
@@ -90,7 +87,8 @@ namespace kuujinbo.Mvc.NET.Properties {
         ///        value: &apos;Search &lt;input&gt; selector missing or DOM element could not be found.&apos;
         ///    });
         ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
-        ///         [rest of string was truncated]&quot;;.
+        ///        value: &apos;selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\n&apos;
+        ///                + &apos;function(event, ui [rest of string was truncated]&quot;;.
         /// </summary>
         public static string JQueryAutoComplete {
             get {

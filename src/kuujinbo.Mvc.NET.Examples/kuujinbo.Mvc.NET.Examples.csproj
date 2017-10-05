@@ -162,6 +162,7 @@
     <Content Include="Content\Images\kuujinbo_320-30.gif" />
     <Content Include="Content\octicons\octicons.css" />
     <Content Include="Content\octicons\octicons.svg" />
+    <Content Include="App_Data\jsonData.json" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -214,7 +215,6 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="App_Data\jsonData.json" />
     <None Include="Scripts\lib\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jQueryAutoCompleteTest.js" />
     <Content Include="Scripts\lib\jquery-3.1.1.js" />
@@ -295,16 +295,16 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\kuujinbo.Mvc.NET\kuujinbo.Mvc.NET.csproj">
-      <Project>{343c15b2-7c86-4ca1-833c-6874902a325a}</Project>
-      <Name>kuujinbo.Mvc.NET</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\lib\angular.min.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\kuujinbo.Mvc.NET\kuujinbo.Mvc.NET.csproj">
+      <Project>{343c15b2-7c86-4ca1-833c-6874902a325a}</Project>
+      <Name>kuujinbo.Mvc.NET</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
