@@ -58,10 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\NoticeAndConsentAuthorizeAttribute.cs" />
-    <Compile Include="Attributes\HttpAjaxPostAttribute.cs" />
     <Compile Include="Attributes\SessionTerminatorIgnoreAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
-    <Compile Include="Attributes\XhrValidatorAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBoolHelper.cs" />

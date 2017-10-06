@@ -73,7 +73,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             return View();
         }
 
-        [HttpAjaxPost]
+        [HttpPost]
         public ActionResult Index(int? chunk, int chunks, string name)
         {
             var completed = _fu.WriteChunk(
@@ -93,7 +93,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             );
         }
 
-        [HttpAjaxPost]
+        [HttpPost]
         public ActionResult XhrPOST(string method)
         {
             return Json(new { method = method, url = Request.Url, date = DateTime.Now.ToString() });
@@ -112,7 +112,6 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
         }
 
         [HttpPost]
-        // [HttpAjaxPost]
         public ActionResult Post()
         {
             TempData["result"] = string.Format(
