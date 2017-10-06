@@ -17,6 +17,7 @@ namespace kuujinbo.Mvc.NET
 
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public string MiddleName { get; set; }
         public string Edipi { get; set; }
         public string Email { get; set; }
 
@@ -37,8 +38,8 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Get DodCac object with LastName, FirstName, & EdiPi properties populated
-        /// </summary>
+        /// Populate DodCac instance with LastName, FirstName, MiddleName, and Edipi.
+        /// /// </summary>
         public static DodCac GetDodCac(string simpleName)
         {
             string[] splitValue = simpleName.Split(new char[] { '.' });
@@ -52,6 +53,7 @@ namespace kuujinbo.Mvc.NET
             {
                 LastName = TitleCase(splitValue[0]),
                 FirstName = TitleCase(splitValue[1]),
+                MiddleName = splitValue.Length > 3 ? TitleCase(splitValue[2]) : string.Empty,
                 Edipi = edipi
             };
         }

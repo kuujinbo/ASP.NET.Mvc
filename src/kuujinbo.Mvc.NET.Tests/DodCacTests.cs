@@ -28,10 +28,11 @@ namespace kuujinbo.Mvc.NET.Tests
         [Fact]
         public void Get_ValidRawDataCertificate_ReturnsPopulatedCacInfo()
         {
-            var cac = _dodCac.Get(Resources.DodCac_cert);
+            var cac = _dodCac.Get(Resources.DodCac);
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("Middle", cac.MiddleName);
             Assert.Equal<string>("0987654321", cac.Edipi);
             Assert.Equal<string>("email@domain", cac.Email);
         }

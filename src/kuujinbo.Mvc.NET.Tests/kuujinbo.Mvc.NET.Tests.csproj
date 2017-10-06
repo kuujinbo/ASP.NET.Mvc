@@ -69,8 +69,8 @@
     <Content Include="JavaScript\appConfig.UnitTests.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.tests.js" />
     <Content Include="JavaScript\FileUploadField.tests.js" />
+    <None Include="DodCac.cer" />
     <None Include="packages.config" />
-    <None Include="DodCac-cert.cer" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
