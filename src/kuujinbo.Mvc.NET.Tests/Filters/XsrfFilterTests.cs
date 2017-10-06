@@ -1,4 +1,5 @@
 ﻿using kuujinbo.Mvc.NET.Attributes;
+using kuujinbo.Mvc.NET.Filters;
 using kuujinbo.Mvc.NET.Tests._testHelpers;
 using System.Web;
 using System.Web.Mvc;

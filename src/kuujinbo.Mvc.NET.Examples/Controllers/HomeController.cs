@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using kuujinbo.Mvc.NET.Attributes;
+using kuujinbo.Mvc.NET.Filters;
 using kuujinbo.Mvc.NET.Examples.Models;
 using Newtonsoft.Json;
 

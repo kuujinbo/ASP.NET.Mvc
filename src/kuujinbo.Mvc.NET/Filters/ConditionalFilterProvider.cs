@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace kuujinbo.Mvc.NET
+namespace kuujinbo.Mvc.NET.Filters
 {
     /// <summary>
     /// Provide support to apply action filters using custom criteria that

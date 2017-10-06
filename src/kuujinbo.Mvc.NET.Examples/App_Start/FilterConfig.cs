@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Web.Mvc;
+using kuujinbo.Mvc.NET.Filters;
 
 namespace kuujinbo.Mvc.NET.Examples
 {

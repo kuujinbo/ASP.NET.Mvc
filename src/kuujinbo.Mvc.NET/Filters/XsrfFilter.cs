@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace kuujinbo.Mvc.NET
+namespace kuujinbo.Mvc.NET.Filters
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class IgnoreXsrfFilterAttribute : Attribute { }
