@@ -4,7 +4,7 @@ namespace kuujinbo.Mvc.NET.Helpers
 {
     public class RegexUtils
     {
-        static Regex pascalRegex = new Regex(
+        static readonly Regex _pascalRegex = new Regex(
         @"	# lookbehind/lookahead match on **boundaries**
             # positive lookbehind
             (?<=			# start
@@ -19,9 +19,12 @@ namespace kuujinbo.Mvc.NET.Helpers
              RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace
         );
 
+        /// <summary>
+        /// Make convention based Pascal cased enums more readable.
+        /// </summary>
         public static string PascalCaseSplit(string input)
         {
-            return input != null ? pascalRegex.Replace(input, " ") : input;
+            return input != null ? _pascalRegex.Replace(input, " ") : input;
         }
     }
 }

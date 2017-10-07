@@ -4,6 +4,10 @@ using System.Web.Routing;
 
 namespace kuujinbo.Mvc.NET.Attributes
 {
+    /// <summary>
+    /// Application entry point that requires users to acknowledge a notice
+    /// and consent statement.
+    /// </summary>
     [AttributeUsage(
         AttributeTargets.Method | AttributeTargets.Class,
         AllowMultiple = false,
@@ -20,15 +24,15 @@ namespace kuujinbo.Mvc.NET.Attributes
         /// <summary>
         /// flag that user acknowledged application entry notice
         /// </summary>
-        public const string NoticeAndConsent = "http-cookie-noticeAndConsent";
+        public const string NoticeAndConsent = "http-cookie-notice-and-consent";
 
         /// <summary>
-        /// Notice/Consent Acknowledgement controller name
+        /// Notice/Consent acknowledgement controller name
         /// </summary>
         public string ControllerName { get; private set; }
 
         /// <summary>
-        /// Notice/Consent Acknowledgement action name
+        /// Notice/Consent acknowledgement action name
         /// </summary>
         public string ActionName { get; private set; } 
 

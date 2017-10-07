@@ -12,6 +12,9 @@ namespace kuujinbo.Mvc.NET
         void Logout(HttpRequestBase request, HttpResponseBase response, TempDataDictionary tempData);
     }
 
+    /// <summary>
+    /// DISA Application STIG user inactivity session terminator
+    /// </summary>
     public class SessionTerminator : ISessionTerminator
     {
         /// <summary>
