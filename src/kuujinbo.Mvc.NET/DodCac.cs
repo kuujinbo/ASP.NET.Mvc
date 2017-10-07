@@ -8,6 +8,7 @@ namespace kuujinbo.Mvc.NET
     {
         DodCac Get(byte[] rawData);
     }
+
     public class DodCac : IDodCac
     {
         public const string BAD_GET_PARAM = "rawData";
@@ -22,8 +23,9 @@ namespace kuujinbo.Mvc.NET
         public string Email { get; set; }
 
         /// <summary>
-        /// Get DodCac object with LastName, FirstName, & EdiPi properties populated.
-        /// Set Email property if user selected email certificate.
+        /// Populate DodCac instance with LastName, FirstName, MiddleName
+        /// and Edipi. Email property set **ONLY** if user selects email 
+        /// certificate.
         /// </summary>
         public virtual DodCac Get(byte[] rawData)
         {
@@ -38,8 +40,10 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Populate DodCac instance with LastName, FirstName, MiddleName, and Edipi.
-        /// /// </summary>
+        /// Populate DodCac instance with LastName, FirstName, MiddleName,
+        /// and Edipi. simpleName parameter from X509Certificate2.GetNameInfo()
+        /// [X509NameType.SimpleName]
+        /// </summary>
         public static DodCac GetDodCac(string simpleName)
         {
             string[] splitValue = simpleName.Split(new char[] { '.' });
@@ -62,7 +66,7 @@ namespace kuujinbo.Mvc.NET
         /// Verify Edipi is ten digits string 
         /// </summary>
         /// <remarks>
-        /// All of the CLR IntXX and UIntXX [Try]Parse methods are **INVALID**
+        /// All of the BCL IntXX and UIntXX [Try]Parse methods are **INVALID**
         /// for validation because **NONE** guarantee a 10-digit **string**.
         /// UIntXX and string length == 10 works, but not IntXX.
         /// </remarks>
@@ -72,7 +76,7 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// title case a string, ignoring culture/globalization
+        /// Title case a string ignoring culture/globalization.
         /// </summary>
         public static string TitleCase(string text)
         {
