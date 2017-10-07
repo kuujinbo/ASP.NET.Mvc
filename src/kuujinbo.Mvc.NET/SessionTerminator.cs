@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
-/* ############################################################################
- * terminate / logout user
- * ############################################################################
- */
-using System.Web.Routing;
 using kuujinbo.Mvc.NET.Attributes;
 
 namespace kuujinbo.Mvc.NET
