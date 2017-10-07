@@ -5,7 +5,7 @@ namespace kuujinbo.Mvc.NET
 {
     public interface IClientCertificate
     {
-        byte[] Get(HttpRequestBase request);
+        byte[] GetCertificate(HttpRequestBase request);
     }
 
     public class ClientCertificate : IClientCertificate
@@ -13,16 +13,16 @@ namespace kuujinbo.Mvc.NET
         /// <summary>
         /// BIG-IP stores user/client certificate in custom header
         /// </summary>
-        public const string BIG_IP_CERTIFICATE_HEADER = "ssl.client_cert";
-
+        public const string BigIpCertificateHeader = "ssl.client_cert";
+        
         /// <summary>
         /// Get the user/client certificate for the current HTTP request
         /// </summary>
-        public virtual byte[] Get(HttpRequestBase request)
+        public virtual byte[] GetCertificate(HttpRequestBase request)
         {
             return request.IsLocal
                 ? request.ClientCertificate.Certificate
-                : Convert.FromBase64String(request.Headers[BIG_IP_CERTIFICATE_HEADER]);
+                : Convert.FromBase64String(request.Headers[BigIpCertificateHeader]);
         }
     }
 }

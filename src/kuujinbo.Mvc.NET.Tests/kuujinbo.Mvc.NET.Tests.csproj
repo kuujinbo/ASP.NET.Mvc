@@ -56,7 +56,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DodCacTests.cs" />
+    <Compile Include="CacUserTests.cs" />
     <Compile Include="ClientCertificateTests.cs" />
     <Compile Include="Filters\XsrfFilterTests.cs" />
     <Compile Include="_testHelpers\MvcMockHelpers.cs" />
@@ -69,7 +69,7 @@
     <Content Include="JavaScript\appConfig.UnitTests.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.tests.js" />
     <Content Include="JavaScript\FileUploadField.tests.js" />
-    <None Include="DodCac.cer" />
+    <None Include="Cac.cer" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

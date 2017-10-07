@@ -6,6 +6,7 @@ using System.Web.Mvc;
  * ############################################################################
  */
 using System.Web.Routing;
+using kuujinbo.Mvc.NET.Attributes;
 
 namespace kuujinbo.Mvc.NET
 {
@@ -31,12 +32,12 @@ namespace kuujinbo.Mvc.NET
         /// <summary>
         /// Ignore inactivity / idle timout for specific controller/action
         /// </summary>
-        public const string IGNORE_SESSION_TIMEOUT = "ignore-session-timeout";
+        public const string IgnoreSessionTimeout = "ignore-session-timeout";
 
         /// <summary>
         /// Ignore inactivity / idle timout for specific controller/action
         /// </summary>
-        public const string SESSION_TIMED_OUT = "session-timed-out";
+        public const string SessionTimedOut = "session-timed-out";
 
 
         public int GetTimeout(bool isPrivilegedUser = false)
@@ -45,7 +46,7 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// TODO: database logging
+        /// Logout - **see remarks and example XML documentation**.
         /// </summary>
         /// <remarks>
         /// **ANY** querystring key/value pair in route value object will 
@@ -62,7 +63,7 @@ namespace kuujinbo.Mvc.NET
             HttpResponseBase response,
             TempDataDictionary tempData = null)
         {
-            var cookie = request.Cookies[HttpCookieFactory.NOTICE_AND_CONSENT];
+            var cookie = request.Cookies[NoticeAndConsentAuthorizeAttribute.NoticeAndConsent];
             if (cookie != null)
             {
                 cookie.Expires = DateTime.Now.AddDays(-1);
@@ -70,7 +71,7 @@ namespace kuujinbo.Mvc.NET
             }
 
             // tempData flags whether to display the modal inactivity message
-            if (request.QueryString.Count < 1) tempData[SESSION_TIMED_OUT] = true;
+            if (request.QueryString.Count < 1) tempData[SessionTimedOut] = true;
         }
     }
 }

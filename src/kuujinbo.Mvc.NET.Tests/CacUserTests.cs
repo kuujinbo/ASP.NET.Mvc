@@ -7,28 +7,28 @@ namespace kuujinbo.Mvc.NET.Tests
 {
     // M$ code coverage is too stupid to ignore successful Exception testing 
     [ExcludeFromCodeCoverage]
-    public class DodCacTests
+    public class CacUserTests
     {
-        private DodCac _dodCac;
-        public DodCacTests()
+        private CacUser _cacUser;
+        public CacUserTests()
         {
-            _dodCac = new DodCac();
+            _cacUser = new CacUser();
         }
 
         [Fact]
-        public void Get_NullRawData_ThrowsArgumentNullException()
+        public void Create_NullRawData_ThrowsArgumentNullException()
         {
             var exception = Assert.Throws<ArgumentNullException>(
-                 () => _dodCac.Get(null)
+                 () => _cacUser.Create(null)
              );
 
-            Assert.Equal<string>(DodCac.BAD_GET_PARAM, exception.ParamName);
+            Assert.Equal<string>(CacUser.InvalidCreateParameter, exception.ParamName);
         }
 
         [Fact]
-        public void Get_ValidRawDataCertificate_ReturnsPopulatedCacInfo()
+        public void Create_ValidRawDataCertificate_ReturnsPopulatedCacInfo()
         {
-            var cac = _dodCac.Get(Resources.DodCac);
+            var cac = _cacUser.Create(Resources.Cac);
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
@@ -41,36 +41,37 @@ namespace kuujinbo.Mvc.NET.Tests
         public void ParseSimpleName_InvalidFormat_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => DodCac.GetDodCac("")
+                 () => CacUser.SetNameInfo("")
              );
 
-            Assert.Equal<string>(DodCac.BAD_SIMPLE_NAME, exception.Message);
+            Assert.Equal<string>(CacUser.InvalidSimpleNameParameter, exception.Message);
         }
 
         [Fact]
         public void ParseSimpleName_InvalidEdipi_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => DodCac.GetDodCac("last.first.middle.0")
+                 () => CacUser.SetNameInfo("last.first.middle.0")
              );
 
-            Assert.Equal<string>(DodCac.BAD_EDIPI, exception.Message);
+            Assert.Equal<string>(CacUser.InvalidEdipi, exception.Message);
         }
 
         [Fact]
         public void ParseSimpleName_ThreeParts_ReturnsCacInfo()
         {
-            var cac = DodCac.GetDodCac("last.first.0987654321");
+            var cac = CacUser.SetNameInfo("last.first.0987654321");
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>(string.Empty, cac.MiddleName);
             Assert.Equal<string>("0987654321", cac.Edipi);
         }
 
         [Fact]
         public void ParseSimpleName_FourParts_ReturnsCacInfo()
         {
-            var cac = DodCac.GetDodCac("last.first.middle.0987654321");
+            var cac = CacUser.SetNameInfo("last.first.middle.0987654321");
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
@@ -81,7 +82,7 @@ namespace kuujinbo.Mvc.NET.Tests
         [Fact]
         public void ParseSimpleName_MoreThanFourParts_ReturnsCacInfo()
         {
-            var cac = DodCac.GetDodCac("last.first.middle.cac-office-typo.0987654321");
+            var cac = CacUser.SetNameInfo("last.first.middle.cac-office-typo.0987654321");
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
@@ -92,65 +93,65 @@ namespace kuujinbo.Mvc.NET.Tests
         [Fact]
         public void ValidEdipi_DoesNotMatchRegex_ReturnsFalse()
         {
-            Assert.False(DodCac.ValidEdipi("jkjkl"));
-            Assert.False(DodCac.ValidEdipi("123e567%90"));
-            Assert.False(DodCac.ValidEdipi("123456789"));
-            Assert.False(DodCac.ValidEdipi("123456789 "));
-            Assert.False(DodCac.ValidEdipi(" 123456789"));
+            Assert.False(CacUser.ValidEdipi("jkjkl"));
+            Assert.False(CacUser.ValidEdipi("123e567%90"));
+            Assert.False(CacUser.ValidEdipi("123456789"));
+            Assert.False(CacUser.ValidEdipi("123456789 "));
+            Assert.False(CacUser.ValidEdipi(" 123456789"));
         }
 
         [Fact]
         public void ValidEdipi_MatchesRegex_ReturnsTrue()
         {
-            Assert.True(DodCac.ValidEdipi("0987654321"));
+            Assert.True(CacUser.ValidEdipi("0987654321"));
         }
 
         [Fact]
         public void TitleCase_Null_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => DodCac.TitleCase(null)
+                 () => CacUser.TitleCase(null)
              );
 
-            Assert.Equal<string>(DodCac.BAD_TITLE_CASE_TEXT, exception.Message);
+            Assert.Equal<string>(CacUser.InvalidTitleCaseParameter, exception.Message);
         }
 
         [Fact]
         public void TitleCase_StringEmpty_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => DodCac.TitleCase(string.Empty)
+                 () => CacUser.TitleCase(string.Empty)
              );
 
-            Assert.Equal<string>(DodCac.BAD_TITLE_CASE_TEXT, exception.Message);
+            Assert.Equal<string>(CacUser.InvalidTitleCaseParameter, exception.Message);
         }
 
         [Fact]
         public void TitleCase_AllWhiteSpace_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => DodCac.TitleCase("   ")
+                 () => CacUser.TitleCase("   ")
              );
 
-            Assert.Equal<string>(DodCac.BAD_TITLE_CASE_TEXT, exception.Message);
+            Assert.Equal<string>(CacUser.InvalidTitleCaseParameter, exception.Message);
         }
 
         [Fact]
         public void TitleCase_AllUppercase_ReturnsFirstUpperAndRemainingLower()
         {
-            Assert.Equal<string>("Text", DodCac.TitleCase("TEXT"));
+            Assert.Equal<string>("Text", CacUser.TitleCase("TEXT"));
         }
 
         [Fact]
         public void TitleCase_AllLowercase_ReturnsFirstUpperAndRemainingLower()
         {
-            Assert.Equal<string>("Text", DodCac.TitleCase("text"));
+            Assert.Equal<string>("Text", CacUser.TitleCase("text"));
         }
 
         [Fact]
         public void TitleCase_MixedCase_ReturnsFirstUpperAndRemainingLower()
         {
-            Assert.Equal<string>("Text", DodCac.TitleCase("teXt"));
+            Assert.Equal<string>("Text", CacUser.TitleCase("teXt"));
         }
     }
 }

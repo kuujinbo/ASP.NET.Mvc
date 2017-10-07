@@ -18,6 +18,11 @@ namespace kuujinbo.Mvc.NET.Attributes
         }
 
         /// <summary>
+        /// flag that user acknowledged application entry notice
+        /// </summary>
+        public const string NoticeAndConsent = "http-cookie-noticeAndConsent";
+
+        /// <summary>
         /// Notice/Consent Acknowledgement controller name
         /// </summary>
         public string ControllerName { get; private set; }
@@ -36,15 +41,15 @@ namespace kuujinbo.Mvc.NET.Attributes
             var request = filterContext.HttpContext.Request;
 
             // force acknowledgement
-            if (request.Cookies[HttpCookieFactory.NOTICE_AND_CONSENT] == null)
+            if (request.Cookies[NoticeAndConsent] == null)
             {
                 // redirect if return URL exists
-                if (context.Response.Cookies[HttpCookieFactory.RETURN_URL] == null
-                    || string.IsNullOrWhiteSpace(context.Response.Cookies[HttpCookieFactory.RETURN_URL].Value))
+                if (context.Response.Cookies[HttpCookieFactory.ReturnUrl] == null
+                    || string.IsNullOrWhiteSpace(context.Response.Cookies[HttpCookieFactory.ReturnUrl].Value))
                 {
                     context.Response.SetCookie(
                         HttpCookieFactory.Create(
-                            HttpCookieFactory.RETURN_URL,
+                            HttpCookieFactory.ReturnUrl,
                             request.Url.PathAndQuery,
                             secure: request.Url.Scheme.Equals("https")
                         )

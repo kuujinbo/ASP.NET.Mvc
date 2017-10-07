@@ -46,7 +46,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
                  () => _helper.AddInlineScript(null)
              );
 
-            Assert.Equal<string>(ScriptManagerHelper.BAD_SCRIPT_PARAM, exception.Message);
+            Assert.Equal<string>(ScriptManagerHelper.InvalidAddInlineScriptParameter, exception.Message);
         }
 
         [Fact]

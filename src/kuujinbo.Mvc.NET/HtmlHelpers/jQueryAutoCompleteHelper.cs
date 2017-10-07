@@ -15,15 +15,15 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// <summary>
         /// HTML input element attributes
         /// </summary>
-        public const string ID_ATTR = "id";
-        public const string URL_ATTR = "search-url";
-        public const string MIN_LEN_ATTR = "min-search-length";
+        public const string IdAttribute = "id";
+        public const string UrlAttribute = "search-url";
+        public const string MinLengthAttribute = "min-search-length";
 
         /// <summary>
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string SCRIPT_KEY = typeof(JQueryAutoCompleteHelper).ToString();
+        public static readonly string ScriptKey = typeof(JQueryAutoCompleteHelper).ToString();
 
         public static readonly string JavaScriptBlock = Resources.JQueryAutoComplete;
 
@@ -40,11 +40,11 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             tagBuilder.MergeAttributes<string, object>(
                 HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)
             );
-            tagBuilder.MergeAttribute(ID_ATTR, cssIdSelector, true);
-            tagBuilder.MergeAttribute(URL_ATTR, searchUrl, true);
-            tagBuilder.MergeAttribute(MIN_LEN_ATTR, minSearchLength.ToString(), true);
+            tagBuilder.MergeAttribute(IdAttribute, cssIdSelector, true);
+            tagBuilder.MergeAttribute(UrlAttribute, searchUrl, true);
+            tagBuilder.MergeAttribute(MinLengthAttribute, minSearchLength.ToString(), true);
 
-            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, ScriptKey);
 
             return new MvcHtmlString(tagBuilder.ToString());
         }

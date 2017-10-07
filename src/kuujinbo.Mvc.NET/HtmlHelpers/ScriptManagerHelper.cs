@@ -9,20 +9,20 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
     /// </summary>
     public static class ScriptManagerHelper
     {
-        public const string BAD_SCRIPT_PARAM = "script";
+        public const string InvalidAddInlineScriptParameter = "script";
 
-        public static readonly string ITEMS_KEY = typeof(ScriptManagerHelper).ToString();
-        public static readonly string SRC_KEY = typeof(ScriptManagerHelper).ToString() + "_SRC";
+        public static readonly string ItemsKey = typeof(ScriptManagerHelper).ToString();
+        public static readonly string SrcKey = typeof(ScriptManagerHelper).ToString() + "_SRC";
 
         public static MvcHtmlString AddScriptSrc(this HtmlHelper helper, string src)
         {
-            if (helper.ViewContext.HttpContext.Items[SRC_KEY] != null)
+            if (helper.ViewContext.HttpContext.Items[SrcKey] != null)
             {
-                ((IList<string>)helper.ViewContext.HttpContext.Items[SRC_KEY]).Add(src);
+                ((IList<string>)helper.ViewContext.HttpContext.Items[SrcKey]).Add(src);
             }
             else
             {
-                helper.ViewContext.HttpContext.Items[SRC_KEY] = new List<string>() { src };
+                helper.ViewContext.HttpContext.Items[SrcKey] = new List<string>() { src };
             }
 
             return new MvcHtmlString(String.Empty);
@@ -40,7 +40,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             string script, 
             string scriptKey = null)
         {
-            if (string.IsNullOrWhiteSpace(script)) throw new ArgumentException(BAD_SCRIPT_PARAM);
+            if (string.IsNullOrWhiteSpace(script)) throw new ArgumentException(InvalidAddInlineScriptParameter);
 
             if (scriptKey != null)
             {
@@ -51,13 +51,13 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
                 helper.ViewContext.HttpContext.Items[scriptKey] = null;
             }
 
-            if (helper.ViewContext.HttpContext.Items[ITEMS_KEY] != null)
+            if (helper.ViewContext.HttpContext.Items[ItemsKey] != null)
             {
-                ((IList<string>)helper.ViewContext.HttpContext.Items[ITEMS_KEY]).Add(script);
+                ((IList<string>)helper.ViewContext.HttpContext.Items[ItemsKey]).Add(script);
             }
             else
             {
-                helper.ViewContext.HttpContext.Items[ITEMS_KEY] = new List<string>() { script };
+                helper.ViewContext.HttpContext.Items[ItemsKey] = new List<string>() { script };
             }
 
             return new MvcHtmlString(String.Empty);
@@ -80,9 +80,9 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </remarks>
         public static MvcHtmlString RenderViewScripts(this HtmlHelper helper)
         {
-            if (helper.ViewContext.HttpContext.Items[ITEMS_KEY] != null)
+            if (helper.ViewContext.HttpContext.Items[ItemsKey] != null)
             {
-                var scripts = (IList<string>)helper.ViewContext.HttpContext.Items[ITEMS_KEY];
+                var scripts = (IList<string>)helper.ViewContext.HttpContext.Items[ItemsKey];
 
                 helper.ViewContext.Writer.WriteLine(@"<script type='text/javascript'>");
                 foreach (var script in scripts)
@@ -92,9 +92,9 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
                 helper.ViewContext.Writer.WriteLine("</script>");
             }
 
-            if (helper.ViewContext.HttpContext.Items[SRC_KEY] != null)
+            if (helper.ViewContext.HttpContext.Items[SrcKey] != null)
             {
-                var urls = (IList<string>)helper.ViewContext.HttpContext.Items[SRC_KEY];
+                var urls = (IList<string>)helper.ViewContext.HttpContext.Items[SrcKey];
                 foreach (var url in urls)
                 {
                     helper.ViewContext.Writer.WriteLine(string.Format(

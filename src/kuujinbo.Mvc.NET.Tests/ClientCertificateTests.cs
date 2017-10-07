@@ -33,7 +33,7 @@ namespace kuujinbo.Mvc.NET.Tests
                     .Returns(context.Request.ClientCertificate);
 
                 Assert.IsType<byte[]>(
-                    _clientCertificate.Get(_httpRequestBase.Object)
+                    _clientCertificate.GetCertificate(_httpRequestBase.Object)
                 );            
             // }
         }
@@ -44,12 +44,12 @@ namespace kuujinbo.Mvc.NET.Tests
             _httpRequestBase.Setup(x => x.IsLocal).Returns(false);
 
             var headers = new NameValueCollection();
-            headers[ClientCertificate.BIG_IP_CERTIFICATE_HEADER] = Convert
+            headers[ClientCertificate.BigIpCertificateHeader] = Convert
                 .ToBase64String(new byte[0]);
             _httpRequestBase.Setup(x => x.Headers).Returns(headers);
 
             Assert.IsType<byte[]>(
-                _clientCertificate.Get(_httpRequestBase.Object)
+                _clientCertificate.GetCertificate(_httpRequestBase.Object)
             );
         }
     }

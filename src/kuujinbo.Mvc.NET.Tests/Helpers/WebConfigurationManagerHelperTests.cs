@@ -22,7 +22,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
         IWebConfig _webConfig;
 
         const int MAX_CONTENTLENGTH_LESS_THAN = 1;
-        static readonly int MAX_CONTENTLENGTH_GREATER = WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH + 1;
+        static readonly int MAX_CONTENTLENGTH_GREATER = WebConfigurationManagerHelper.DefaultMaxRequestLength + 1;
         static readonly string XML_FORMAT = @"
 <system.webServer>
     <security>
@@ -56,7 +56,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
             WebConfigurationManagerHelper._maxRequestLength = 0;
 
             Assert.Equal(
-                WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH,
+                WebConfigurationManagerHelper.DefaultMaxRequestLength,
                 WebConfigurationManagerHelper.GetMaxRequestLength()
             );
         }
@@ -81,7 +81,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
             WebConfigurationManagerHelper._maxAllowedContentLength = 0;
 
             Assert.Equal(
-                WebConfigurationManagerHelper.DEFAULT_MAX_ALLOWED_CONTENTLENGTH,
+                WebConfigurationManagerHelper.DefaultMaxAllowedContentLength,
                 WebConfigurationManagerHelper.GetMaxAllowedContentLength(_webConfig)
             );
         }
@@ -104,7 +104,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
             _webConfig = new TestWebConfig(string.Format(XML_FORMAT, MAX_CONTENTLENGTH_LESS_THAN));
 
             Assert.Equal(
-                WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH,
+                WebConfigurationManagerHelper.DefaultMaxRequestLength,
                 WebConfigurationManagerHelper.GetMaxUploadSize(_webConfig)
             );
         }
@@ -112,7 +112,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
         [Fact]
         public void GetMaxUploadSize_MaxRequestLengthNotLessThan_ReturnsMaxContentLength()
         {
-            WebConfigurationManagerHelper._maxRequestLength = WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH;
+            WebConfigurationManagerHelper._maxRequestLength = WebConfigurationManagerHelper.DefaultMaxRequestLength;
             var xml = string.Format(XML_FORMAT, MAX_CONTENTLENGTH_LESS_THAN);
             _webConfig = new TestWebConfig(xml);
 
@@ -129,7 +129,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
             var result = WebConfigurationManagerHelper.GetMaxUploadSize(_webConfig);
 
             Assert.Equal(
-                WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH,
+                WebConfigurationManagerHelper.DefaultMaxRequestLength,
                 result
             );
         }

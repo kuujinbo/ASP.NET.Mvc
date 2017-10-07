@@ -12,7 +12,7 @@ namespace kuujinbo.Mvc.NET.Attributes
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.TempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] = true;
+            filterContext.Controller.TempData[SessionTerminator.IgnoreSessionTimeout] = true;
             base.OnActionExecuting(filterContext);
         }
     }

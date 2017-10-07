@@ -16,7 +16,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         DodCacController _controller;
         Mock<HttpRequestBase> _httpRequestBase;
         Mock<HttpContextBase> _httpContextBase;
-        Mock<IDodCac> _dodCac;
+        Mock<ICacUser> _dodCac;
         Mock<IClientCertificate> _clientCertificate;
         ActionResult _result;
 
@@ -29,9 +29,9 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _httpContextBase.Setup(x => x.Request)
                 .Returns(_httpRequestBase.Object);
 
-            _dodCac = new Mock<IDodCac>();
+            _dodCac = new Mock<ICacUser>();
             _clientCertificate = new Mock<IClientCertificate>();
-            _clientCertificate.Setup(x => x.Get(_httpRequestBase.Object))
+            _clientCertificate.Setup(x => x.GetCertificate(_httpRequestBase.Object))
                 .Returns(It.IsAny<byte[]>());
             _controller = new DodCacController(
                 _dodCac.Object,
@@ -44,8 +44,8 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithEmail_ReturnsCacInfoModel()
         {
-            _dodCac.Setup(x => x.Get(It.IsAny<byte[]>()))
-                .Returns(new DodCac()
+            _dodCac.Setup(x => x.Create(It.IsAny<byte[]>()))
+                .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
                     FirstName = FIRST_NAME,
@@ -54,9 +54,9 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
                 });
 
             _result = _controller.Index();
-            var model = (DodCac) ((ViewResult)_result).Model;
+            var model = (CacUser) ((ViewResult)_result).Model;
 
-            _dodCac.Verify(x => x.Get(It.IsAny<byte[]>()), Times.Once());
+            _dodCac.Verify(x => x.Create(It.IsAny<byte[]>()), Times.Once());
             Assert.IsType<ViewResult>(_result);
             Assert.Equal(LAST_NAME, model.LastName);
             Assert.Equal(FIRST_NAME, model.FirstName);
@@ -67,8 +67,8 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithoutEmail_ReturnsNullCacInfoModel()
         {
-            _dodCac.Setup(x => x.Get(It.IsAny<byte[]>()))
-                .Returns(new DodCac()
+            _dodCac.Setup(x => x.Create(It.IsAny<byte[]>()))
+                .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
                     FirstName = FIRST_NAME,
@@ -76,9 +76,9 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
                 });
 
             _result = _controller.Index();
-            var model = (DodCac) ((ViewResult)_result).Model;
+            var model = (CacUser) ((ViewResult)_result).Model;
 
-            _dodCac.Verify(x => x.Get(It.IsAny<byte[]>()), Times.Once());
+            _dodCac.Verify(x => x.Create(It.IsAny<byte[]>()), Times.Once());
             Assert.IsType<ViewResult>(_result);
             Assert.Null(model);
         }

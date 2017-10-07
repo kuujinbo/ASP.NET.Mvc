@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using Xunit;
+using kuujinbo.Mvc.NET.Attributes;
 
 namespace kuujinbo.Mvc.NET.Tests
 {
@@ -38,7 +39,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
             _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, tempData);
 
-            Assert.Equal(true, (bool)tempData[SessionTerminator.SESSION_TIMED_OUT]);
+            Assert.Equal(true, (bool)tempData[SessionTerminator.SessionTimedOut]);
         }
 
         [Fact]
@@ -52,7 +53,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
             _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, tempData);
 
-            Assert.Null(tempData[SessionTerminator.SESSION_TIMED_OUT]);
+            Assert.Null(tempData[SessionTerminator.SessionTimedOut]);
         }
 
         [Fact]
@@ -60,7 +61,7 @@ namespace kuujinbo.Mvc.NET.Tests
         {
             _fakeContext = MvcMockHelpers.FakeHttpContext();
             _fakeContext.Request.SetRequestQueryString(new NameValueCollection());
-            var consentCookie = new HttpCookie(HttpCookieFactory.NOTICE_AND_CONSENT);
+            var consentCookie = new HttpCookie(NoticeAndConsentAuthorizeAttribute.NoticeAndConsent);
             var now = DateTime.Now;
             consentCookie.Value = now.ToString();
             var cookieCollection = new HttpCookieCollection();
@@ -71,7 +72,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
             Assert.Equal(1, 1);
             Assert.Equal(
-                _fakeContext.Request.Cookies[HttpCookieFactory.NOTICE_AND_CONSENT].Expires.Day,
+                _fakeContext.Request.Cookies[NoticeAndConsentAuthorizeAttribute.NoticeAndConsent].Expires.Day,
                 now.AddDays(-1).Day
             );
         }

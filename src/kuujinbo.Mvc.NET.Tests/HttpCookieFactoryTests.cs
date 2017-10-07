@@ -24,7 +24,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => HttpCookieFactory.Create(null)
              );
 
-            Assert.Equal<string>(HttpCookieFactory.BAD_COOKIE_NAME, exception.ParamName);
+            Assert.Equal<string>(HttpCookieFactory.InvalidCreateParameter, exception.ParamName);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => HttpCookieFactory.Create(" ")
              );
 
-            Assert.Equal<string>(HttpCookieFactory.BAD_COOKIE_NAME, exception.ParamName);
+            Assert.Equal<string>(HttpCookieFactory.InvalidCreateParameter, exception.ParamName);
         }
 
         [Fact]

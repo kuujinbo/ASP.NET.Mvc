@@ -9,7 +9,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string SCRIPT_KEY = typeof(SessionTerminatorHelper).ToString();
+        public static readonly string ScriptKey = typeof(SessionTerminatorHelper).ToString();
 
         public static readonly string JavaScriptBlock = Resources.SessionTerminator_min;
 
@@ -20,17 +20,17 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         public static MvcHtmlString TerminateSession(
             this HtmlHelper helper, int timeout, string url)
         {
-            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, ScriptKey);
 
             var tempData = helper.ViewContext.Controller.TempData;
 
-            if (tempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] == null)
+            if (tempData[SessionTerminator.IgnoreSessionTimeout] == null)
             {
                 ScriptManagerHelper.AddInlineScript(
                     helper, string.Format(InitFormat, timeout, url)
                 );
             }
-            else if (tempData[SessionTerminator.SESSION_TIMED_OUT] != null)
+            else if (tempData[SessionTerminator.SessionTimedOut] != null)
             {
                 ScriptManagerHelper.AddInlineScript(
                     helper, ShowLogout

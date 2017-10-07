@@ -7,20 +7,20 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
 {
     public static class FileUploadFieldHelper
     {
-        public const string ACCEPT_ALL = "*.*";
-        public const string ACCEPT_FORMAT = @"
+        public const string AcceptAll = "*.*";
+        public const string AcceptFormat = @"
 <div style='line-height:1em;font-size:0.9em'><strong>Allowed file types: [ {0} ]</strong></div>";
 
         /// <summary>
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string SCRIPT_KEY = typeof(FileUploadFieldHelper).ToString();
+        public static readonly string ScriptKey = typeof(FileUploadFieldHelper).ToString();
 
         public static readonly string JavaScriptBlock = Resources.FileUploadField_min;
 
-        public const string DEFAULT_BUTTON_TEXT = "Browse....";
-        public const string HTML_FORMAT = @"
+        public const string DefaultButtonText = "Browse....";
+        public const string HtmlFormat = @"
 <div class='input-group input-group-sm'>
     <span class='input-group-btn'>
         <label class='btn btn-success' type='button'>
@@ -48,11 +48,11 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </summary>
         public static MvcHtmlString FileUploadField(
             this HtmlHelper helper 
-            , string buttonText = DEFAULT_BUTTON_TEXT
+            , string buttonText = DefaultButtonText
             , string[] accept = null
             )
         {
-            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, ScriptKey);
             ScriptManagerHelper.AddInlineScript(helper, "new FileUploadField().addListeners();");
 
             var maxuploadSize = WebConfigurationManagerHelper.GetMaxUploadSize(
@@ -60,12 +60,12 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             );
 
             return new MvcHtmlString(string.Format(
-                HTML_FORMAT
+                HtmlFormat
                 , maxuploadSize
-                , accept != null ? string.Join(",", accept) : ACCEPT_ALL
+                , accept != null ? string.Join(",", accept) : AcceptAll
                 , buttonText
                 , maxuploadSize / 1024
-                , accept != null ? string.Format(ACCEPT_FORMAT, string.Join(",", accept)) : string.Empty
+                , accept != null ? string.Format(AcceptFormat, string.Join(",", accept)) : string.Empty
             ));
         }
     }

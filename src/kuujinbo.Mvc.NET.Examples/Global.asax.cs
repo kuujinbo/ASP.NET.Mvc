@@ -35,7 +35,7 @@ namespace kuujinbo.Mvc.NET.Examples
         private void InitAutofac()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<DodCac>().As<IDodCac>();
+            builder.RegisterType<CacUser>().As<ICacUser>();
             builder.RegisterType<ClientCertificate>().As<IClientCertificate>();
 
             // register all controllers using assembly scanning

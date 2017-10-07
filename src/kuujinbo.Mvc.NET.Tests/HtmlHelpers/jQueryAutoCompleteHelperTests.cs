@@ -36,9 +36,9 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             , string minSearchLength = "1")
         {
             var tagBuilder = new TagBuilder("input");
-            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.ID_ATTR, cssIdSelector, true);
-            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.URL_ATTR, searchUrl, true);
-            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.MIN_LEN_ATTR, minSearchLength, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.IdAttribute, cssIdSelector, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.UrlAttribute, searchUrl, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.MinLengthAttribute, minSearchLength, true);
 
             return tagBuilder.ToString();
         }

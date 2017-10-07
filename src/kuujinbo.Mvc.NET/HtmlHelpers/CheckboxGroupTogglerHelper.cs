@@ -9,11 +9,11 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// Flag when extension called multiple times per view to ensure that
         /// JavaScript block only added once.
         /// </summary>
-        public static readonly string SCRIPT_KEY = typeof(CheckboxGroupTogglerHelper).ToString();
+        public static readonly string ScriptKey = typeof(CheckboxGroupTogglerHelper).ToString();
 
         public static readonly string JavaScriptBlock = Resources.CheckboxGroupToggler_min;
 
-        public const string JAVASCRIPT_FORMAT =
+        public const string JavaScriptFormat =
 @"new CheckboxGroupToggler('{0}').addToggleElement({1});";
 
         public static MvcHtmlString CheckboxGroupToggler(
@@ -21,10 +21,10 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             string cssSelector,
             bool addAfter = false)
         {
-            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, SCRIPT_KEY);
+            ScriptManagerHelper.AddInlineScript(helper, JavaScriptBlock, ScriptKey);
             ScriptManagerHelper.AddInlineScript(
                 helper, 
-                string.Format(JAVASCRIPT_FORMAT, cssSelector, addAfter.ToString().ToLower())
+                string.Format(JavaScriptFormat, cssSelector, addAfter.ToString().ToLower())
             );
 
             return new MvcHtmlString("");

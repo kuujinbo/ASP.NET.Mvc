@@ -1,20 +1,20 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using System;
+using System.Text.RegularExpressions;
 
 namespace kuujinbo.Mvc.NET
 {
-    public interface IDodCac
+    public interface ICacUser
     {
-        DodCac Get(byte[] rawData);
+        CacUser Create(byte[] rawData);
     }
 
-    public class DodCac : IDodCac
+    public class CacUser : ICacUser
     {
-        public const string BAD_GET_PARAM = "rawData";
-        public const string BAD_EDIPI = "edipi not 10 digits";
-        public const string BAD_SIMPLE_NAME = "simpleName";
-        public const string BAD_TITLE_CASE_TEXT = "text cannot be null or whitespace";
+        public const string InvalidCreateParameter = "rawData";
+        public const string InvalidEdipi = "edipi not 10 digits";
+        public const string InvalidSimpleNameParameter = "simpleName";
+        public const string InvalidTitleCaseParameter = "text cannot be null or whitespace";
 
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -23,16 +23,15 @@ namespace kuujinbo.Mvc.NET
         public string Email { get; set; }
 
         /// <summary>
-        /// Populate DodCac instance with LastName, FirstName, MiddleName
-        /// and Edipi. Email property set **ONLY** if user selects email 
-        /// certificate.
+        /// Populate instance with LastName, FirstName, MiddleName and Edipi.
+        /// Email property set **ONLY** if user selects email certificate.
         /// </summary>
-        public virtual DodCac Get(byte[] rawData)
+        public virtual CacUser Create(byte[] rawData)
         {
-            if (rawData == null) throw new ArgumentNullException(BAD_GET_PARAM);
+            if (rawData == null) throw new ArgumentNullException(InvalidCreateParameter);
 
             X509Certificate2 cert = new X509Certificate2(rawData);
-            var cacInfo = GetDodCac(cert.GetNameInfo(X509NameType.SimpleName, false));
+            var cacInfo = SetNameInfo(cert.GetNameInfo(X509NameType.SimpleName, false));
             cacInfo.Email = cert.GetNameInfo(X509NameType.EmailName, false)
                 .ToLower();
 
@@ -40,20 +39,20 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Populate DodCac instance with LastName, FirstName, MiddleName,
-        /// and Edipi. simpleName parameter from X509Certificate2.GetNameInfo()
+        /// Populate instance with LastName, FirstName, MiddleName, and Edipi.
+        /// simpleName parameter from X509Certificate2.GetNameInfo()
         /// [X509NameType.SimpleName]
         /// </summary>
-        public static DodCac GetDodCac(string simpleName)
+        public static CacUser SetNameInfo(string simpleName)
         {
             string[] splitValue = simpleName.Split(new char[] { '.' });
             // CAC should at least have last.first.edipi if no middle initial/name
-            if (splitValue.Length < 3) throw new FormatException(BAD_SIMPLE_NAME);
+            if (splitValue.Length < 3) throw new FormatException(InvalidSimpleNameParameter);
 
             var edipi = splitValue[splitValue.Length - 1];
-            if (!ValidEdipi(edipi)) throw new FormatException(BAD_EDIPI);
+            if (!ValidEdipi(edipi)) throw new FormatException(InvalidEdipi);
 
-            return new DodCac()
+            return new CacUser()
             {
                 LastName = TitleCase(splitValue[0]),
                 FirstName = TitleCase(splitValue[1]),
@@ -81,7 +80,7 @@ namespace kuujinbo.Mvc.NET
         public static string TitleCase(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
-                throw new FormatException(BAD_TITLE_CASE_TEXT);
+                throw new FormatException(InvalidTitleCaseParameter);
 
             return char.ToUpper(text[0]) + text.Substring(1).ToLower();
         }

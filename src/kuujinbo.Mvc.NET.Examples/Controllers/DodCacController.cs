@@ -5,19 +5,19 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
 {
     public class DodCacController : Controller
     {
-        private IDodCac _dodCac;
+        private ICacUser _cacUser;
         private IClientCertificate _clientCertificate;
 
-        public DodCacController(IDodCac cacInfo, IClientCertificate cert)
+        public DodCacController(ICacUser cacInfo, IClientCertificate cert)
         {
-            _dodCac = cacInfo;
+            _cacUser = cacInfo;
             _clientCertificate = cert;
         }
 
         // GET: CacInfo
         public ActionResult Index()
         {
-            var cacInfo = _dodCac.Get(_clientCertificate.Get(Request));
+            var cacInfo = _cacUser.Create(_clientCertificate.GetCertificate(Request));
 
             return !string.IsNullOrWhiteSpace(cacInfo.Email)
                 ? View(cacInfo) : View();

@@ -12,7 +12,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
     {
         HtmlHelper _helper;
         Mock<IViewDataContainer> _viewData;
-        static readonly int _defaultUploadSize = WebConfigurationManagerHelper.DEFAULT_MAX_REQUEST_LENGTH;
+        static readonly int _defaultUploadSize = WebConfigurationManagerHelper.DefaultMaxRequestLength;
         static readonly int _defaultUploadInMB = _defaultUploadSize / 1024;
 
         public FileUploadFieldHelperTests()
@@ -38,10 +38,10 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         {
             var result = _helper.FileUploadField();
             var expected = string.Format(
-                                FileUploadFieldHelper.HTML_FORMAT
+                                FileUploadFieldHelper.HtmlFormat
                                 , _defaultUploadSize 
-                                , FileUploadFieldHelper.ACCEPT_ALL
-                                , FileUploadFieldHelper.DEFAULT_BUTTON_TEXT
+                                , FileUploadFieldHelper.AcceptAll
+                                , FileUploadFieldHelper.DefaultButtonText
                                 , _defaultUploadInMB
                                 , string.Empty
                              );
@@ -55,9 +55,9 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var buttonText = "Select File";
             var result = _helper.FileUploadField(buttonText);
             var expected = string.Format(
-                                FileUploadFieldHelper.HTML_FORMAT
+                                FileUploadFieldHelper.HtmlFormat
                                 , _defaultUploadSize 
-                                , FileUploadFieldHelper.ACCEPT_ALL
+                                , FileUploadFieldHelper.AcceptAll
                                 , buttonText
                                 , _defaultUploadInMB
                                 , string.Empty
@@ -72,12 +72,12 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var acceptExtensions = new string[] { ".pdf", ".jpg", ".png" };
             var result = _helper.FileUploadField(accept: acceptExtensions);
             var expected = string.Format(
-                                FileUploadFieldHelper.HTML_FORMAT
+                                FileUploadFieldHelper.HtmlFormat
                                 , _defaultUploadSize 
                                 , string.Join(",", acceptExtensions)
-                                , FileUploadFieldHelper.DEFAULT_BUTTON_TEXT
+                                , FileUploadFieldHelper.DefaultButtonText
                                 , _defaultUploadInMB
-                                , string.Format(FileUploadFieldHelper.ACCEPT_FORMAT, string.Join(",", acceptExtensions))
+                                , string.Format(FileUploadFieldHelper.AcceptFormat, string.Join(",", acceptExtensions))
                              );
 
             Assert.Equal(expected, result.ToString());

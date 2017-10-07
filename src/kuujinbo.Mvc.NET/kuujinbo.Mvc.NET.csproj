@@ -64,7 +64,7 @@
     <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBoolHelper.cs" />
     <Compile Include="HttpCookieFactory.cs" />
-    <Compile Include="DodCac.cs" />
+    <Compile Include="CacUser.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Filters\XsrfFilter.cs" />
     <Compile Include="Helpers\RegexUtils.cs" />

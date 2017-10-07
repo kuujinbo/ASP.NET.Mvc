@@ -18,7 +18,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         {
             _controller = new Mock<ControllerBase>();
             _controller.Object.TempData = new TempDataDictionary();
-            _controller.Object.TempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] = true;
+            _controller.Object.TempData[SessionTerminator.IgnoreSessionTimeout] = true;
 
             var httpContext = new Mock<HttpContextBase>();
             httpContext.Setup(x => x.Items).Returns(new Dictionary<string, object>());
@@ -44,7 +44,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         [Fact]
         public void TerminateSession_SessionTimedOut_ReturnsEmptyString()
         {
-            _controller.Object.TempData[SessionTerminator.SESSION_TIMED_OUT] = true;
+            _controller.Object.TempData[SessionTerminator.SessionTimedOut] = true;
 
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, _testUrl);
 
@@ -54,7 +54,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         [Fact]
         public void TerminateSession_Init_ReturnsEmptyString()
         {
-            _controller.Object.TempData[SessionTerminator.IGNORE_SESSION_TIMEOUT] = null;
+            _controller.Object.TempData[SessionTerminator.IgnoreSessionTimeout] = null;
 
             var result = _helper.TerminateSession(SessionTerminator.PrivilegedTimeout, _testUrl);
 
