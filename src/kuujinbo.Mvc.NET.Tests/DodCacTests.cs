@@ -74,6 +74,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("Middle", cac.MiddleName);
             Assert.Equal<string>("0987654321", cac.Edipi);
         }
 
@@ -84,6 +85,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
+            Assert.Equal<string>("Middle", cac.MiddleName);
             Assert.Equal<string>("0987654321", cac.Edipi);
         }
 

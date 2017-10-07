@@ -24,7 +24,6 @@ namespace kuujinbo.Mvc.NET.Attributes
 
         /// <summary>
         /// Notice/Consent Acknowledgement action name
-        /// DOD Banner controller action
         /// </summary>
         public string ActionName { get; private set; } 
 
