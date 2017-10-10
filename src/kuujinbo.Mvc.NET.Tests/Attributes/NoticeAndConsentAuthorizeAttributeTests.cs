@@ -66,7 +66,7 @@ namespace kuujinbo.Mvc.NET.Tests.Attributes
         [Fact]
         public void OnAuthorization_NoRequestCookieResponseReturnUrlCookie_RedirectsToApplicationEntry()
         {
-            _cookies.Add(new HttpCookie(HttpCookieFactory.ReturnUrl)
+            _cookies.Add(new HttpCookie(NoticeAndConsentAuthorizeAttribute.ReturnUrl)
             {
                 Value = "http://invalid.test"
             });

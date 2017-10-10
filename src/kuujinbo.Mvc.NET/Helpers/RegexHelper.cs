@@ -2,7 +2,7 @@
 
 namespace kuujinbo.Mvc.NET.Helpers
 {
-    public class RegexUtils
+    public class RegexHelper
     {
         static readonly Regex _pascalRegex = new Regex(
         @"	# lookbehind/lookahead match on **boundaries**

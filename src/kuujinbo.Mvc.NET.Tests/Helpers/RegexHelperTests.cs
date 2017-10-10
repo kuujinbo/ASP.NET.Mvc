@@ -3,14 +3,14 @@ using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests.Helpers
 {
-    public class RegexUtilsTests
+    public class RegexHelperTests
     {
         [Fact]
         public void PascalCaseSplit_MatchingString_InsertsSpaces()
         {
             Assert.Equal<string>(
                 "Hello World World", 
-                RegexUtils.PascalCaseSplit("HelloWorldWorld")
+                RegexHelper.PascalCaseSplit("HelloWorldWorld")
             );
         }
 
@@ -21,14 +21,14 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
 
             Assert.Equal<string>(
                 expected, 
-                RegexUtils.PascalCaseSplit(expected)
+                RegexHelper.PascalCaseSplit(expected)
             );
         }
 
         [Fact]
         public void PascalCaseSplit_NullString_ReturnsNull()
         {
-            Assert.Null(RegexUtils.PascalCaseSplit(null));
+            Assert.Null(RegexHelper.PascalCaseSplit(null));
         }
     }
 }

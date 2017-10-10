@@ -5,15 +5,16 @@ namespace kuujinbo.Mvc.NET
 {
     public static class HttpCookieFactory
     {
-        public const string KeyName = "_http-cookie";
-
+        /// <summary>
+        /// Exception message
+        /// </summary>
         public const string InvalidCreateParameter = "name";
 
         /// <summary>
-        /// redirect to page requested instead of default route. e.g. bookmark
+        /// Create a HTTP cookie that by default:
+        /// [1] can only be transmitted over an encrypted connection
+        /// [2] cannot be accessed through client side script
         /// </summary>
-        public static readonly string ReturnUrl = KeyName + "-returnUrl";
-
         public static HttpCookie Create(
             string name,
             string value = null,

@@ -41,12 +41,12 @@
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="Controllers\DodCacControllerTests.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelperTests.cs" />
-    <Compile Include="HtmlHelpers\UserFriendlyBoolHelperTests.cs" />
+    <Compile Include="HtmlHelpers\UserFriendlyBoolTests.cs" />
     <Compile Include="HttpCookieFactoryTests.cs" />
     <Compile Include="Filters\ConditionalFilterProviderTests.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelperTests.cs" />
     <Compile Include="HtmlHelpers\FileUploadFieldHelperTests.cs" />
-    <Compile Include="Helpers\RegexUtilsTests.cs" />
+    <Compile Include="Helpers\RegexHelperTests.cs" />
     <Compile Include="Helpers\WebConfigurationManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\JQueryAutoCompleteHelperTests.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />

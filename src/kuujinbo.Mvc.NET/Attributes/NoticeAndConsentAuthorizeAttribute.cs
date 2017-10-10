@@ -22,9 +22,14 @@ namespace kuujinbo.Mvc.NET.Attributes
         }
 
         /// <summary>
-        /// flag that user acknowledged application entry notice
+        /// Flag user acknowledged application entry notice.
         /// </summary>
-        public const string NoticeAndConsent = "http-cookie-notice-and-consent";
+        public const string NoticeAndConsent = "_http-cookie-notice-and-consent";
+
+        /// <summary>
+        /// Redirect for bookmarked page.
+        /// </summary>
+        public const string ReturnUrl = "_http-cookie-return-url";
 
         /// <summary>
         /// Notice/Consent acknowledgement controller name
@@ -48,12 +53,12 @@ namespace kuujinbo.Mvc.NET.Attributes
             if (request.Cookies[NoticeAndConsent] == null)
             {
                 // redirect if return URL exists
-                if (context.Response.Cookies[HttpCookieFactory.ReturnUrl] == null
-                    || string.IsNullOrWhiteSpace(context.Response.Cookies[HttpCookieFactory.ReturnUrl].Value))
+                if (context.Response.Cookies[ReturnUrl] == null
+                    || string.IsNullOrWhiteSpace(context.Response.Cookies[ReturnUrl].Value))
                 {
                     context.Response.SetCookie(
                         HttpCookieFactory.Create(
-                            HttpCookieFactory.ReturnUrl,
+                            ReturnUrl,
                             request.Url.PathAndQuery,
                             secure: request.Url.Scheme.Equals("https")
                         )

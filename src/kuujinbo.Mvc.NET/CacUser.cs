@@ -51,10 +51,9 @@ namespace kuujinbo.Mvc.NET
         );
 
         /// <summary>
-        /// Verify Edipi is a **10-digit string**:
-        /// All BCL IntXX and UIntXX [Try]Parse methods **FAIL**
-        /// validation because **NONE** guarantee a **10-digit string**.
-        /// UIntXX and string length == 10 works, but not IntXX.
+        /// Verify Edipi is a **10-digit string identifier**:
+        /// All BCL IntXX and UIntXX [Try]Parse methods **FAIL** validation
+        /// because **NONE** guarantee a **10-digit string identifier**.
         /// </summary>
         public static bool ValidEdipi(string edipi)
         {

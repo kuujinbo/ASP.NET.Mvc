@@ -11,7 +11,7 @@ namespace kuujinbo.Mvc.NET
     public class ClientCertificate : IClientCertificate
     {
         /// <summary>
-        /// BIG-IP stores user/client certificate in custom header
+        /// BIG-IP stores user client certificate in custom header
         /// </summary>
         public const string BigIpCertificateHeader = "ssl.client_cert";
         

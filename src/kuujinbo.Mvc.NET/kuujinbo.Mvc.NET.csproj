@@ -62,12 +62,12 @@
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
-    <Compile Include="HtmlHelpers\UserFriendlyBoolHelper.cs" />
+    <Compile Include="HtmlHelpers\UserFriendlyBool.cs" />
     <Compile Include="HttpCookieFactory.cs" />
     <Compile Include="CacUser.cs" />
     <Compile Include="Filters\ConditionalFilterProvider.cs" />
     <Compile Include="Filters\XsrfFilter.cs" />
-    <Compile Include="Helpers\RegexUtils.cs" />
+    <Compile Include="Helpers\RegexHelper.cs" />
     <Compile Include="Helpers\WebConfigurationManagerHelper.cs" />
     <Compile Include="HtmlHelpers\CheckboxGroupTogglerHelper.cs" />
     <Compile Include="HtmlHelpers\FileUploadFieldHelper.cs" />
