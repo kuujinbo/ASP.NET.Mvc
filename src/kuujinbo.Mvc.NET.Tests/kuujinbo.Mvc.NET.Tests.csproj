@@ -51,6 +51,7 @@
     <Compile Include="HtmlHelpers\JQueryAutoCompleteHelperTests.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelperTests.cs" />
+    <Compile Include="IO\StreamedResultTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -62,8 +63,10 @@
     <Compile Include="_testHelpers\MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionTerminatorTests.cs" />
+    <Compile Include="_testHelpers\TestFiles.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="_testData\StreamedResult.html" />
     <None Include="app.config" />
     <None Include="Chutzpah.json" />
     <Content Include="JavaScript\appConfig.UnitTests.js" />

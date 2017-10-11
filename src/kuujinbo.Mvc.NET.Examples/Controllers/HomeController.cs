@@ -11,6 +11,7 @@ using kuujinbo.Mvc.NET.Attributes;
 using kuujinbo.Mvc.NET.Filters;
 using kuujinbo.Mvc.NET.Examples.Models;
 using Newtonsoft.Json;
+using kuujinbo.Mvc.NET.IO;
 
 namespace kuujinbo.Mvc.NET.Examples.Controllers
 {
@@ -24,6 +25,12 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             _data = JsonConvert.DeserializeObject<ICollection<TestModel>>(
                 System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/app_data/jsonData.json"))
             );
+        }
+
+        [HttpGet]
+        public ActionResult PdfResult()
+        {
+            return new PdfResult(Server.MapPath("~/app_data/moby-dick.pdf"), 256);
         }
 
         [HttpGet]
