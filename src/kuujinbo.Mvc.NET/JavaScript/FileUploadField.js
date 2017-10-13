@@ -41,7 +41,7 @@ FileUploadField.prototype = {
         } else {
             var accept = inputFile.getAttribute('accept');
             if (accept) {
-                var extension = ('.' + file.name.split('.').pop()).toLowerCase();
+                var extension = '.' + file.name.toLowerCase().split('.').pop();
                 var accepted = accept.toLowerCase().split(',');
                 // IE sucks - no support for new Set(iterable)
                 var testSet = new Set();
@@ -82,7 +82,6 @@ FileUploadField.prototype = {
                     alert(errorLines.join('\n\n'));
                 }
 
-                files = null;
                 // **MUST** explicitly clear file inputFile
                 inputFile.value = null;
             }
