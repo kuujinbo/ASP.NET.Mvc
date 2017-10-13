@@ -7,7 +7,6 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
 {
     public static class FileUploadFieldHelper
     {
-        public const string AcceptAll = "*.*";
         public const string AcceptFormat = @"
 <div style='line-height:1em;font-size:0.9em'><strong>Allowed file types: [ {0} ]</strong></div>";
 
@@ -17,7 +16,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </summary>
         public static readonly string ScriptKey = typeof(FileUploadFieldHelper).ToString();
 
-        public static readonly string JavaScriptBlock = Resources.FileUploadField_min;
+        public static readonly string JavaScriptBlock = Resources.FileUploadField;
 
         public const string DefaultButtonText = "Browse....";
         public const string HtmlFormat = @"
@@ -26,8 +25,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         <label class='btn btn-success' type='button'>
             <input id='fileUploadField' name='fileUploadField' style='display:none;'
                    type='file'
-                   data-max-size='{0}'
-                   accept='{1}'
+                   data-max-size='{0}' {1}
 
             />{2}
         </label>
@@ -62,7 +60,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             return new MvcHtmlString(string.Format(
                 HtmlFormat
                 , maxuploadSize
-                , accept != null ? string.Join(",", accept) : AcceptAll
+                , accept != null ? string.Format("accept='{0}'", string.Join(",", accept)) : string.Empty
                 , buttonText
                 , maxuploadSize / 1024
                 , accept != null ? string.Format(AcceptFormat, string.Join(",", accept)) : string.Empty

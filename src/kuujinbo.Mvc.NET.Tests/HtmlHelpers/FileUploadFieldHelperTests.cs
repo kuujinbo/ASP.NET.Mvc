@@ -40,7 +40,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var expected = string.Format(
                                 FileUploadFieldHelper.HtmlFormat
                                 , _defaultUploadSize 
-                                , FileUploadFieldHelper.AcceptAll
+                                , string.Empty
                                 , FileUploadFieldHelper.DefaultButtonText
                                 , _defaultUploadInMB
                                 , string.Empty
@@ -57,7 +57,7 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var expected = string.Format(
                                 FileUploadFieldHelper.HtmlFormat
                                 , _defaultUploadSize 
-                                , FileUploadFieldHelper.AcceptAll
+                                , string.Empty
                                 , buttonText
                                 , _defaultUploadInMB
                                 , string.Empty
@@ -74,10 +74,13 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             var expected = string.Format(
                                 FileUploadFieldHelper.HtmlFormat
                                 , _defaultUploadSize 
-                                , string.Join(",", acceptExtensions)
+                                , string.Format("accept='{0}'", string.Join(",", acceptExtensions))
                                 , FileUploadFieldHelper.DefaultButtonText
                                 , _defaultUploadInMB
-                                , string.Format(FileUploadFieldHelper.AcceptFormat, string.Join(",", acceptExtensions))
+                                , string.Format(
+                                    FileUploadFieldHelper.AcceptFormat, 
+                                    string.Join(",", acceptExtensions)
+                                )
                              );
 
             Assert.Equal(expected, result.ToString());
