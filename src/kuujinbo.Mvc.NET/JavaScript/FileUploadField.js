@@ -33,8 +33,8 @@ FileUploadField.prototype = {
         var maxuploadSize = inputFile.dataset.maxSize * 1024; // convert from KB
         if (maxuploadSize < file.size) {
             var errorLines = [
-                '[' + file.name + '] is ' + this.toMB(file.size)
-                , 'Maximum allowed file upload size is ' + this.toMB(maxuploadSize)
+                '[' + file.name + '] is [' + this.toMB(file.size) + ']'
+                , 'Maximum allowed file upload size is [' + this.toMB(maxuploadSize) + ']'
                 , 'Please select another file.'
             ];
             return { title: this.maxSizeExceeded, errorLines: errorLines };
@@ -75,8 +75,9 @@ FileUploadField.prototype = {
                 if (this._jQueryUI) {
                     var error = '';
                     for (var i = 0; i < errorLines.length; ++i) {
-                        error += '<p>' + errorLines[i] + '</p>'
+                        error += '<p>' + errorLines[i] + '</p>';
                     }
+                    error = error.replace(/\[/g, '[<strong>').replace(/\]/g, '</strong>]');
                     this.showDialog(validationError.title, error);
                 } else {
                     alert(errorLines.join('\n\n'));
@@ -88,7 +89,7 @@ FileUploadField.prototype = {
         }
     },
     showDialog: function(title, message) {
-        message = "<h1><span style='color:red' class='glyphicon glyphicon-flag'></span>"
+        message = "<h1><span style='color:red' class='glyphicon glyphicon-flag'></span> "
                   + title
                   + '</h1>'
                   + message;
