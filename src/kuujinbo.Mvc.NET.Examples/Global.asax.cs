@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -20,6 +21,7 @@ namespace kuujinbo.Mvc.NET.Examples
             FluentValidationModelValidatorProvider.Configure();
 
             InitAutofac();
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -35,14 +37,14 @@ namespace kuujinbo.Mvc.NET.Examples
         private void InitAutofac()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<CacUser>().As<ICacUser>();
+            builder.RegisterModule<AutofacWebTypesModule>();
             builder.RegisterType<ClientCertificate>().As<IClientCertificate>();
 
             // register all controllers using assembly scanning
             // builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             // register single controller
-            builder.RegisterType<DodCacController>().InstancePerRequest();
+            builder.RegisterType<CacUserController>().InstancePerRequest();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

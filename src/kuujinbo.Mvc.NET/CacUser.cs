@@ -4,24 +4,25 @@ using System.Text.RegularExpressions;
 
 namespace kuujinbo.Mvc.NET
 {
-    /// <summary>
-    /// https://en.wikipedia.org/wiki/Common_Access_Card
-    /// </summary>
-    public interface ICacUser
-    {
-        CacUser Create(byte[] rawData);
-    }
+    ///// <summary>
+    ///// https://en.wikipedia.org/wiki/Common_Access_Card
+    ///// </summary>
+    //public interface ICacUser
+    //{
+    //    CacUser Create(byte[] rawData);
+    //}
 
     /// <summary>
     /// https://en.wikipedia.org/wiki/Common_Access_Card
     /// </summary>
-    public class CacUser : ICacUser
+    public class CacUser//  : ICacUser
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string Edipi { get; set; }
         public string Email { get; set; }
+
 
         /// <summary>
         /// Exception message
@@ -61,27 +62,11 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Populate instance with LastName, FirstName, MiddleName and Edipi.
-        /// Email property set **ONLY** if user selects email certificate.
-        /// </summary>
-        public virtual CacUser Create(byte[] rawData)
-        {
-            if (rawData == null) throw new ArgumentNullException(InvalidCreateParameter);
-
-            X509Certificate2 cert = new X509Certificate2(rawData);
-            var cacInfo = SetNameInfo(cert.GetNameInfo(X509NameType.SimpleName, false));
-            cacInfo.Email = cert.GetNameInfo(X509NameType.EmailName, false)
-                                .ToLower();
-
-            return cacInfo;
-        }
-
-        /// <summary>
-        /// Populate instance with LastName, FirstName, MiddleName, and Edipi.
+        /// Create instance with LastName, FirstName, MiddleName, and Edipi.
         /// simpleName parameter from X509Certificate2.GetNameInfo()
         /// [X509NameType.SimpleName]
         /// </summary>
-        public static CacUser SetNameInfo(string simpleName)
+        public static CacUser Create(string simpleName)
         {
             string[] splitValue = simpleName.Split(new char[] { '.' });
             // At minimum CAC has last.first.edipi format if no middle.

@@ -45,8 +45,8 @@
       <HintPath>..\..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -54,11 +54,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentValidation.7.1.1\lib\net45\FluentValidation.dll</HintPath>
+      <HintPath>..\..\packages\FluentValidation.7.2.0\lib\net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation.Mvc, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentValidation.Mvc5.7.1.1\lib\net45\FluentValidation.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\FluentValidation.Mvc5.7.2.0\lib\net45\FluentValidation.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
@@ -145,7 +145,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\DodCacController.cs" />
+    <Compile Include="Controllers\CacUserController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -229,8 +229,8 @@
     <Content Include="Content\octicons\octicons.woff" />
     <Content Include="Scripts\lib\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\lib\jquery-ui-1.12.1.min.js" />
-    <Content Include="Views\CacInfo\Index.cshtml" />
-    <Content Include="Views\CacInfo\README.txt" />
+    <Content Include="Views\CacUser\Index.cshtml" />
+    <Content Include="Views\CacUser\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
@@ -279,7 +279,7 @@
     <Content Include="Scripts\lib\plupload\plupload.min.js" />
     <None Include="Scripts\lib\_references.js" />
     <Content Include="Scripts\httpRequestInterceptorTest.js" />
-    <Content Include="Views\CacInfo\properties.png" />
+    <Content Include="Views\CacUser\properties.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

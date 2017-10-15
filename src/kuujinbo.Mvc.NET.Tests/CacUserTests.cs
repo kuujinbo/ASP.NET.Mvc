@@ -5,8 +5,6 @@ using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests
 {
-    // M$ code coverage is too stupid to ignore successful Exception testing 
-    [ExcludeFromCodeCoverage]
     public class CacUserTests
     {
         private CacUser _cacUser;
@@ -16,32 +14,10 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Create_NullRawData_ThrowsArgumentNullException()
-        {
-            var exception = Assert.Throws<ArgumentNullException>(
-                 () => _cacUser.Create(null)
-             );
-
-            Assert.Equal<string>(CacUser.InvalidCreateParameter, exception.ParamName);
-        }
-
-        [Fact]
-        public void Create_ValidRawDataCertificate_ReturnsPopulatedCacInfo()
-        {
-            var cac = _cacUser.Create(Resources.Cac);
-
-            Assert.Equal<string>("Last", cac.LastName);
-            Assert.Equal<string>("First", cac.FirstName);
-            Assert.Equal<string>("Middle", cac.MiddleName);
-            Assert.Equal<string>("0987654321", cac.Edipi);
-            Assert.Equal<string>("email@domain", cac.Email);
-        }
-
-        [Fact]
         public void ParseSimpleName_InvalidFormat_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => CacUser.SetNameInfo("")
+                 () => CacUser.Create("")
              );
 
             Assert.Equal<string>(CacUser.InvalidSimpleNameParameter, exception.Message);
@@ -51,7 +27,7 @@ namespace kuujinbo.Mvc.NET.Tests
         public void ParseSimpleName_InvalidEdipi_ThrowsFormatException()
         {
             var exception = Assert.Throws<FormatException>(
-                 () => CacUser.SetNameInfo("last.first.middle.0")
+                 () => CacUser.Create("last.first.middle.0")
              );
 
             Assert.Equal<string>(CacUser.InvalidEdipi, exception.Message);
@@ -60,7 +36,7 @@ namespace kuujinbo.Mvc.NET.Tests
         [Fact]
         public void ParseSimpleName_ThreeParts_ReturnsCacInfo()
         {
-            var cac = CacUser.SetNameInfo("last.first.0987654321");
+            var cac = CacUser.Create("last.first.0987654321");
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
@@ -71,7 +47,7 @@ namespace kuujinbo.Mvc.NET.Tests
         [Fact]
         public void ParseSimpleName_FourParts_ReturnsCacInfo()
         {
-            var cac = CacUser.SetNameInfo("last.first.middle.0987654321");
+            var cac = CacUser.Create("last.first.middle.0987654321");
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);
@@ -82,7 +58,7 @@ namespace kuujinbo.Mvc.NET.Tests
         [Fact]
         public void ParseSimpleName_MoreThanFourParts_ReturnsCacInfo()
         {
-            var cac = CacUser.SetNameInfo("last.first.middle.cac-office-typo.0987654321");
+            var cac = CacUser.Create("last.first.middle.cac-office-typo.0987654321");
 
             Assert.Equal<string>("Last", cac.LastName);
             Assert.Equal<string>("First", cac.FirstName);

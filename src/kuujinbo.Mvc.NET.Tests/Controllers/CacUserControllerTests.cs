@@ -1,26 +1,25 @@
-﻿using kuujinbo.Mvc.NET.Examples.Controllers;
-using Moq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
+using kuujinbo.Mvc.NET.Examples.Controllers;
+using Moq;
 using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests.Controllers
 {
-    public class DodCacControllerTests
+    public class CacUserControllerTests
     {
         public const string LAST_NAME = "last";
         public const string FIRST_NAME = "first";
         public const string EDIPI = "0987654321";
         public const string EMAIL = "email@domain";
 
-        DodCacController _controller;
+        CacUserController _controller;
         Mock<HttpRequestBase> _httpRequestBase;
         Mock<HttpContextBase> _httpContextBase;
-        Mock<ICacUser> _dodCac;
         Mock<IClientCertificate> _clientCertificate;
         ActionResult _result;
 
-        public DodCacControllerTests()
+        public CacUserControllerTests()
         {
             _httpContextBase = new Mock<HttpContextBase>();
             _httpRequestBase = new Mock<HttpRequestBase>();
@@ -29,12 +28,8 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _httpContextBase.Setup(x => x.Request)
                 .Returns(_httpRequestBase.Object);
 
-            _dodCac = new Mock<ICacUser>();
             _clientCertificate = new Mock<IClientCertificate>();
-            _clientCertificate.Setup(x => x.GetCertificate(_httpRequestBase.Object))
-                .Returns(It.IsAny<byte[]>());
-            _controller = new DodCacController(
-                _dodCac.Object,
+            _controller = new CacUserController(
                 _clientCertificate.Object
             );
             _controller.ControllerContext = new ControllerContext();
@@ -44,7 +39,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithEmail_ReturnsCacInfoModel()
         {
-            _dodCac.Setup(x => x.Create(It.IsAny<byte[]>()))
+            _clientCertificate.Setup(x => x.GetCacUser())
                 .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
@@ -56,7 +51,6 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _result = _controller.Index();
             var model = (CacUser) ((ViewResult)_result).Model;
 
-            _dodCac.Verify(x => x.Create(It.IsAny<byte[]>()), Times.Once());
             Assert.IsType<ViewResult>(_result);
             Assert.Equal(LAST_NAME, model.LastName);
             Assert.Equal(FIRST_NAME, model.FirstName);
@@ -67,7 +61,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithoutEmail_ReturnsNullCacInfoModel()
         {
-            _dodCac.Setup(x => x.Create(It.IsAny<byte[]>()))
+            _clientCertificate.Setup(x => x.GetCacUser())
                 .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
@@ -78,7 +72,6 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _result = _controller.Index();
             var model = (CacUser) ((ViewResult)_result).Model;
 
-            _dodCac.Verify(x => x.Create(It.IsAny<byte[]>()), Times.Once());
             Assert.IsType<ViewResult>(_result);
             Assert.Null(model);
         }
