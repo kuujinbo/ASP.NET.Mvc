@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using kuujinbo.Mvc.NET.Tests.Properties;
 using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests

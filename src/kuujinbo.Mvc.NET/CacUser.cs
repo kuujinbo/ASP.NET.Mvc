@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace kuujinbo.Mvc.NET
 {
-    ///// <summary>
-    ///// https://en.wikipedia.org/wiki/Common_Access_Card
-    ///// </summary>
-    //public interface ICacUser
-    //{
-    //    CacUser Create(byte[] rawData);
-    //}
-
     /// <summary>
     /// https://en.wikipedia.org/wiki/Common_Access_Card
     /// </summary>
-    public class CacUser//  : ICacUser
+    public class CacUser
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string Edipi { get; set; }
         public string Email { get; set; }
-
 
         /// <summary>
         /// Exception message
@@ -85,7 +75,7 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Title case a string ignoring culture/globalization.
+        /// Title case ignoring culture/globalization.
         /// </summary>
         public static string TitleCase(string text)
         {
