@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
+using Moq;
 using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests
@@ -74,5 +75,40 @@ namespace kuujinbo.Mvc.NET.Tests
             Assert.False(_cookie.HttpOnly);
             Assert.False(_cookie.Secure);
         }
+
+        [Fact]
+        public void SetCookie_DefaultParameters_SetsCookie()
+        {
+            var response = new Mock<HttpResponseBase>();
+            var cookies = new HttpCookieCollection();
+            response.Setup(x => x.Cookies).Returns(cookies);
+            response.Setup(x => x.SetCookie(It.IsAny<HttpCookie>())).Callback<HttpCookie>(x => cookies.Add(x));
+            var context = new Mock<HttpContextBase>();
+            context.Setup(x => x.Response).Returns(response.Object);
+
+            HttpCookieFactory.SetCookie(response.Object, "key");
+
+            response.Verify(x => x.SetCookie(It.IsAny<HttpCookie>()), Times.Once());
+        }
+
+        [Fact]
+        public void ExpireCookie_DefaultParameters_ExpiresCookie()
+        {
+            var response = new Mock<HttpResponseBase>();
+            var cookies = new HttpCookieCollection();
+            response.Setup(x => x.Cookies).Returns(cookies);
+            response.Setup(x => x.SetCookie(It.IsAny<HttpCookie>())).Callback<HttpCookie>(x => cookies.Add(x));
+            var context = new Mock<HttpContextBase>();
+            context.Setup(x => x.Response).Returns(response.Object);
+
+            HttpCookieFactory.ExpireCookie(response.Object, "key");
+
+            response.Verify(x => x.SetCookie(It.IsAny<HttpCookie>()), Times.Once());
+            Assert.Equal(
+                (cookies["key"].Expires - DateTime.UtcNow).Days,
+                HttpCookieFactory.ExpiresDays
+            );
+        }
+
     }
 }

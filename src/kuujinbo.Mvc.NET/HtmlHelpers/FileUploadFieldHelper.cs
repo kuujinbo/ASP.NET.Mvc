@@ -16,7 +16,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </summary>
         public static readonly string ScriptKey = typeof(FileUploadFieldHelper).ToString();
 
-        public static readonly string JavaScriptBlock = Resources.FileUploadField;
+        public static readonly string JavaScriptBlock = Resources.FileUploadField_min;
 
         public const string DefaultButtonText = "Browse....";
         public const string HtmlFormat = @"

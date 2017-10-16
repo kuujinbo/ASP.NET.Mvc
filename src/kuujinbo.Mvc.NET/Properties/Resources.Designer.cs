@@ -70,31 +70,7 @@ namespace kuujinbo.Mvc.NET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function FileUploadField() {
-        ///    Object.defineProperty(this, &apos;maxSizeExceeded&apos;, {
-        ///        value: &apos;Max File Upload Size Exceeded&apos;
-        ///    });
-        ///
-        ///    this._jQueryUI = typeof jQuery !== &apos;undefined&apos;
-        ///            &amp;&amp; typeof jQuery.ui !== &apos;undefined&apos;
-        ///            &amp;&amp; typeof jQuery.ui.dialog === &apos;function&apos;;
-        ///}
-        ///
-        ///FileUploadField.prototype = {
-        ///    constructor: FileUploadField,
-        ///    toMB: function(sizeInBytes) {
-        ///        var multiplier = 1024;
-        ///        var i = Math.floor(Math.log(sizeInBytes) / Math.log(multiplier))
-        /// [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string FileUploadField {
-            get {
-                return ResourceManager.GetString("FileUploadField", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to function FileUploadField(){Object.defineProperty(this,&quot;maxSizeExceeded&quot;,{value:&quot;Max File Upload Size Exceeded&quot;});this._jQueryUI=&quot;undefined&quot;!==typeof jQuery&amp;&amp;&quot;undefined&quot;!==typeof jQuery.ui&amp;&amp;&quot;function&quot;===typeof jQuery.ui.dialog} FileUploadField.prototype={constructor:FileUploadField,toMB:function(a){return parseFloat((a/Math.pow(1024,Math.floor(Math.log(a)/Math.log(1024)))).toFixed(2))+&quot; MB&quot;},clearUpload:function(a){this.clearUploadUpateDom(a.target)},clearUploadUpateDom:function(a){a.parentNode.parentNode.fi [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function FileUploadField(){Object.defineProperty(this,&quot;maxSizeExceeded&quot;,{value:&quot;Max File Upload Size Exceeded&quot;});Object.defineProperty(this,&quot;invalidFile&quot;,{value:&quot;Invalid File&quot;});this._jQueryUI=&quot;undefined&quot;!==typeof jQuery&amp;&amp;&quot;undefined&quot;!==typeof jQuery.ui&amp;&amp;&quot;function&quot;===typeof jQuery.ui.dialog} FileUploadField.prototype={constructor:FileUploadField,toMB:function(a){return parseFloat((a/Math.pow(1024,Math.floor(Math.log(a)/Math.log(1024)))).toFixed(2))+&quot; MB&quot;},fileInputSelector:function(){return document.querySel [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FileUploadField_min {
             get {
@@ -103,41 +79,11 @@ namespace kuujinbo.Mvc.NET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function JQueryAutoComplete() {
-        ///    Object.defineProperty(this, &apos;jQueryRequiredError&apos;, {
-        ///        value: &apos;jQuery and jQuery UI libraries required.&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;searchInputError&apos;, {
-        ///        value: &apos;Search &lt;input&gt; selector missing or DOM element could not be found.&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;selectCallbackError&apos;, {
-        ///        value: &apos;selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\n&apos;
-        ///                + &apos;function(event, ui [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to function JQueryAutoComplete(){Object.defineProperty(this,&quot;jQueryRequiredError&quot;,{value:&quot;jQuery and jQuery UI libraries required.&quot;});Object.defineProperty(this,&quot;searchInputError&quot;,{value:&quot;Search &lt;input&gt; selector missing or DOM element could not be found.&quot;});Object.defineProperty(this,&quot;selectCallbackError&quot;,{value:&quot;selectCallback required and **MUST** be a JavaScript function with *EXACT** signature:\n\nfunction(event, ui) {}&quot;});Object.defineProperty(this,&quot;resultElementError&quot;,{value:&quot;autocomplete results DOM ele [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string JQueryAutoComplete {
+        public static string JQueryAutoComplete_min {
             get {
-                return ResourceManager.GetString("JQueryAutoComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to function JQueryXhr() {
-        ///    Object.defineProperty(this, &apos;doneCallbackError&apos;, {
-        ///        value: &apos;doneCallback required, and must be a function().&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;alwaysCallbackError&apos;, {
-        ///        value: &apos;alwaysCallback must be a function().&apos;
-        ///    });
-        ///
-        ///    Object.defineProperty(this, &apos;failTitle&apos;, {
-        ///        value: &apos;Unable to Process Request&apos;
-        ///    });
-        ///    Object.defineProperty(this, &apos;defaultFailMessage&apos;, {
-        ///        value: &apos;There was a problem processing your request. Please try ag [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string JQueryXhr {
-            get {
-                return ResourceManager.GetString("JQueryXhr", resourceCulture);
+                return ResourceManager.GetString("JQueryAutoComplete_min", resourceCulture);
             }
         }
         

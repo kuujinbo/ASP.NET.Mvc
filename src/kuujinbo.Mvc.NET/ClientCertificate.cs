@@ -28,7 +28,6 @@ namespace kuujinbo.Mvc.NET
         /// <summary>
         /// Get the user/client certificate for the current HTTP request
         /// </summary>
-        // public virtual byte[] GetCertificate(HttpRequestBase request)
         public virtual byte[] GetCertificate()
         {
             return Request.IsLocal

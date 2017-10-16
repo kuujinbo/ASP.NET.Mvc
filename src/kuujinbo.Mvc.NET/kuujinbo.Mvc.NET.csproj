@@ -91,6 +91,7 @@
     <Content Include="JavaScript\CheckboxGroupToggler.min.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
+    <Content Include="JavaScript\JQueryAutoComplete.min.js" />
     <Content Include="JavaScript\JQueryXhr.js" />
     <None Include="JavaScript\SessionTerminator.min.js" />
     <None Include="JavaScript\FileUploadField.min.js" />
