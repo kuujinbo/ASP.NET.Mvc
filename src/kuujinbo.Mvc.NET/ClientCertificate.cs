@@ -1,18 +1,21 @@
 ﻿using System;
+using System.IdentityModel.Selectors;
+// using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
+// [assembly: InternalsVisibleTo("kuujinbo.Mvc.NET.Tests")]
 namespace kuujinbo.Mvc.NET
 {
     public interface IClientCertificate
     {
         byte[] GetCertificate();
-        string GetSubjectName();
-        CacUser GetCacUser();
+        CacUser GetCacUser(bool validateChain);
     }
 
     public class ClientCertificate : IClientCertificate
     {
+        // internal X509CertificateValidator X509CertificateValidator { get; set; }
         public HttpRequestBase Request { get; private set; }
 
         public ClientCertificate(HttpRequestBase request)
@@ -36,25 +39,36 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Get the subject name from a certificate.
-        /// </summary>
-        public virtual string GetSubjectName()
-        {
-            return new X509Certificate2(GetCertificate())
-                .GetNameInfo(X509NameType.SimpleName, false);
-        }
-
-        /// <summary>
         /// Get a CacUser
         /// </summary>
-        public virtual CacUser GetCacUser()
+        public virtual CacUser GetCacUser(bool validateChain = false)
         {
             X509Certificate2 cert = new X509Certificate2(GetCertificate());
-            var cacUser = CacUser.Create(cert.GetNameInfo(X509NameType.SimpleName, false));
+
+            var subjectName = cert.GetNameInfo(X509NameType.SimpleName, false);
+            var cacUser = CacUser.Create(subjectName);
+            cacUser.Subject = subjectName;
+
             cacUser.Email = cert.GetNameInfo(X509NameType.EmailName, false)
                                 .ToLower();
 
+            if (validateChain) ValidateChain(cert, cacUser);
+
             return cacUser;
+        }
+
+        void ValidateChain(X509Certificate2 cert, CacUser cacUser)
+        {
+            // **ALL** validation flags turned on
+            var validator = X509CertificateValidator.ChainTrust;
+            try
+            {
+                validator.Validate(cert);
+            }
+            catch (Exception e)
+            {
+                cacUser.ChainError = e.Message;
+            }
         }
     }
 }

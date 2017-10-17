@@ -15,6 +15,16 @@ namespace kuujinbo.Mvc.NET
         public string Email { get; set; }
 
         /// <summary>
+        /// Subject name stored for logging / debugging
+        /// </summary>
+        public string Subject { get; set; }
+
+        /// <summary>
+        /// Exception message when certificate trust chain fails validation.
+        /// </summary>
+        public string ChainError { get; set; }
+
+        /// <summary>
         /// Exception message
         /// </summary>
         public const string InvalidCreateParameter = "rawData";
@@ -56,9 +66,9 @@ namespace kuujinbo.Mvc.NET
         /// simpleName parameter from X509Certificate2.GetNameInfo()
         /// [X509NameType.SimpleName]
         /// </summary>
-        public static CacUser Create(string simpleName)
+        public static CacUser Create(string subjectName)
         {
-            string[] splitValue = simpleName.Split(new char[] { '.' });
+            string[] splitValue = subjectName.Split(new char[] { '.' });
             // At minimum CAC has last.first.edipi format if no middle.
             if (splitValue.Length < 3) throw new FormatException(InvalidSimpleNameParameter);
 

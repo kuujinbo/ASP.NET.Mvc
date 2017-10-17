@@ -39,7 +39,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithEmail_ReturnsCacInfoModel()
         {
-            _clientCertificate.Setup(x => x.GetCacUser())
+            _clientCertificate.Setup(x => x.GetCacUser(false))
                 .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
@@ -61,7 +61,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithoutEmail_ReturnsNullCacInfoModel()
         {
-            _clientCertificate.Setup(x => x.GetCacUser())
+            _clientCertificate.Setup(x => x.GetCacUser(false))
                 .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,

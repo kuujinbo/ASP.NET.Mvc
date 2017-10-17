@@ -9,6 +9,7 @@ namespace kuujinbo.Mvc.NET.Tests
 {
     public class ClientCertificateTests
     {
+        const string SelfMadeCertificateSubject = "last.first.middle.0987654321";
         ClientCertificate _clientCertificate;
         Mock<HttpRequestBase> _httpRequestBase;
         byte[] _fakeCertificateBytes;
@@ -30,9 +31,7 @@ namespace kuujinbo.Mvc.NET.Tests
         {
             _httpRequestBase.Setup(x => x.IsLocal).Returns(true);
 
-            Assert.IsType<byte[]>(
-                _clientCertificate.GetCertificate()
-            );            
+            Assert.IsType<byte[]>(_clientCertificate.GetCertificate());
         }
 
         [Fact]
@@ -51,21 +50,7 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void GetSubjectName_NoParameters_ReturnsCertificateSubjectName()
-        {
-            _httpRequestBase.Setup(x => x.IsLocal).Returns(false);
-
-            var headers = new NameValueCollection();
-            headers[ClientCertificate.BigIpCertificateHeader] = Convert
-                .ToBase64String(Resources.Cac);
-            _httpRequestBase.Setup(x => x.Headers).Returns(headers);
-
-            var result = _clientCertificate.GetSubjectName();
-            Assert.Equal("last.first.middle.0987654321", result);
-        }
-
-        [Fact]
-        public void GetCacUser_NoParameters_ReturnsCacUser()
+        public void GetCacUser_NoChainValidation_ReturnsCacUser()
         {
             _httpRequestBase.Setup(x => x.IsLocal).Returns(false);
 
@@ -81,6 +66,30 @@ namespace kuujinbo.Mvc.NET.Tests
             Assert.Equal<string>("Middle", result.MiddleName);
             Assert.Equal<string>("0987654321", result.Edipi);
             Assert.Equal<string>("email@domain", result.Email);
+            Assert.Equal<string>(SelfMadeCertificateSubject, result.Subject);
+            Assert.Null(result.ChainError);
+        }
+
+        [Fact]
+        public void GetCacUser_ChainValidation_ReturnsCacUserWithChainErrorSet()
+        {
+            _httpRequestBase.Setup(x => x.IsLocal).Returns(false);
+
+            var headers = new NameValueCollection();
+            headers[ClientCertificate.BigIpCertificateHeader] = Convert
+                .ToBase64String(Resources.Cac);
+            _httpRequestBase.Setup(x => x.Headers).Returns(headers);
+
+            var result = _clientCertificate.GetCacUser(true);
+
+            Assert.IsType<CacUser>(result);
+            Assert.Equal<string>("Last", result.LastName);
+            Assert.Equal<string>("First", result.FirstName);
+            Assert.Equal<string>("Middle", result.MiddleName);
+            Assert.Equal<string>("0987654321", result.Edipi);
+            Assert.Equal<string>("email@domain", result.Email);
+            Assert.Equal<string>(SelfMadeCertificateSubject, result.Subject);
+            Assert.NotNull(result.ChainError);
         }
     }
 }
