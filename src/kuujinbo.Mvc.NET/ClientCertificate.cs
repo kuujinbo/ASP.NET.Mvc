@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IdentityModel.Selectors;
-// using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
-// [assembly: InternalsVisibleTo("kuujinbo.Mvc.NET.Tests")]
 namespace kuujinbo.Mvc.NET
 {
     public interface IClientCertificate
@@ -15,7 +13,6 @@ namespace kuujinbo.Mvc.NET
 
     public class ClientCertificate : IClientCertificate
     {
-        // internal X509CertificateValidator X509CertificateValidator { get; set; }
         public HttpRequestBase Request { get; private set; }
 
         public ClientCertificate(HttpRequestBase request)
