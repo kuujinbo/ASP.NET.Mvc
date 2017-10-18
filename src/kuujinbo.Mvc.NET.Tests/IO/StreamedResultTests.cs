@@ -20,17 +20,24 @@ namespace kuujinbo.Mvc.NET.Tests.IO
 
         string _filePath;
         string _htmlContentType;
-        Mock<Stream> _stream;
+        Mock<Stream> _outputStream;
+        Mock<HttpResponseBase> _response;
 
         public StreamedResultTests()
         {
-            _filePath = @"\\unc-path\test.txt";
+            _filePath = TestFiles.GetTestDataPath(_testFile);
             _htmlContentType = "text/html";
+
+            _outputStream = new Mock<Stream>();
+            var context = new Mock<HttpContextBase>();
+            _response = new Mock<HttpResponseBase>();
+            _response.Setup(x => x.OutputStream).Returns(_outputStream.Object);
+            context.Setup(x => x.Response).Returns(_response.Object);
         }
 
         public void Dispose()
         {
-            if (_stream != null) _stream.Object.Dispose();
+            if (_outputStream != null) _outputStream.Object.Dispose();
         }
 
         [Fact]
@@ -81,17 +88,11 @@ namespace kuujinbo.Mvc.NET.Tests.IO
         [Fact]
         public void WriteFile_DefaultBufferSize_WritesCorrectNumberOfTimes()
         {
-            var testFile = TestFiles.GetTestDataPath(_testFile);
-            _stream = new Mock<Stream>();
-            var context = new Mock<HttpContextBase>();
-            var response = new Mock<HttpResponseBase>();
-            response.Setup(x => x.OutputStream).Returns(_stream.Object);
-            context.Setup(x => x.Response).Returns(response.Object);
-            var testResult = new TestStreamedResult(testFile, _htmlContentType);
+            var testResult = new TestStreamedResult(_filePath, _htmlContentType);
 
-            testResult.WriteFile(response.Object);
+            testResult.WriteFile(_response.Object);
 
-            _stream.Verify(
+            _outputStream.Verify(
                 x => x.Write(
                     It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()
                 ),
@@ -102,18 +103,12 @@ namespace kuujinbo.Mvc.NET.Tests.IO
         [Fact]
         public void WriteFile_ExplicitBufferSize_WritesCorrectNumberOfTimes()
         {
-            var testFile = TestFiles.GetTestDataPath(_testFile);
-            var testFileLength = (int)new FileInfo(testFile).Length;
-            _stream = new Mock<Stream>();
-            var context = new Mock<HttpContextBase>();
-            var response = new Mock<HttpResponseBase>();
-            response.Setup(x => x.OutputStream).Returns(_stream.Object);
-            context.Setup(x => x.Response).Returns(response.Object);
-            var testResult = new TestStreamedResult(testFile, _htmlContentType, 1);
+            var testFileLength = (int)new FileInfo(_filePath).Length;
+            var testResult = new TestStreamedResult(_filePath, _htmlContentType, 1);
 
-            testResult.WriteFile(response.Object);
+            testResult.WriteFile(_response.Object);
 
-            _stream.Verify(
+            _outputStream.Verify(
                 x => x.Write(
                     It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()
                 ),
