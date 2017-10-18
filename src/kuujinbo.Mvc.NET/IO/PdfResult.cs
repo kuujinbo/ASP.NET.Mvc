@@ -2,8 +2,10 @@
 {
     public class PdfResult : StreamedResult
     {
+        public const string MIMEType = "application/pdf";
+
         public PdfResult(string path, int bufferSize = DefaultBufferSize)
-            : base(path, "application/pdf", bufferSize)
+            : base(path, MIMEType, bufferSize)
         { }
     }
 }

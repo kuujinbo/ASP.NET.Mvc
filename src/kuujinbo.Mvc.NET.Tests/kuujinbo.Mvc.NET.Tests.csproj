@@ -52,6 +52,7 @@
     <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelperTests.cs" />
     <Compile Include="IO\FileUploadStoreTests.cs" />
+    <Compile Include="IO\PdfResultTests.cs" />
     <Compile Include="IO\StreamedResultTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -67,15 +68,15 @@
     <Compile Include="_testHelpers\TestFiles.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_testData\StreamedResult.html" />
     <None Include="Chutzpah.json" />
     <Content Include="JavaScript\appConfig.UnitTests.js" />
     <Content Include="JavaScript\CheckboxGroupToggler.tests.js" />
     <Content Include="JavaScript\FileUploadField.tests.js" />
-    <None Include="Cac.cer" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="_testData\Cac.cer" />
+    <Content Include="_testData\streamed-result.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

@@ -1,73 +1,135 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
-using System.Web.Mvc;
-using kuujinbo.Mvc.NET.IO;
+﻿using kuujinbo.Mvc.NET.IO;
 using kuujinbo.Mvc.NET.Tests._testHelpers;
+using Moq;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Web;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace kuujinbo.Mvc.NET.Tests.IO
 {
-    public class FakeController : Controller
-    {
-        public ActionResult GetResults(string path, string contentType)
-        {
-            return new StreamedResult(path, contentType);
-        }
-    }
-
     // M$ code coverage is too stupid to ignore successful Exception testing 
     [ExcludeFromCodeCoverage]
-    public class StreamedResultTests
+    public class StreamedResultTests : IDisposable
     {
-        FakeController _fakeController;
+        /// <summary>
+        /// Located in ../_testData
+        /// </summary>
+        const string _testFile = "streamed-result.txt";
 
-        readonly ITestOutputHelper _output;
-        string _htmlContentType = "text/html";
+        string _filePath;
+        string _htmlContentType;
+        Mock<Stream> _stream;
 
-        public StreamedResultTests(ITestOutputHelper output)
+        public StreamedResultTests()
         {
-            _fakeController = new FakeController();
-            _output = output;
+            _filePath = @"\\unc-path\test.txt";
+            _htmlContentType = "text/html";
+        }
+
+        public void Dispose()
+        {
+            if (_stream != null) _stream.Object.Dispose();
         }
 
         [Fact]
         public void StreamedResult_NullPath_ThrowsArgumentException()
         {
             var exception = Assert.Throws<ArgumentException>(
-                 () => new FakeController().GetResults(null, _htmlContentType)
+                 () => new StreamedResult(null, _htmlContentType)
              );
 
-            Assert.Equal<string>(StreamedResult.InvalidPathParameter, exception.Message);
+            Assert.Equal<string>(
+                StreamedResult.InvalidPathParameter, exception.Message
+            );
         }
 
         [Fact]
         public void StreamedResult_WhiteSpacePath_ThrowsArgumentException()
         {
             var exception = Assert.Throws<ArgumentException>(
-                 () => new FakeController().GetResults("    ", _htmlContentType)
+                 () => new StreamedResult("    ", _htmlContentType)
              );
 
-            Assert.Equal<string>(StreamedResult.InvalidPathParameter, exception.Message);
+            Assert.Equal<string>(
+                StreamedResult.InvalidPathParameter, exception.Message
+            );
         }
 
         [Fact]
         public void StreamedResult_WhiteSpaceContentType_ThrowsArgumentException()
         {
             var exception = Assert.Throws<ArgumentException>(
-                 () => new FakeController().GetResults("file://path", "    ")
+                 () => new StreamedResult("file://path", "    ")
              );
 
-            Assert.Equal<string>(StreamedResult.InvalidContentTypeParameter, exception.Message);
+            Assert.Equal<string>(
+                StreamedResult.InvalidContentTypeParameter, exception.Message
+            );
         }
 
-        //[Fact]
-        //public void Path()
-        //{
-        //    _output.WriteLine(TestFiles.GetTestDataPath("StreamedResult.txt"));
-        //    Assert.True(true);
-        //}
+        [Fact]
+        public void StreamedResult_Constructor_SetsProperties()
+        {
+            var result = new StreamedResult(_filePath, _htmlContentType);
 
+            Assert.Equal<string>(_htmlContentType, result.ContentType);
+            Assert.Equal<string>(Path.GetFileName(_filePath), result.FileDownloadName);
+        }
+
+        [Fact]
+        public void WriteFile_DefaultBufferSize_WritesCorrectNumberOfTimes()
+        {
+            var testFile = TestFiles.GetTestDataPath(_testFile);
+            _stream = new Mock<Stream>();
+            var context = new Mock<HttpContextBase>();
+            var response = new Mock<HttpResponseBase>();
+            response.Setup(x => x.OutputStream).Returns(_stream.Object);
+            context.Setup(x => x.Response).Returns(response.Object);
+            var testResult = new TestStreamedResult(testFile, _htmlContentType);
+
+            testResult.WriteFile(response.Object);
+
+            _stream.Verify(
+                x => x.Write(
+                    It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()
+                ),
+                Times.Once()
+            );
+        }
+
+        [Fact]
+        public void WriteFile_ExplicitBufferSize_WritesCorrectNumberOfTimes()
+        {
+            var testFile = TestFiles.GetTestDataPath(_testFile);
+            var testFileLength = (int)new FileInfo(testFile).Length;
+            _stream = new Mock<Stream>();
+            var context = new Mock<HttpContextBase>();
+            var response = new Mock<HttpResponseBase>();
+            response.Setup(x => x.OutputStream).Returns(_stream.Object);
+            context.Setup(x => x.Response).Returns(response.Object);
+            var testResult = new TestStreamedResult(testFile, _htmlContentType, 1);
+
+            testResult.WriteFile(response.Object);
+
+            _stream.Verify(
+                x => x.Write(
+                    It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()
+                ),
+                Times.Exactly(testFileLength)
+            );
+        }
+    }
+
+    public class TestStreamedResult : StreamedResult 
+    {
+        public TestStreamedResult(
+            string path, 
+            string contentType, 
+            int bufferSize = DefaultBufferSize)
+        : base(path, contentType, bufferSize) { }
+
+        public new void WriteFile(HttpResponseBase response) { base.WriteFile(response); }
     }
 }

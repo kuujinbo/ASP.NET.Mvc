@@ -16,7 +16,7 @@ namespace kuujinbo.Mvc.NET.Helpers
         XDocument GetSection();
     }
 
-    // M$ made WebConfigurationManager static not me....
+    // WebConfigurationManager is static....
     [ExcludeFromCodeCoverage]
     /// <summary>
     /// internal implementation; exclusively used by FileUploadFieldExtension
@@ -43,7 +43,6 @@ namespace kuujinbo.Mvc.NET.Helpers
         internal static int _maxRequestLength;
         internal static int _maxAllowedContentLength;
         internal static int _maxUploadSize;
-
 
         /// <summary>
         /// IIS / system default value

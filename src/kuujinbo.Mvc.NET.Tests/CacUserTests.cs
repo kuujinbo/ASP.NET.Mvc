@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests
 {
+    // M$ code coverage is too stupid to ignore successful Exception testing 
+    [ExcludeFromCodeCoverage]
     public class CacUserTests
     {
         private CacUser _cacUser;

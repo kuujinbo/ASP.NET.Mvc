@@ -10,13 +10,34 @@ namespace kuujinbo.Mvc.NET.IO
     {
         private string _filePath;
 
+        /// <summary>
+        /// Exception message
+        /// </summary>
         public const string InvalidPathParameter = "path";
+        
+        /// <summary>
+        /// Exception message
+        /// </summary>
         public const string InvalidContentTypeParameter = "contentType";
 
+        /// <summary>
+        /// Default read / write buffer size
+        /// </summary>
         public const int DefaultBufferSize = 4096;
 
+        /// <summary>
+        /// Validate constructor 'contentType' parameter 
+        /// </summary>
+        public static readonly Regex WhiteSpace = new Regex(@"^\s+$");
+
+        /// <summary>
+        /// Read / write buffer size
+        /// </summary>
         public int BufferSize { get; private set; }
 
+        /// <summary>
+        /// Initialize new instance.
+        /// </summary>
         public StreamedResult(
             string path,
             string contentType,
@@ -25,7 +46,8 @@ namespace kuujinbo.Mvc.NET.IO
         {
             if (string.IsNullOrWhiteSpace(path)) 
                 throw new ArgumentException(InvalidPathParameter);
-            if (Regex.IsMatch(contentType, @"^\s+$")) 
+            // FileResult throws ArgumentException => string.IsNullOrEmpty(contentType)
+            if (WhiteSpace.IsMatch(contentType)) 
                 throw new ArgumentException(InvalidContentTypeParameter);
 
             this.FileDownloadName = Path.GetFileName(path);
@@ -33,9 +55,11 @@ namespace kuujinbo.Mvc.NET.IO
             _filePath = path;
         }
 
+        /// <summary>
+        /// Send streamed / buffered file to client.
+        /// </summary>
         protected override void WriteFile(HttpResponseBase response)
         {
-            var outputStream = response.OutputStream;
             using (var inputStream = File.OpenRead(_filePath))
             {
                 byte[] buffer = new byte[BufferSize];
@@ -43,7 +67,7 @@ namespace kuujinbo.Mvc.NET.IO
 
                 while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    outputStream.Write(buffer, 0, bytesRead);
+                    response.OutputStream.Write(buffer, 0, bytesRead);
                 }
             }
         }

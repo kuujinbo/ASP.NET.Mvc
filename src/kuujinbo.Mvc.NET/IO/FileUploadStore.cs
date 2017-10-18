@@ -20,7 +20,7 @@ namespace kuujinbo.Mvc.NET.IO
         public string FileNameWithoutExtension { get; private set; }
 
         /// <summary>
-        /// Constructor; parameterless constructor **NOT** defined
+        /// Initialize new instance; parameterless constructor **NOT** defined.
         /// </summary>
         protected FileUploadStore(
             Uri basePath, 
