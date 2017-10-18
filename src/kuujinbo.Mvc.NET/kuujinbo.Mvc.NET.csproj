@@ -74,6 +74,7 @@
     <Compile Include="HtmlHelpers\FileUploadFieldHelper.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelper.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelper.cs" />
+    <Compile Include="IO\FileUploadStore.cs" />
     <Compile Include="IO\PdfResult.cs" />
     <Compile Include="IO\StreamedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

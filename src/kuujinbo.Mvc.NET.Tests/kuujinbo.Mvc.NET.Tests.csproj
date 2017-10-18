@@ -51,6 +51,7 @@
     <Compile Include="HtmlHelpers\JQueryAutoCompleteHelperTests.cs" />
     <Compile Include="HtmlHelpers\ScriptManagerHelperTests.cs" />
     <Compile Include="HtmlHelpers\SessionTerminatorHelperTests.cs" />
+    <Compile Include="IO\FileUploadStoreTests.cs" />
     <Compile Include="IO\StreamedResultTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
