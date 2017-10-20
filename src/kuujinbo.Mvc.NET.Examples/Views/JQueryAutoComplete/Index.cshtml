@@ -1,0 +1,21 @@
+﻿@using kuujinbo.Mvc.NET.HtmlHelpers;
+
+@Html.AntiForgeryToken()
+<fieldset>
+    <legend>JQueryAutoComplete</legend>
+    @Html.JQueryAutoComplete(
+        "searchText"
+        , @Url.Action("SearchUsers", "JQueryAutoComplete").ToString()
+        , 1
+        , new {
+            @class = "form-control input-sm",
+            placeholder = "Search by Last Name"
+        }
+    )
+    @Html.AddScriptSrc(@Url.Content("~/scripts/jQueryAutoCompleteTest.js"))
+    <form id='user-list' style='display:block;'>
+        <div class='margin-tb10'></div>
+        <input id='add-users' class=' btn btn-primary' type='submit'
+               data-url='@Url.Action("AddUsers", "JQueryAutoComplete")' value='Add' />
+    </form>
+</fieldset>

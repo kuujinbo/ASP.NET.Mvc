@@ -16,19 +16,24 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             _uploadStore = uploadStore;
         }
 
-       [HttpPost]
+        [HttpGet]
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Upload(TestModel model, HttpPostedFileBase fileUploadField)
         {
-           _uploadStore.Save(
-               fileUploadField, 
-               new Uri(Path.Combine( 
-                   Server.MapPath("~/app_data"),
-                   Path.GetFileName(fileUploadField.FileName)
-               )),
-                null
-           );
+            _uploadStore.Save(
+                fileUploadField,
+                new Uri(Server.MapPath("~/app_data")),
+                 null
+            );
 
-           return new EmptyResult();
-       }
+            TempData["Success"] = "File uploaded";
+
+            return RedirectToAction("Index");
+        }
     }
 }

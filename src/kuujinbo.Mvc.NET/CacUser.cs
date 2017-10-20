@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 namespace kuujinbo.Mvc.NET
 {
     /// <summary>
+    /// A user with a Common Access Card (CAC):
     /// https://en.wikipedia.org/wiki/Common_Access_Card
     /// </summary>
     public class CacUser
@@ -21,6 +22,7 @@ namespace kuujinbo.Mvc.NET
 
         /// <summary>
         /// Exception message when certificate trust chain fails validation.
+        /// See <see cref="ClientCertificate.GetCertificate" />
         /// </summary>
         public string ChainError { get; set; }
 

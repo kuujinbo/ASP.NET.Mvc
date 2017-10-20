@@ -12,6 +12,10 @@ namespace kuujinbo.Mvc.NET
         CacUser GetCacUser(HttpRequestBase request, bool validateChain);
     }
 
+    /// <summary>
+    /// Client certificate from a Common Access Card (CAC)
+    /// https://en.wikipedia.org/wiki/Common_Access_Card
+    /// </summary>
     public class ClientCertificate : IClientCertificate
     {
         /// <summary>
@@ -20,7 +24,7 @@ namespace kuujinbo.Mvc.NET
         public const string BigIpCertificateHeader = "ssl.client_cert";
         
         /// <summary>
-        /// Get the user/client certificate for the current HTTP request
+        /// Get the user/client certificate from the current HTTP request.
         /// </summary>
         internal byte[] GetCertificate(HttpRequestBase request)
         {
@@ -30,11 +34,12 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Get a CacUser
+        /// Get a CacUser.
         /// </summary>
-        /// <usage>
+        /// <remarks>
+        /// Example usage:
         /// https://github.com/kuujinbo/Mvc.NET/blob/master/src/kuujinbo.Mvc.NET.Examples/Controllers/CacUserController.cs
-        /// </usage>
+        /// </remarks>
         public virtual CacUser GetCacUser(HttpRequestBase request, bool validateChain = false)
         {
             X509Certificate2 cert = new X509Certificate2(GetCertificate(request));

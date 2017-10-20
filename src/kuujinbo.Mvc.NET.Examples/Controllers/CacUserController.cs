@@ -1,5 +1,4 @@
-﻿using kuujinbo.Mvc.NET;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace kuujinbo.Mvc.NET.Examples.Controllers
 {
@@ -14,7 +13,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
 
         public ActionResult Index()
         {
-            var cacUser = _clientCertificate.GetCacUser(Request, false);
+            var cacUser = _clientCertificate.GetCacUser(Request, true);
 
             return !string.IsNullOrWhiteSpace(cacUser.Email) ? View(cacUser) : View();
         }

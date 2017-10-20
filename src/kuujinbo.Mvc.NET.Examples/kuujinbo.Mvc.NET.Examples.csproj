@@ -146,8 +146,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CacUserController.cs" />
+    <Compile Include="Controllers\CheckboxGroupTogglerController.cs" />
     <Compile Include="Controllers\FileUploadStoreController.cs" />
+    <Compile Include="Controllers\JQueryAutoCompleteController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
+    <Compile Include="Models\ModelData.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -234,6 +237,9 @@
     <Content Include="Views\CacUser\README.txt" />
     <Content Include="Views\Shared\_navMenu.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\FileUploadStore\Index.cshtml" />
+    <Content Include="Views\CheckboxGroupToggler\Index.cshtml" />
+    <Content Include="Views\JQueryAutoComplete\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -307,9 +313,7 @@
       <Name>kuujinbo.Mvc.NET</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\FileUploadStore\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

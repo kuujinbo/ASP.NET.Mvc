@@ -1,0 +1,28 @@
+﻿@using kuujinbo.Mvc.NET.HtmlHelpers;
+
+<div>
+    <fieldset>
+        <legend>FileUploadField Html Helper</legend>
+        @using (Html.BeginForm(
+            "Upload", "FileUploadStore",
+            FormMethod.Post,
+            new { @class = "form-inline", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class='margin-top-bottom-8'>
+                @Html.FileUploadField(accept: new string[] { ".pdf", ".jpg", ".png" })
+            </div>
+
+            <div>
+                <input type='submit' value='Submit' class='btn btn-primary' />
+            </div>
+        }
+    </fieldset>
+</div>
+
+
+@if (TempData["Success"] != null)
+{
+    <h4>@TempData["Success"]</h4>
+}

@@ -1,6 +1,24 @@
 ﻿@using kuujinbo.Mvc.NET.HtmlHelpers;
 @model kuujinbo.Mvc.NET.Examples.Models.TestModel
 
+<h1 style='margin-top:0;padding-top:0;'>kuujinbo.Mvc.NET</h1>
+
+<div class='row'>
+    <div class='col-xs-6'>
+        <ul class='list-group'>
+            <li class='list-group-item'><a href='https://localhost:44343/CacUser'>ClientCertificate / CacUser Example</a></li>
+            <li class='list-group-item'>@Html.ActionLink("FileUploadStore Example", "Index", "FileUploadStore")</li>
+            <li class='list-group-item'>@Html.ActionLink("PdfResult Example (File Download)", "PdfResult", "Home")</li>
+        </ul>
+    </div>
+    <div class='col-xs-6'>
+        <ul class='list-group'>
+            <li class='list-group-item'>@Html.ActionLink("CheckboxGroupToggler HtmlHelper Example", "Index", "CheckboxGroupToggler")</li>
+            <li class='list-group-item'>@Html.ActionLink("JQueryAutoComplete HtmlHelper Example", "Index", "JQueryAutoComplete")</li>
+        </ul>
+    </div>
+</div>
+
 <div class='row'>
     <div class='col-xs-4'>
         @using (Html.BeginForm("Post", "Home"))
@@ -28,14 +46,17 @@
         }
     </div>
     <div class='col-xs-4'>
-@Html.AntiForgeryToken()
-<fieldset>
-    <legend>ValidateJsonAntiForgeryTokenAttribute</legend>
-    <button id='json-antiforgery-token' data-url='@Url.Action("JsonAntiForgery", "Home")' class='btn btn-primary' type='button'>
-        Submit 
-    </button>
-</fieldset>
-@Html.AddInlineScript(@"
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <legend>ValidateJsonAntiForgeryTokenAttribute</legend>
+            <button id='json-antiforgery-token' data-url='@Url.Action("JsonAntiForgery", "Home")' class='btn btn-primary' type='button'>
+                Submit
+            </button>
+        </fieldset>
+        @Html.JQueryXhr()
+
+
+        @Html.AddInlineScript(@"
 var jsonAntiForgeryButton = document.querySelector('#json-antiforgery-token');
 
 if (jsonAntiForgeryButton != null) {
@@ -44,148 +65,12 @@ if (jsonAntiForgeryButton != null) {
         function(e) {
             var jqxhr = new JQueryXhr();
             jqxhr.send(
-                e.target.dataset.url, 
+                e.target.dataset.url,
                 function(data) { alert(data); },
                 { Id: 1, Name: 'TEST NAME' }
             );
         }
     );
-}")       
-        </div>
+}")
     </div>
-
-    <div class='row'>
-        <div class='col-xs-6'>
-            <fieldset>
-                <legend>FluentValidation / SimpleFileUpload Html Helper Test</legend>
-                @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { @class = "form-inline", enctype = "multipart/form-data" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <div class='margin-top-bottom-8'>
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-sm", placeholder = "Enter Name" })
-                        @Html.ValidationMessageFor(model => model.Name)
-                    </div>
-                    <div class='margin-top-bottom-8'>
-                        @Html.TextBoxFor(model => model.Position, new { @class = "form-control input-sm", placeholder = "Enter Position" })
-                        @Html.ValidationMessageFor(model => model.Position)
-                    </div>
-                    <div class='margin-top-bottom-8'>
-                        @Html.EnumDropDownListFor(model => model.Status, "Select Status....", new { @class = "form-control input-sm" })
-                        @Html.ValidationMessageFor(model => model.Status)
-                    </div>
-                    <div class='margin-top-bottom-8'>
-                        @Html.TextBoxFor(model => model.Hobby.Name, new { @class = "form-control input-sm", placeholder = "Enter Hobby" })
-                        @Html.ValidationMessageFor(model => model.Hobby.Name)
-                    </div>
-                    <div class='margin-top-bottom-8'>
-                        @Html.FileUploadField(accept: new string[] { ".pdf", ".jpg", ".png" })
-                    </div>
-                    <div>
-                        <input type='submit' value='Submit' class='btn btn-primary' />
-                    </div>
-                }
-                <p><a href='/home'>Reset</a></p>
-            </fieldset>
-        </div>
-
-        <div class='col-xs-6'>
-            <fieldset>
-                <legend>JQueryAutoComplete</legend>
-                @Html.JQueryAutoComplete(
-                    "searchText"
-                    , @Url.Action("SearchUsers", "Home").ToString()
-                    , 1
-                    , new
-                    {
-                        @class = "form-control input-sm",
-                        placeholder = "Search by Last Name"
-                    }
-                )
-                @Html.AddScriptSrc(@Url.Content("~/scripts/jQueryAutoCompleteTest.js"))
-                <form id='user-list' style='display:block;'>
-                    <div class='margin-tb10'></div>
-                    <input id='add-users' class=' btn btn-primary' type='submit'
-                           data-url='@Url.Action("AddUsers", "Home")' value='Add' />
-                </form>
-            </fieldset>
-        </div>
-    </div>
-
-    <div class='row'>
-        <div class='col-xs-3'>
-            <fieldset>
-                <legend>CAC</legend>
-                <a href='https://localhost:44343/CacUser'>Get CAC Information</a>
-            </fieldset>
-        </div>
-
-        <div class='col-xs-3'>
-            <fieldset>
-                <legend>PdfResult</legend>
-                <a href='@Url.Action("PdfResult", "Home")' class='btn btn-primary'>Send GET</a>
-            </fieldset>
-        </div>
-
-        <div class='col-xs-3'>
-            <fieldset>
-                <legend>Web API Buffered Download</legend>
-                <a href='/api/WebApiChunkedDownload' class='btn btn-primary'>Send GET</a>
-            </fieldset>
-        </div>
-
-        <div class='col-xs-3'>
-            <fieldset>
-                <legend>CheckboxGroupToggler Html Helper</legend>
-
-                <ul class='list-group' id='ul-group'>
-                    <li class='list-group-item'><input name='fldArchiveFlag' type='checkbox' /> ArchiveFlag</li>
-                    <li class='list-group-item'><input name='fldId' type='checkbox' /> Id</li>
-                    <li class='list-group-item'><input name='fldName' type='checkbox' /> Name</li>
-                    <li class='list-group-item'><input name='fldUpdated' type='checkbox' /> Updated</li>
-                </ul>
-
-                <div id='inline-checkboxes'>
-                    <input name='00' type='checkbox' /> 00
-                    <input name='01' type='checkbox' /> 01
-                    <input name='02' type='checkbox' /> 02
-                </div>
-
-                @Html.CheckboxGroupToggler("#ul-group")
-                @Html.CheckboxGroupToggler("#inline-checkboxes", true)
-            </fieldset>
-        </div>
-    </div>
-
-    <div class='row'>
-        <div class='col-xs-2'>
-            <fieldset>
-                <legend>Angular Plupoad Directive</legend>
-                <plupload-wrapper upload-url='@Url.Action("Index", "Home")'
-        delete-url='@Url.Action("Delete", "Home")'
-        chunk-size='1mb'></plupload-wrapper>
-    </fieldset>
-    </div>
-    <div class='col-xs-10'>
-        <fieldset>
-            <legend>Angular $http Interceptor</legend>
-            <div ng-controller="HttpRequestInterceptorTestController">
-                <form class="form-inline">
-                    <div class='form-group'>
-                        <select ng-model="method" aria-label="Request method">
-                            <option>GET</option>
-                            <option>POST</option>
-                            <option>DELETE</option>
-                            <option>PUT</option>
-                        </select>
-                    </div>
-                    <button id="fetch-btn" type='submit' class='btn btn-primary' ng-click="fetch()">Submit</button>
-                </form>
-                <p>
-                    <pre>Status code: {{status}}</pre>
-                    <pre>Response data: {{data}}</pre>
-                </p>
-            </div>
-        </fieldset>
-    </div>
-    </div>
-@section scripts { @Scripts.Render("~/bundles/plupload") }
+</div>
