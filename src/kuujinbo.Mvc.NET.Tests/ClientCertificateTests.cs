@@ -23,7 +23,7 @@ namespace kuujinbo.Mvc.NET.Tests
             httpWorkerRequest.Setup(x => x.GetClientCertificate()).Returns(_fakeCertificateBytes);
             HttpContext context = new HttpContext(httpWorkerRequest.Object);
             _request.Setup(x => x.ClientCertificate).Returns(context.Request.ClientCertificate);
-            _clientCertificate = new ClientCertificate(_request.Object);
+            _clientCertificate = new ClientCertificate();
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace kuujinbo.Mvc.NET.Tests
         {
             _request.Setup(x => x.IsLocal).Returns(true);
 
-            Assert.IsType<byte[]>(_clientCertificate.GetCertificate());
+            Assert.IsType<byte[]>(_clientCertificate.GetCertificate(_request.Object));
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace kuujinbo.Mvc.NET.Tests
                 .ToBase64String(_fakeCertificateBytes);
             _request.Setup(x => x.Headers).Returns(headers);
 
-            var result = _clientCertificate.GetCertificate();
+            var result = _clientCertificate.GetCertificate(_request.Object);
 
             Assert.IsType<byte[]>(result);
             Assert.Equal(_fakeCertificateBytes.Length, result.Length);
@@ -60,7 +60,7 @@ namespace kuujinbo.Mvc.NET.Tests
                 .ToBase64String(Resources.Cac);
             _request.Setup(x => x.Headers).Returns(headers);
 
-            var result = _clientCertificate.GetCacUser();
+            var result = _clientCertificate.GetCacUser(_request.Object);
 
             Assert.IsType<CacUser>(result);
             Assert.Equal<string>("Last", result.LastName);
@@ -82,7 +82,7 @@ namespace kuujinbo.Mvc.NET.Tests
                 .ToBase64String(Resources.Cac);
             _request.Setup(x => x.Headers).Returns(headers);
 
-            var result = _clientCertificate.GetCacUser(true);
+            var result = _clientCertificate.GetCacUser(_request.Object, true);
 
             Assert.IsType<CacUser>(result);
             Assert.Equal<string>("Last", result.LastName);

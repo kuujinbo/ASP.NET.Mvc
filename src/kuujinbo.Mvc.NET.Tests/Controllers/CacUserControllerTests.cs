@@ -14,32 +14,32 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         public const string EMAIL = "email@domain";
 
         CacUserController _controller;
-        Mock<HttpRequestBase> _httpRequestBase;
-        Mock<HttpContextBase> _httpContextBase;
+        Mock<HttpRequestBase> _request;
+        Mock<HttpContextBase> _context;
         Mock<IClientCertificate> _clientCertificate;
         ActionResult _result;
 
         public CacUserControllerTests()
         {
-            _httpContextBase = new Mock<HttpContextBase>();
-            _httpRequestBase = new Mock<HttpRequestBase>();
-            _httpContextBase.Setup(x => x.Response)
+            _context = new Mock<HttpContextBase>();
+            _request = new Mock<HttpRequestBase>();
+            _context.Setup(x => x.Response)
                 .Returns(new Mock<HttpResponseBase>().Object);
-            _httpContextBase.Setup(x => x.Request)
-                .Returns(_httpRequestBase.Object);
+            _context.Setup(x => x.Request)
+                .Returns(_request.Object);
 
             _clientCertificate = new Mock<IClientCertificate>();
             _controller = new CacUserController(
                 _clientCertificate.Object
             );
             _controller.ControllerContext = new ControllerContext();
-            _controller.ControllerContext.HttpContext = _httpContextBase.Object;
+            _controller.ControllerContext.HttpContext = _context.Object;
         }
 
         [Fact]
         public void Index_CacInfoGetWithEmail_ReturnsCacInfoModel()
         {
-            _clientCertificate.Setup(x => x.GetCacUser(false))
+            _clientCertificate.Setup(x => x.GetCacUser(_request.Object, false))
                 .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
@@ -51,7 +51,13 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _result = _controller.Index();
             var model = (CacUser) ((ViewResult)_result).Model;
 
-            _clientCertificate.Verify(x => x.GetCacUser(It.IsAny<bool>()), Times.Once());
+            _clientCertificate.Verify(
+                x => x.GetCacUser(
+                    It.IsAny<HttpRequestBase>(), 
+                    It.IsAny<bool>()
+                ), 
+                Times.Once()
+            );
             Assert.IsType<ViewResult>(_result);
             Assert.Equal(LAST_NAME, model.LastName);
             Assert.Equal(FIRST_NAME, model.FirstName);
@@ -62,7 +68,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
         [Fact]
         public void Index_CacInfoGetWithoutEmail_ReturnsNullCacInfoModel()
         {
-            _clientCertificate.Setup(x => x.GetCacUser(false))
+            _clientCertificate.Setup(x => x.GetCacUser(_request.Object, false))
                 .Returns(new CacUser()
                 {
                     LastName = LAST_NAME,
@@ -73,7 +79,12 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _result = _controller.Index();
             var model = (CacUser) ((ViewResult)_result).Model;
 
-            _clientCertificate.Verify(x => x.GetCacUser(It.IsAny<bool>()), Times.Once());
+            _clientCertificate.Verify(
+                x => x.GetCacUser(
+                    It.IsAny<HttpRequestBase>(), 
+                    It.IsAny<bool>()), 
+                Times.Once()
+            );
             Assert.IsType<ViewResult>(_result);
             Assert.Null(model);
         }

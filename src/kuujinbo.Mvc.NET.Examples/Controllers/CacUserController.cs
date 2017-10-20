@@ -14,7 +14,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
 
         public ActionResult Index()
         {
-            var cacUser = _clientCertificate.GetCacUser(false);
+            var cacUser = _clientCertificate.GetCacUser(Request, false);
 
             return !string.IsNullOrWhiteSpace(cacUser.Email) ? View(cacUser) : View();
         }

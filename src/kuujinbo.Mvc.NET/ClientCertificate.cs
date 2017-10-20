@@ -9,17 +9,17 @@ namespace kuujinbo.Mvc.NET
 {
     public interface IClientCertificate
     {
-        CacUser GetCacUser(bool validateChain);
+        CacUser GetCacUser(HttpRequestBase request, bool validateChain);
     }
 
     public class ClientCertificate : IClientCertificate
     {
-        public HttpRequestBase Request { get; private set; }
+        //public HttpRequestBase Request { get; private set; }
 
-        public ClientCertificate(HttpRequestBase request)
-        {
-            Request = request;
-        }
+        //public ClientCertificate(HttpRequestBase request)
+        //{
+        //    Request = request;
+        //}
 
         /// <summary>
         /// BIG-IP stores user client certificate in custom header
@@ -29,11 +29,11 @@ namespace kuujinbo.Mvc.NET
         /// <summary>
         /// Get the user/client certificate for the current HTTP request
         /// </summary>
-        internal byte[] GetCertificate()
+        internal byte[] GetCertificate(HttpRequestBase request)
         {
-            return Request.IsLocal
-                ? Request.ClientCertificate.Certificate
-                : Convert.FromBase64String(Request.Headers[BigIpCertificateHeader]);
+            return request.IsLocal
+                ? request.ClientCertificate.Certificate
+                : Convert.FromBase64String(request.Headers[BigIpCertificateHeader]);
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace kuujinbo.Mvc.NET
         /// <usage>
         /// https://github.com/kuujinbo/Mvc.NET/blob/master/src/kuujinbo.Mvc.NET.Examples/Controllers/CacUserController.cs
         /// </usage>
-        public virtual CacUser GetCacUser(bool validateChain = false)
+        public virtual CacUser GetCacUser(HttpRequestBase request, bool validateChain = false)
         {
-            X509Certificate2 cert = new X509Certificate2(GetCertificate());
+            X509Certificate2 cert = new X509Certificate2(GetCertificate(request));
 
             var subjectName = cert.GetNameInfo(X509NameType.SimpleName, false);
             var cacUser = CacUser.Create(subjectName);
