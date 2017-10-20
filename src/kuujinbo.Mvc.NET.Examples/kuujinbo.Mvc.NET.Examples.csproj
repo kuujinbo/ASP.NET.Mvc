@@ -146,6 +146,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CacUserController.cs" />
+    <Compile Include="Controllers\FileUploadStoreController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -305,6 +306,9 @@
       <Project>{343c15b2-7c86-4ca1-833c-6874902a325a}</Project>
       <Name>kuujinbo.Mvc.NET</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\FileUploadStore\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

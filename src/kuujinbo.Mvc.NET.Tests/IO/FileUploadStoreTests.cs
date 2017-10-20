@@ -18,7 +18,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
 
         public FileUploadStoreTests()
         {
-            _testStore = new FileUploadStore(BasePath, FileWithoutExtension);
+            _testStore = new FileUploadStore();
             _httpPostedFileBase = new Mock<HttpPostedFileBase>();
             _httpPostedFileBase.Setup(x => x.FileName).Returns(UploadFile);
             _httpPostedFileBase.Setup(x => x.ContentLength).Returns(100);
@@ -27,7 +27,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
         [Fact]
         public void Save_NullParameter_ReturnsFalse()
         {
-            Assert.False(_testStore.Save(null));
+            Assert.False(_testStore.Save(null, BasePath));
             _httpPostedFileBase.Verify(x => x.SaveAs(It.IsAny<string>()), Times.Never());
         }
 
@@ -36,16 +36,16 @@ namespace kuujinbo.Mvc.NET.Tests.IO
         {
             _httpPostedFileBase.Setup(x => x.ContentLength).Returns(0);
 
-            Assert.False(_testStore.Save(_httpPostedFileBase.Object));
+            Assert.False(_testStore.Save(_httpPostedFileBase.Object, BasePath));
             _httpPostedFileBase.Verify(x => x.SaveAs(It.IsAny<string>()), Times.Never());
         }
 
         [Fact]
         public void Save_NullFileNameWithoutExtension_ReturnsTrue()
         {
-            _testStore = new FileUploadStore(BasePath);
+            _testStore = new FileUploadStore();
 
-            Assert.True(_testStore.Save(_httpPostedFileBase.Object));
+            Assert.True(_testStore.Save(_httpPostedFileBase.Object, BasePath));
             _httpPostedFileBase.Verify(
                 x => x.SaveAs(It.Is<string>(y => y.EndsWith(UploadFile))),
                 Times.Once()
@@ -61,7 +61,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
                 Path.GetExtension(UploadFile)
             );
 
-            Assert.True(_testStore.Save(_httpPostedFileBase.Object));
+            Assert.True(_testStore.Save(_httpPostedFileBase.Object, BasePath, FileWithoutExtension));
             _httpPostedFileBase.Verify(
                 x => x.SaveAs(It.Is<string>(y => y.EndsWith(expectedName))), 
                 Times.Once()

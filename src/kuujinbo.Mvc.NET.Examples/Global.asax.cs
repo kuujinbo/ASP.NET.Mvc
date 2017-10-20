@@ -6,6 +6,7 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
 using FluentValidation.Mvc;
+using kuujinbo.Mvc.NET.IO;
 
 namespace kuujinbo.Mvc.NET.Examples
 {
@@ -41,6 +42,7 @@ namespace kuujinbo.Mvc.NET.Examples
             builder.RegisterModule<AutofacWebTypesModule>();
 
             builder.RegisterType<ClientCertificate>().As<IClientCertificate>();
+            builder.RegisterType<FileUploadStore>().As<IFileUploadStore>();
 
             // http://docs.autofac.org/en/latest/register/parameters.html
 

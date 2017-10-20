@@ -141,7 +141,6 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
         [HttpPost]
         public ActionResult JsonAntiForgery(TestModel testModel)
         {
-            // throw new Exception("wtf");
             Thread.Sleep(2000);
             return new JsonResult
             {

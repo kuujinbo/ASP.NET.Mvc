@@ -14,13 +14,6 @@ namespace kuujinbo.Mvc.NET
 
     public class ClientCertificate : IClientCertificate
     {
-        //public HttpRequestBase Request { get; private set; }
-
-        //public ClientCertificate(HttpRequestBase request)
-        //{
-        //    Request = request;
-        //}
-
         /// <summary>
         /// BIG-IP stores user client certificate in custom header
         /// </summary>
