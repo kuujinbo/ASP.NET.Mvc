@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
-using kuujinbo.Mvc.NET.Examples.Controllers;
 using FluentValidation.Mvc;
 
 namespace kuujinbo.Mvc.NET.Examples
@@ -37,14 +35,20 @@ namespace kuujinbo.Mvc.NET.Examples
         private void InitAutofac()
         {
             var builder = new ContainerBuilder();
+
+            // HttpContextBase, HttpRequestBase, HttpResponseBase, etc
+            // http://docs.autofac.org/en/latest/integration/mvc.html#register-web-abstractions
             builder.RegisterModule<AutofacWebTypesModule>();
+
             builder.RegisterType<ClientCertificate>().As<IClientCertificate>();
 
+            // http://docs.autofac.org/en/latest/register/parameters.html
+
             // register all controllers using assembly scanning
-            // builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             // register single controller
-            builder.RegisterType<CacUserController>().InstancePerRequest();
+            // builder.RegisterType<CacUserController>().InstancePerRequest();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

@@ -4,10 +4,15 @@ using System.Web;
 
 namespace kuujinbo.Mvc.NET.IO
 {
+    public interface IFileUploadStore
+    {
+        bool Save(HttpPostedFileBase upload);
+    }
+
     /// <summary>
     /// Simple file upload file-system store.
     /// </summary>
-    public abstract class FileUploadStore
+    public class FileUploadStore : IFileUploadStore
     {
         /// <summary>
         /// Base path to store the file upload
@@ -22,7 +27,7 @@ namespace kuujinbo.Mvc.NET.IO
         /// <summary>
         /// Initialize new instance; parameterless constructor **NOT** defined.
         /// </summary>
-        protected FileUploadStore(
+        public FileUploadStore(
             Uri basePath, 
             string fileNameWithoutExtension = null)
         {
@@ -33,7 +38,7 @@ namespace kuujinbo.Mvc.NET.IO
         /// <summary>
         /// Save file upload to file system; return true if saved, else false
         /// </summary>
-        public virtual bool Save(HttpPostedFileBase upload)
+        public bool Save(HttpPostedFileBase upload)
         {
             if (upload != null && upload.ContentLength > 0)
             {

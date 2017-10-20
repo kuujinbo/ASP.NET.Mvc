@@ -7,26 +7,18 @@ using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests.IO
 {
-    public class TestFileUploadStore : FileUploadStore 
-    {
-        public TestFileUploadStore(
-            Uri basePath, 
-            string fileNameWithoutExtension = null)
-        : base(basePath, fileNameWithoutExtension) { }
-    }
-
     public class FileUploadStoreTests
     {
         const string UploadFile = "test.txt";
         const string FileWithoutExtension = "NO-EXTENSION";
         static readonly Uri BasePath = new Uri(@"\\UNC-path\");
 
-        TestFileUploadStore _testStore;
+        FileUploadStore _testStore;
         Mock<HttpPostedFileBase> _httpPostedFileBase;
 
         public FileUploadStoreTests()
         {
-            _testStore = new TestFileUploadStore(BasePath, FileWithoutExtension);
+            _testStore = new FileUploadStore(BasePath, FileWithoutExtension);
             _httpPostedFileBase = new Mock<HttpPostedFileBase>();
             _httpPostedFileBase.Setup(x => x.FileName).Returns(UploadFile);
             _httpPostedFileBase.Setup(x => x.ContentLength).Returns(100);
@@ -51,7 +43,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
         [Fact]
         public void Save_NullFileNameWithoutExtension_ReturnsTrue()
         {
-            _testStore = new TestFileUploadStore(BasePath);
+            _testStore = new FileUploadStore(BasePath);
 
             Assert.True(_testStore.Save(_httpPostedFileBase.Object));
             _httpPostedFileBase.Verify(
