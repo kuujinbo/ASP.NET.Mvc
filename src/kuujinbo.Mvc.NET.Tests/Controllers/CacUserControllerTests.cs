@@ -51,6 +51,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _result = _controller.Index();
             var model = (CacUser) ((ViewResult)_result).Model;
 
+            _clientCertificate.Verify(x => x.GetCacUser(It.IsAny<bool>()), Times.Once());
             Assert.IsType<ViewResult>(_result);
             Assert.Equal(LAST_NAME, model.LastName);
             Assert.Equal(FIRST_NAME, model.FirstName);
@@ -72,6 +73,7 @@ namespace kuujinbo.Mvc.NET.Tests.Controllers
             _result = _controller.Index();
             var model = (CacUser) ((ViewResult)_result).Model;
 
+            _clientCertificate.Verify(x => x.GetCacUser(It.IsAny<bool>()), Times.Once());
             Assert.IsType<ViewResult>(_result);
             Assert.Null(model);
         }

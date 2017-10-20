@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IdentityModel.Selectors;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
+[assembly: InternalsVisibleTo("kuujinbo.Mvc.NET.Tests")]
 namespace kuujinbo.Mvc.NET
 {
     public interface IClientCertificate
     {
-        byte[] GetCertificate();
         CacUser GetCacUser(bool validateChain);
     }
 
@@ -28,7 +29,7 @@ namespace kuujinbo.Mvc.NET
         /// <summary>
         /// Get the user/client certificate for the current HTTP request
         /// </summary>
-        public virtual byte[] GetCertificate()
+        internal byte[] GetCertificate()
         {
             return Request.IsLocal
                 ? Request.ClientCertificate.Certificate
@@ -38,6 +39,9 @@ namespace kuujinbo.Mvc.NET
         /// <summary>
         /// Get a CacUser
         /// </summary>
+        /// <usage>
+        /// https://github.com/kuujinbo/Mvc.NET/blob/master/src/kuujinbo.Mvc.NET.Examples/Controllers/CacUserController.cs
+        /// </usage>
         public virtual CacUser GetCacUser(bool validateChain = false)
         {
             X509Certificate2 cert = new X509Certificate2(GetCertificate());
