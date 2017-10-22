@@ -12,11 +12,13 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
     {
         HtmlHelper _helper;
         Mock<IViewDataContainer> _viewData;
-        static readonly int _defaultUploadSize = WebConfigurationManagerHelper.DefaultMaxRequestLength;
-        static readonly int _defaultUploadInMB = _defaultUploadSize / 1024;
+        int _defaultUploadSize, _defaultUploadInMB;
 
         public FileUploadFieldHelperTests()
         {
+            _defaultUploadSize = WebConfigurationManagerHelper.DefaultMaxRequestLength;
+            _defaultUploadInMB = _defaultUploadSize / 1024;
+
             var request = new Mock<HttpRequestBase>();
             request.Setup(x => x.ApplicationPath).Returns("/");
             
