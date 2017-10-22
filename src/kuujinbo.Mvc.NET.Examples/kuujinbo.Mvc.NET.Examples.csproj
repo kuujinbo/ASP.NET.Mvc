@@ -244,6 +244,8 @@
     <Content Include="Views\NoticeAndConsent\Index.cshtml" />
     <Content Include="Views\NoticeAndConsent\Refuse.cshtml" />
     <Content Include="Views\NoticeAndConsent\Accepted.cshtml" />
+    <Content Include="Views\Shared\_NoticeConsentLayout.cshtml" />
+    <Content Include="Views\NoticeAndConsent\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

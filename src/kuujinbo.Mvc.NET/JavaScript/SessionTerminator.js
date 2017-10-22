@@ -31,9 +31,9 @@ SessionTerminator.prototype = {
         window.onkeypress = this.reset.bind(this);
         window.onmousemove = this.reset.bind(this);
         window.onscroll = this.reset.bind(this);
+        window.onclick = this.reset.bind(this);
         //window.onmousedown = this.reset.bind(this);
         //window.ontouchstart = this.reset.bind(this);
-        //window.onclick = this.reset.bind(this);
     },
     logout: function() {
         // don't allow back button

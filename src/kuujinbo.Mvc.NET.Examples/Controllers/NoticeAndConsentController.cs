@@ -12,6 +12,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             _sessionTerminator = terminator;
         }
 
+        [SessionTerminatorIgnore]
         public ActionResult Index()
         {
             return View();
@@ -28,6 +29,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             return View("Accepted");
         }
 
+        [SessionTerminatorIgnore]
         public ActionResult Refuse()
         {
             return View();
@@ -43,7 +45,8 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
         {
             _sessionTerminator.Logout(Request, Response, TempData);
 
-            return View("Index");
+            // **MUST** redirect
+            return RedirectToAction("Index");
         }
     }
 }

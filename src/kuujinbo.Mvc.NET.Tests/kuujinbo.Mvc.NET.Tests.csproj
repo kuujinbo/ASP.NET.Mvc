@@ -40,6 +40,7 @@
     <Compile Include="Attributes\SessionTerminatorIgnoreAttributeTests.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="Controllers\CacUserControllerTests.cs" />
+    <Compile Include="Helpers\HttpRequestBaseExtensionTests.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelperTests.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBoolTests.cs" />
     <Compile Include="HttpCookieFactoryTests.cs" />
@@ -159,7 +160,7 @@
     <Content Include="JavaScript\JQueryAutoComplete.tests.js" />
     <Content Include="JavaScript\SessionTerminator.tests.js" />
     <Content Include="JavaScript\testHelpers\jasmine-jquery.js" />
-    <Content Include="README-DodCac-cert.txt" />
+    <Content Include="_testData\README-Cac-cert.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kuujinbo.Mvc.NET.Examples\kuujinbo.Mvc.NET.Examples.csproj">

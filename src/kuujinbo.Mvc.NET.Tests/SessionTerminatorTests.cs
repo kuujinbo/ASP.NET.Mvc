@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using kuujinbo.Mvc.NET.Attributes;
+using kuujinbo.Mvc.NET.HtmlHelpers;
 using kuujinbo.Mvc.NET.Tests._testHelpers;
 using Moq;
 using Xunit;
@@ -32,7 +33,7 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Logout_DefaultParameters_SetsTempDataKey()
+        public void Logout_DefaultParameters_DoesNotSetTempDataKey()
         {
             TempDataDictionary tempData = new TempDataDictionary();
             _fakeContext = MvcMockHelpers.FakeHttpContext();
@@ -40,21 +41,35 @@ namespace kuujinbo.Mvc.NET.Tests
 
             _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, tempData);
 
-            Assert.Equal(true, (bool)tempData[SessionTerminator.SessionTimedOut]);
+            Assert.Null(tempData[SessionTerminator.SessionTimedOut]);
         }
 
         [Fact]
-        public void Logout_HasQueryString_DoesNotSetTempDataKey()
+        public void Logout_HasQueryStringWithNullValue_DoesNotSetTempDataKey()
         {
             TempDataDictionary tempData = new TempDataDictionary();
             _fakeContext = MvcMockHelpers.FakeHttpContext();
             var querystring = new NameValueCollection();
-            querystring.Add("logoutClick", "true");
+            querystring.Add(SessionTerminatorHelper.ShowClientModalKey, null);
             _fakeContext.Request.SetRequestQueryString(querystring);
 
             _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, tempData);
 
             Assert.Null(tempData[SessionTerminator.SessionTimedOut]);
+        }
+
+        [Fact]
+        public void Logout_HasQueryStringWithValue_SetsTempDataKey()
+        {
+            TempDataDictionary tempData = new TempDataDictionary();
+            _fakeContext = MvcMockHelpers.FakeHttpContext();
+            var querystring = new NameValueCollection();
+            querystring.Add(SessionTerminatorHelper.ShowClientModalKey, "0");
+            _fakeContext.Request.SetRequestQueryString(querystring);
+
+            _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, tempData);
+
+            Assert.Equal(true, (bool)tempData[SessionTerminator.SessionTimedOut]);
         }
 
         [Fact]

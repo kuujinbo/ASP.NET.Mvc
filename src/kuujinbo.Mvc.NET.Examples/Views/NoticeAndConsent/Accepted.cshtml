@@ -1,6 +1,4 @@
-﻿@using kuujinbo.Mvc.NET.HtmlHelpers
-
-@{ var testTimeout = 50000; }
+﻿@{ var testTimeout = 50000; }
 
 <div class='jumbotron'>
     <h1>Thank You for Accepting Site Conditions and Terms of Use</h1>
@@ -16,4 +14,6 @@
     HtmlHelper would normally be put in _layout.cshtml
  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *@    
-@Html.TerminateSession(8, @Url.Action("Logout", "NoticeAndConsent"))
+@*@Html.TerminateSession(8, @Url.Action("Logout", "NoticeAndConsent"))*@
+@*@Html.TerminateSession(testTimeout, @Url.Action("Logout", "NoticeAndConsent"))*@
+@*@Html.TerminateSession(8, @Url.Action("Logout", "NoticeAndConsent", new { logoutClick = "yes" }))*@

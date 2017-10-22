@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using kuujinbo.Mvc.NET.Attributes;
+using kuujinbo.Mvc.NET.HtmlHelpers;
 
 namespace kuujinbo.Mvc.NET
 {
@@ -45,19 +46,15 @@ namespace kuujinbo.Mvc.NET
         }
 
         /// <summary>
-        /// Logout - **see remarks and example XML documentation**.
-        /// </summary>
-        /// <remarks>
-        /// **ANY** querystring key/value pair in route value object will 
-        /// **NOT** display the modal inactivity logged out message.
-        /// </remarks>
-        /// <example>
-        /// [1] User explcitly clicks 'Logout' button / link - modal **NOT** displayed:
-        ///     @Url.Action("Logout", "NoticeAndConsent", new { logoutClick = true})
-        /// [2] Default inactivity timeout with no querystring - modal **IS** displayed:
-        ///     @Url.Action("Logout", "NoticeAndConsent")'
+        /// Application logout may occur in one of two ways:
+        /// [1] Client-side inactivity timeout logout. See 
+        /// <see cref="kuujinbo.Mvc.NET.HtmlHelpers.SessionTerminatorHelper.TerminateSession" />.
+        /// ControllerBase.TempData is used to flag a client-side modal
+        /// message, so the 'Logout' or other named controller action MUST
+        /// ALWAYS RETURN A REDIRECT ActionResult.
         /// 
-        /// </example>
+        /// [2] Explicit user logout. I.e., user clicks on button/hyperlink.
+        /// </summary>
         public void Logout(HttpRequestBase request, 
             HttpResponseBase response,
             TempDataDictionary tempData = null)
@@ -67,8 +64,10 @@ namespace kuujinbo.Mvc.NET
                 NoticeAndConsentAuthorizeAttribute.NoticeAndConsent
             );
 
-            // tempData flags whether to display the modal inactivity message
-            if (request.QueryString.Count < 1) tempData[SessionTimedOut] = true;
+            // tempData flags whether to display the modal inactivity message,
+            // so the controller action MUST ALWAYS RETURN A REDIRECT ActionResult.
+            if (request.QueryString[SessionTerminatorHelper.ShowClientModalKey] != null) 
+                tempData[SessionTimedOut] = true;
         }
     }
 }

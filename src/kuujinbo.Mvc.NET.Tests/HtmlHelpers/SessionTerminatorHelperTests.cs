@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using kuujinbo.Mvc.NET.HtmlHelpers;
@@ -20,7 +21,12 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
             _controller.Object.TempData = new TempDataDictionary();
             _controller.Object.TempData[SessionTerminator.IgnoreSessionTimeout] = true;
 
+            var request = new Mock<HttpRequestBase>();
+            request.Setup(x => x.Url).Returns(new Uri("http://test.com"));
+
+
             var httpContext = new Mock<HttpContextBase>();
+            httpContext.Setup(x => x.Request).Returns(request.Object);
             httpContext.Setup(x => x.Items).Returns(new Dictionary<string, object>());
 
             var viewContext = new Mock<ViewContext>();
