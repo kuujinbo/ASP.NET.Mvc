@@ -149,6 +149,7 @@
     <Compile Include="Controllers\CheckboxGroupTogglerController.cs" />
     <Compile Include="Controllers\FileUploadStoreController.cs" />
     <Compile Include="Controllers\JQueryAutoCompleteController.cs" />
+    <Compile Include="Controllers\NoticeAndConsentController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
     <Compile Include="Models\ModelData.cs" />
     <Compile Include="Models\TestModel.cs" />
@@ -240,18 +241,14 @@
     <Content Include="Views\FileUploadStore\Index.cshtml" />
     <Content Include="Views\CheckboxGroupToggler\Index.cshtml" />
     <Content Include="Views\JQueryAutoComplete\Index.cshtml" />
+    <Content Include="Views\NoticeAndConsent\Index.cshtml" />
+    <Content Include="Views\NoticeAndConsent\Refuse.cshtml" />
+    <Content Include="Views\NoticeAndConsent\Accepted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\app.js" />
-    <None Include="Scripts\Directives\PluploadWrapper.js.old" />
-    <Content Include="Scripts\appConfig.js" />
-    <Content Include="Scripts\Directives\pluploadWrapper.js" />
-    <Content Include="Scripts\lib\angular-mocks.js" />
-    <Content Include="Scripts\lib\angular.js" />
-    <Content Include="Scripts\lib\angular.min.js" />
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
     <Content Include="Scripts\lib\jquery-3.1.1.min.map" />
@@ -261,31 +258,7 @@
     <Content Include="Scripts\lib\jquery.validate.min.js" />
     <Content Include="Scripts\lib\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\lib\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\css\jquery.plupload.queue.css" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\backgrounds.gif" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\buttons-disabled.png" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\buttons.png" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\delete.gif" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\done.gif" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\error.gif" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\throbber.gif" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\img\transp50.png" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\jquery.plupload.queue.js" />
-    <Content Include="Scripts\lib\plupload\jquery.plupload.queue\jquery.plupload.queue.min.js" />
-    <Content Include="Scripts\lib\plupload\jquery.ui.plupload\css\jquery.ui.plupload.css" />
-    <Content Include="Scripts\lib\plupload\jquery.ui.plupload\img\loading.gif" />
-    <Content Include="Scripts\lib\plupload\jquery.ui.plupload\img\plupload.png" />
-    <Content Include="Scripts\lib\plupload\jquery.ui.plupload\jquery.ui.plupload.js" />
-    <Content Include="Scripts\lib\plupload\jquery.ui.plupload\jquery.ui.plupload.min.js" />
-    <Content Include="Scripts\lib\plupload\moxie.js" />
-    <Content Include="Scripts\lib\plupload\moxie.min.js" />
-    <Content Include="Scripts\lib\plupload\Moxie.swf" />
-    <Content Include="Scripts\lib\plupload\Moxie.xap" />
-    <Content Include="Scripts\lib\plupload\plupload.dev.js" />
-    <Content Include="Scripts\lib\plupload\plupload.full.min.js" />
-    <Content Include="Scripts\lib\plupload\plupload.min.js" />
     <None Include="Scripts\lib\_references.js" />
-    <Content Include="Scripts\httpRequestInterceptorTest.js" />
     <Content Include="Views\CacUser\properties.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -305,7 +278,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\lib\angular.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kuujinbo.Mvc.NET\kuujinbo.Mvc.NET.csproj">

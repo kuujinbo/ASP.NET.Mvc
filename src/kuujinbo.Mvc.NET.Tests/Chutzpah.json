@@ -14,8 +14,6 @@
     "References": [
         { "Path": "./../../src/kuujinbo.Mvc.NET.Examples/Scripts/lib/jquery-3.1.1.min.js" },
         { "Path": "./JavaScript/testHelpers/jasmine-jquery.js" },
-        { "Path": "./../../src/kuujinbo.Mvc.NET.Examples/Scripts/lib/jquery-ui-1.12.1.min.js" },
-        { "Path": "./../../src/kuujinbo.Mvc.NET.Examples/Scripts/lib/angular.js" },
-        { "Path": "./../../src/kuujinbo.Mvc.NET.Examples/Scripts/lib/angular-mocks.js" }
+        { "Path": "./../../src/kuujinbo.Mvc.NET.Examples/Scripts/lib/jquery-ui-1.12.1.min.js" }
     ]
 }

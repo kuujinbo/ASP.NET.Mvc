@@ -1,20 +1,21 @@
 ﻿@using kuujinbo.Mvc.NET.HtmlHelpers;
 @model kuujinbo.Mvc.NET.Examples.Models.TestModel
 
-<h1 style='margin-top:0;padding-top:0;'>kuujinbo.Mvc.NET</h1>
+<h1 style='margin-top:0;padding-top:0;'>kuujinbo.Mvc.NET Examples</h1>
 
 <div class='row'>
     <div class='col-xs-6'>
         <ul class='list-group'>
-            <li class='list-group-item'><a href='https://localhost:44343/CacUser'>ClientCertificate / CacUser Example</a></li>
-            <li class='list-group-item'>@Html.ActionLink("FileUploadStore Example", "Index", "FileUploadStore")</li>
-            <li class='list-group-item'>@Html.ActionLink("PdfResult Example (File Download)", "PdfResult", "Home")</li>
+            <li class='list-group-item'><a href='https://localhost:44343/CacUser'>ClientCertificate / CacUser</a></li>
+            <li class='list-group-item'>@Html.ActionLink("FileUploadStore", "Index", "FileUploadStore")</li>
+            <li class='list-group-item'>@Html.ActionLink("PdfResult (File Download)", "PdfResult", "Home")</li>
         </ul>
     </div>
     <div class='col-xs-6'>
         <ul class='list-group'>
-            <li class='list-group-item'>@Html.ActionLink("CheckboxGroupToggler HtmlHelper Example", "Index", "CheckboxGroupToggler")</li>
-            <li class='list-group-item'>@Html.ActionLink("JQueryAutoComplete HtmlHelper Example", "Index", "JQueryAutoComplete")</li>
+            <li class='list-group-item'>@Html.ActionLink("CheckboxGroupToggler HtmlHelper", "Index", "CheckboxGroupToggler")</li>
+            <li class='list-group-item'>@Html.ActionLink("JQueryAutoComplete HtmlHelper", "Index", "JQueryAutoComplete")</li>
+            <li class='list-group-item'>@Html.ActionLink("SessionTerminatorHelper HtmlHelper / NoticeAndConsentAuthorizeAttribute", "Index", "NoticeAndConsent")</li>
         </ul>
     </div>
 </div>

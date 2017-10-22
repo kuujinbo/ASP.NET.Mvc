@@ -31,9 +31,6 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// <summary>
         /// Add JavaScript to any view
         /// </summary>
-        /// <param name="helper"></param>
-        /// <param name="script"></param>
-        /// <param name="scriptKey"></param>
         /// <remarks>
         /// </remarks>
         public static MvcHtmlString AddInlineScript(this HtmlHelper helper, 

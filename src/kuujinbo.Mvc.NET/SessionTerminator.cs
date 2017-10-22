@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using kuujinbo.Mvc.NET.Attributes;
 
@@ -28,12 +27,14 @@ namespace kuujinbo.Mvc.NET
         public static readonly int NonPrivilegedTimeout = 60 * 15;
 
         /// <summary>
-        /// Ignore inactivity / idle timout for specific controller/action
+        /// Ignore inactivity / idle timout for specific controller/action.
+        /// See <see cref="kuujinbo.Mvc.NET.Attributes.SessionTerminatorIgnoreAttribute" />
+        /// for more information.
         /// </summary>
         public const string IgnoreSessionTimeout = "ignore-session-timeout";
 
         /// <summary>
-        /// Ignore inactivity / idle timout for specific controller/action
+        /// Flag session timeout. See <see cref="Logout" />
         /// </summary>
         public const string SessionTimedOut = "session-timed-out";
 
@@ -61,12 +62,10 @@ namespace kuujinbo.Mvc.NET
             HttpResponseBase response,
             TempDataDictionary tempData = null)
         {
-            var cookie = request.Cookies[NoticeAndConsentAuthorizeAttribute.NoticeAndConsent];
-            if (cookie != null)
-            {
-                cookie.Expires = DateTime.Now.AddDays(-1);
-                response.SetCookie(cookie);
-            }
+            HttpCookieFactory.ExpireCookie(
+                response, 
+                NoticeAndConsentAuthorizeAttribute.NoticeAndConsent
+            );
 
             // tempData flags whether to display the modal inactivity message
             if (request.QueryString.Count < 1) tempData[SessionTimedOut] = true;

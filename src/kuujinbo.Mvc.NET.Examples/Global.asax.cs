@@ -43,6 +43,7 @@ namespace kuujinbo.Mvc.NET.Examples
 
             builder.RegisterType<ClientCertificate>().As<IClientCertificate>();
             builder.RegisterType<FileUploadStore>().As<IFileUploadStore>();
+            builder.RegisterType<SessionTerminator>().As<ISessionTerminator>();
 
             // http://docs.autofac.org/en/latest/register/parameters.html
 

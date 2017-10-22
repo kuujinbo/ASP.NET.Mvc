@@ -1,0 +1,19 @@
+﻿@using kuujinbo.Mvc.NET.HtmlHelpers
+
+@{ var testTimeout = 50000; }
+
+<div class='jumbotron'>
+    <h1>Thank You for Accepting Site Conditions and Terms of Use</h1>
+
+    <p>This site has a @testTimeout second session inactive timeout. I.e., you do not interact with the page within the @testTimeout second threshhold, you will be logged out of the application.</p>
+
+
+    <a href='@Url.Action("Logout", "NoticeAndConsent")' class="btn btn-primary">Log Out</a>
+</div>
+
+@*
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    HtmlHelper would normally be put in _layout.cshtml
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*@    
+@Html.TerminateSession(8, @Url.Action("Logout", "NoticeAndConsent"))

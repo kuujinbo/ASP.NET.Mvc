@@ -1,6 +1,6 @@
 ﻿@using kuujinbo.Mvc.NET.HtmlHelpers
 <!DOCTYPE html>
-<html ng-app='angular1'>
+<html>
 <head>
 <meta name='viewport' content='width=device-width' />
 <title>@ViewBag.Title</title>
@@ -12,7 +12,6 @@
     @RenderBody()
 </div>
 @Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/angular")
 @RenderSection("scripts", required: false)
 @Html.RenderViewScripts()
 </body>

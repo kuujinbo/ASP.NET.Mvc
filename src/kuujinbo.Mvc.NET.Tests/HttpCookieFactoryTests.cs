@@ -109,6 +109,5 @@ namespace kuujinbo.Mvc.NET.Tests
                 HttpCookieFactory.ExpiresDays
             );
         }
-
     }
 }

@@ -1,10 +1,11 @@
-﻿using kuujinbo.Mvc.NET.Tests._testHelpers;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
-using Xunit;
 using kuujinbo.Mvc.NET.Attributes;
+using kuujinbo.Mvc.NET.Tests._testHelpers;
+using Moq;
+using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests
 {
@@ -57,23 +58,27 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Logout_NoticeConsentCookie_RemovesCookie()
+        public void Logout_Called_ExpiresCookie()
         {
-            _fakeContext = MvcMockHelpers.FakeHttpContext();
-            _fakeContext.Request.SetRequestQueryString(new NameValueCollection());
-            var consentCookie = new HttpCookie(NoticeAndConsentAuthorizeAttribute.NoticeAndConsent);
-            var now = DateTime.Now;
-            consentCookie.Value = now.ToString();
-            var cookieCollection = new HttpCookieCollection();
-            cookieCollection.Add(consentCookie);
-            _fakeContext.Request.SetRequestCookies(cookieCollection);
+            var response = new Mock<HttpResponseBase>();
+            var cookies = new HttpCookieCollection();
+            response.Setup(x => x.Cookies).Returns(cookies);
+            response.Setup(x => x.SetCookie(It.IsAny<HttpCookie>())).Callback<HttpCookie>(x => cookies.Add(x));
 
-            _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, new TempDataDictionary());
+            var request = new Mock<HttpRequestBase>();
+            request.Setup(x => x.QueryString).Returns(new NameValueCollection());
 
-            Assert.Equal(1, 1);
-            Assert.Equal(
-                _fakeContext.Request.Cookies[NoticeAndConsentAuthorizeAttribute.NoticeAndConsent].Expires.Day,
-                now.AddDays(-1).Day
+            var context = new Mock<HttpContextBase>();
+            context.Setup(x => x.Response).Returns(response.Object);
+            context.Setup(x => x.Request).Returns(request.Object);
+
+            _sessionTerminator.Logout(request.Object, response.Object, new TempDataDictionary());
+
+            // cookie is in the past
+            Assert.True(
+                (response.Object.Cookies[
+                    NoticeAndConsentAuthorizeAttribute.NoticeAndConsent].Expires
+                    - DateTime.UtcNow).Days < 0
             );
         }
     }
