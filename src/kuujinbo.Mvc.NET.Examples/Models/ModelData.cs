@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Hosting;
+using Newtonsoft.Json;
 
 namespace kuujinbo.Mvc.NET.Examples.Models
 {
+    [ExcludeFromCodeCoverage]
     public static class ModelData
     {
         public static readonly ICollection<TestModel> Data;

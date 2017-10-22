@@ -1,12 +1,14 @@
-﻿using kuujinbo.Mvc.NET.Examples.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Mvc;
+using kuujinbo.Mvc.NET.Examples.Models;
+using Newtonsoft.Json;
 
 namespace kuujinbo.Mvc.NET.Examples.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class JQueryAutoCompleteController : Controller
     {
         public ActionResult Index()
@@ -34,7 +36,6 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
                     ,
                     office = user.Office
                 });
-
             }
 
             System.Threading.Thread.Sleep(1000);
@@ -52,6 +53,5 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
                 )
             };
         }
-
     }
 }

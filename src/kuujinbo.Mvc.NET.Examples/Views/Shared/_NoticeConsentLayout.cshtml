@@ -14,7 +14,11 @@
 @Scripts.Render("~/bundles/jquery")
 @RenderSection("scripts", required: false)
 
-@Html.TerminateSession(2, @Url.Action("Logout", "NoticeAndConsent"))
+@{ var timeout = 0; }
+@if (ViewBag.TerminatorTimeout != null) { timeout = (int)ViewBag.TerminatorTimeout; }
+
+
+@Html.TerminateSession(@timeout, @Url.Action("Logout", "NoticeAndConsent"))
 
 @Html.RenderViewScripts()
 </body>

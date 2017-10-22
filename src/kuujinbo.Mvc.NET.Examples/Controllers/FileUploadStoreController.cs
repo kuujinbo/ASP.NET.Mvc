@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace kuujinbo.Mvc.NET.Examples.Controllers
 {
@@ -16,6 +17,7 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             _uploadStore = uploadStore;
         }
 
+        [ExcludeFromCodeCoverage]
         [HttpGet]
         public ActionResult Index()
         {

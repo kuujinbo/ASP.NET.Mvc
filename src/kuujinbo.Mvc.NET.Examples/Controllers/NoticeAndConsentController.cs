@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Mvc;
 using kuujinbo.Mvc.NET.Attributes;
 
@@ -12,12 +13,14 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             _sessionTerminator = terminator;
         }
 
+        [ExcludeFromCodeCoverage]
         [SessionTerminatorIgnore]
         public ActionResult Index()
         {
             return View();
         }
 
+        [ExcludeFromCodeCoverage]
         public ActionResult Accept()
         {
             HttpCookieFactory.SetCookie(
@@ -29,12 +32,13 @@ namespace kuujinbo.Mvc.NET.Examples.Controllers
             return View("Accepted");
         }
 
-        [SessionTerminatorIgnore]
+        [ExcludeFromCodeCoverage, SessionTerminatorIgnore]
         public ActionResult Refuse()
         {
             return View();
         }
 
+        [ExcludeFromCodeCoverage]
         [NoticeAndConsentAuthorize("NoticeAndConsent", "Index")]
         public ActionResult Accepted()
         {
