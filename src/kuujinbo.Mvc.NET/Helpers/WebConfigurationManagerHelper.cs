@@ -16,10 +16,10 @@ namespace kuujinbo.Mvc.NET.Helpers
         XDocument GetSection();
     }
 
-    // WebConfigurationManager is static....
     [ExcludeFromCodeCoverage]
     /// <summary>
-    /// internal implementation; exclusively used by FileUploadFieldExtension
+    /// Internal implementation; exclusively used by FileUploadFieldExtension,
+    /// since WebConfigurationManager is static....
     /// </summary>
     internal class WebConfigHelper : IWebConfig
     {

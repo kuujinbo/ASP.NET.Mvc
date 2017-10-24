@@ -1,10 +1,10 @@
-﻿using kuujinbo.Mvc.NET.Helpers;
-using kuujinbo.Mvc.NET.HtmlHelpers;
-using Moq;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using kuujinbo.Mvc.NET.Helpers;
+using kuujinbo.Mvc.NET.HtmlHelpers;
+using Moq;
 using Xunit;
-using System.Collections.Generic;
 
 namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
 {
