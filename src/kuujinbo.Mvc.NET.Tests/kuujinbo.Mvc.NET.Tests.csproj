@@ -42,6 +42,7 @@
     <Compile Include="Attributes\SessionTerminatorIgnoreAttributeTests.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttributeTests.cs" />
     <Compile Include="Controllers\CacUserControllerTests.cs" />
+    <Compile Include="Helpers\BoolHelperTests.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtensionTests.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelperTests.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBoolTests.cs" />

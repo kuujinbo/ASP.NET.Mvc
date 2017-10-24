@@ -1,6 +1,7 @@
 ﻿using kuujinbo.Mvc.NET.Helpers;
 using System.Xml.Linq;
 using Xunit;
+using System;
 
 namespace kuujinbo.Mvc.NET.Tests.Helpers
 {
@@ -17,7 +18,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
         }
     }
 
-    public class WebConfigurationManagerHelperTests
+    public class WebConfigurationManagerHelperTests : IDisposable
     {
         IWebConfig _webConfig;
 
@@ -39,7 +40,13 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
             WebConfigurationManagerHelper._maxAllowedContentLength = 0;
             WebConfigurationManagerHelper._maxUploadSize = 0;
         }
- 
+
+        public void Dispose()
+        {
+            // reset default for other test classes, or their test(s) may fail
+            WebConfigurationManagerHelper._maxAllowedContentLength = WebConfigurationManagerHelper.DefaultMaxRequestLength;
+        }
+
         #region GetMaxRequestLength
         [Fact]
         public void GetMaxRequestLength_ValueSet_ReturnsValue()

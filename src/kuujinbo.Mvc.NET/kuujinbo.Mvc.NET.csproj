@@ -62,6 +62,7 @@
     <Compile Include="Attributes\SessionTerminatorIgnoreAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
+    <Compile Include="Helpers\BoolHelper.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtension.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBool.cs" />
