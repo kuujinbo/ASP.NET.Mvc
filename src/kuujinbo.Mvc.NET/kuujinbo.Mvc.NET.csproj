@@ -35,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -62,6 +63,7 @@
     <Compile Include="Attributes\SessionTerminatorIgnoreAttribute.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="ClientCertificate.cs" />
+    <Compile Include="DbData.cs" />
     <Compile Include="Helpers\BoolHelper.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtension.cs" />
     <Compile Include="Helpers\NameWithNumericPrefixComparer.cs" />
