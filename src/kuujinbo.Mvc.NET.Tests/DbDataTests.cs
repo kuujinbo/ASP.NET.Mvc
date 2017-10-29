@@ -47,7 +47,7 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Constructor_WithNullParameter_Throws()
+        public void Constructor_NullParameter_Throws()
         {
             var exception = Assert.Throws<ArgumentNullException>(
                  () => new DbData(null)
@@ -55,7 +55,7 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Constructor_WithInvalidConnectionNameParameter_Throws()
+        public void Constructor_InvalidConnectionNameParameter_Throws()
         {
             var exception = Assert.Throws<InvalidOperationException>(
                  () => new DbData("no connection string with this name")
@@ -63,14 +63,15 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Constructor_WithParameter_InitializesMembers()
+        public void Constructor_ValidParameters_InitializesMembers()
         {
+            Assert.Equal(DbData.DefaultParameterNamePrefix, _data.ParameterNamePrefix);
             Assert.NotNull(_data.Connection);
             Assert.NotNull(_data.Command);
         }
 
         [Fact]
-        public void Retrieve_WithoutParameters_ReturnsIDataReader()
+        public void Retrieve_NoParameters_ReturnsIDataReader()
         {
             _command.Setup(x => x.ExecuteReader()).Returns(new Mock<IDataReader>().Object);
             var commandText = "test";
@@ -79,12 +80,32 @@ namespace kuujinbo.Mvc.NET.Tests
 
             Assert.IsAssignableFrom<IDataReader>(result);
             _command.VerifySet(x => x.CommandText = commandText, Times.Once());
+            _command.VerifySet(x => x.CommandType = CommandType.StoredProcedure, Times.Never());
+            _command.Verify(x => x.CreateParameter(), Times.Never());
+            _command.Verify(x => x.Parameters.Add(It.IsAny<IDbDataParameter>()), Times.Never());
             _connection.Verify(x => x.Open(), Times.Once());
             _command.Verify(x => x.ExecuteReader(), Times.Once());
         }
 
         [Fact]
-        public void Retrieve_WithParameters_ReturnsIDataReader()
+        public void Retrieve_IsSproc_ReturnsIDataReader()
+        {
+            _command.Setup(x => x.ExecuteReader()).Returns(new Mock<IDataReader>().Object);
+            var commandText = "SELECT";
+
+            var result = _data.Retrieve(commandText, isStoredProcedure: true);
+
+            Assert.IsAssignableFrom<IDataReader>(result);
+            _command.VerifySet(x => x.CommandText = commandText, Times.Once());
+            _command.VerifySet(x => x.CommandType = CommandType.StoredProcedure, Times.Once());
+            _command.Verify(x => x.CreateParameter(), Times.Never());
+            _command.Verify(x => x.Parameters.Add(It.IsAny<IDbDataParameter>()), Times.Never());
+            _connection.Verify(x => x.Open(), Times.Once());
+            _command.Verify(x => x.ExecuteReader(), Times.Once());
+        }
+
+        [Fact]
+        public void Retrieve_ValidParameters_ReturnsIDataReader()
         {
             var dbParameters = new Mock<IDbDataParameter>();
             _command.Setup(x => x.ExecuteReader()).Returns(new Mock<IDataReader>().Object);
@@ -107,7 +128,7 @@ namespace kuujinbo.Mvc.NET.Tests
         }
 
         [Fact]
-        public void Save_WithoutParameters_ReturnsInt()
+        public void Save_NoParameters_ReturnsInt()
         {
             _command.Setup(x => x.ExecuteNonQuery()).Returns(It.IsAny<int>());
             var commandText = "test";
@@ -116,12 +137,32 @@ namespace kuujinbo.Mvc.NET.Tests
 
             Assert.IsType<int>(result);
             _command.VerifySet(x => x.CommandText = commandText, Times.Once());
+            _command.VerifySet(x => x.CommandType = CommandType.StoredProcedure, Times.Never());
+            _command.Verify(x => x.CreateParameter(), Times.Never());
+            _command.Verify(x => x.Parameters.Add(It.IsAny<IDbDataParameter>()), Times.Never());
             _connection.Verify(x => x.Open(), Times.Once());
             _command.Verify(x => x.ExecuteNonQuery(), Times.Once());
         }
 
         [Fact]
-        public void Save_WithParameters_ReturnsInt()
+        public void Save_IsSproc_ReturnsIDataReader()
+        {
+            _command.Setup(x => x.ExecuteNonQuery()).Returns(It.IsAny<int>());
+            var commandText = "UPDATE";
+
+            var result = _data.Save(commandText, isStoredProcedure: true);
+
+            Assert.IsType<int>(result);
+            _command.VerifySet(x => x.CommandText = commandText, Times.Once());
+            _command.VerifySet(x => x.CommandType = CommandType.StoredProcedure, Times.Once());
+            _command.Verify(x => x.CreateParameter(), Times.Never());
+            _command.Verify(x => x.Parameters.Add(It.IsAny<IDbDataParameter>()), Times.Never());
+            _connection.Verify(x => x.Open(), Times.Once());
+            _command.Verify(x => x.ExecuteNonQuery(), Times.Once());
+        }
+
+        [Fact]
+        public void Save_ValidParameters_ReturnsInt()
         {
             var dbParameters = new Mock<IDbDataParameter>();
             _command.Setup(x => x.ExecuteNonQuery()).Returns(It.IsAny<int>());
@@ -141,6 +182,24 @@ namespace kuujinbo.Mvc.NET.Tests
                 It.IsAny<IDbDataParameter>()),
                 Times.Exactly(parameters.Keys.Count)
             );
+        }
+
+        [Fact]
+        public void Parameterize_NullParameter_Throws()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(
+                 () => _data.Parameterize(null)
+             );
+        }
+
+        [Fact]
+        public void Parameterize_ValidParameters_ReturnsParameterizedQuery()
+        {
+            var parameters = new Dictionary<string, object>() { { "p0", 0 }, { "p1", 1 } };
+
+            var result = _data.Parameterize(parameters);
+
+            Assert.Equal("@p0,@p1", result);
         }
 
         [Fact]

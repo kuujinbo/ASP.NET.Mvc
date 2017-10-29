@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("kuujinbo.Mvc.NET.Tests")]
@@ -12,12 +13,14 @@ namespace kuujinbo.Mvc.NET
     {
         IDataReader Retrieve(
             string commandText,
-            Dictionary<string, object> parameters
+            Dictionary<string, object> parameters,
+            bool isStoredProcedure
         );
 
         int Save(
             string commandText,
-            Dictionary<string, object> parameters
+            Dictionary<string, object> parameters,
+            bool isStoredProcedure
         );
     }
 
@@ -26,8 +29,11 @@ namespace kuujinbo.Mvc.NET
     /// </summary>
     public class DbData : IDbData
     {
+        public const string DefaultParameterNamePrefix = "@"; // SQL Server
         public IDbConnection Connection { get; internal set; }
         public IDbCommand Command { get; internal set; }
+
+        public string ParameterNamePrefix { get; set; }
 
         public DbData() { }
 
@@ -40,24 +46,28 @@ namespace kuujinbo.Mvc.NET
                 "connection string not found"
             );
 
+            ParameterNamePrefix = DefaultParameterNamePrefix;
+
             var dbProviderFactory = DbProviderFactories.GetFactory(configurationManager.ProviderName);
             Connection = dbProviderFactory.CreateConnection();
             Connection.ConnectionString = configurationManager.ConnectionString;
             Command = Connection.CreateCommand();
         }
 
-
         public virtual IDataReader Retrieve(
             string commandText, 
-            Dictionary<string, object> parameters = null)
+            Dictionary<string, object> parameters = null,
+            bool isStoredProcedure = false)
         {
             Command.CommandText = commandText;
+            if (isStoredProcedure) Command.CommandType = CommandType.StoredProcedure;
+
             if (parameters != null)
             {
                 foreach (var kvp in parameters)
                 {
                     var dbParameter = Command.CreateParameter();
-                    dbParameter.ParameterName = "@" + kvp.Key;
+                    dbParameter.ParameterName = ParameterNamePrefix + kvp.Key;
                     dbParameter.Value = kvp.Value;
                     Command.Parameters.Add(dbParameter);
                 }
@@ -69,15 +79,18 @@ namespace kuujinbo.Mvc.NET
 
         public virtual int Save(
             string commandText, 
-            Dictionary<string, object> parameters = null)
+            Dictionary<string, object> parameters = null,
+            bool isStoredProcedure = false)
         {
             Command.CommandText = commandText;
+            if (isStoredProcedure) Command.CommandType = CommandType.StoredProcedure;
+
             if (parameters != null)
             {
                 foreach (var kvp in parameters)
                 {
                     var dbParameter = Command.CreateParameter();
-                    dbParameter.ParameterName = "@" + kvp.Key;
+                    dbParameter.ParameterName = ParameterNamePrefix + kvp.Key;
                     dbParameter.Value = kvp.Value;
                     Command.Parameters.Add(dbParameter);
                 }
@@ -85,6 +98,21 @@ namespace kuujinbo.Mvc.NET
             Connection.Open();
 
             return Command.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Build a dynamic string for a parameterized query.
+        /// </summary>
+        public virtual string Parameterize(IDictionary<string, object> parameters)
+        {
+            if (parameters == null) throw new ArgumentNullException("parameters");
+
+            return string.Join(
+                ",",
+                parameters.Keys.Select(
+                    x => string.Format("{0}{1}", ParameterNamePrefix, x)
+                ).ToList()
+            );
         }
 
         /// <summary>

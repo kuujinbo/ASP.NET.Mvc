@@ -38,7 +38,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </summary>
         public MvcHtmlString Convert(bool? value)
         {
-            return new MvcHtmlString(value.HasValue && value.Value ? TrueValue : FalseValue);
+            return new MvcHtmlString(value ?? false ? TrueValue : FalseValue);
         }
     }
 }
