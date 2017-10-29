@@ -31,12 +31,13 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         }
 
         private string CreateInputElement(
-            string cssIdSelector
+            string idAttribute
             , string searchUrl
             , string minSearchLength = "1")
         {
             var tagBuilder = new TagBuilder("input");
-            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.IdAttribute, cssIdSelector, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.IdAttribute, idAttribute, true);
+            tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.NameAttribute, idAttribute, true);
             tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.UrlAttribute, searchUrl, true);
             tagBuilder.MergeAttribute(JQueryAutoCompleteHelper.MinLengthAttribute, minSearchLength, true);
 
@@ -46,11 +47,11 @@ namespace kuujinbo.Mvc.NET.Tests.HtmlHelpers
         [Fact]
         public void JQueryAutoComplete_DefaultParameters_ReturnsHtml()
         {
-            var cssSelector = "#selector";
+            var idAttribute = "selector";
             var url = "/url";
 
-            var result = _helper.JQueryAutoComplete(cssSelector, url);
-            var expected = CreateInputElement(cssSelector, url);
+            var result = _helper.JQueryAutoComplete(idAttribute, url);
+            var expected = CreateInputElement(idAttribute, url);
 
             Assert.Equal(expected, result.ToString());
         }

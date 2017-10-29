@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using kuujinbo.Mvc.NET.Properties;
 
 namespace kuujinbo.Mvc.NET.HtmlHelpers
@@ -16,6 +15,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// HTML input element attributes
         /// </summary>
         public const string IdAttribute = "id";
+        public const string NameAttribute = "name";
         public const string UrlAttribute = "search-url";
         public const string MinLengthAttribute = "min-search-length";
 
@@ -29,7 +29,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
 
         public static MvcHtmlString JQueryAutoComplete(
             this HtmlHelper helper
-            , string cssIdSelector
+            , string idAttribute
             , string searchUrl
             , int minSearchLength = 1
             , object htmlAttributes = null)
@@ -40,7 +40,8 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
             tagBuilder.MergeAttributes<string, object>(
                 HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)
             );
-            tagBuilder.MergeAttribute(IdAttribute, cssIdSelector, true);
+            tagBuilder.MergeAttribute(IdAttribute, idAttribute, true);
+            tagBuilder.MergeAttribute(NameAttribute, idAttribute, true);
             tagBuilder.MergeAttribute(UrlAttribute, searchUrl, true);
             tagBuilder.MergeAttribute(MinLengthAttribute, minSearchLength.ToString(), true);
 
