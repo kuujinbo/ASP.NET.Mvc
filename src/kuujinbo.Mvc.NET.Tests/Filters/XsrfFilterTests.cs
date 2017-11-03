@@ -14,8 +14,9 @@ namespace kuujinbo.Mvc.NET.Tests.Filters
         private readonly ITestOutputHelper _output;
         private readonly string[] _nonXsrfMethods =  
         { 
-            HttpVerbs.Get.ToString(), HttpVerbs.Head.ToString(), 
-            HttpVerbs.Options.ToString(), HttpVerbs.Patch.ToString() 
+            HttpVerbs.Get.ToString(),
+            HttpVerbs.Head.ToString(), 
+            HttpVerbs.Options.ToString()
         };
 
         public XsrfFilterTests(ITestOutputHelper output)
@@ -32,6 +33,8 @@ namespace kuujinbo.Mvc.NET.Tests.Filters
             Assert.True(XsrfFilter.IsXsrfMethod("DElete"));
             Assert.True(XsrfFilter.IsXsrfMethod("put"));
             Assert.True(XsrfFilter.IsXsrfMethod("PUt"));
+            Assert.True(XsrfFilter.IsXsrfMethod("patch"));
+            Assert.True(XsrfFilter.IsXsrfMethod("PaTCh"));
         }
 
         [Fact]
@@ -156,7 +159,7 @@ namespace kuujinbo.Mvc.NET.Tests.Filters
                 
                 var filter = XsrfFilter.Get();
 
-                Assert.IsType(typeof(ConditionalFilterProvider), filter);
+                Assert.IsType<ConditionalFilterProvider>(filter);
             }
         }
     }

@@ -13,7 +13,8 @@ namespace kuujinbo.Mvc.NET.Filters
     {
         public static readonly string[] XsrfMethods = 
         { 
-            HttpVerbs.Post.ToString(), HttpVerbs.Delete.ToString(), HttpVerbs.Put.ToString()
+            HttpVerbs.Post.ToString(), HttpVerbs.Delete.ToString(),
+            HttpVerbs.Put.ToString(), HttpVerbs.Patch.ToString()
         };
 
         public static object GetFilter(HttpRequestBase request, object[] ignoreAttribute)
