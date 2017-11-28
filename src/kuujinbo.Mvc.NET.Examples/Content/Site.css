@@ -12,6 +12,7 @@ h3, .h3 {font-size: 1.5em;}
 .margin-tb10, div.margin-tb10 > div { margin: 10px 0; }
 .center { text-align:center;}
 .yellow {color:yellow;}
+.delete {color: red;cursor: pointer; }
 /*body {
     padding: 0 20px;
 }*/
@@ -60,4 +61,3 @@ select,
 textarea {
     max-width: 280px;
 }
-

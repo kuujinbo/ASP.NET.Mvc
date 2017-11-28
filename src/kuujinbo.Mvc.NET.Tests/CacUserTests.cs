@@ -21,7 +21,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => CacUser.Create("")
              );
 
-            Assert.Equal<string>(CacUser.InvalidSimpleNameParameter, exception.Message);
+            Assert.Equal(CacUser.InvalidSimpleNameParameter, exception.Message);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => CacUser.Create("last.first.middle.0")
              );
 
-            Assert.Equal<string>(CacUser.InvalidEdipi, exception.Message);
+            Assert.Equal(CacUser.InvalidEdipi, exception.Message);
         }
 
         [Fact]
@@ -39,10 +39,10 @@ namespace kuujinbo.Mvc.NET.Tests
         {
             var cac = CacUser.Create("last.first.0987654321");
 
-            Assert.Equal<string>("Last", cac.LastName);
-            Assert.Equal<string>("First", cac.FirstName);
-            Assert.Equal<string>(string.Empty, cac.MiddleName);
-            Assert.Equal<string>("0987654321", cac.Edipi);
+            Assert.Equal("Last", cac.LastName);
+            Assert.Equal("First", cac.FirstName);
+            Assert.Equal(string.Empty, cac.MiddleName);
+            Assert.Equal("0987654321", cac.Edipi);
         }
 
         [Fact]
@@ -50,10 +50,10 @@ namespace kuujinbo.Mvc.NET.Tests
         {
             var cac = CacUser.Create("last.first.middle.0987654321");
 
-            Assert.Equal<string>("Last", cac.LastName);
-            Assert.Equal<string>("First", cac.FirstName);
-            Assert.Equal<string>("Middle", cac.MiddleName);
-            Assert.Equal<string>("0987654321", cac.Edipi);
+            Assert.Equal("Last", cac.LastName);
+            Assert.Equal("First", cac.FirstName);
+            Assert.Equal("Middle", cac.MiddleName);
+            Assert.Equal("0987654321", cac.Edipi);
         }
 
         [Fact]
@@ -61,10 +61,10 @@ namespace kuujinbo.Mvc.NET.Tests
         {
             var cac = CacUser.Create("last.first.middle.cac-office-typo.0987654321");
 
-            Assert.Equal<string>("Last", cac.LastName);
-            Assert.Equal<string>("First", cac.FirstName);
-            Assert.Equal<string>("Middle", cac.MiddleName);
-            Assert.Equal<string>("0987654321", cac.Edipi);
+            Assert.Equal("Last", cac.LastName);
+            Assert.Equal("First", cac.FirstName);
+            Assert.Equal("Middle", cac.MiddleName);
+            Assert.Equal("0987654321", cac.Edipi);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => CacUser.TitleCase(null)
              );
 
-            Assert.Equal<string>(CacUser.InvalidTitleCaseParameter, exception.Message);
+            Assert.Equal(CacUser.InvalidTitleCaseParameter, exception.Message);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => CacUser.TitleCase(string.Empty)
              );
 
-            Assert.Equal<string>(CacUser.InvalidTitleCaseParameter, exception.Message);
+            Assert.Equal(CacUser.InvalidTitleCaseParameter, exception.Message);
         }
 
         [Fact]
@@ -110,25 +110,25 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => CacUser.TitleCase("   ")
              );
 
-            Assert.Equal<string>(CacUser.InvalidTitleCaseParameter, exception.Message);
+            Assert.Equal(CacUser.InvalidTitleCaseParameter, exception.Message);
         }
 
         [Fact]
         public void TitleCase_AllUppercase_ReturnsFirstUpperAndRemainingLower()
         {
-            Assert.Equal<string>("Text", CacUser.TitleCase("TEXT"));
+            Assert.Equal("Text", CacUser.TitleCase("TEXT"));
         }
 
         [Fact]
         public void TitleCase_AllLowercase_ReturnsFirstUpperAndRemainingLower()
         {
-            Assert.Equal<string>("Text", CacUser.TitleCase("text"));
+            Assert.Equal("Text", CacUser.TitleCase("text"));
         }
 
         [Fact]
         public void TitleCase_MixedCase_ReturnsFirstUpperAndRemainingLower()
         {
-            Assert.Equal<string>("Text", CacUser.TitleCase("teXt"));
+            Assert.Equal("Text", CacUser.TitleCase("teXt"));
         }
     }
 }

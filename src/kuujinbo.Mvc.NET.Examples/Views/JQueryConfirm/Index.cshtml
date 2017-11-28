@@ -1,0 +1,32 @@
+﻿@using kuujinbo.Mvc.NET.HtmlHelpers
+
+<fieldset>
+    <legend>JQueryConfirm Html Helper</legend>
+    <div>
+        <span id='to-delete' data-id='76' class='delete glyphicon glyphicon-remove-sign'></span>
+        A fake database record
+    </div>
+</fieldset>
+@Html.JQueryConfirm()
+
+@section scripts {
+<script>
+    var confirm = new JQueryConfirm();
+    var toDelete = document.querySelector('#to-delete');
+    toDelete.addEventListener(
+        'click'
+        , function (e) {
+            var target = e.target;
+            if (target.classList.contains('delete')) {
+                confirm.show(
+                    'Delete this record?',
+                    function() {
+                        alert('Record ID: [' + target.dataset.id + '] will be deleted.');
+                    }
+                );
+            }
+        }
+        , false
+    );
+</script>
+}

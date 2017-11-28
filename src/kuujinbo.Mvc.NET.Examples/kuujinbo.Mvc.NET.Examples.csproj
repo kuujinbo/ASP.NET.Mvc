@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -149,6 +150,7 @@
     <Compile Include="Controllers\CheckboxGroupTogglerController.cs" />
     <Compile Include="Controllers\FileUploadStoreController.cs" />
     <Compile Include="Controllers\JQueryAutoCompleteController.cs" />
+    <Compile Include="Controllers\JQueryConfirmController.cs" />
     <Compile Include="Controllers\NoticeAndConsentController.cs" />
     <Compile Include="Controllers\WebApiChunkedDownloadController.cs" />
     <Compile Include="Models\ModelData.cs" />
@@ -246,6 +248,7 @@
     <Content Include="Views\NoticeAndConsent\Accepted.cshtml" />
     <Content Include="Views\Shared\_NoticeConsentLayout.cshtml" />
     <Content Include="Views\NoticeAndConsent\_ViewStart.cshtml" />
+    <Content Include="Views\JQueryConfirm\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

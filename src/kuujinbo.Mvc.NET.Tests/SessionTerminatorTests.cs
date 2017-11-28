@@ -69,7 +69,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
             _sessionTerminator.Logout(_fakeContext.Request, _fakeContext.Response, tempData);
 
-            Assert.Equal(true, (bool)tempData[SessionTerminator.SessionTimedOut]);
+            Assert.True((bool)tempData[SessionTerminator.SessionTimedOut]);
         }
 
         [Fact]

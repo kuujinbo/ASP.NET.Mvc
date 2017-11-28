@@ -11,6 +11,9 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </summary>
         public static readonly string ScriptKey = typeof(CheckboxGroupTogglerHelper).ToString();
 
+        /// <summary>
+        /// The JavaScript rendered to the browser.
+        /// </summary>
         public static readonly string JavaScriptBlock = Resources.CheckboxGroupToggler_min;
 
         public const string JavaScriptFormat =

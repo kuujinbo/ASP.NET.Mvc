@@ -12,8 +12,8 @@ namespace kuujinbo.Mvc.NET.Tests.IO
             var path = "test.txt";
             var result = new PdfResult(path);
 
-            Assert.Equal<string>(PdfResult.MIMEType, result.ContentType);
-            Assert.Equal<string>(path, result.FileDownloadName);
+            Assert.Equal(PdfResult.MIMEType, result.ContentType);
+            Assert.Equal(path, result.FileDownloadName);
         }
     }
 }

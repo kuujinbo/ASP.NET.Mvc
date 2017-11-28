@@ -14,7 +14,7 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         public static readonly string ScriptKey = typeof(SessionTerminatorHelper).ToString();
 
         /// <summary>
-        /// SessionTerminator.js. See https://github.com/kuujinbo/Mvc.NET/blob/master/src/kuujinbo.Mvc.NET/JavaScript/SessionTerminator.js
+        /// The JavaScript rendered to the browser.
         /// </summary>
         public static readonly string JavaScriptBlock = Resources.SessionTerminator_min;
 

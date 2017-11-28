@@ -63,12 +63,12 @@ namespace kuujinbo.Mvc.NET.Tests
             var result = _clientCertificate.GetCacUser(_request.Object);
 
             Assert.IsType<CacUser>(result);
-            Assert.Equal<string>("Last", result.LastName);
-            Assert.Equal<string>("First", result.FirstName);
-            Assert.Equal<string>("Middle", result.MiddleName);
-            Assert.Equal<string>("0987654321", result.Edipi);
-            Assert.Equal<string>("email@domain", result.Email);
-            Assert.Equal<string>(SelfMadeCertificateSubject, result.Subject);
+            Assert.Equal("Last", result.LastName);
+            Assert.Equal("First", result.FirstName);
+            Assert.Equal("Middle", result.MiddleName);
+            Assert.Equal("0987654321", result.Edipi);
+            Assert.Equal("email@domain", result.Email);
+            Assert.Equal(SelfMadeCertificateSubject, result.Subject);
             Assert.Null(result.ChainError);
         }
 
@@ -85,12 +85,12 @@ namespace kuujinbo.Mvc.NET.Tests
             var result = _clientCertificate.GetCacUser(_request.Object, true);
 
             Assert.IsType<CacUser>(result);
-            Assert.Equal<string>("Last", result.LastName);
-            Assert.Equal<string>("First", result.FirstName);
-            Assert.Equal<string>("Middle", result.MiddleName);
-            Assert.Equal<string>("0987654321", result.Edipi);
-            Assert.Equal<string>("email@domain", result.Email);
-            Assert.Equal<string>(SelfMadeCertificateSubject, result.Subject);
+            Assert.Equal("Last", result.LastName);
+            Assert.Equal("First", result.FirstName);
+            Assert.Equal("Middle", result.MiddleName);
+            Assert.Equal("0987654321", result.Edipi);
+            Assert.Equal("email@domain", result.Email);
+            Assert.Equal(SelfMadeCertificateSubject, result.Subject);
             Assert.NotNull(result.ChainError);
         }
     }

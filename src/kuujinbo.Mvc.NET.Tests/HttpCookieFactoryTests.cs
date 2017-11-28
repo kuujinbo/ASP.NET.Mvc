@@ -15,7 +15,7 @@ namespace kuujinbo.Mvc.NET.Tests
 
         void CookieKeyExists()
         {
-            Assert.Equal<string>(COOKIE_KEY, _cookie.Name);
+            Assert.Equal(COOKIE_KEY, _cookie.Name);
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => HttpCookieFactory.Create(null)
              );
 
-            Assert.Equal<string>(HttpCookieFactory.InvalidCreateParameter, exception.ParamName);
+            Assert.Equal(HttpCookieFactory.InvalidCreateParameter, exception.ParamName);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace kuujinbo.Mvc.NET.Tests
                  () => HttpCookieFactory.Create(" ")
              );
 
-            Assert.Equal<string>(HttpCookieFactory.InvalidCreateParameter, exception.ParamName);
+            Assert.Equal(HttpCookieFactory.InvalidCreateParameter, exception.ParamName);
         }
 
         [Fact]

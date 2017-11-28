@@ -30,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\kuujinbo.Mvc.NET.xml</DocumentationFile>
+    <NoWarn>1591,1587</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -67,6 +68,7 @@
     <Compile Include="Helpers\BoolHelper.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtension.cs" />
     <Compile Include="Helpers\NameWithNumericPrefixComparer.cs" />
+    <Compile Include="HtmlHelpers\JQueryConfirmHelper.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelper.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBool.cs" />
     <Compile Include="HttpCookieFactory.cs" />
@@ -99,6 +101,7 @@
     <Content Include="JavaScript\CheckboxGroupToggler.js" />
     <Content Include="JavaScript\FileUploadField.js" />
     <Content Include="JavaScript\JQueryAutoComplete.min.js" />
+    <Content Include="JavaScript\JQueryConfirm.js" />
     <Content Include="JavaScript\JQueryXhr.js" />
     <None Include="JavaScript\SessionTerminator.min.js" />
     <None Include="JavaScript\FileUploadField.min.js" />

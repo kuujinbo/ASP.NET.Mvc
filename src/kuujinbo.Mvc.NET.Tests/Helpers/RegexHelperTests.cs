@@ -8,7 +8,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
         [Fact]
         public void PascalCaseSplit_MatchingString_InsertsSpaces()
         {
-            Assert.Equal<string>(
+            Assert.Equal(
                 "Hello World World", 
                 RegexHelper.PascalCaseSplit("HelloWorldWorld")
             );
@@ -19,7 +19,7 @@ namespace kuujinbo.Mvc.NET.Tests.Helpers
         {
             string expected = "TH T7 T^ jk $# 08 j$0";
 
-            Assert.Equal<string>(
+            Assert.Equal(
                 expected, 
                 RegexHelper.PascalCaseSplit(expected)
             );

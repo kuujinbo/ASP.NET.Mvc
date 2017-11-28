@@ -29,7 +29,7 @@ namespace kuujinbo.Mvc.NET.Tests.Filters
             // System.Linq.Enumerable+WhereSelectEnumerableIterator`2[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.Web.Mvc.Filter, System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35]]
             // Assert.IsType(typeof(IEnumerable<Filter>), filters);
             Assert.IsAssignableFrom<IEnumerable<Filter>>(filters);
-            Assert.Equal(0, filters.Count());
+            Assert.Empty(filters);
         }
     }
 }

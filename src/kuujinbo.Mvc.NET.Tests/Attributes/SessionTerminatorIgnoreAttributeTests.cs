@@ -34,9 +34,8 @@ namespace kuujinbo.Mvc.NET.Tests.Attributes
         {
             _attribute.OnActionExecuting(_actionExecutingContext);
 
-            Assert.Equal(
-                _actionExecutingContext.Controller.TempData[SessionTerminator.IgnoreSessionTimeout],
-                true
+            Assert.True(
+                (bool)_actionExecutingContext.Controller.TempData[SessionTerminator.IgnoreSessionTimeout]
             );
         }
     }

@@ -47,7 +47,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
                  () => new StreamedResult(null, _htmlContentType)
              );
 
-            Assert.Equal<string>(
+            Assert.Equal(
                 StreamedResult.InvalidPathParameter, exception.Message
             );
         }
@@ -59,7 +59,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
                  () => new StreamedResult("    ", _htmlContentType)
              );
 
-            Assert.Equal<string>(
+            Assert.Equal(
                 StreamedResult.InvalidPathParameter, exception.Message
             );
         }
@@ -71,7 +71,7 @@ namespace kuujinbo.Mvc.NET.Tests.IO
                  () => new StreamedResult("file://path", "    ")
              );
 
-            Assert.Equal<string>(
+            Assert.Equal(
                 StreamedResult.InvalidContentTypeParameter, exception.Message
             );
         }
@@ -81,8 +81,8 @@ namespace kuujinbo.Mvc.NET.Tests.IO
         {
             var result = new StreamedResult(_filePath, _htmlContentType);
 
-            Assert.Equal<string>(_htmlContentType, result.ContentType);
-            Assert.Equal<string>(Path.GetFileName(_filePath), result.FileDownloadName);
+            Assert.Equal(_htmlContentType, result.ContentType);
+            Assert.Equal(Path.GetFileName(_filePath), result.FileDownloadName);
         }
 
         [Fact]

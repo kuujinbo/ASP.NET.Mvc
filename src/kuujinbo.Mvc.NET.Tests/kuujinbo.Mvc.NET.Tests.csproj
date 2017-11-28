@@ -46,6 +46,7 @@
     <Compile Include="Helpers\BoolHelperTests.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtensionTests.cs" />
     <Compile Include="Helpers\NameWithNumericPrefixComparerTests.cs" />
+    <Compile Include="HtmlHelpers\JQueryConfirmHelperTests.cs" />
     <Compile Include="HtmlHelpers\JQueryXhrHelperTests.cs" />
     <Compile Include="HtmlHelpers\UserFriendlyBoolTests.cs" />
     <Compile Include="HttpCookieFactoryTests.cs" />

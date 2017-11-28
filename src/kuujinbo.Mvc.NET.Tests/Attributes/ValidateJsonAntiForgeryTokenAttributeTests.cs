@@ -61,8 +61,8 @@ namespace kuujinbo.Mvc.NET.Tests.Attributes
         [Fact]
         public void OnAuthorization_WithoutCookie_Throws()
         {
-            Assert.Equal(0, _request.Object.Cookies.Count);
-            Assert.Equal(0, _request.Object.Headers.Count);
+            Assert.Empty(_request.Object.Cookies);
+            Assert.Empty(_request.Object.Headers);
             var exception = Assert.Throws<HttpAntiForgeryException>(
                  () => _attribute.OnAuthorization(_authorizationContext)
              );

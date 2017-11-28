@@ -25,6 +25,9 @@ namespace kuujinbo.Mvc.NET.HtmlHelpers
         /// </summary>
         public static readonly string ScriptKey = typeof(JQueryAutoCompleteHelper).ToString();
 
+        /// <summary>
+        /// The JavaScript rendered to the browser.
+        /// </summary>
         public static readonly string JavaScriptBlock = Resources.JQueryAutoComplete_min;
 
         public static MvcHtmlString JQueryAutoComplete(

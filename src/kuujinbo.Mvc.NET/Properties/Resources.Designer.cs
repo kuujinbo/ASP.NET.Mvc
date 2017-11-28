@@ -88,6 +88,32 @@ namespace kuujinbo.Mvc.NET.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to function JQueryConfirm() {
+        ///    Object.defineProperty(this, &apos;modalElementId&apos;, {
+        ///        value: &apos;jquery-confirm-modal&apos;
+        ///    });
+        ///    this._confirmed = false;
+        ///    this._counter = 0;
+        ///}
+        ///
+        ///JQueryConfirm.prototype = {
+        ///    constructor: JQueryConfirm,
+        ///    confirmed: function () { return this._confirmed; },
+        ///    show: function(innerHTML) {
+        ///        var self = this;
+        ///        $(self.getModalElement()).html(innerHTML).dialog({
+        ///            resizable: false,
+        ///            height: &apos;auto&apos;,
+        ///            width: 400,
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string JQueryConfirm {
+            get {
+                return ResourceManager.GetString("JQueryConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to function JQueryXhr(){Object.defineProperty(this,&quot;doneCallbackError&quot;,{value:&quot;doneCallback required, and must be a function().&quot;});Object.defineProperty(this,&quot;alwaysCallbackError&quot;,{value:&quot;alwaysCallback must be a function().&quot;});Object.defineProperty(this,&quot;failTitle&quot;,{value:&quot;Unable to Process Request&quot;});Object.defineProperty(this,&quot;defaultFailMessage&quot;,{value:&quot;There was a problem processing your request. Please try again. If the problem continues please contact the application administrators.&quot;});var a= null;Objec [rest of string was truncated]&quot;;.
         /// </summary>
         public static string JQueryXhr_min {
