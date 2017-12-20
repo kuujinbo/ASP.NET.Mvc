@@ -44,6 +44,7 @@
     <Compile Include="Controllers\CacUserControllerTests.cs" />
     <Compile Include="DbDataTests.cs" />
     <Compile Include="Helpers\BoolHelperTests.cs" />
+    <Compile Include="Helpers\CsvHelperTests.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtensionTests.cs" />
     <Compile Include="Helpers\NameWithNumericPrefixComparerTests.cs" />
     <Compile Include="HtmlHelpers\JQueryConfirmHelperTests.cs" />
