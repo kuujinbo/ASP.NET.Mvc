@@ -1,23 +1,53 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using Moq;
+using System;
 using System.Web;
-using System.Web.Mvc;
-using kuujinbo.Mvc.NET.Attributes;
-using kuujinbo.Mvc.NET.Helpers;
-using kuujinbo.Mvc.NET.Tests._testHelpers;
-using Moq;
 using Xunit;
 
 namespace kuujinbo.Mvc.NET.Helpers
 {
     public class HttpRequestBaseExtensionTests
     {
+        const string BaseUrl = "http://localhost";
         Mock<HttpRequestBase> _request;
 
         public HttpRequestBaseExtensionTests()
         {
             _request = new Mock<HttpRequestBase>();
-            _request.Setup(x => x.Url).Returns(new Uri("http://test.com"));
+            _request.Setup(x => x.Url).Returns(new Uri(BaseUrl));
+        }
+
+        [Fact]
+        public void GetAbsoluteUrl_RootAppPathNullRelativeUrl_ReturnsAbsoluteUrl()
+        {
+            var root = "/";
+            _request.Setup(x => x.ApplicationPath).Returns(root);
+
+            Assert.Equal(BaseUrl + root, _request.Object.GetAbsoluteUrl());
+        }
+
+        [Fact]
+        public void GetAbsoluteUrl_SubAppPathNullRelativeUrl_ReturnsAbsoluteUrl()
+        {
+            var subPath = "//test";
+            _request.Setup(x => x.ApplicationPath).Returns(subPath);
+
+            Assert.Equal(
+                string.Format("{0}/test/", BaseUrl),
+                _request.Object.GetAbsoluteUrl()
+            );
+        }
+
+        [Fact]
+        public void GetAbsoluteUrl_SubAppPathRelativeUrl_ReturnsAbsoluteUrl()
+        {
+            var subPath = "test";
+            _request.Setup(x => x.ApplicationPath).Returns(subPath);
+            var relativeUrl = "//relative-url";
+
+            Assert.Equal(
+                string.Format("{0}/test/relative-url", BaseUrl),
+                _request.Object.GetAbsoluteUrl(relativeUrl)
+            );
         }
 
         [Fact]
