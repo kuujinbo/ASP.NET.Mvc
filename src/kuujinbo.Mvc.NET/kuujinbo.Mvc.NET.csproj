@@ -67,6 +67,7 @@
     <Compile Include="DbData.cs" />
     <Compile Include="Helpers\BoolHelper.cs" />
     <Compile Include="Helpers\CsvHelper.cs" />
+    <Compile Include="Helpers\EnumExtension.cs" />
     <Compile Include="Helpers\HttpRequestBaseExtension.cs" />
     <Compile Include="Helpers\NameWithNumericPrefixComparer.cs" />
     <Compile Include="HtmlHelpers\JQueryConfirmHelper.cs" />
