@@ -1,8 +1,8 @@
-﻿using System;
+﻿using kuujinbo.Mvc.NET.Tests.Properties;
+using Moq;
+using System;
 using System.Collections.Specialized;
 using System.Web;
-using kuujinbo.Mvc.NET.Tests.Properties;
-using Moq;
 using Xunit;
 
 namespace kuujinbo.Mvc.NET.Tests
@@ -67,6 +67,7 @@ namespace kuujinbo.Mvc.NET.Tests
             Assert.Equal("First", result.FirstName);
             Assert.Equal("Middle", result.MiddleName);
             Assert.Equal("0987654321", result.Edipi);
+            Assert.Equal("CN=Root Agency", result.Issuer);
             Assert.Equal("email@domain", result.Email);
             Assert.Equal(SelfMadeCertificateSubject, result.Subject);
             Assert.Null(result.ChainError);
@@ -89,6 +90,7 @@ namespace kuujinbo.Mvc.NET.Tests
             Assert.Equal("First", result.FirstName);
             Assert.Equal("Middle", result.MiddleName);
             Assert.Equal("0987654321", result.Edipi);
+            Assert.Equal("CN=Root Agency", result.Issuer);
             Assert.Equal("email@domain", result.Email);
             Assert.Equal(SelfMadeCertificateSubject, result.Subject);
             Assert.NotNull(result.ChainError);

@@ -47,6 +47,7 @@ namespace kuujinbo.Mvc.NET
             var subjectName = cert.GetNameInfo(X509NameType.SimpleName, false);
             var cacUser = CacUser.Create(subjectName);
             cacUser.Subject = subjectName;
+            cacUser.Issuer = cert.Issuer;
 
             cacUser.Email = cert.GetNameInfo(X509NameType.EmailName, false)
                                 .ToLower();
